@@ -173,6 +173,24 @@ function fotosHTML(fotos, titulo = '') {
     </figure>`;
 }
 
+// Tabelas técnicas da ficha (ex.: comparativo de válvulas). Colunas listadas em "estrelas" recebem
+// uma nota de 0 a 5: 0 vira "—" e as demais viram estrelas.
+function tabelasHTML(tabelas) {
+  if (!tabelas) return '';
+  const cell = (t, v, i) => {
+    if (!(t.estrelas || []).includes(i)) return `<td>${linkNorms(v)}</td>`;
+    return v ? `<td class="ptable__stars" aria-label="${v} de 5"><span aria-hidden="true">${'★'.repeat(v)}</span></td>` : '<td class="ptable__na" aria-label="não se aplica">—</td>';
+  };
+  return tabelas.map(t => `<section class="ptable">
+      <h4>${t.titulo}</h4>
+      <div class="ptable__wrap" tabindex="0" role="region" aria-label="${t.titulo}">
+        <table><thead><tr>${t.colunas.map((c, i) => `<th scope="col"${(t.estrelas || []).includes(i) ? ' class="ptable__c"' : ''}>${c}</th>`).join('')}</tr></thead>
+        <tbody>${t.linhas.map(l => `<tr>${l.map((v, i) => i === 0 ? `<th scope="row">${v}</th>` : cell(t, v, i)).join('')}</tr>`).join('')}</tbody></table>
+      </div>
+      ${t.nota ? `<p class="ptable__note">${linkNorms(t.nota)}</p>` : ''}
+    </section>`).join('');
+}
+
 function renderSystem(s) {
   sheetBody.innerHTML = `
     <div class="sheet__head"><span class="sys__dot sys__dot--lg" style="--c:${s.color}"></span>
@@ -243,6 +261,7 @@ function openProduct(id) {
   const s = systemById[id], m = materialById[id];
   if (s || m) {
     s ? renderSystem(s) : renderMaterial(m);
+    sheet.classList.remove('sheet--wide');
     if (!sheet.open) sheet.showModal();
     sheet.scrollTop = 0;
     history.replaceState(null, '', '#' + id);
@@ -256,6 +275,7 @@ function openProduct(id) {
       <div><p class="eyebrow">${g.name}</p><h3 id="sheetTitle">${p.name}</h3></div></div>
     <p class="sheet__desc">${linkNorms(p.desc)}</p>
     ${fotosHTML(p.fotos)}
+    ${tabelasHTML(p.tabelas)}
     <div class="prod__cols">
       <div><h4>Tipos</h4><ul>${list(p.tipos)}</ul></div>
       <div><h4>Como escolher</h4><ul>${list(p.escolha)}</ul></div>
@@ -267,6 +287,7 @@ function openProduct(id) {
       <a href="#contato" class="btn" data-subject="Cotação de materiais">Solicitar cotação</a>
       <a href="#contato" class="btn btn--ghost" data-subject="Consulta técnica">Tirar uma dúvida técnica</a>
     </div>`;
+  sheet.classList.toggle('sheet--wide', !!p.tabelas); // ficha mais larga quando tem tabelas
   if (!sheet.open) sheet.showModal();
   sheet.scrollTop = 0;
   history.replaceState(null, '', '#' + id);

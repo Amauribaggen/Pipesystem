@@ -893,3 +893,24 @@ font[style] { background: transparent !important; box-shadow: none !important; }
   50% { background: rgba(242, 160, 61, .95); box-shadow: 0 0 14px 2px rgba(242, 160, 61, .55); color: #1b1203; }
 }
 @media (max-width: 1180px) { #navLinks .nav__hot { align-self: flex-start; margin: 6px 0; } }
+/* Tabelas técnicas da ficha (comparativo de válvulas, materiais) */
+.ptable { margin: 4px 0 18px; }
+.ptable h4 { margin-bottom: 8px; }
+.ptable__wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; -webkit-overflow-scrolling: touch; }
+.ptable__wrap:focus-visible { outline: 2px solid var(--teal, #1fb6c9); outline-offset: 2px; }
+.ptable table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: .84rem; line-height: 1.4; color: var(--ink); }
+.ptable thead th { position: sticky; top: 0; background: #0b2a4a; color: #fff; font-weight: 700; text-align: left; padding: .6em .75em; white-space: nowrap; }
+.ptable tbody th { text-align: left; font-weight: 700; color: var(--navy); padding: .6em .75em; white-space: nowrap; }
+.ptable td { padding: .6em .75em; vertical-align: top; color: #33475f; }
+.ptable tbody tr:nth-child(even) { background: #f3f8fc; }
+.ptable tbody tr + tr > * { border-top: 1px solid var(--line); }
+.ptable__stars { color: #f2a03d; letter-spacing: 1px; white-space: nowrap; font-size: .95rem; text-align: center; }
+.ptable__na { color: #9fb0c3; text-align: center; }
+.ptable thead th.ptable__c { text-align: center; }
+.ptable__note { margin: 6px 2px 0; font-size: .76rem; color: var(--muted); }
+.sheet.sheet--wide { width: min(1080px, calc(100% - 32px)); }
+.ptable tbody th { vertical-align: top; }/* No celular, a 1ª coluna (tipo/material) fica fixa ao rolar a tabela para o lado */
+.ptable tbody th, .ptable thead th:first-child { position: sticky; left: 0; z-index: 1; }
+.ptable tbody th { background: #fff; }
+.ptable tbody tr:nth-child(even) th { background: #f3f8fc; }
+.ptable thead th:first-child { z-index: 2; }
