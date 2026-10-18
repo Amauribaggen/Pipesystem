@@ -194,6 +194,7 @@ const MATERIAL_ART = (() => {
 
 // Fabricantes de referência por item do catálogo (máx. 5). n = nome, u = site oficial, o = N (nacional) ou I (internacional).
 // Sites conferidos em 17/10/2026. Lista indicativa, sem vínculo comercial.
+// Tipo: 'N' = fabricante nacional, 'I' = internacional, 'M' = importador.
 const MANUFACTURERS = {
   'mat-pvc': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Krona', 'https://www.krona.com.br', 'N'], ['Fortlev', 'https://www.fortlev.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'I']],
   'mat-cpvc': [['Tigre (Aquatherm)', 'https://www.tigre.com.br', 'N'], ['Krona', 'https://www.krona.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'I'], ['Lubrizol (FlowGuard)', 'https://www.lubrizol.com', 'I']],
@@ -203,7 +204,7 @@ const MANUFACTURERS = {
   'mat-pe': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Kanaflex', 'https://www.kanaflex.com.br', 'N'], ['Polierg', 'https://www.polierg.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'I'], ['GF Piping Systems', 'https://www.gfps.com', 'I']],
   'mat-ferro': [['Saint-Gobain Canalização (PAM)', 'https://www.saint-gobain-canalizacao.com.br', 'I'], ['Electrosteel Castings', 'https://www.electrosteel.com', 'I']],
   'mat-inox': [['Aperam', 'https://www.aperam.com', 'I'], ['Outokumpu', 'https://www.outokumpu.com', 'I'], ['Alleima', 'https://www.alleima.com', 'I']],
-  'mat-galv': [['Tupy', 'https://www.tupy.com.br', 'N'], ['ASC Engineered Solutions (Anvil)', 'https://www.asc-es.com', 'I']],
+  'mat-galv': [['Tupy', 'https://www.tupy.com.br', 'N'], ['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M'], ['ASC Engineered Solutions (Anvil)', 'https://www.asc-es.com', 'I']],
   'mat-latao': [['Viega', 'https://www.viega.com', 'I'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['Swagelok', 'https://www.swagelok.com', 'I']],
   'mat-flanges': [['Bonney Forge', 'https://www.bonneyforge.com', 'I'], ['Galperti', 'https://www.galperti.com', 'I']],
   'mat-ranhurado': [['Victaulic', 'https://www.victaulic.com', 'I'], ['Tyco (Johnson Controls)', 'https://www.tyco-fire.com', 'I'], ['Viking', 'https://www.vikinggroupinc.com', 'I'], ['ASC Engineered Solutions (Gruvlok)', 'https://www.asc-es.com', 'I']],

@@ -454,6 +454,7 @@ body { background: #071a31; }
 .fabs__tag { flex: none; font-size: .7rem; font-weight: 700; padding: .2em .7em; border-radius: 999px; }
 .fabs__tag--N { background: #e3f6ea; color: #1d7a45; }
 .fabs__tag--I { background: #e7eefb; color: #2f55a4; }
+.fabs__tag--M { background: #fff1d6; color: #9a5a0a; }
 .fabs__note { font-size: .8rem; color: var(--muted); margin: 0 0 18px; }
 .fabs__note a { color: var(--teal-d); font-weight: 600; }
 

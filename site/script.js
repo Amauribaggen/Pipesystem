@@ -249,7 +249,7 @@ function renderMaterial(m) {
     ${fabs.length ? `<h4>Fabricantes</h4>
     <ul class="fabs">${fabs.map(([n, u, o]) => `<li><a href="${u}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span></a>
-      <span class="fabs__tag fabs__tag--${o}">${o === 'N' ? 'Nacional' : 'Internacional'}</span></li>`).join('')}</ul>
+      <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
     <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa fabrica este produto? <a href="#anuncie">Anuncie aqui</a>.</p>` : ''}
     <div class="sheet__actions">
       <a href="#contato" class="btn" data-subject="Cotação de materiais" data-question="Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) ">Solicitar cotação</a>
