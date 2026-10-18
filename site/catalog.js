@@ -40,6 +40,10 @@ const CATALOG = [
     desc: 'Conexões roscadas de ferro fundido maleável galvanizado, para redes de água, incêndio, gás e ar comprimido em tubos de aço.',
     specs: [['Material', 'Ferro fundido maleável, galvanizado ou preto'], ['Diâmetros', '1/4" a 6"'], ['Pressão', 'Classe 10 (1,0 MPa) e classe 150 lb'], ['Rosca', 'BSP (NBR NM ISO 7-1) ou NPT (ASME B1.20.1)'], ['Peças', 'Cotovelos, tês, luvas, uniões, niples, buchas, bujões e tampões']],
     normas: ['NBR 6943', 'NBR 6925', 'ASME B16.3'] },
+  { id: 'mat-grooved', cat: 'Conexões', name: 'Conexões Ranhuradas (Grooved)', apps: 'Incêndio, HVAC, água e mineração', art: 'coupling', tone: '#e5534b', rel: 'conexoes-ranhuradas',
+    desc: 'Conexões com pontas ranhuradas (curvas, tês, reduções, cruzetas e tampões), unidas por acoplamentos mecânicos com junta de borracha. A montagem é rápida, sem solda e sem rosca. São padrão em redes de sprinklers e hidrantes e cada vez mais usadas em HVAC, água gelada, saneamento e mineração.',
+    specs: [['Material', 'Ferro dúctil ASTM A536 (65-45-12), pintado em vermelho ou galvanizado'], ['Diâmetros', '1" a 12" (DN 25 a DN 300)'], ['Pressão', 'Até 300 psi (2,07 MPa), conforme o modelo e o diâmetro'], ['Peças', 'Curvas de 90° e 45°, tês, tês de redução, cruzetas, reduções concêntricas e tampões'], ['Ranhura', 'Laminada (roll groove) ou usinada (cut groove), conforme AWWA C606'], ['Aprovações', 'UL / FM para sistemas de combate a incêndio']],
+    normas: ['AWWA C606', 'UL 213', 'ASTM A536', 'NFPA 13'] },
   { id: 'mat-latao', cat: 'Conexões', name: 'Conexões de latão e bronze', apps: 'Água, gás e GLP', art: 'fittings', tone: '#d8b45a', rel: 'conexoes-cobre',
     desc: 'Conexões em ligas de cobre para redes de cobre, transições entre materiais e instalações de gás e GLP.',
     specs: [['Material', 'Latão forjado e bronze fundido'], ['Diâmetros', '15 a 104 mm (solda) · 1/4" a 2" (rosca)'], ['União', 'Solda capilar, compressão (anilha), prensagem ou rosca'], ['Aplicação', 'Água quente e fria, gás, GLP e refrigeração'], ['Peças', 'Cotovelos, tês, luvas, uniões, adaptadores e transições']],
@@ -52,10 +56,6 @@ const CATALOG = [
     desc: 'Acoplamentos mecânicos para tubos ranhurados: montagem rápida, sem solda e sem rosca. São padrão em redes de sprinklers e hidrantes.',
     specs: [['Material', 'Ferro dúctil pintado ou galvanizado; junta de EPDM'], ['Diâmetros', '1" a 12"'], ['Pressão', 'Até 300 psi (2,07 MPa), conforme o modelo'], ['Tipos', 'Rígido, flexível, tê mecânico e adaptador flange-ranhura'], ['Aprovações', 'UL / FM para sistemas de incêndio']],
     normas: ['AWWA C606', 'UL 213', 'FM 1920'] },
-  { id: 'mat-grooved', cat: 'Conexões', name: 'Conexões ranhuradas (grooved)', apps: 'Incêndio, HVAC, água e mineração', art: 'coupling', tone: '#e5534b', rel: 'conexoes-ranhuradas',
-    desc: 'Conexões com pontas ranhuradas (curvas, tês, reduções, cruzetas e tampões), unidas por acoplamentos mecânicos com junta de borracha. A montagem é rápida, sem solda e sem rosca. São padrão em redes de sprinklers e hidrantes e cada vez mais usadas em HVAC, água gelada, saneamento e mineração.',
-    specs: [['Material', 'Ferro dúctil ASTM A536 (65-45-12), pintado em vermelho ou galvanizado'], ['Diâmetros', '1" a 12" (DN 25 a DN 300)'], ['Pressão', 'Até 300 psi (2,07 MPa), conforme o modelo e o diâmetro'], ['Peças', 'Curvas de 90° e 45°, tês, tês de redução, cruzetas, reduções concêntricas e tampões'], ['Ranhura', 'Laminada (roll groove) ou usinada (cut groove), conforme AWWA C606'], ['Aprovações', 'UL / FM para sistemas de combate a incêndio']],
-    normas: ['AWWA C606', 'UL 213', 'ASTM A536', 'NFPA 13'] },
 
   // Válvulas
   { id: 'mat-esfera', cat: 'Válvulas', name: 'Registros e válvulas de esfera', apps: 'Bloqueio em água, gás e ar comprimido', art: 'ballvalve', tone: '#d8b45a', rel: 'valvulas',
