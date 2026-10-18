@@ -87,7 +87,13 @@ p { margin: 0 0 1em; }
 @keyframes flowCurrent { to { stroke-dashoffset: -80; } }
 @keyframes flowSpark { to { stroke-dashoffset: -124; } }
 .hero h1 { text-shadow: 0 2px 4px rgba(4, 18, 36, .7), 0 0 26px rgba(4, 18, 36, .75); }
-.hero h1 .grad { text-shadow: none; filter: drop-shadow(0 2px 3px rgba(4, 18, 36, .95)) drop-shadow(0 0 10px rgba(4, 18, 36, .8)); }
+/* Texto em degradê: sem filter/sombra (em alguns Chrome/Safari a sombra de um texto em degradê
+   quebrado em linhas aparece como uma cópia deslocada). A leitura sobre a tubulação é garantida
+   por um halo escuro atrás do bloco de texto. */
+.hero h1 .grad { text-shadow: none; filter: none; }
+.hero__content { isolation: isolate; }
+.hero__content::before { content: ""; position: absolute; z-index: -1; inset: -48px -80px -24px -80px; pointer-events: none;
+  background: radial-gradient(ellipse 60% 55% at 40% 32%, rgba(7, 26, 49, .82) 0%, rgba(7, 26, 49, .55) 45%, rgba(7, 26, 49, 0) 75%); }
 .hero__content { position: relative; max-width: 780px; }
 .hero h1 { font-size: clamp(2.2rem, 5.4vw, 3.9rem); margin-bottom: .4em; }
 .hero .eyebrow { color: #7ee7f2; }
