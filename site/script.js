@@ -1038,7 +1038,8 @@ const ARTICLES = [
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })))).join(''),
     artigos: () => group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema }))) +
       group('', [{ href: '#artigo-envio', label: 'Adicione seu artigo técnico aqui' }]),
-    feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira')) + group('No exterior', tag('#feiras .fair--intl', 'feira')),
+    feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira')) + group('No exterior', tag('#feiras .fair--intl', 'feira')) +
+      group('', [{ href: '#links-uteis', label: 'Links úteis: entidades e normas do setor' }]),
     anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano')) +
       group('', [{ href: '#adMap', label: 'Onde os banners aparecem' }]),
     sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor')) +
