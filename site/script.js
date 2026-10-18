@@ -994,7 +994,8 @@ const ARTICLES = [
   const slug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   // Dá um id aos cartões da página para que o submenu leve direto a eles
   const tag = (sel, prefix) => [...document.querySelectorAll(sel)].map(el => {
-    const title = (el.querySelector('h3, h4, strong') || el).textContent.trim();
+    const head = el.querySelector('h3, h4, strong') || el, date = head.querySelector('time');
+    const title = date ? head.firstChild.textContent.trim() + ' · ' + date.textContent.trim() : head.textContent.trim();
     if (!el.id) el.id = prefix + '-' + slug(title);
     return { href: '#' + el.id, label: title };
   });

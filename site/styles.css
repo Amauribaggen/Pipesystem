@@ -216,6 +216,8 @@ a.normref:hover { color: var(--teal, #1fb6c9); }
 .fair__link:hover, .fair__link:focus-visible { transform: translateY(-1px); filter: brightness(1.06); }
 .fairs__title { margin: 8px 0 14px; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: #7ee7f2; }
 .grid + .fairs__title { margin-top: 34px; }
+.fair__name { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.fair__date { font: 700 .74rem var(--font); letter-spacing: .02em; color: #9a5a0a; background: #fff1d6; border: 1px solid #f2c27d; padding: .3em .7em; border-radius: 999px; white-space: nowrap; }
 .fair--intl .fair__loc::before { content: "🌍 "; }
 
 /* Systems */
