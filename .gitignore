@@ -1,0 +1,15 @@
+# O repositório no GitHub é público: só o site e os arquivos de deploy entram.
+# Documentos internos (planos de negócio, análises, PDFs, PNGs, zip, versões antigas) ficam só no computador.
+/*
+!/site/
+!/scripts/
+!/package.json
+!/vercel.json
+!/.vercelignore
+!/.gitignore
+!/README.md
+
+# Gerados pelo build ou pelas ferramentas
+dist/
+node_modules/
+.vercel/

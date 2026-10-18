@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PipeSystem — O Portal da Hidráulica</title>
+  <meta name="description" content="PipeSystem: o portal da hidráulica e sistemas de condução de fluidos. Consultoria técnica, normas, cotações, leilões, cadastro de empresas e ferramentas de cálculo.">
+  <meta name="keywords" content="PipeSystem, hidráulica, tubulação, consultor online, normas técnicas, tubos, conexões, válvulas, bombas, PVC, CPVC, PEX, cobre, aço-carbono, gás, vapor, rede de incêndio, irrigação, saneamento, perda de carga, vazão, BSP, NPT">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 52 52%27%3E%3Crect width=%2752%27 height=%2752%27 rx=%2712%27 fill=%27%23061527%27/%3E%3Cpath d=%27M26 7c9 12 16 21 16 30a16 16 0 0 1-32 0c0-9 7-18 16-30z%27 fill=%27%231fb6c9%27/%3E%3Cpath d=%27M16 39c4 3 8 3 10 0s6-3 10 0%27 fill=%27none%27 stroke=%27%23fff%27 stroke-width=%273.5%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav" id="top">
+  <div class="container nav__inner">
+    <a href="#top" class="logo" aria-label="PIPESYSTEM — início">
+      <svg class="logo__svg " viewBox="0 0 300 86" aria-hidden="true"><path d="M26 6c9 12 16 21 16 30a16 16 0 0 1-32 0c0-9 7-18 16-30z" fill="#1fb6c9"/><path d="M16 38c4 3 8 3 10 0s6-3 10 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><text x="56" y="40" textLength="230" lengthAdjust="spacingAndGlyphs" font-family="Montserrat, 'Arial Black', sans-serif" font-weight="800" font-size="28" fill="#fff" class="notranslate" translate="no">PIPESYSTEM</text><rect x="56" y="50" width="236" height="6" rx="3" fill="#1fb6c9"/><rect x="128" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><rect x="212" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><path d="M286 46l8 7-8 7" fill="none" stroke="#f2a03d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="57" y="80" textLength="235" lengthAdjust="spacing" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="14" fill="#f2a03d" class="notranslate" translate="no">conduzindo soluções</text></svg>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#servicos">Cotações</a>
+      <div class="dd" id="ddProdutos">
+        <button class="dd__btn" type="button" aria-expanded="false" aria-controls="ddMenu">Produtos <svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <div class="dd__menu dd__menu--mega" id="ddMenu"></div>
+      </div>
+      <a href="#sistemas">Sistemas</a>
+      <a href="#materiais">Materiais</a>
+      <a href="#ferramentas">Ferramentas</a>
+      <a href="#normas">Normas Técnicas</a>
+      <a href="#artigos">Artigos Técnicos</a>
+      <a href="#feiras">Feiras</a>
+      <a href="#anuncie">Anuncie</a>
+      <a href="#sobre">Quem somos</a>
+      <a href="#contato" class="btn btn--sm">Cadastre-se</a>
+    </nav>
+    <div class="lang notranslate" translate="no" role="group" aria-label="Idioma / Language">
+      <button type="button" class="lang__btn" data-lang="pt" aria-pressed="true" title="Português (Brasil)" aria-label="Ler em português">
+        <svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="2" fill="#009b3a"/><path d="M14 2.6 25 10 14 17.4 3 10z" fill="#fedf00"/><circle cx="14" cy="10" r="4.4" fill="#002776"/><path d="M9.8 9.2c2.8-.6 5.8-.2 8.4 1.2" stroke="#fff" stroke-width=".8" fill="none"/></svg>
+        <span>PT</span>
+      </button>
+      <button type="button" class="lang__btn" data-lang="en" aria-pressed="false" title="English (United States)" aria-label="Read in English">
+        <svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="2" fill="#fff"/><g fill="#b22234"><rect y="0" width="28" height="1.54"/><rect y="3.08" width="28" height="1.54"/><rect y="6.15" width="28" height="1.54"/><rect y="9.23" width="28" height="1.54"/><rect y="12.31" width="28" height="1.54"/><rect y="15.38" width="28" height="1.54"/><rect y="18.46" width="28" height="1.54"/></g><rect width="12" height="10.77" fill="#3c3b6e"/><g fill="#fff"><circle cx="2.2" cy="2" r=".55"/><circle cx="5" cy="2" r=".55"/><circle cx="7.8" cy="2" r=".55"/><circle cx="10.4" cy="2" r=".55"/><circle cx="3.6" cy="4.2" r=".55"/><circle cx="6.4" cy="4.2" r=".55"/><circle cx="9.1" cy="4.2" r=".55"/><circle cx="2.2" cy="6.4" r=".55"/><circle cx="5" cy="6.4" r=".55"/><circle cx="7.8" cy="6.4" r=".55"/><circle cx="10.4" cy="6.4" r=".55"/><circle cx="3.6" cy="8.6" r=".55"/><circle cx="6.4" cy="8.6" r=".55"/><circle cx="9.1" cy="8.6" r=".55"/></g></svg>
+        <span>EN</span>
+      </button>
+    </div>
+    <div id="google_translate_element" hidden></div>
+    <button class="nav__toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <svg class="hero__pipes" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <path id="hp1" d="M-20 470 H360 Q420 470 420 410 V230 Q420 170 480 170 H760 Q820 170 820 230 V360 Q820 420 880 420 H1220"/>
+        <path id="hp2" d="M640 -20 V90 Q640 140 690 140 H1220"/>
+        <path id="hp3" d="M-20 300 H160 Q220 300 220 360 V620"/>
+        <linearGradient id="hwater" x1="0" x2="1"><stop offset="0" stop-color="#1fb6c9" stop-opacity=".35"/><stop offset="1" stop-color="#3fd3e6" stop-opacity=".7"/></linearGradient>
+      </defs>
+      <!-- Tubulação: parede externa, interior e água -->
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <g stroke="#1fb6c9" stroke-opacity=".28" stroke-width="44"><use href="#hp1"/><use href="#hp2"/><use href="#hp3"/></g>
+        <g stroke="#0a2440" stroke-width="38"><use href="#hp1"/><use href="#hp2"/><use href="#hp3"/></g>
+        <g stroke="url(#hwater)" stroke-width="30"><use href="#hp1"/><use href="#hp2"/><use href="#hp3"/></g>
+      </g>
+      <!-- Movimento do fluido: ondas largas, correnteza e reflexos -->
+      <g fill="none" stroke-linecap="round" class="flow">
+        <g class="flow__wave" stroke="#7ee7f2" stroke-opacity=".22" stroke-width="28"><use href="#hp1"/><use href="#hp2"/><use href="#hp3"/></g>
+        <g class="flow__current" stroke="#bff6fc" stroke-opacity=".55" stroke-width="7"><use href="#hp1"/><use href="#hp2"/><use href="#hp3"/></g>
+        <g class="flow__spark" stroke="#ffffff" stroke-opacity=".8" stroke-width="2.5"><use href="#hp1"/><use href="#hp2"/><use href="#hp3"/></g>
+      </g>
+      <!-- Bolhas levadas pela correnteza -->
+      <g class="flow__bubbles" fill="#e8fdff">
+        <circle r="5" opacity=".7"><animateMotion dur="11s" repeatCount="indefinite"><mpath href="#hp1"/></animateMotion></circle>
+        <circle r="3" opacity=".6"><animateMotion dur="11s" begin="-2.2s" repeatCount="indefinite"><mpath href="#hp1"/></animateMotion></circle>
+        <circle r="4" opacity=".65"><animateMotion dur="11s" begin="-4.6s" repeatCount="indefinite"><mpath href="#hp1"/></animateMotion></circle>
+        <circle r="2.5" opacity=".6"><animateMotion dur="11s" begin="-6.8s" repeatCount="indefinite"><mpath href="#hp1"/></animateMotion></circle>
+        <circle r="4.5" opacity=".7"><animateMotion dur="11s" begin="-9s" repeatCount="indefinite"><mpath href="#hp1"/></animateMotion></circle>
+        <circle r="4" opacity=".65"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#hp2"/></animateMotion></circle>
+        <circle r="2.5" opacity=".6"><animateMotion dur="6s" begin="-3s" repeatCount="indefinite"><mpath href="#hp2"/></animateMotion></circle>
+        <circle r="4" opacity=".65"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#hp3"/></animateMotion></circle>
+        <circle r="3" opacity=".6"><animateMotion dur="5s" begin="-2.5s" repeatCount="indefinite"><mpath href="#hp3"/></animateMotion></circle>
+      </g>
+      <g fill="#0b2a4a" stroke="#1fb6c9" stroke-opacity=".6" stroke-width="3">
+        <rect x="300" y="452" width="16" height="36" rx="3"/><rect x="404" y="300" width="36" height="16" rx="3"/>
+        <rect x="600" y="152" width="16" height="36" rx="3"/><rect x="804" y="290" width="36" height="16" rx="3"/>
+        <rect x="1000" y="402" width="16" height="36" rx="3"/><rect x="900" y="122" width="16" height="36" rx="3"/>
+      </g>
+    </svg>
+    <div class="container hero__content">
+      <h1>O 1º portal da hidráulica e sistemas de <span class="grad">condução de fluidos.</span></h1>
+      <p class="lead">Informação técnica, consultoria e negócios num só lugar — para projetistas, instaladores, fabricantes, distribuidores e estudantes.</p>
+      <form class="search" id="heroSearch" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="search" id="heroSearchInput" placeholder="Buscar: válvulas, PEX, perda de carga, NPT…" aria-label="Buscar no portal" autocomplete="off" aria-controls="heroResults">
+        <button class="btn" type="submit">Buscar</button>
+      </form>
+      <div class="sresults" id="heroResults" role="region" aria-live="polite" aria-label="Resultados da busca" hidden></div>
+    </div>
+    <div class="container stats">
+      <div><strong data-count="800">0</strong><span>fabricantes no setor</span></div>
+      <div><strong data-count="1200">0</strong><span>distribuidores &amp; revendedores</span></div>
+      <div><strong data-count="3000">0</strong><span>projetistas &amp; especificadores</span></div>
+      <div><strong data-count="5000">0</strong><span>prestadores de serviço</span></div>
+      <div><strong data-count="12000">0</strong><span>estudantes de engenharia</span></div>
+      <div class="stats__market"><strong data-count="20" data-prefix="+R$ " data-suffix=" Bi">R$ 0 Bi</strong><span>tamanho do mercado Brasil</span></div>
+    </div>
+  </section>
+
+  <!-- ESPAÇO PUBLICITÁRIO: topo da página inicial -->
+  <div class="adband"><div class="container"><div data-ad="master" data-place="Página inicial — faixa de destaque"></div></div></div>
+
+  <!-- SERVIÇOS -->
+  <section class="section" id="servicos">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Conduzindo soluções</p>
+        <h2>Tudo o que o setor hidráulico precisa, organizado num só lugar</h2>
+        <p>Em vez de filtrar milhares de resultados genéricos, encontre aqui informação técnica e parceiros de negócio do seu segmento. São seis serviços pensados para cada etapa do trabalho: tirar dúvidas, comprar, vender, ser encontrado, aprender e decidir com dados.</p>
+      </header>
+      <div class="svcs">
+        <article class="svc" style="--t:#1fb6c9">
+          <div class="svc__art">
+            <svg viewBox="0 0 240 140" role="img" aria-label="Ilustração: conversa com um consultor técnico">
+              <circle cx="200" cy="26" r="22" fill="#7ee7f2" opacity=".35"/><circle cx="22" cy="112" r="14" fill="#f2a03d" opacity=".25"/>
+              <ellipse cx="122" cy="132" rx="92" ry="6" fill="#0a2240" opacity=".12"/>
+              <path d="M44 22h104a14 14 0 0 1 14 14v42a14 14 0 0 1-14 14H84l-22 18V92H44a14 14 0 0 1-14-14V36a14 14 0 0 1 14-14z" fill="#fff" stroke="#0a2240" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M50 74h20a10 10 0 0 0 10-10V44" fill="none" stroke="#0a2240" stroke-width="13" stroke-linecap="round"/>
+              <path d="M50 74h20a10 10 0 0 0 10-10V44" fill="none" stroke="#1fb6c9" stroke-width="8" stroke-linecap="round"/>
+              <rect x="98" y="42" width="48" height="6" rx="3" fill="#d4e2ee"/><rect x="98" y="56" width="36" height="6" rx="3" fill="#d4e2ee"/><rect x="98" y="70" width="42" height="6" rx="3" fill="#d4e2ee"/>
+              <path d="M152 70h52a12 12 0 0 1 12 12v22a12 12 0 0 1-12 12h-6v14l-16-14h-30a12 12 0 0 1-12-12V82a12 12 0 0 1 12-12z" fill="#1fb6c9" stroke="#0a2240" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M164 93l9 9 18-18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="34" cy="24" r="15" fill="#f2a03d" stroke="#0a2240" stroke-width="2.5"/><text x="34" y="30.5" text-anchor="middle" font-size="18" font-weight="800" fill="#0a2240" font-family="Space Grotesk, sans-serif">?</text>
+            </svg>
+          </div>
+          <div class="svc__body">
+            <h3>Consultor on-line</h3>
+            <p class="svc__tag">Tire dúvidas técnicas com especialistas</p>
+            <p>Dúvidas de projeto, instalação ou manutenção nem sempre cabem num manual. O Consultor on-line conecta você a profissionais e consultores voluntários de hidráulica e condução de fluidos, que ajudam a interpretar normas, escolher materiais e resolver problemas de obra.</p>
+            <h4>Como funciona</h4>
+            <ol class="svc__steps">
+              <li>Descreva a situação: sistema, material, diâmetros e fotos, se tiver</li>
+              <li>Um consultor da área analisa o caso</li>
+              <li>Você recebe a orientação por e-mail</li>
+            </ol>
+            <p class="svc__for"><b>Para:</b> projetistas, instaladores, síndicos e estudantes</p>
+            <a href="#contato" class="svc__cta" data-subject="Consulta técnica" data-question="Minha dúvida técnica: ">Fazer uma consulta →</a>
+            <a href="#contato" class="qcall qcall--consultor" data-subject="Quero me tornar um Consultor PipeSystem" data-question="Quero me tornar um Consultor PipeSystem. Formação, especialidade (sistemas e materiais), anos de experiência e cidade: "><span class="qcall__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/></svg></span><span class="qcall__text"><small>É especialista em hidráulica?</small><b>Quero me tornar um Consultor PipeSystem</b></span><span class="qcall__go" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article class="svc" style="--t:#f2a03d">
+          <div class="svc__art">
+            <svg viewBox="0 0 240 140" role="img" aria-label="Ilustração: lista de materiais enviada a vários fornecedores">
+              <circle cx="208" cy="112" r="18" fill="#1fb6c9" opacity=".2"/><circle cx="30" cy="20" r="12" fill="#f2a03d" opacity=".3"/>
+              <ellipse cx="120" cy="132" rx="96" ry="6" fill="#0a2240" opacity=".12"/>
+              <rect x="10" y="28" width="46" height="24" rx="6" fill="#fff" stroke="#0a2240" stroke-width="2.5"/><circle cx="22" cy="40" r="5" fill="#1fb6c9"/><rect x="31" y="37" width="18" height="5" rx="2.5" fill="#d4e2ee"/>
+              <rect x="10" y="60" width="46" height="24" rx="6" fill="#fff" stroke="#0a2240" stroke-width="2.5"/><circle cx="22" cy="72" r="5" fill="#f2a03d"/><rect x="31" y="69" width="18" height="5" rx="2.5" fill="#d4e2ee"/>
+              <rect x="10" y="92" width="46" height="24" rx="6" fill="#fff" stroke="#0a2240" stroke-width="2.5"/><circle cx="22" cy="104" r="5" fill="#3fb27f"/><rect x="31" y="101" width="18" height="5" rx="2.5" fill="#d4e2ee"/>
+              <path d="M60 40h12M60 72h12M60 104h12" stroke="#1fb6c9" stroke-width="3" stroke-linecap="round"/>
+              <path d="M68 35l6 5-6 5M68 67l6 5-6 5M68 99l6 5-6 5" fill="none" stroke="#1fb6c9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="82" y="12" width="84" height="114" rx="9" fill="#fff" stroke="#0a2240" stroke-width="2.5"/>
+              <path d="M82 21a9 9 0 0 1 9-9h66a9 9 0 0 1 9 9v11H82z" fill="#1fb6c9" stroke="#0a2240" stroke-width="2.5"/>
+              <rect x="92" y="18" width="40" height="6" rx="3" fill="#fff" opacity=".8"/>
+              <g fill="#d4e2ee"><rect x="104" y="44" width="50" height="6" rx="3"/><rect x="104" y="62" width="44" height="6" rx="3"/><rect x="104" y="80" width="50" height="6" rx="3"/><rect x="104" y="98" width="38" height="6" rx="3"/></g>
+              <g fill="none" stroke="#0a2240" stroke-width="2"><path d="M92 47h5v-5"/><path d="M92 62v6h6M95 62v6"/><circle cx="95" cy="83" r="3.5"/><path d="M91 101h8"/></g>
+              <g transform="translate(150 54) rotate(-14)"><path d="M0 0h54l15 15-15 15H0z" fill="#f2a03d" stroke="#0a2240" stroke-width="2.5" stroke-linejoin="round"/><circle cx="53" cy="15" r="4" fill="#fff" stroke="#0a2240" stroke-width="2"/><text x="9" y="20.5" font-size="14" font-weight="800" fill="#0a2240" font-family="Space Grotesk, sans-serif">R$</text></g>
+            </svg>
+          </div>
+          <div class="svc__body">
+            <h3>Cotações</h3>
+            <p class="svc__tag">Receba propostas de vários fornecedores</p>
+            <p>Em vez de ligar para cada distribuidor, envie uma única lista de materiais. A PipeSystem repassa o pedido aos fabricantes e distribuidores cadastrados no segmento certo, e você compara preço, prazo e condições de entrega.</p>
+            <h4>Como funciona</h4>
+            <ol class="svc__steps">
+              <li>Informe itens, diâmetros, quantidades e local de entrega, ou <b>anexe sua lista de materiais</b> (PDF, Excel ou foto)</li>
+              <li>O pedido segue para fornecedores do segmento</li>
+              <li>Você recebe as propostas e escolhe a melhor</li>
+            </ol>
+            <p class="svc__for"><b>Para:</b> construtoras, indústrias, instaladoras e compradores</p>
+            <a href="#contato" class="svc__cta" data-subject="Cotação de materiais" data-question="Lista de materiais para cotação (itens, diâmetros, quantidades e local de entrega): ">Solicitar cotação →</a>
+            <a href="#assinaturas" class="qcall"><span class="qcall__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9M10 20a2 2 0 0 0 4 0"/></svg></span><span class="qcall__text"><small>É distribuidor ou revendedor?</small><b>Receba estas cotações</b></span><span class="qcall__go" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article class="svc" style="--t:#e5534b">
+          <div class="svc__art">
+            <svg viewBox="0 0 240 140" role="img" aria-label="Ilustração: martelo de leilão e lote de tubos">
+              <circle cx="206" cy="30" r="20" fill="#f2a03d" opacity=".25"/><circle cx="26" cy="36" r="12" fill="#1fb6c9" opacity=".25"/>
+              <ellipse cx="120" cy="132" rx="96" ry="6" fill="#0a2240" opacity=".12"/>
+              <rect x="22" y="74" width="84" height="52" rx="5" fill="#f3d3a1" stroke="#0a2240" stroke-width="2.5"/>
+              <path d="M22 91h84M22 108h84" stroke="#0a2240" stroke-width="2" opacity=".5"/><path d="M36 74v52M92 74v52" stroke="#0a2240" stroke-width="2" opacity=".35"/>
+              <g stroke="#0a2240" stroke-width="2.5"><circle cx="42" cy="66" r="11" fill="#b9c3cc"/><circle cx="64" cy="62" r="11" fill="#d1834e"/><circle cx="86" cy="66" r="11" fill="#e6eaee"/></g>
+              <g fill="#0a2240" opacity=".75"><circle cx="42" cy="66" r="4.5"/><circle cx="64" cy="62" r="4.5"/><circle cx="86" cy="66" r="4.5"/></g>
+              <rect x="138" y="114" width="78" height="12" rx="4" fill="#0a2240"/>
+              <g transform="rotate(-32 176 62)"><rect x="166" y="64" width="12" height="62" rx="5" fill="#b46a2a" stroke="#0a2240" stroke-width="2.5"/><rect x="142" y="38" width="60" height="28" rx="7" fill="#e5534b" stroke="#0a2240" stroke-width="2.5"/><rect x="148" y="38" width="8" height="28" fill="#fff" opacity=".35"/><rect x="188" y="38" width="8" height="28" fill="#fff" opacity=".35"/></g>
+              <path d="M200 92l12-6M204 104l14 0M196 82l8-10" stroke="#f2a03d" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="122" cy="102" r="12" fill="#f2a03d" stroke="#0a2240" stroke-width="2.5"/><text x="122" y="107" text-anchor="middle" font-size="12" font-weight="800" fill="#0a2240" font-family="Space Grotesk, sans-serif">$</text>
+            </svg>
+          </div>
+          <div class="svc__body">
+            <h3>Negócios &amp; leilões</h3>
+            <p class="svc__tag">Compre e venda materiais novos e usados</p>
+            <p>Sobras de obra, estoques parados e equipamentos usados têm valor. Este espaço aproxima quem quer vender lotes de tubos, conexões, válvulas e equipamentos de quem procura boas oportunidades, em negociações entre empresas (B2B) e com consumidores (B2C).</p>
+            <h4>Como funciona</h4>
+            <ol class="svc__steps">
+              <li>Descreva o lote (itens, estado, quantidade e local) ou <b>anexe a lista de materiais</b></li>
+              <li>Divulgamos a oferta para compradores interessados</li>
+              <li>Comprador e vendedor negociam diretamente</li>
+            </ol>
+            <p class="svc__for"><b>Para:</b> empresas com estoque parado, distribuidores e compradores</p>
+            <a href="#contato" class="svc__cta" data-subject="Negócios &amp; leilões" data-question="Quero anunciar um lote (itens, estado, quantidade e local): ">Anunciar um lote →</a>
+          </div>
+        </article>
+
+        <article class="svc" style="--t:#3fb27f">
+          <div class="svc__art">
+            <svg viewBox="0 0 240 140" role="img" aria-label="Ilustração: fábrica cadastrada conectada a clientes no mapa">
+              <circle cx="40" cy="26" r="16" fill="#7ee7f2" opacity=".3"/><circle cx="214" cy="118" r="12" fill="#f2a03d" opacity=".3"/>
+              <ellipse cx="110" cy="132" rx="96" ry="6" fill="#0a2240" opacity=".12"/>
+              <circle cx="104" cy="22" r="7" fill="#d4e2ee"/><circle cx="114" cy="12" r="5" fill="#d4e2ee"/>
+              <rect x="96" y="30" width="14" height="40" fill="#b9c3cc" stroke="#0a2240" stroke-width="2.5"/>
+              <path d="M24 126V76l28 16V76l28 16V62h44v64z" fill="#fff" stroke="#0a2240" stroke-width="2.5" stroke-linejoin="round"/>
+              <g fill="#1fb6c9"><rect x="32" y="102" width="12" height="10" rx="2"/><rect x="60" y="102" width="12" height="10" rx="2"/><rect x="88" y="78" width="12" height="10" rx="2"/><rect x="88" y="98" width="12" height="10" rx="2"/></g>
+              <rect x="104" y="104" width="14" height="22" fill="#0a2240" opacity=".8"/>
+              <path d="M124 92C150 92 152 54 176 50M124 104c30 0 40 4 58 12M124 80c20-6 40-30 66-52" fill="none" stroke="#1fb6c9" stroke-width="2.5" stroke-dasharray="4 5" stroke-linecap="round"/>
+              <g stroke="#0a2240" stroke-width="2.5" stroke-linejoin="round">
+                <path d="M190 10a11 11 0 0 1 11 11c0 8-11 19-11 19s-11-11-11-19a11 11 0 0 1 11-11z" fill="#f2a03d"/>
+                <path d="M178 36a11 11 0 0 1 11 11c0 8-11 19-11 19s-11-11-11-19a11 11 0 0 1 11-11z" fill="#1fb6c9"/>
+                <path d="M190 92a11 11 0 0 1 11 11c0 8-11 19-11 19s-11-11-11-19a11 11 0 0 1 11-11z" fill="#6c8cff"/>
+              </g>
+              <g fill="#fff"><circle cx="190" cy="21" r="3.5"/><circle cx="178" cy="47" r="3.5"/><circle cx="190" cy="103" r="3.5"/></g>
+              <circle cx="128" cy="58" r="14" fill="#3fb27f" stroke="#0a2240" stroke-width="2.5"/><path d="M121 58l5 5 9-9" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="svc__body">
+            <h3>Cadastro de empresas</h3>
+            <p class="svc__tag">Seja encontrado por quem precisa</p>
+            <p>Um diretório organizado por categoria de produto e serviço, para que projetistas e compradores encontrem fabricantes, distribuidores, instaladoras, escolas e entidades do setor. As empresas cadastradas também recebem os pedidos de cotação do seu segmento.</p>
+            <h4>Como funciona</h4>
+            <ol class="svc__steps">
+              <li>Envie razão social, cidade, produtos e serviços</li>
+              <li>Sua empresa entra na categoria certa do portal</li>
+              <li>Você passa a receber contatos e cotações</li>
+            </ol>
+            <p class="svc__for"><b>Para:</b> fabricantes, distribuidores, instaladoras, escolas e entidades</p>
+            <a href="#contato" class="svc__cta" data-subject="Cadastro de empresa" data-question="Quero cadastrar minha empresa. Razão social, cidade, produtos e serviços: ">Cadastrar minha empresa →</a>
+          </div>
+        </article>
+
+        <article class="svc" style="--t:#6c8cff">
+          <div class="svc__art">
+            <svg viewBox="0 0 240 140" role="img" aria-label="Ilustração: livro técnico e norma NBR">
+              <circle cx="212" cy="112" r="16" fill="#1fb6c9" opacity=".25"/><circle cx="20" cy="104" r="12" fill="#f2a03d" opacity=".3"/>
+              <ellipse cx="112" cy="132" rx="96" ry="6" fill="#0a2240" opacity=".12"/>
+              <path d="M22 28l26-11 26 11-26 11z" fill="#0a2240"/><path d="M34 33v10c8 5 20 5 28 0V33" fill="#0a2240"/><path d="M74 28v14" stroke="#f2a03d" stroke-width="3" stroke-linecap="round"/><circle cx="74" cy="44" r="3.5" fill="#f2a03d"/>
+              <path d="M28 54q38-12 76 0v70q-38-12-76 0z" fill="#fff" stroke="#0a2240" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M104 54q38-12 76 0v70q-38-12-76 0z" fill="#fff" stroke="#0a2240" stroke-width="2.5" stroke-linejoin="round"/>
+              <g stroke="#d4e2ee" stroke-width="4" stroke-linecap="round"><path d="M40 66q24-6 52 0M40 80q24-6 52 0M40 94q24-6 52 0M40 108q24-6 40 0"/><path d="M116 66q24-6 52 0M116 80q24-6 40 0"/></g>
+              <path d="M118 96h20a8 8 0 0 0 8-8v-8" fill="none" stroke="#6c8cff" stroke-width="6" stroke-linecap="round"/>
+              <g transform="rotate(9 188 52)"><rect x="160" y="12" width="58" height="76" rx="6" fill="#fff" stroke="#0a2240" stroke-width="2.5"/><rect x="160" y="12" width="58" height="20" rx="6" fill="#6c8cff" stroke="#0a2240" stroke-width="2.5"/><text x="189" y="27" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="Space Grotesk, sans-serif">NBR</text><g fill="#d4e2ee"><rect x="168" y="40" width="42" height="5" rx="2.5"/><rect x="168" y="51" width="34" height="5" rx="2.5"/><rect x="168" y="62" width="40" height="5" rx="2.5"/></g><circle cx="204" cy="78" r="9" fill="#f2a03d" stroke="#0a2240" stroke-width="2"/><path d="M200 78l3 3 5-6" fill="none" stroke="#0a2240" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+            </svg>
+          </div>
+          <div class="svc__body">
+            <h3>Artigos &amp; normas técnicas</h3>
+            <p class="svc__tag">Conhecimento organizado e prático</p>
+            <p>Normas, artigos, catálogos e dicas de leitura reunidos e explicados de forma prática. Inclui o guia técnico de produtos, os sistemas com esquemas de funcionamento e o concurso de monografias, que premia estudantes que enviam trabalhos para divulgação.</p>
+            <h4>Como funciona</h4>
+            <ol class="svc__steps">
+              <li>Navegue pelo guia técnico e pelos sistemas</li>
+              <li>Consulte as normas citadas em cada ficha</li>
+              <li>Envie seu artigo ou monografia para publicação</li>
+            </ol>
+            <p class="svc__for"><b>Para:</b> estudantes, professores, projetistas e formadores de opinião</p>
+            <a href="#produtos" class="svc__cta">Explorar o guia técnico →</a>
+          </div>
+        </article>
+
+        <article class="svc" style="--t:#2d7fd3">
+          <div class="svc__art">
+            <svg viewBox="0 0 240 140" role="img" aria-label="Ilustração: gráfico de pesquisa de mercado e lupa">
+              <circle cx="28" cy="24" r="14" fill="#f2a03d" opacity=".3"/><circle cx="214" cy="26" r="18" fill="#7ee7f2" opacity=".3"/>
+              <ellipse cx="116" cy="132" rx="96" ry="6" fill="#0a2240" opacity=".12"/>
+              <rect x="20" y="16" width="136" height="108" rx="10" fill="#fff" stroke="#0a2240" stroke-width="2.5"/>
+              <path d="M36 108h106" stroke="#0a2240" stroke-width="2" opacity=".4"/>
+              <g stroke="#0a2240" stroke-width="2"><rect x="42" y="80" width="18" height="28" rx="3" fill="#7ee7f2"/><rect x="68" y="62" width="18" height="46" rx="3" fill="#1fb6c9"/><rect x="94" y="48" width="18" height="60" rx="3" fill="#2d7fd3"/><rect x="120" y="68" width="18" height="40" rx="3" fill="#f2a03d"/></g>
+              <path d="M44 66L74 48l28-12 30-8" fill="none" stroke="#0a2240" stroke-width="2.5" stroke-dasharray="5 5" stroke-linecap="round"/><circle cx="132" cy="28" r="4" fill="#0a2240"/>
+              <path d="M196 92l22 22" stroke="#0a2240" stroke-width="10" stroke-linecap="round"/>
+              <circle cx="176" cy="72" r="28" fill="#eef7fb" stroke="#0a2240" stroke-width="4"/>
+              <circle cx="176" cy="72" r="15" fill="#1fb6c9"/><path d="M176 72V57a15 15 0 0 1 14.3 10.4z" fill="#f2a03d"/><path d="M176 72l14.3-4.6A15 15 0 0 1 184 85z" fill="#3fb27f"/>
+            </svg>
+          </div>
+          <div class="svc__body">
+            <h3>Pesquisa de mercado</h3>
+            <p class="svc__tag">Dados para decidir melhor</p>
+            <p>Estudos segmentados por nicho de produto e pelo perfil do público cadastrado no banco de dados PipeSystem: quem compra, o que procura e em quais regiões. Úteis para lançamentos, definição de preços e planejamento comercial.</p>
+            <h4>Como funciona</h4>
+            <ol class="svc__steps">
+              <li>Conte o objetivo da pesquisa</li>
+              <li>Definimos juntos o público e as perguntas</li>
+              <li>Você recebe o relatório com os resultados</li>
+            </ol>
+            <p class="svc__for"><b>Para:</b> fabricantes, distribuidores, agências e entidades de classe</p>
+            <a href="#contato" class="svc__cta" data-subject="Outro assunto" data-question="Pesquisa de mercado — objetivo: ">Falar com a equipe →</a>
+          </div>
+        </article>
+      </div>
+      <div class="adslot" data-ad="padrao" data-place="Serviços — após os cartões"></div>
+    </div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <section class="section section--alt" id="produtos">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Produtos</p>
+        <h2>Guia técnico de produtos</h2>
+        <p>Tipos, critérios de escolha e normas de referência dos componentes de uma instalação. Clique em um produto para ver a ficha completa.</p>
+      </header>
+      <div class="guidebar">
+        <input type="search" id="guideSearch" placeholder="Buscar produto, tipo ou norma…" aria-label="Buscar no guia de produtos">
+      </div>
+      <div class="adslot adslot--top" data-ad="padrao" data-place="Guia técnico de produtos — topo da categoria"></div>
+      <div id="guide"></div>
+      <p class="empty" id="guideEmpty" hidden>Nenhum produto encontrado. <a href="#contato" data-subject="Consulta técnica">Pergunte ao consultor on-line</a>.</p>
+    </div>
+  </section>
+
+  <dialog class="sheet" id="prodSheet" aria-labelledby="sheetTitle">
+    <button class="sheet__close" type="button" aria-label="Fechar">×</button>
+    <div id="sheetBody"></div>
+  </dialog>
+
+  <!-- SISTEMAS -->
+  <section class="section" id="sistemas">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Áreas de aplicação</p>
+        <h2>Sistemas hidráulicos e de condução</h2>
+        <p>Clique em um sistema para ver a explicação técnica, o esquema de funcionamento, as normas e os produtos envolvidos.</p>
+      </header>
+      <div class="systems" id="systems"></div>
+      <div class="adslot" data-ad="padrao" data-place="Sistemas hidráulicos — abaixo da lista"></div>
+    </div>
+  </section>
+
+  <!-- MATERIAIS -->
+  <section class="section section--alt" id="materiais">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Procurando materiais?</p>
+        <h2>Catálogo de produtos e materiais</h2>
+        <p>Digite o que procura: produto, material, aplicação, norma ou fabricante.</p>
+      </header>
+      <div class="filter">
+        <input type="search" id="catSearch" placeholder="Filtrar catálogo…" aria-label="Filtrar catálogo">
+      </div>
+      <div class="grid grid--4" id="catalog" data-ad-card="Catálogo de materiais — cartão entre os produtos"></div>
+      <p class="empty" id="catEmpty" hidden>Nada encontrado. <a href="#contato">Peça uma cotação</a> e nós buscamos para você.</p>
+    </div>
+  </section>
+
+  <!-- FERRAMENTAS -->
+  <section class="section section--dark" id="ferramentas">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Utilidades</p>
+        <h2>Ferramentas de cálculo</h2>
+        <p>Dimensionamento rápido e conversões do dia a dia. Resultados indicativos — confirme sempre com as normas aplicáveis.</p>
+      </header>
+      <div class="tools">
+        <div class="tool" id="hwTool">
+          <h3>Perda de carga — Hazen-Williams</h3>
+          <div class="form">
+            <label>Vazão <span>L/s</span><input type="number" id="hwQ" value="1.5" min="0" step="0.1"></label>
+            <label>Diâmetro interno <span>mm</span><input type="number" id="hwD" value="40" min="1" step="1"></label>
+            <label>Comprimento <span>m</span><input type="number" id="hwL" value="100" min="0" step="1"></label>
+            <label>Material <span>C</span>
+              <select id="hwC">
+                <option value="150">PVC / CPVC / PEX (150)</option>
+                <option value="140">Cobre (140)</option>
+                <option value="130">Aço-carbono novo (130)</option>
+                <option value="120">Aço galvanizado (120)</option>
+                <option value="100">Ferro fundido usado (100)</option>
+              </select>
+            </label>
+          </div>
+          <div class="results">
+            <div><span>Perda de carga</span><strong id="hwHf">—</strong></div>
+            <div><span>Perda unitária</span><strong id="hwJ">—</strong></div>
+            <div><span>Velocidade</span><strong id="hwV">—</strong></div>
+          </div>
+          <p class="hint" id="hwHint"></p>
+        </div>
+
+        <div class="tool">
+          <h3>Conversão de unidades</h3>
+          <div class="seg" id="convTabs">
+            <button class="is-on" data-k="pressao">Pressão</button>
+            <button data-k="vazao">Vazão</button>
+            <button data-k="comprimento">Comprimento</button>
+          </div>
+          <div class="form form--conv">
+            <label>Valor<input type="number" id="convVal" value="1" step="any"></label>
+            <label>De<select id="convFrom"></select></label>
+          </div>
+          <ul class="convList" id="convOut"></ul>
+        </div>
+
+        <div class="tool">
+          <h3>Bitolas — polegada × DN</h3>
+          <table class="table">
+            <thead><tr><th>Rosca (BSP/NPT)</th><th>DN</th><th>Ø ext. aço (mm)</th></tr></thead>
+            <tbody>
+              <tr><td>1/2"</td><td>15</td><td>21,3</td></tr>
+              <tr><td>3/4"</td><td>20</td><td>26,9</td></tr>
+              <tr><td>1"</td><td>25</td><td>33,7</td></tr>
+              <tr><td>1 1/4"</td><td>32</td><td>42,4</td></tr>
+              <tr><td>1 1/2"</td><td>40</td><td>48,3</td></tr>
+              <tr><td>2"</td><td>50</td><td>60,3</td></tr>
+              <tr><td>2 1/2"</td><td>65</td><td>76,1</td></tr>
+              <tr><td>3"</td><td>80</td><td>88,9</td></tr>
+              <tr><td>4"</td><td>100</td><td>114,3</td></tr>
+            </tbody>
+          </table>
+          <p class="hint">BSP (Whitworth gás, 55°) e NPT (60°, cônica) não são intercambiáveis.</p>
+        </div>
+      </div>
+
+      <div class="adslot adslot--sponsor" data-ad="basico" data-place="Ferramentas — patrocinador das calculadoras"></div>
+
+      <div class="webtools" id="webtools">
+        <header class="webtools__head">
+          <h3>Ferramentas gratuitas na internet</h3>
+          <p>Calculadoras, tabelas e programas grátis, selecionados para quem projeta, instala e mantém sistemas hidráulicos. Os links abrem o site oficial em uma nova aba.</p>
+        </header>
+        <div class="webtools__chips" id="webtoolChips" role="tablist" aria-label="Filtrar ferramentas por tipo"></div>
+        <div class="webtools__grid" id="webtoolGrid"></div>
+        <p class="hint">Links externos, sem vínculo comercial com a PipeSystem. Conhece outra ferramenta útil? <a href="#contato" class="link" data-subject="Outro assunto" data-question="Sugestão de ferramenta gratuita para o portal: ">Sugira para a lista →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NORMAS TÉCNICAS -->
+  <section class="section" id="normas">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Normas Técnicas</p>
+        <h2>As principais normas da hidráulica, organizadas para consulta</h2>
+        <p>Normas brasileiras (ABNT NBR), regulamentadoras (NR) e internacionais mais usadas em projeto, instalação e especificação de materiais. Escolha o segmento ou o produto e acesse o resumo oficial e a compra de cada norma.</p>
+      </header>
+
+      <div class="nrm">
+        <aside class="nrm__side">
+          <div class="nrm__mode" role="tablist" aria-label="Organizar normas">
+            <button type="button" role="tab" data-mode="aplicacao" aria-selected="true">Por aplicação</button>
+            <button type="button" role="tab" data-mode="produto" aria-selected="false">Por produto</button>
+          </div>
+          <div class="nrm__search">
+            <input type="search" id="normSearch" placeholder="Buscar: 5626, sprinkler, PVC, NPT…" aria-label="Buscar norma">
+          </div>
+          <nav class="nrm__groups" id="normGroups" aria-label="Segmentos"></nav>
+          <div class="adslot adslot--side" data-ad="padrao" data-variant="vertical" data-place="Normas Técnicas — coluna lateral"></div>
+        </aside>
+
+        <div class="nrm__main">
+          <div class="nrm__list" id="normList" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="nrm__where">
+        <h3>Onde consultar e comprar normas</h3>
+        <div class="nrm__where-grid">
+          <a href="https://www.abntcatalogo.com.br/" target="_blank" rel="noopener noreferrer"><b>ABNT Catálogo ↗</b><span>Loja oficial da ABNT: resumo de cada NBR, situação (em vigor ou cancelada) e compra avulsa em PDF.</span></a>
+          <a href="https://www.target.com.br/" target="_blank" rel="noopener noreferrer"><b>Target ↗</b><span>Plataforma de gestão e acesso a normas ABNT e internacionais por assinatura, indicada para empresas.</span></a>
+          <a href="https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes" target="_blank" rel="noopener noreferrer"><b>Normas Regulamentadoras ↗</b><span>Texto oficial e gratuito das NR (como a NR-13) no site do Ministério do Trabalho e Emprego.</span></a>
+          <a href="https://www.nfpa.org/for-professionals/codes-and-standards/list-of-codes-and-standards" target="_blank" rel="noopener noreferrer"><b>NFPA ↗</b><span>Normas de incêndio dos EUA, com leitura gratuita on-line após cadastro e compra da versão completa.</span></a>
+        </div>
+        <p class="hint">A PipeSystem não vende normas e não tem vínculo com esses sites. Use sempre a edição em vigor; as datas e a situação de cada norma podem mudar. <a href="#contato" class="link" data-subject="Consulta técnica" data-question="Dúvida sobre normas técnicas: ">Dúvida sobre qual norma aplicar? Pergunte ao consultor →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTIGOS TÉCNICOS -->
+  <section class="section section--alt" id="artigos">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Artigos Técnicos</p>
+        <h2>Leituras selecionadas sobre hidráulica e condução de fluidos</h2>
+        <p>Artigos publicados em revistas técnicas e científicas brasileiras, com acesso gratuito. Os links abrem a publicação original em uma nova aba.</p>
+      </header>
+
+      <div class="arts" id="artList"></div>
+
+      <div class="artadd" id="artigo-envio">
+        <div class="artadd__intro">
+          <p class="eyebrow">Publique com a gente</p>
+          <h3>Adicione seu Artigo Técnico Aqui</h3>
+          <p>Escreveu um artigo, monografia ou estudo de caso sobre hidráulica, saneamento, incêndio, vapor ou condução de fluidos? Anexe o arquivo ou indique o link onde podemos acessá-lo. Nossa equipe avalia o conteúdo e, se aprovado, ele passa a fazer parte desta seção, com os créditos do autor.</p>
+          <ul class="artadd__list">
+            <li>Arquivo em PDF ou Word, até 8 MB, <b>ou</b> link para a publicação</li>
+            <li>Inclua título, autor(es) e um breve resumo</li>
+            <li>Trabalhos de estudantes também participam do concurso de monografias</li>
+          </ul>
+        </div>
+
+        <form class="form form--contact artadd__form" id="artForm" name="artigo" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="artigo">
+          <p hidden><label>Não preencha este campo: <input name="bot-field"></label></p>
+          <label>Seu nome<input name="nome" required autocomplete="name"></label>
+          <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+          <label class="full">Título do artigo<input name="titulo" required></label>
+          <label class="full">Autor(es) e instituição<input name="autores" placeholder="Ex.: Maria Silva, Universidade X"></label>
+          <label class="full">Link onde podemos acessar o artigo<input name="link" type="url" id="artLink" placeholder="https://…"></label>
+          <div class="full upload">
+            <span class="upload__label">ou anexe o arquivo <span>(PDF ou Word, até 8 MB)</span></span>
+            <input type="file" id="artFile" name="arquivo" class="upload__input" accept=".pdf,.doc,.docx,application/pdf">
+            <label class="upload__drop" for="artFile" id="artDrop">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+              <span class="upload__text"><b>Anexe o arquivo do artigo</b> ou arraste para cá<small>PDF, DOC ou DOCX · até 8 MB</small></span>
+            </label>
+            <div class="upload__file" id="artFileBox" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5"/></svg>
+              <span class="upload__name" id="artFileName"></span>
+              <button type="button" class="upload__remove" id="artFileRemove" aria-label="Remover arquivo">×</button>
+            </div>
+          </div>
+          <label class="full">Resumo<textarea name="resumo" rows="3" placeholder="Em poucas linhas, do que trata o artigo?"></textarea></label>
+          <label class="full artadd__check"><input type="checkbox" name="autorizacao" value="sim" required> Declaro ser autor(a) ou ter autorização para divulgar este trabalho no portal PipeSystem.</label>
+          <p class="full artadd__error" id="artError" role="alert" hidden></p>
+          <button class="btn full" type="submit">Enviar artigo para avaliação</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEIRAS -->
+  <section class="section section--alt" id="feiras">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Feiras e eventos</p>
+        <h2>Agenda do setor</h2>
+        <p>Feiras no Brasil e no exterior onde fabricantes, distribuidores e projetistas de hidráulica e condução de fluidos se encontram. Confirme datas e locais no site oficial de cada evento.</p>
+      </header>
+      <h3 class="fairs__title">No Brasil</h3>
+      <div class="grid grid--3">
+        <article class="fair"><span class="fair__seg" style="--c:#2d7fd3">Saneamento</span><h3>FENASAN</h3><p>Feira nacional de saneamento e meio ambiente: tubos, válvulas, bombas e tratamento de água e esgoto.</p><p class="fair__loc">São Paulo · SP</p><a class="fair__link" href="https://fenasan.com.br/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+        <article class="fair"><span class="fair__seg" style="--c:#f2a03d">Construção civil</span><h3>FEICON</h3><p>Grande feira da construção civil, com instalações hidráulicas prediais, louças, metais e aquecimento.</p><p class="fair__loc">São Paulo · SP</p><a class="fair__link" href="https://www.feicon.com.br/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+        <article class="fair"><span class="fair__seg" style="--c:#7fd6e6">Refrigeração</span><h3>FEBRAVA</h3><p>Refrigeração, ar-condicionado, ventilação e aquecimento: tubulações de cobre, compressores e controles.</p><p class="fair__loc">São Paulo · SP</p><a class="fair__link" href="https://www.febrava.com.br/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+        <article class="fair"><span class="fair__seg" style="--c:#5c6b7d">Indústria</span><h3>Intermach</h3><p>Tecnologia, máquinas e automação industrial. Acontece em Joinville, casa da PipeSystem.</p><p class="fair__loc">Joinville · SC</p><a class="fair__link" href="https://intermach.com.br/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+        <article class="fair"><span class="fair__seg" style="--c:#6c8cff">Indústria</span><h3>FEIMEC</h3><p>Feira internacional de máquinas e equipamentos: componentes, ar comprimido, bombas e hidráulica industrial.</p><p class="fair__loc">São Paulo · SP</p><a class="fair__link" href="https://www.feimec.com.br/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+        <article class="fair"><span class="fair__seg" style="--c:#b46a2a">Petróleo e gás</span><h3>ROG.e</h3><p>Antiga Rio Oil &amp; Gas: fornecedores de tubulações, flanges, válvulas e equipamentos para energia.</p><p class="fair__loc">Rio de Janeiro · RJ</p><a class="fair__link" href="https://roge.energy/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+      </div>
+      <h3 class="fairs__title">No exterior</h3>
+      <div class="grid grid--3">
+        <article class="fair fair--intl"><span class="fair__seg" style="--c:#1fb6c9">Água e climatização</span><h3>ISH</h3><p>A maior feira do mundo de água, aquecimento, ventilação e ar-condicionado: sistemas prediais, tubos, conexões, bombas e válvulas. Bienal, em anos ímpares.</p><p class="fair__loc">Frankfurt · Alemanha</p><a class="fair__link" href="https://ish.messefrankfurt.com/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+        <article class="fair fair--intl"><span class="fair__seg" style="--c:#3fb27f">Saneamento e meio ambiente</span><h3>IFAT</h3><p>Principal feira mundial de tecnologias ambientais: água, esgoto, drenagem e resíduos, com tubulações, bombas e tratamento. Bienal, em anos pares.</p><p class="fair__loc">Munique · Alemanha</p><a class="fair__link" href="https://ifat.de/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+        <article class="fair fair--intl"><span class="fair__seg" style="--c:#9aa7b8">Tubos e tubulações</span><h3>Tube</h3><p>A maior feira do mundo dedicada a tubos: fabricação, processamento, conexões, flanges e acessórios para tubulações. Bienal, em anos pares.</p><p class="fair__loc">Düsseldorf · Alemanha</p><a class="fair__link" href="https://www.tube.de/" target="_blank" rel="noopener noreferrer">Site oficial da feira ↗</a></article>
+      </div>
+      <p class="note">Organiza um evento do setor? <a href="#contato" class="link" data-subject="Outro assunto">Envie para divulgarmos na agenda →</a></p>
+      <div class="adslot" data-ad="padrao" data-place="Feiras e eventos — patrocinador da agenda"></div>
+    </div>
+  </section>
+
+  <!-- PÚBLICO -->
+  <section class="section" id="publico">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Para quem é</p>
+        <h2>Um canal entre quem especifica, quem compra e quem vende</h2>
+        <p>O PipeSystem aproxima toda a cadeia do setor — da sala de aula ao canteiro de obras.</p>
+      </div>
+      <div class="audience">
+        <div><h4>Compradores</h4><p>Projetistas hidráulicos, construtoras, indústrias e empresas de petróleo, gás, saneamento e irrigação.</p>
+          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-question="Quero me cadastrar como comprador. Área de atuação: ">Cadastre-se aqui</a></div>
+        <div><h4>Fornecedores</h4><p>Fabricantes, instaladoras e distribuidores gerais ou especializados.</p>
+          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de empresa" data-question="Quero cadastrar minha empresa como fornecedora. Produtos e serviços: ">Cadastre sua empresa aqui</a>
+          <a href="#assinaturas" class="qcall"><span class="qcall__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9M10 20a2 2 0 0 0 4 0"/></svg></span><span class="qcall__text"><small>Para distribuidores e revendedores</small><b>Receba as cotações do site</b></span><span class="qcall__go" aria-hidden="true">→</span></a></div>
+        <div><h4>Conhecimento</h4><p>Universidades, entidades de classe, órgãos públicos e normalização, estudantes e formadores de opinião.</p>
+          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-question="Quero me cadastrar. Instituição: ">Cadastre-se aqui</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANUNCIE -->
+  <section class="section section--alt" id="anuncie">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Anuncie aqui</p>
+        <h2>Coloque sua marca diante do público técnico certo</h2>
+        <p>Banners na página inicial, nas páginas de categoria e nos boletins técnicos enviados ao banco de dados PipeSystem. Contratos a partir de 12 meses.</p>
+      </header>
+      <div class="grid grid--3 plans">
+        <article class="plan">
+          <h3>Básico</h3>
+          <p class="plan__size">Banner compacto</p>
+          <ul>
+            <li>Página inicial (até 3 anunciantes)</li>
+            <li>Páginas de categoria</li>
+            <li>Nome da empresa em destaque na categoria</li>
+          </ul>
+          <a href="#contato" class="btn" data-plan="Banner Básico">Solicitar proposta</a>
+        </article>
+        <article class="plan plan--featured">
+          <span class="badge">Mais procurado</span>
+          <h3>Padrão</h3>
+          <p class="plan__size">Banner médio</p>
+          <ul>
+            <li>Página inicial (até 2 anunciantes)</li>
+            <li>Páginas de categoria sem limite</li>
+            <li>Boletins técnicos por e-mail</li>
+            <li>Divulgação gratuita de lançamentos</li>
+          </ul>
+          <a href="#contato" class="btn" data-plan="Banner Padrão">Solicitar proposta</a>
+        </article>
+        <article class="plan">
+          <h3>Premium</h3>
+          <p class="plan__size">Banner principal</p>
+          <ul>
+            <li>Máxima visibilidade na página inicial</li>
+            <li>Até 15 categorias</li>
+            <li>Boletins técnicos por e-mail</li>
+            <li>Divulgação gratuita de lançamentos</li>
+            <li>Opção de patrocinador PipeSystem</li>
+          </ul>
+          <a href="#contato" class="btn" data-plan="Banner Premium">Solicitar proposta</a>
+        </article>
+      </div>
+      <p class="note">Também oferecemos a inclusão simples do nome da empresa (razão social e endereço) nas páginas de categoria. Banners animados são aceitos e podem levar ao endereço que você escolher.</p>
+
+      <div class="admap">
+        <h3>Onde seu banner pode aparecer</h3>
+        <p>Os espaços marcados com <b>“Seu banner aqui!”</b> em todo o site estão disponíveis. Clique em um deles para ver o local ou pedir uma proposta.</p>
+        <div class="admap__grid" id="adMap"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASSINATURA DE COTAÇÕES (distribuidores e revendedores) -->
+  <section class="section" id="assinaturas">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Para distribuidores e revendedores</p>
+        <h2>Receba as cotações de materiais hidráulicos publicadas no PipeSystem</h2>
+        <p>Projetistas, construtoras, instaladoras e indústrias publicam no site seus pedidos de cotação de tubos, conexões, válvulas, bombas e demais materiais. Assinando um dos planos mensais, sua empresa recebe uma cópia dessas cotações e pode enviar a proposta diretamente ao comprador.</p>
+      </header>
+
+      <div class="qtime" aria-label="Quando cada plano recebe a cotação">
+        <div class="qtime__track">
+          <div class="qtime__step qtime__step--premium"><span class="qtime__dot"></span><b>Cotação publicada · Premium recebe</b><small>no mesmo instante em que o comprador envia o pedido</small></div>
+          <div class="qtime__step qtime__step--basico"><span class="qtime__dot"></span><b>Básico recebe</b><small>12 horas após a publicação</small></div>
+        </div>
+        <div class="qtime__axis"><span>0 h</span><span>12 h</span></div>
+      </div>
+
+      <div class="qplans">
+        <article class="qplan">
+          <p class="qplan__tag">Plano Básico</p>
+          <h3>Cotações em até 12 horas</h3>
+          <p class="qplan__price">Mensalidade <span>valor sob consulta</span></p>
+          <ul>
+            <li>Cópia de cada cotação <b>12 horas após a postagem</b> no site</li>
+            <li>Cotações filtradas pelas categorias de produto que sua empresa vende</li>
+            <li>Dados do comprador para enviar a proposta diretamente</li>
+            <li>Recebimento por e-mail</li>
+          </ul>
+          <a href="#contato" class="btn qplan__btn" data-plan="Assinatura de cotações — Plano Básico" data-question="Quero assinar o Plano Básico de cotações (recebimento 12 horas após a postagem). Empresa, cidade e categorias de produtos que vendemos: ">Assinar o Básico</a>
+        </article>
+
+        <article class="qplan qplan--premium">
+          <span class="qplan__badge">Responda primeiro</span>
+          <p class="qplan__tag">Plano Premium</p>
+          <h3>Cotações imediatas</h3>
+          <p class="qplan__price">Mensalidade <span>valor sob consulta</span></p>
+          <ul>
+            <li>Cópia de cada cotação <b>imediatamente após a postagem</b> no site</li>
+            <li>Sua proposta pode chegar ao comprador antes da concorrência</li>
+            <li>Cotações filtradas pelas categorias de produto que sua empresa vende</li>
+            <li>Dados do comprador para enviar a proposta diretamente</li>
+            <li>Recebimento por e-mail</li>
+          </ul>
+          <a href="#contato" class="btn qplan__btn" data-plan="Assinatura de cotações — Plano Premium" data-question="Quero assinar o Plano Premium de cotações (recebimento imediato). Empresa, cidade e categorias de produtos que vendemos: ">Assinar o Premium</a>
+        </article>
+      </div>
+      <p class="note">As cotações são enviadas às empresas assinantes do segmento correspondente. Para anunciar sua marca com banners, veja também os <a href="#anuncie" class="link">planos de anúncio</a>.</p>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="section" id="sobre">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Quem somos</p>
+        <h2>O primeiro portal brasileiro dedicado à hidráulica</h2>
+        <p>A PipeSystem Serviços de Consultoria nasceu em Joinville (SC), de uma constatação simples: quem buscava “hidráulica” na internet recebia milhares de respostas sem filtro e, muitas vezes, não encontrava o que precisava.</p>
+        <p>Nossa missão é ser o primeiro portal de negócios e de soluções técnicas para a área de hidráulica e condução de fluidos na América Latina — uma fonte rápida e inesgotável para profissionais, empresas e estudantes comprometidos com qualidade e produtividade.</p>
+      </div>
+      <div class="team">
+        <div class="person">
+          <div class="avatar">AB</div>
+          <div><h4 class="person__name">Amauri Baggenstoss <a class="person__in" href="https://www.linkedin.com/in/amauri-baggenstoss-61138511a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Amauri Baggenstoss" title="LinkedIn de Amauri Baggenstoss"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></h4><p>Diretor · Comercial, Administração &amp; Marketing</p>
+            <a href="#contato" class="person__cta" data-subject="Consultoria técnica & comercial e pesquisa de mercado" data-question="Olá, Amauri. Gostaria de uma consultoria sobre: ">Clique aqui para Consultoria Técnica &amp; Comercial e Pesquisa de Mercado →</a></div>
+        </div>
+        <div class="person">
+          <div class="avatar">MP</div>
+          <div><h4 class="person__name">Mauro A. B. Peres <a class="person__in" href="https://www.linkedin.com/in/mauro-peres-93a30928" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Mauro A. B. Peres" title="LinkedIn de Mauro A. B. Peres"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></h4><p>Diretor · Produção, Desenvolvimento &amp; Pesquisa</p>
+            <a href="#contato" class="person__cta" data-subject="Consultoria técnica & comercial e pesquisa de mercado" data-question="Olá, Mauro. Gostaria de uma consultoria sobre: ">Clique aqui para Consultoria Técnica &amp; Comercial e Pesquisa de Mercado →</a></div>
+        </div>
+        <ul class="values">
+          <li>Informação técnica concentrada num só portal</li>
+          <li>Rapidez de resposta e consultas on-line</li>
+          <li>Parcerias com universidades, institutos e órgãos públicos</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="section section--dark" id="contato">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Fale conosco</p>
+        <h2>Consulta técnica, cotação ou anúncio?</h2>
+        <p>Conte o que você precisa. Respondemos o mais rápido possível.</p>
+        <address class="contact">
+          <a href="mailto:info@pipesystem.com.br" translate="no" class="notranslate">info@pipesystem.com.br</a>
+        </address>
+      </div>
+      <form class="form form--contact" id="contactForm" name="contato" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contato">
+        <p hidden><label>Não preencha este campo: <input name="bot-field"></label></p>
+        <label>Nome<input name="nome" required autocomplete="name"></label>
+        <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+        <label>Empresa<input name="empresa" autocomplete="organization"></label>
+        <label>Assunto
+          <select name="assunto" id="assunto">
+            <option>Consulta técnica</option>
+            <option>Consultoria técnica &amp; comercial e pesquisa de mercado</option>
+            <option>Quero me tornar um Consultor PipeSystem</option>
+            <option>Cotação de materiais</option>
+            <option>Negócios &amp; leilões</option>
+            <option>Cadastro de usuário</option>
+            <option>Cadastro de empresa</option>
+            <option>Banner Básico</option>
+            <option>Banner Padrão</option>
+            <option>Banner Premium</option>
+            <option>Assinatura de cotações — Plano Básico</option>
+            <option>Assinatura de cotações — Plano Premium</option>
+            <option>Outro assunto</option>
+          </select>
+        </label>
+        <label class="full">Mensagem<textarea name="mensagem" rows="4" required></textarea></label>
+        <div class="full upload" id="uploadBox" hidden>
+          <span class="upload__label">Lista de materiais <span>(opcional)</span></span>
+          <input type="file" id="arquivo" name="arquivo" class="upload__input" accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.txt,.jpg,.jpeg,.png,.webp,image/*">
+          <label class="upload__drop" for="arquivo" id="uploadDrop">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+            <span class="upload__text"><b>Anexe sua lista de materiais</b> ou arraste o arquivo para cá<small>PDF, Excel, Word, CSV ou foto · até 8 MB</small></span>
+          </label>
+          <div class="upload__file" id="uploadFile" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5"/></svg>
+            <span class="upload__name" id="uploadName"></span>
+            <button type="button" class="upload__remove" id="uploadRemove" aria-label="Remover arquivo">×</button>
+          </div>
+          <p class="upload__error" id="uploadError" role="alert" hidden></p>
+        </div>
+        <button class="btn full" type="submit">Enviar mensagem</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer__main">
+    <div class="footer__brand">
+      <a href="#top" class="footer__logo" aria-label="PIPESYSTEM — voltar ao início">
+        <svg class="logo__svg logo__svg--footer" viewBox="0 0 300 86" aria-hidden="true"><path d="M26 6c9 12 16 21 16 30a16 16 0 0 1-32 0c0-9 7-18 16-30z" fill="#1fb6c9"/><path d="M16 38c4 3 8 3 10 0s6-3 10 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><text x="56" y="40" textLength="230" lengthAdjust="spacingAndGlyphs" font-family="Montserrat, 'Arial Black', sans-serif" font-weight="800" font-size="28" fill="#fff" class="notranslate" translate="no">PIPESYSTEM</text><rect x="56" y="50" width="236" height="6" rx="3" fill="#1fb6c9"/><rect x="128" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><rect x="212" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><path d="M286 46l8 7-8 7" fill="none" stroke="#f2a03d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="57" y="80" textLength="235" lengthAdjust="spacing" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="14" fill="#f2a03d" class="notranslate" translate="no">conduzindo soluções</text></svg>
+      </a>
+      <p class="footer__about">O portal da hidráulica e dos sistemas de condução de fluidos: informação técnica, consultoria e negócios num só lugar.</p>
+      <div class="footer__contact">
+        <a href="mailto:info@pipesystem.com.br" translate="no" class="notranslate">info@pipesystem.com.br</a>
+        <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp <span translate="no" class="notranslate">+55 (47) 98802-7372</span></a>
+      </div>
+    </div>
+
+    <nav class="footer__bar" aria-label="Menu do rodapé">
+      <a href="#top">Início</a>
+      <a href="#servicos">Cotações</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#sistemas">Sistemas</a>
+      <a href="#materiais">Materiais</a>
+      <a href="#ferramentas">Ferramentas</a>
+      <a href="#normas">Normas Técnicas</a>
+      <a href="#artigos">Artigos Técnicos</a>
+      <a href="#feiras">Feiras</a>
+      <a href="#anuncie">Anuncie</a>
+      <a href="#assinaturas">Receba cotações</a>
+      <a href="#sobre">Quem somos</a>
+      <a href="#contato">Contato</a>
+      <a href="#contato" class="footer__cta" data-subject="Cadastro de usuário" data-question="Quero me cadastrar. Área de atuação: ">Cadastre-se</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <p>© <span id="year"></span> <span translate="no" class="notranslate">PipeSystem</span> Serviços de Consultoria Ltda. Todos os direitos reservados.</p>
+      <a href="#top" class="footer__top">Voltar ao topo ↑</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Fale conosco flutuante -->
+<div class="fab" id="fab">
+  <div class="fab__panel" id="fabPanel" role="dialog" aria-labelledby="fabTitle" hidden>
+    <p class="fab__title" id="fabTitle">Como prefere falar com a gente?</p>
+    <a class="fab__opt fab__opt--wa" id="fabWa" href="#" target="_blank" rel="noopener noreferrer">
+      <span class="fab__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4a.5.5 0 0 0 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.8 11.8 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg></span>
+      <span><b>WhatsApp</b><small>Resposta rápida pelo celular</small></span>
+    </a>
+    <a class="fab__opt fab__opt--mail" id="fabMail" href="mailto:info@pipesystem.com.br?subject=Contato%20pelo%20site%20PipeSystem&amp;body=Ol%C3%A1!%20Vim%20pelo%20site%20da%20PipeSystem%20e%20gostaria%20de%20falar%20sobre%20">
+      <span class="fab__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3zM3 7l9 6 9-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+      <span><b>E-mail</b><small translate="no" class="notranslate">info@pipesystem.com.br</small></span>
+    </a>
+    <p class="fab__note" id="fabNote" hidden></p>
+    <div class="fab__alt" id="fabMailAlt" hidden>
+      <p>Seu programa de e-mail deve abrir agora. <b>Não abriu?</b> Escreva pelo seu e-mail na web:</p>
+      <div class="fab__alt-links">
+        <a id="fabGmail" href="#" target="_blank" rel="noopener noreferrer">Gmail</a>
+        <a id="fabOutlook" href="#" target="_blank" rel="noopener noreferrer">Outlook.com</a>
+      </div>
+    </div>
+    <div class="fab__foot">
+      <button type="button" class="fab__copy" id="fabCopy">Copiar e-mail</button>
+      <a href="#contato" class="fab__form" data-subject="Consulta técnica">Usar o formulário do site →</a>
+    </div>
+  </div>
+  <button type="button" class="fab__btn" id="fabBtn" aria-expanded="false" aria-controls="fabPanel">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4zM9 10h6M9 13h3"/></svg>
+    <span>Fale conosco</span>
+  </button>
+</div>
+
+<script src="webtools.js"></script>
+<script src="normas.js"></script>
+<script src="products.js"></script>
+<script src="systems.js"></script>
+<script src="catalog.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

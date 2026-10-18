@@ -1,0 +1,14 @@
+{
+  "name": "pipesystem-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PipeSystem — O Portal da Hidráulica. Site estático (HTML, CSS e JavaScript).",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/preview.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

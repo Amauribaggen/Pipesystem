@@ -1,0 +1,25 @@
+# PipeSystem — O Portal da Hidráulica
+
+Site estático (HTML, CSS e JavaScript, sem dependências) do portal PipeSystem.
+
+## Estrutura
+
+- `site/` — o site: `index.html`, estilos, scripts e dados (produtos, sistemas, catálogo, normas e ferramentas) e imagens em `site/img/`.
+- `scripts/build.mjs` — copia `site/` para `dist/`, a pasta publicada.
+- `scripts/preview.mjs` — servidor local para conferir `dist/`.
+- `vercel.json` — configuração do deploy na Vercel.
+
+## Comandos
+
+```bash
+npm run build     # gera dist/
+npm run preview   # abre dist/ em http://localhost:3000
+```
+
+## Deploy
+
+A Vercel executa `npm run build` e publica `dist/` a cada push na branch `main`.
+
+## Créditos das imagens
+
+As fotos de produtos, sistemas e materiais vêm do Wikimedia Commons, com licenças livres (CC0, domínio público, CC BY e CC BY-SA). Os créditos de cada foto aparecem no site, junto às imagens, e precisam ser mantidos.

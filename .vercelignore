@@ -1,0 +1,6 @@
+# Envia para a Vercel só o necessário para o build (o resto da pasta são documentos internos)
+/*
+!/site
+!/scripts
+!/package.json
+!/vercel.json
