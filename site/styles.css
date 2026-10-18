@@ -141,7 +141,10 @@ p { margin: 0 0 1em; }
 
 /* Produtos */
 .guidebar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: -26px 0 18px; padding: 12px 0; background: var(--bg-alt); position: sticky; top: 68px; z-index: 5; }
-.guidebar input { flex: 0 1 300px; padding: .6em 1em; border: 1px solid var(--line); border-radius: 999px; font: 500 .95rem var(--font); outline: 0; }
+.guide__count { flex-wrap: wrap; font-size: 1.05rem; }
+.guide__clear { margin-left: auto; border: 1px solid rgba(255, 255, 255, .25); background: none; color: inherit; font: 600 .82rem var(--font); padding: .35em .9em; border-radius: 999px; cursor: pointer; }
+.guide__clear:hover { background: rgba(255, 255, 255, .08); }
+.guidebar input { flex: 0 1 420px; padding: .6em 1em; border: 1px solid var(--line); border-radius: 999px; font: 500 .95rem var(--font); outline: 0; }
 .guidebar input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(31, 182, 201, .2); }
 .prodnav { display: flex; flex-wrap: wrap; gap: 8px; }
 .prodnav a { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: .45em 1em; font-weight: 600; font-size: .85rem; color: var(--navy); }

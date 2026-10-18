@@ -109,21 +109,50 @@ const guideEmpty = document.getElementById('guideEmpty');
 
 function renderGuide() {
   const terms = queryTerms(guideSearch.value);
-  let total = 0;
+  const card = p => `<a class="pcard" id="${p.id}" href="#${p.id}"><strong>${p.name}</strong><span>${p.desc}</span><em>Ver ficha técnica →</em></a>`;
+  const q = guideSearch.value.trim();
+  if (q) {
+    // Com busca: uma lista única, do mais ao menos relevante (nome do produto primeiro)
+    const score = p => {
+      const g = groupById[p.g];
+      if (matchText(p.name, terms)) return 4;
+      if (matchText(g.name, terms)) return 3;
+      if (matchText([...p.tipos, ...p.normas].join(' '), terms)) return 2;
+      return matchText([g.name, p.name, p.desc, ...p.tipos, ...p.escolha, ...p.normas].join(' '), terms) ? 1 : 0;
+    };
+    const hits = PRODUCTS.map(p => [p, score(p)]).filter(([, s]) => s).sort((a, b) => b[1] - a[1]).map(([p]) => p);
+    guideEl.innerHTML = hits.length ? `<div class="pgroup">
+      <h3 class="pgroup__title guide__count">${hits.length} produto${hits.length === 1 ? '' : 's'} para “${q.replace(/</g, '&lt;')}”
+        <button type="button" class="guide__clear">Limpar busca ✕</button></h3>
+      <div class="grid grid--4">${hits.map(card).join('')}</div>
+    </div>` : '';
+    guideEmpty.hidden = hits.length > 0;
+    return;
+  }
   guideEl.innerHTML = PRODUCT_GROUPS.map(g => {
-    const items = PRODUCTS.filter(p => p.g === g.id &&
-      matchText([g.name, p.name, p.desc, ...p.tipos, ...p.escolha, ...p.normas].join(' '), terms));
-    total += items.length;
+    const items = PRODUCTS.filter(p => p.g === g.id);
     if (!items.length) return '';
     return `<div class="pgroup" id="grupo-${g.id}">
       <h3 class="pgroup__title">${groupIcon(g)}${g.name}<span>${items.length}</span></h3>
-      <div class="grid grid--4">${items.map(p =>
-        `<a class="pcard" id="${p.id}" href="#${p.id}"><strong>${p.name}</strong><span>${p.desc}</span><em>Ver ficha técnica →</em></a>`).join('')}</div>
+      <div class="grid grid--4">${items.map(card).join('')}</div>
     </div>`;
   }).join('');
-  guideEmpty.hidden = total > 0;
+  guideEmpty.hidden = true;
 }
 guideSearch.addEventListener('input', renderGuide);
+// Enter leva aos resultados (o primeiro produto fica em foco)
+guideSearch.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  renderGuide();
+  const first = guideEl.querySelector('.pcard') || guideEmpty;
+  first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (first.classList.contains('pcard')) first.focus({ preventScroll: true });
+});
+guideEl.addEventListener('click', e => {
+  if (!e.target.closest('.guide__clear')) return;
+  guideSearch.value = ''; renderGuide(); guideSearch.focus();
+});
 renderGuide();
 
 const sheet = document.getElementById('prodSheet');
