@@ -52,6 +52,10 @@ const CATALOG = [
     desc: 'Acoplamentos mecânicos para tubos ranhurados: montagem rápida, sem solda e sem rosca. São padrão em redes de sprinklers e hidrantes.',
     specs: [['Material', 'Ferro dúctil pintado ou galvanizado; junta de EPDM'], ['Diâmetros', '1" a 12"'], ['Pressão', 'Até 300 psi (2,07 MPa), conforme o modelo'], ['Tipos', 'Rígido, flexível, tê mecânico e adaptador flange-ranhura'], ['Aprovações', 'UL / FM para sistemas de incêndio']],
     normas: ['AWWA C606', 'UL 213', 'FM 1920'] },
+  { id: 'mat-grooved', cat: 'Conexões', name: 'Conexões ranhuradas (grooved)', apps: 'Incêndio, HVAC, água e mineração', art: 'coupling', tone: '#e5534b', rel: 'conexoes-ranhuradas',
+    desc: 'Conexões com pontas ranhuradas (curvas, tês, reduções, cruzetas e tampões), unidas por acoplamentos mecânicos com junta de borracha. A montagem é rápida, sem solda e sem rosca. São padrão em redes de sprinklers e hidrantes e cada vez mais usadas em HVAC, água gelada, saneamento e mineração.',
+    specs: [['Material', 'Ferro dúctil ASTM A536 (65-45-12), pintado em vermelho ou galvanizado'], ['Diâmetros', '1" a 12" (DN 25 a DN 300)'], ['Pressão', 'Até 300 psi (2,07 MPa), conforme o modelo e o diâmetro'], ['Peças', 'Curvas de 90° e 45°, tês, tês de redução, cruzetas, reduções concêntricas e tampões'], ['Ranhura', 'Laminada (roll groove) ou usinada (cut groove), conforme AWWA C606'], ['Aprovações', 'UL / FM para sistemas de combate a incêndio']],
+    normas: ['AWWA C606', 'UL 213', 'ASTM A536', 'NFPA 13'] },
 
   // Válvulas
   { id: 'mat-esfera', cat: 'Válvulas', name: 'Registros e válvulas de esfera', apps: 'Bloqueio em água, gás e ar comprimido', art: 'ballvalve', tone: '#d8b45a', rel: 'valvulas',
@@ -208,6 +212,8 @@ const MANUFACTURERS = {
   'mat-latao': [['Viega', 'https://www.viega.com', 'I'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['Swagelok', 'https://www.swagelok.com', 'I']],
   'mat-flanges': [['Bonney Forge', 'https://www.bonneyforge.com', 'I'], ['Galperti', 'https://www.galperti.com', 'I']],
   'mat-ranhurado': [['Victaulic', 'https://www.victaulic.com', 'I'], ['Tyco (Johnson Controls)', 'https://www.tyco-fire.com', 'I'], ['Viking', 'https://www.vikinggroupinc.com', 'I'], ['ASC Engineered Solutions (Gruvlok)', 'https://www.asc-es.com', 'I']],
+  // Importadores (todos 'M': a ficha mostra o título "Importadores"). Sem link = site ainda não informado.
+  'mat-grooved': [['Comercial Rimar', 'https://rimar.com.br/', 'M'], ['Dinâmica', '', 'M'], ['Potenza', '', 'M'], ['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M']],
   'mat-esfera': [['Mipel', 'https://www.mipel.com.br', 'N'], ['Docol', 'https://www.docol.com.br', 'N'], ['Deca', 'https://www.deca.com.br', 'N'], ['Swagelok', 'https://www.swagelok.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
   'mat-retencao': [['Mipel', 'https://www.mipel.com.br', 'N'], ['Niagara', 'https://www.niagara.com.br', 'N'], ['KSB', 'https://www.ksb.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
   'mat-reguladores': [['Aliança Metalúrgica', 'https://www.aliancametalurgica.com.br', 'N'], ['Gascat', 'https://www.gascat.com.br', 'N'], ['Pietro Fiorentini', 'https://www.fiorentini.com', 'I'], ['Emerson (Fisher)', 'https://www.emerson.com', 'I']],
@@ -229,7 +235,7 @@ const MANUFACTURERS = {
 const MATERIAL_PHOTOS = {
   'mat-pvc': ['tubos-pvc', 0], 'mat-cpvc': ['tubos-cpvc', 2], 'mat-cobre': ['tubos-cobre', 1], 'mat-aco': ['tubos-aco', 0],
   'mat-inox': ['tubos-inox', 0], 'mat-galv': ['conexoes-ferro', 0], 'mat-flanges': ['flanges', 0], 'mat-ranhurado': ['conexoes-ranhuradas', 1],
-  'mat-esfera': ['registros-latao', 2], 'mat-purgadores': ['purgadores', 0], 'mat-bombas': ['bombas', 1], 'mat-caldeiras': ['caldeiras', 0],
+  'mat-grooved': ['conexoes-ranhuradas', 0], 'mat-esfera': ['registros-latao', 2], 'mat-purgadores': ['purgadores', 0], 'mat-bombas': ['bombas', 1], 'mat-caldeiras': ['caldeiras', 0],
   'mat-compressores': ['compressores', 1], 'mat-sprinklers': ['sprinklers', 0], 'mat-medidores': ['manometros', 1], 'mat-vedantes': ['vedantes', 2],
   'mat-suportes': ['suportes', 0], 'mat-filtros': ['filtros', 0], 'mat-ferramentas': ['ferramentas-hidraulicas', 0],
   'mat-pex': { src: 'img/materiais/mat-pex-1.jpg', alt: 'Tubos de PEX azul e vermelho instalados com conexões de latão', legenda: 'Rede de PEX', autor: 'Tomwsulcer', licenca: 'CC0', licUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en', fonte: 'https://commons.wikimedia.org/wiki/File:PEX_piping_in_basement_ceiling.jpg' },

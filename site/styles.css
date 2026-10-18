@@ -447,7 +447,8 @@ body { background: #071a31; }
 .fabs { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 6px; }
 .fabs li { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
 .fabs li:hover { border-color: var(--teal); }
-.fabs a { flex: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-width: 0; }
+.fabs a, .fabs__nolink { flex: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-width: 0; }
+.fabs__nolink .fabs__site { color: var(--muted); font-style: italic; }
 .fabs__name { font-weight: 700; color: var(--navy); }
 .fabs__site { font-size: .82rem; color: var(--teal-d); }
 .fabs a:hover .fabs__site { text-decoration: underline; }
