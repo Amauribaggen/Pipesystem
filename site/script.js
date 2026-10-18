@@ -82,7 +82,7 @@ function renderCatalog() {
     const f = materialPhoto(m);
     return `<a class="item" href="#${m.id}">
       <figure class="item__art${f ? ' item__art--foto' : ''}" style="--m:${m.tone}">${f
-        ? `<img src="${f.src}" alt="${f.alt}" loading="lazy">`
+        ? `<img src="${f.src}" alt="${f.alt}" loading="lazy"${f.inteira ? ' class="inteira"' : ''}>`
         : `<svg viewBox="0 0 200 120" aria-hidden="true">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>`}</figure>
       <small>${m.cat}</small><h4>${m.name}</h4><p>${m.apps}</p><em>Dados técnicos →</em>
     </a>`;
@@ -233,7 +233,7 @@ function renderMaterial(m) {
   sheetBody.innerHTML = `
     <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${m.cat}</p><h3 id="sheetTitle">${m.name}</h3></div></div>
     ${foto ? `<figure class="matfig matfig--foto">
-      <img src="${foto.src}" alt="${foto.alt}">
+      <img src="${foto.src}" alt="${foto.alt}"${foto.inteira ? ' class="inteira"' : ''}>
       <figcaption>${foto.legenda} · Foto: <a href="${foto.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${foto.autor}</a> (<a href="${foto.licUrl}" target="_blank" rel="noopener noreferrer">${foto.licenca}</a>), via Wikimedia Commons</figcaption>
     </figure>` : `<figure class="matfig" style="--m:${m.tone}">
       <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${m.name}">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
