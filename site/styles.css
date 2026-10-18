@@ -697,7 +697,8 @@ font[style] { background: transparent !important; box-shadow: none !important; }
   .lang__btn span { display: none; }
   .lang__btn { padding: 4px 6px; }
 }
-.logo { white-space: nowrap; }
+.logo { white-space: nowrap; flex: none; }
+.logo .logo__svg { flex: none; }
 
 /* ===== Rodapé com logomarca e barra de menus ===== */
 .footer { background: #040f1d; color: #9fb4cc; padding: 0; border-top: 1px solid rgba(126, 231, 242, .14); }
