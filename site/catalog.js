@@ -213,7 +213,7 @@ const MANUFACTURERS = {
   'mat-flanges': [['Bonney Forge', 'https://www.bonneyforge.com', 'I'], ['Galperti', 'https://www.galperti.com', 'I']],
   'mat-ranhurado': [['Victaulic', 'https://www.victaulic.com', 'I'], ['Tyco (Johnson Controls)', 'https://www.tyco-fire.com', 'I'], ['Viking', 'https://www.vikinggroupinc.com', 'I'], ['ASC Engineered Solutions (Gruvlok)', 'https://www.asc-es.com', 'I']],
   // Importadores (todos 'M': a ficha mostra o título "Importadores"). Sem link = site ainda não informado.
-  'mat-grooved': [['Comercial Rimar', 'https://rimar.com.br/', 'M'], ['Dinâmica', '', 'M'], ['Potenza', '', 'M'], ['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M']],
+  'mat-grooved': [['Comercial Rimar', 'https://rimar.com.br/', 'M'], ['Dinâmica', 'https://dinamicadistribuidor.com.br/', 'M'], ['Potenza', 'https://www.hidraulicapotenza.com.br/', 'M'], ['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M']],
   'mat-esfera': [['Mipel', 'https://www.mipel.com.br', 'N'], ['Docol', 'https://www.docol.com.br', 'N'], ['Deca', 'https://www.deca.com.br', 'N'], ['Swagelok', 'https://www.swagelok.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
   'mat-retencao': [['Mipel', 'https://www.mipel.com.br', 'N'], ['Niagara', 'https://www.niagara.com.br', 'N'], ['KSB', 'https://www.ksb.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
   'mat-reguladores': [['Aliança Metalúrgica', 'https://www.aliancametalurgica.com.br', 'N'], ['Gascat', 'https://www.gascat.com.br', 'N'], ['Pietro Fiorentini', 'https://www.fiorentini.com', 'I'], ['Emerson (Fisher)', 'https://www.emerson.com', 'I']],
