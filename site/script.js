@@ -988,7 +988,7 @@ const ARTICLES = [
     feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira')) + group('No exterior', tag('#feiras .fair--intl', 'feira')),
     anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano')) +
       group('', [{ href: '#adMap', label: 'Onde os banners aparecem' }]),
-    sobre: () => group('Diretoria', tag('#sobre .person', 'diretor')) +
+    sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor')) +
       group('', [{ href: '#contato', label: 'Consultoria técnica & comercial', attrs: ' data-subject="Consultoria técnica & comercial e pesquisa de mercado"' },
         { href: '#contato', label: 'Fale conosco' }]),
   };
