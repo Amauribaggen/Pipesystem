@@ -247,12 +247,12 @@ function renderMaterial(m) {
     <p class="tags tags--links">${normTags(m.normas)}</p>
     <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
     ${rel ? `<p class="relprod"><a href="#${rel.id}">Ver ficha de ${rel.name} no guia técnico →</a></p>` : ''}
-    ${fabs.length ? `<h4>${importers ? 'Importadores' : 'Fabricantes'}</h4>
+    ${fabs.length ? `<h4>${importers ? 'Importadores' : fabs.some(f => f[2] === 'M') ? 'Fabricantes e importadores' : 'Fabricantes'}</h4>
     <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${u}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span></a>`
       : `<span class="fabs__nolink"><span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site">site em breve</span></span>`}
       <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
-    <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : 'fabrica'} este produto? <a href="#anuncie">Anuncie aqui</a>.</p>` : ''}
+    <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : fabs.some(f => f[2] === 'M') ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="#anuncie">Anuncie aqui</a>.</p>` : ''}
     <div class="sheet__actions">
       <a href="#contato" class="btn" data-subject="Cotação de materiais" data-question="Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) ">Solicitar cotação</a>
       <a href="#contato" class="btn btn--ghost" data-subject="Consulta técnica" data-question="Consulta sobre ${m.name}: ">Consulta técnica</a>
