@@ -926,3 +926,29 @@ font[style] { background: transparent !important; box-shadow: none !important; }
 .ulinks__list b { font-family: var(--display); font-size: 1.05rem; color: #fff; }
 .ulinks__list span { font-size: .82rem; line-height: 1.35; color: #9fb4cc; flex: 1; }
 .ulinks__list em { font-style: normal; font-size: .78rem; font-weight: 600; color: #7ee7f2; margin-top: 4px; }@media (min-width: 861px) { .ulinks__list { grid-template-columns: repeat(3, 1fr); } }
+/* ===== Cabeçalho que sempre cabe na tela =====
+   1) Em telas largas o cabeçalho usa mais largura que o conteúdo (até 1360 px).
+   2) O script mede o cabeçalho: se faltar espaço, aplica .nav-tight (menos espaçamento)
+      e, se ainda assim não couber, .nav-collapse (menu de três linhas, como no celular). */
+.nav .nav__inner { width: min(1360px, 100% - 32px); }
+html.nav-tight .nav__links { gap: .42rem; font-size: .78rem; margin-left: 12px; }
+html.nav-tight #navLinks .nav__hot { padding: .25em .55em; }
+html.nav-tight .nav__links .btn--sm { padding: .4em .7em; font-size: .78rem; }
+html.nav-tight .logo .logo__svg { height: 40px; }
+html.nav-collapse .nav__toggle { display: block; }
+html.nav-collapse .lang { margin-left: auto; margin-right: 6px; }
+html.nav-collapse .nav__links { position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; margin-left: 0; font-size: .95rem; white-space: normal; background: var(--navy); border-bottom: 1px solid rgba(255, 255, 255, .08); padding: 8px 16px 16px; display: none; max-height: calc(100vh - 68px); overflow-y: auto; }
+html.nav-collapse .nav__links.open { display: flex; }
+html.nav-collapse .nav__links > a, html.nav-collapse .dd__btn { padding: 12px 4px; }
+html.nav-collapse .dd__btn { width: 100%; justify-content: space-between; }
+html.nav-collapse .dd:hover .dd__menu, html.nav-collapse .dd:focus-within .dd__menu { display: none; }
+html.nav-collapse .dd.open .dd__menu { display: flex; }
+html.nav-collapse .dd__menu { position: static; box-shadow: none; border: 0; padding: 0 0 8px 12px; border-left: 2px solid rgba(255, 255, 255, .15); border-radius: 0; margin-left: 4px; background: transparent; color: inherit; transform: none; width: auto; }
+html.nav-collapse .dd__menu--mega { columns: 2 150px; padding-top: 4px; }
+html.nav-collapse .dd.open .dd__menu--mega { display: block; }
+html.nav-collapse .dd__btn--link svg { display: none; }
+html.nav-collapse .dd:has(.dd__btn--link) .dd__menu { display: none !important; }
+html.nav-collapse #navLinks .nav__hot { align-self: flex-start; margin: 6px 0; }
+html.nav-collapse .nav__links .btn { margin-top: 8px; }.dd__all { display: block; margin: 0 0 10px; padding: .45em .8em; border-radius: 8px; font-weight: 700; font-size: .88rem; color: #138a99; background: #eef8fa; }
+.dd__all:hover { background: #dff3f6; }
+html.nav-collapse .dd__all, .nav__links .dd__all { break-inside: avoid; }

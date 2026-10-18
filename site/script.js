@@ -15,7 +15,7 @@ toggle.addEventListener('click', () => {
   toggle.setAttribute('aria-expanded', open);
 });
 // Menu "Produtos" gerado a partir do guia (products.js)
-document.getElementById('ddMenu').innerHTML = PRODUCT_GROUPS.map(g =>
+document.getElementById('ddMenu').innerHTML = '<a class="dd__all" href="#produtos">Ver o guia técnico completo →</a>' + PRODUCT_GROUPS.map(g =>
   `<div class="dd__group"><p>${g.name}</p>${PRODUCTS.filter(p => p.g === g.id)
     .map(p => `<a href="#${p.id}">${p.name}</a>`).join('')}</div>`).join('');
 
@@ -1083,7 +1083,13 @@ const ARTICLES = [
     dd.addEventListener('mouseleave', () => dd.classList.remove('dd--hold'));
   });
   const ddProdutos = document.getElementById('ddProdutos');
-  ddProdutos.querySelector('.dd__btn').addEventListener('click', () => { const open = !ddProdutos.classList.contains('open'); setDd(ddProdutos, open); if (open) fit(ddProdutos); });
+  // Menu compacto (celular ou cabeçalho sem espaço): tocar em "Produtos" abre a lista; no computador, leva à seção
+  const compact = () => matchMedia('(max-width: 1180px)').matches || document.documentElement.classList.contains('nav-collapse');
+  ddProdutos.querySelector('.dd__btn').addEventListener('click', e => {
+    if (!compact()) return; // segue o link #produtos
+    e.preventDefault(); e.stopPropagation();
+    const open = !ddProdutos.classList.contains('open'); setDd(ddProdutos, open); if (open) fit(ddProdutos);
+  });
   document.addEventListener('click', e => dds.forEach(dd => { if (!dd.contains(e.target)) setDd(dd, false); }));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') dds.forEach(dd => setDd(dd, false)); });
   links.addEventListener('click', e => {
@@ -1106,4 +1112,27 @@ const ARTICLES = [
     const el = document.getElementById(location.hash.slice(1));
     if (el && !el.matches('section, dialog') && el.closest('main')) { el.classList.remove('search-flash'); void el.offsetWidth; el.classList.add('search-flash'); }
   });
+})();
+// ===== Cabeçalho que sempre cabe na tela =====
+// Mede o cabeçalho com o espaçamento normal; se não couber (fonte maior, zoom do navegador,
+// tela estreita), aperta o espaçamento e, se ainda faltar espaço, usa o menu de três linhas.
+(() => {
+  const root = document.documentElement;
+  const inner = document.querySelector('.nav__inner');
+  const fits = () => inner.scrollWidth <= inner.clientWidth + 1 && root.scrollWidth <= window.innerWidth + 1;
+  function fitHeader() {
+    if (matchMedia('(max-width: 1180px)').matches) { root.classList.remove('nav-tight', 'nav-collapse'); return; }
+    const wasOpen = links.classList.contains('open');
+    root.classList.remove('nav-tight', 'nav-collapse');
+    if (fits()) return;
+    root.classList.add('nav-tight');
+    if (fits()) return;
+    root.classList.add('nav-collapse');
+    if (!wasOpen) links.classList.remove('open');
+  }
+  let t;
+  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(fitHeader, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeader);
+  window.addEventListener('load', fitHeader);
+  fitHeader();
 })();
