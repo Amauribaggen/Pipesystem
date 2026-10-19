@@ -1,0 +1,6 @@
+# PipeSystem — O Portal da Hidráulica
+# Todo o conteúdo público pode ser indexado.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.pipesystem.com.br/sitemap.xml
