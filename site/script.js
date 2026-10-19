@@ -1,3 +1,8 @@
+// Largura e altura reais das fotos (img-sizes.js é gerado no build), para a página não "pular" enquanto elas carregam
+const imgDims = src => { const d = (window.IMG_SIZES || {})[src]; return d ? ` width="${d[0]}" height="${d[1]}"` : ''; };
+// Fotos com caminho a partir da raiz: com a ficha aberta o endereço é /produtos/..., e "img/..." viraria /produtos/img/...
+const imgUrl = src => /^(https?:|data:|\/)/.test(src) ? src : '/' + src;
+
 // Para onde os formulários (contato e artigos) enviam os dados.
 // - Na Netlify (*.netlify.app) usa o Netlify Forms automaticamente.
 // - Na Vercel não há recebimento de formulários embutido: cole em FORMS_ENDPOINT a URL de um
@@ -82,7 +87,7 @@ function renderCatalog() {
     const f = materialPhoto(m);
     return `<a class="item" href="/materiais/${m.id.slice(4)}" data-sheet="${m.id}">
       <figure class="item__art${f ? ' item__art--foto' : ''}" style="--m:${m.tone}">${f
-        ? `<img src="${f.src}" alt="${f.alt}" loading="lazy"${f.inteira ? ' class="inteira"' : ''}>`
+        ? `<img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} loading="lazy"${f.inteira ? ' class="inteira"' : ''}>`
         : `<svg viewBox="0 0 200 120" aria-hidden="true">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>`}</figure>
       <small>${m.cat}</small><h3>${m.name}</h3><p>${m.apps}</p><em>Dados técnicos →</em>
     </a>`;
@@ -168,7 +173,7 @@ document.getElementById('systems').innerHTML = SYSTEMS.map(s =>
 function fotosHTML(fotos, titulo = '') {
   if (!fotos) return '';
   return `<figure class="pfotos">${titulo ? `<h4>${titulo}</h4>` : ''}
-      <div class="pfotos__grid">${fotos.map(f => `<div class="pfotos__item"><img src="${f.src}" alt="${f.alt}" loading="lazy"><span>${f.legenda}</span></div>`).join('')}</div>
+      <div class="pfotos__grid">${fotos.map(f => `<div class="pfotos__item"><img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} loading="lazy"><span>${f.legenda}</span></div>`).join('')}</div>
       <figcaption>Fotos: ${fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i).map(f => `<a href="${f.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${f.autor}</a> (<a href="${f.licUrl}" target="_blank" rel="noopener noreferrer">${f.licenca}</a>)`).join(', ')}, via Wikimedia Commons</figcaption>
     </figure>`;
 }
@@ -233,7 +238,7 @@ function renderMaterial(m) {
   sheetBody.innerHTML = `
     <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${m.cat}</p><h3 id="sheetTitle">${m.name}</h3></div></div>
     ${foto ? `<figure class="matfig matfig--foto">
-      <img src="${foto.src}" alt="${foto.alt}"${foto.inteira ? ' class="inteira"' : ''}>
+      <img src="${imgUrl(foto.src)}" alt="${foto.alt}"${imgDims(foto.src)}${foto.inteira ? ' class="inteira"' : ''}>
       <figcaption>${foto.legenda} · Foto: <a href="${foto.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${foto.autor}</a> (<a href="${foto.licUrl}" target="_blank" rel="noopener noreferrer">${foto.licenca}</a>), via Wikimedia Commons</figcaption>
     </figure>` : `<figure class="matfig" style="--m:${m.tone}">
       <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${m.name}">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>

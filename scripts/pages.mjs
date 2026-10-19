@@ -41,7 +41,7 @@ function fotosHTML(fotos, titulo = '') {
   const credits = fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i)
     .map(f => `<a href="${esc(f.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(f.autor)}</a> (<a href="${esc(f.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(f.licenca)}</a>)`).join(', ');
   return `<figure class="pfotos">${titulo ? `<h2 class="page__h">${titulo}</h2>` : ''}
-      <div class="pfotos__grid">${fotos.map((f, i) => `<div class="pfotos__item"><img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${i ? ' loading="lazy"' : ''} decoding="async"><span>${f.legenda}</span></div>`).join('')}</div>
+      <div class="pfotos__grid">${fotos.map((f, i) => `<div class="pfotos__item"><img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)}${i ? ' loading="lazy"' : ''} decoding="async"><span>${f.legenda}</span></div>`).join('')}</div>
       <figcaption>Fotos: ${credits}, via Wikimedia Commons</figcaption>
     </figure>`;
 }
@@ -69,7 +69,16 @@ function materialPhoto(D, m) {
 }
 
 // ---------- página ----------
-const FONTS = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;800&family=Space+Grotesk:wght@500;600;700&display=swap';
+const FONT_LINKS = `<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Fontes sem bloquear a exibição: Inter (texto), Space Grotesk 700 (títulos) e Montserrat só com as letras da logomarca -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&display=swap&text=PIPESYSTEMconduzindo%20solu%C3%A7%C3%B5es" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&family=Montserrat:wght@500;800&display=swap" rel="stylesheet"></noscript>`;
+
+// Largura e altura reais das fotos (preenchido pelo build), para a página não "pular" enquanto elas carregam
+export const SIZES = {};
+const dims = src => SIZES[src] ? ` width="${SIZES[src][0]}" height="${SIZES[src][1]}"` : '';
 const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><path d="M26 6c9 12 16 21 16 30a16 16 0 0 1-32 0c0-9 7-18 16-30z" fill="#1fb6c9"/><path d="M16 38c4 3 8 3 10 0s6-3 10 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><text x="56" y="40" textLength="230" lengthAdjust="spacingAndGlyphs" font-family="Montserrat, 'Arial Black', sans-serif" font-weight="800" font-size="28" fill="#fff">PIPESYSTEM</text><rect x="56" y="50" width="236" height="6" rx="3" fill="#1fb6c9"/><rect x="128" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><rect x="212" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><path d="M286 46l8 7-8 7" fill="none" stroke="#f2a03d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="57" y="80" textLength="235" lengthAdjust="spacing" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="14" fill="#f2a03d">conduzindo soluções</text></svg>`;
 
 function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords }) {
@@ -112,9 +121,7 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
   <link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png">
   <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="${FONTS}" rel="stylesheet">
+  ${FONT_LINKS}
   <link rel="stylesheet" href="/styles.css">
   <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>
 </head>
@@ -236,7 +243,7 @@ export function generate(D, outDir) {
     const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); const misto = fabs.some(f => f[2] === 'M');
     const mesmos = D.CATALOG.filter(x => x.cat === m.cat && x.id !== m.id);
     const fig = foto ? `<figure class="matfig matfig--foto">
-        <img src="${esc(rel(foto.src))}" alt="${esc(foto.alt)}"${foto.inteira ? ' class="inteira"' : ''} decoding="async">
+        <img src="${esc(rel(foto.src))}" alt="${esc(foto.alt)}"${dims(foto.src)}${foto.inteira ? ' class="inteira"' : ''} decoding="async">
         <figcaption>${foto.legenda} · Foto: <a href="${esc(foto.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(foto.autor)}</a> (<a href="${esc(foto.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(foto.licenca)}</a>), via Wikimedia Commons</figcaption>
       </figure>` : `<figure class="matfig" style="--m:${m.tone}">
         <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${esc(m.name)}">${D.MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>

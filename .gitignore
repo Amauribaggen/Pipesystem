@@ -4,6 +4,7 @@
 !/site/
 !/scripts/
 !/package.json
+!/package-lock.json
 !/vercel.json
 !/.vercelignore
 !/.gitignore
