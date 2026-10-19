@@ -108,7 +108,7 @@ p { margin: 0 0 1em; }
 .sresults__close:hover { color: var(--ink); background: var(--bg-alt); }
 .sresults__group { padding: .4rem 0; border-bottom: 1px solid var(--line); }
 .sresults__group:last-child { border-bottom: 0; }
-.sresults__group h5 { margin: .35rem 1rem .2rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: #138a99; }
+.sresults__gtitle { margin: .35rem 1rem .2rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: #138a99; }
 .sresults__item { display: block; width: 100%; text-align: left; border: 0; background: none; font: inherit; color: inherit; padding: .5rem 1rem; cursor: pointer; text-decoration: none; }
 .sresults__item:hover, .sresults__item:focus-visible { background: var(--bg-alt); outline: none; }
 .sresults__item strong { display: block; font-size: .95rem; }
@@ -242,7 +242,7 @@ a.normref:hover { color: var(--teal, #1fb6c9); }
 .item { border: 1px solid var(--line); border-radius: 14px; padding: 20px; background: #fff; transition: .2s; }
 .item:hover { box-shadow: var(--shadow); }
 .item small { color: var(--teal-d); font-weight: 700; text-transform: uppercase; font-size: .72rem; letter-spacing: .08em; }
-.item h4 { margin: .35em 0 .3em; font-size: 1.05rem; }
+.item h3 { margin: .35em 0 .3em; font-size: 1.05rem; }
 .item p { color: var(--muted); font-size: .9rem; margin: 0; }
 .empty { color: var(--muted); }
 .empty a { color: var(--teal-d); font-weight: 600; }
@@ -286,7 +286,8 @@ a.normref:hover { color: var(--teal, #1fb6c9); }
 .audience p { margin: 0; color: var(--muted); }
 .team { display: grid; gap: 14px; }
 .person { display: flex; gap: 16px; align-items: center; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); }
-.person h4 { margin: 0 0 .15em; }
+.person h3 { margin: 0 0 .15em; font-size: 1rem; }
+.audience h3 { font-size: 1rem; }
 .person p { margin: 0; color: var(--muted); font-size: .92rem; }
 .person__name { display: flex; align-items: center; gap: .45rem; }
 .person__in { display: inline-flex; width: 20px; height: 20px; color: #0a66c2; transition: transform .15s, filter .15s; }
@@ -974,3 +975,8 @@ html.intro-open { overflow: hidden; }
 @media (max-width: 600px) { .intro__bar { left: 16px; right: 16px; justify-content: center; } }
 /* Telas na horizontal: o vídeo ocupa a tela toda (o logotipo fica no centro, nada importante é cortado) */
 @media (min-aspect-ratio: 4/3) { .intro video { object-fit: cover; } }
+
+/* Link "Pular para o conteúdo": invisível até receber foco pelo teclado */
+.skip-link { position: absolute; left: 12px; top: -60px; z-index: 2000; padding: .6em 1em; border-radius: 8px; background: #f2a03d; color: #1b1203; font-weight: 700; text-decoration: none; transition: top .15s; }
+.skip-link:focus { top: 12px; outline: 2px solid #fff; }
+main:focus { outline: none; }

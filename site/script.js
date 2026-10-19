@@ -84,7 +84,7 @@ function renderCatalog() {
       <figure class="item__art${f ? ' item__art--foto' : ''}" style="--m:${m.tone}">${f
         ? `<img src="${f.src}" alt="${f.alt}" loading="lazy"${f.inteira ? ' class="inteira"' : ''}>`
         : `<svg viewBox="0 0 200 120" aria-hidden="true">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>`}</figure>
-      <small>${m.cat}</small><h4>${m.name}</h4><p>${m.apps}</p><em>Dados técnicos →</em>
+      <small>${m.cat}</small><h3>${m.name}</h3><p>${m.apps}</p><em>Dados técnicos →</em>
     </a>`;
   }).join('');
   emptyEl.hidden = items.length > 0;
@@ -995,7 +995,7 @@ const ARTICLES = [
         const shown = g.items.slice(0, 8);
         let more = '';
         if (g.more && g.items.length > shown.length) { actions.push(g.more.run); more = `<button type="button" class="sresults__item" data-act="${actions.length - 1}"><strong>${g.more.label} (${g.items.length}) →</strong></button>`; }
-        return `<div class="sresults__group"><h5>${g.name}</h5>${shown.map(item).join('')}${more}</div>`;
+        return `<div class="sresults__group"><p class="sresults__gtitle">${g.name}</p>${shown.map(item).join('')}${more}</div>`;
       }).join('')
       : `<p class="sresults__empty">Nada encontrado no site. Tente outra palavra ou <a href="#contato" data-subject="Consulta técnica" data-question="Procurei por “${esc(q)}” no site e não encontrei: ">envie sua pergunta para a equipe</a>.</p>`);
     box.hidden = false;
