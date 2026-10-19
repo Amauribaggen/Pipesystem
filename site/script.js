@@ -265,6 +265,7 @@ function openProduct(id) {
     s ? renderSystem(s) : renderMaterial(m);
     sheet.classList.remove('sheet--wide');
     if (!sheet.open) sheet.showModal();
+    setSheetTitle();
     sheet.scrollTop = 0;
     history.replaceState(null, '', '#' + id);
     return;
@@ -291,9 +292,13 @@ function openProduct(id) {
     </div>`;
   sheet.classList.toggle('sheet--wide', !!p.tabelas); // ficha mais larga quando tem tabelas
   if (!sheet.open) sheet.showModal();
+  setSheetTitle();
   sheet.scrollTop = 0;
   history.replaceState(null, '', '#' + id);
 }
+// Título da aba do navegador acompanha a ficha aberta (volta ao original ao fechar)
+const BASE_TITLE = document.title;
+function setSheetTitle() { const t = document.getElementById('sheetTitle'); if (t) document.title = t.textContent + ' — PipeSystem'; }
 const closeSheet = () => sheet.open && sheet.close();
 sheet.querySelector('.sheet__close').addEventListener('click', closeSheet);
 sheet.addEventListener('click', e => {
@@ -302,6 +307,7 @@ sheet.addEventListener('click', e => {
   if (a && !hasSheet(a.getAttribute('href').slice(1))) closeSheet(); // links para seções da página
 });
 sheet.addEventListener('close', () => {
+  document.title = BASE_TITLE;
   const id = location.hash.slice(1);
   if (productById[id]) history.replaceState(null, '', '#produtos');
   if (systemById[id]) history.replaceState(null, '', '#sistemas');
@@ -1005,6 +1011,9 @@ const ARTICLES = [
     const first = box.querySelector('.sresults__item');
     if (first && window.innerWidth < 860) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
+  // Busca aberta pela URL (?q=válvulas): usada pelo Google ("caixa de busca do site") e para compartilhar buscas
+  const q0 = new URLSearchParams(location.search).get('q');
+  if (q0) { input.value = q0; render(); }
   box.addEventListener('click', e => {
     if (e.target.closest('.sresults__close')) { hide(); input.focus(); return; }
     const b = e.target.closest('[data-act]');
@@ -1189,5 +1198,5 @@ const ARTICLES = [
 
   let seen = false;
   try { seen = sessionStorage.getItem(SEEN) === '1'; } catch {}
-  if (!seen && !location.hash) open();
+  if (!seen && !location.hash && !location.search) open();
 })();
