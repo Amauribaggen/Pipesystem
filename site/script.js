@@ -488,10 +488,33 @@ contactForm.addEventListener('submit', async e => {
     } finally { btn.disabled = false; btn.textContent = 'Enviar mensagem'; }
     return;
   }
-  const body = `Nome: ${f.get('nome')}\nE-mail: ${f.get('email')}\nEmpresa: ${f.get('empresa') || '-'}\n\n${f.get('mensagem')}` +
-    (file ? `\n\n[Anexe a este e-mail o arquivo: ${file.name}]` : '');
+  const body = (file ? attachLine(file.name) : '') + `Nome: ${f.get('nome')}\nE-mail: ${f.get('email')}\nEmpresa: ${f.get('empresa') || '-'}\n\n${f.get('mensagem')}`;
   window.location.href = `mailto:info@pipesystem.com.br?subject=${encodeURIComponent('[Site] ' + f.get('assunto'))}&body=${encodeURIComponent(body)}`;
-  toast(file ? `Abrindo seu e-mail… Lembre-se de anexar o arquivo ${file.name}.` : 'Abrindo seu programa de e-mail para enviar a mensagem…');
+  if (file) attachNote(contactForm, file.name); else toast('Abrindo seu programa de e-mail para enviar a mensagem…');
+});
+
+// Anexos: enquanto os formulários abrem o e-mail do visitante (mailto), o arquivo não vai junto (o navegador
+// não permite). Por isso o site avisa em três lugares: ao escolher o arquivo, no topo do e-mail e num aviso fixo.
+const attachLine = name => `>>> ATENÇÃO: ANEXE A ESTE E-MAIL O ARQUIVO "${name}" ANTES DE ENVIAR <<<\n\n`;
+function attachNote(form, name) {
+  let n = form.querySelector('.attach-note');
+  if (!n) {
+    n = document.createElement('div'); n.className = 'attach-note full'; n.setAttribute('role', 'alert');
+    form.querySelector('[type=submit]').insertAdjacentElement('beforebegin', n);
+  }
+  n.innerHTML = '<b>Falta um passo: anexe o arquivo no e-mail.</b> Seu programa de e-mail abriu com a mensagem pronta, mas o arquivo ' +
+    '<span class="attach-note__file"></span> não vai junto automaticamente. Use o botão de anexar (📎) do e-mail, escolha o arquivo e depois envie.' +
+    '<button type="button" class="attach-note__close" aria-label="Fechar aviso">×</button>';
+  n.querySelector('.attach-note__file').textContent = `“${name}”`;
+  n.querySelector('.attach-note__close').addEventListener('click', () => n.remove());
+  n.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+if (!PUBLISHED) document.querySelectorAll('.upload__file').forEach(box => {
+  const hint = document.createElement('small'); hint.className = 'upload__hint';
+  hint.textContent = 'Ao enviar, seu e-mail vai abrir com a mensagem pronta: anexe este arquivo nele antes de enviar.';
+  box.insertAdjacentElement('afterend', hint);
+  hint.hidden = box.hidden;
+  new MutationObserver(() => { hint.hidden = box.hidden; }).observe(box, { attributes: true, attributeFilter: ['hidden'] });
 });
 function toast(msg) {
   let t = document.querySelector('.toast');
@@ -890,10 +913,9 @@ const ARTICLES = [
       finally { btn.disabled = false; btn.textContent = 'Enviar artigo para avaliação'; }
       return;
     }
-    const body = `Nome: ${f.get('nome')}\nE-mail: ${f.get('email')}\nTítulo: ${f.get('titulo')}\nAutor(es): ${f.get('autores') || '-'}\nLink: ${f.get('link') || '-'}\n\nResumo:\n${f.get('resumo') || '-'}` +
-      (hasFile ? `\n\n[Anexe a este e-mail o arquivo: ${file.files[0].name}]` : '');
+    const body = (hasFile ? attachLine(file.files[0].name) : '') + `Nome: ${f.get('nome')}\nE-mail: ${f.get('email')}\nTítulo: ${f.get('titulo')}\nAutor(es): ${f.get('autores') || '-'}\nLink: ${f.get('link') || '-'}\n\nResumo:\n${f.get('resumo') || '-'}`;
     window.location.href = `mailto:info@pipesystem.com.br?subject=${encodeURIComponent('[Site] Artigo técnico: ' + f.get('titulo'))}&body=${encodeURIComponent(body)}`;
-    toast(hasFile ? `Abrindo seu e-mail… Lembre-se de anexar o arquivo ${file.files[0].name}.` : 'Abrindo seu e-mail para enviar o artigo…');
+    if (hasFile) attachNote(form, file.files[0].name); else toast('Abrindo seu e-mail para enviar o artigo…');
   });
 })();
 
