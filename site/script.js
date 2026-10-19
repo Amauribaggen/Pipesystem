@@ -17,7 +17,7 @@ toggle.addEventListener('click', () => {
 // Menu "Produtos" gerado a partir do guia (products.js)
 document.getElementById('ddMenu').innerHTML = '<a class="dd__all" href="#produtos">Ver o guia técnico completo →</a>' + PRODUCT_GROUPS.map(g =>
   `<div class="dd__group"><p>${g.name}</p>${PRODUCTS.filter(p => p.g === g.id)
-    .map(p => `<a href="#${p.id}">${p.name}</a>`).join('')}</div>`).join('');
+    .map(p => `<a href="/produtos/${p.id}" data-sheet="${p.id}">${p.name}</a>`).join('')}</div>`).join('');
 
 // (Os submenus de todos os itens são montados no fim deste arquivo — "Submenus do menu superior")
 
@@ -80,7 +80,7 @@ function renderCatalog() {
     matchText([m.cat, m.name, m.apps, m.desc, ...m.normas, ...m.specs.flat()].join(' '), terms));
   catEl.innerHTML = items.map(m => {
     const f = materialPhoto(m);
-    return `<a class="item" href="#${m.id}">
+    return `<a class="item" href="/materiais/${m.id.slice(4)}" data-sheet="${m.id}">
       <figure class="item__art${f ? ' item__art--foto' : ''}" style="--m:${m.tone}">${f
         ? `<img src="${f.src}" alt="${f.alt}" loading="lazy"${f.inteira ? ' class="inteira"' : ''}>`
         : `<svg viewBox="0 0 200 120" aria-hidden="true">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>`}</figure>
@@ -109,7 +109,7 @@ const guideEmpty = document.getElementById('guideEmpty');
 
 function renderGuide() {
   const terms = queryTerms(guideSearch.value);
-  const card = p => `<a class="pcard" id="${p.id}" href="#${p.id}"><strong>${p.name}</strong><span>${p.desc}</span><em>Ver ficha técnica →</em></a>`;
+  const card = p => `<a class="pcard" id="${p.id}" href="/produtos/${p.id}" data-sheet="${p.id}"><strong>${p.name}</strong><span>${p.desc}</span><em>Ver ficha técnica →</em></a>`;
   const q = guideSearch.value.trim();
   if (q) {
     // Com busca: uma lista única, do mais ao menos relevante (nome do produto primeiro)
@@ -162,7 +162,7 @@ const list = items => items.map(i => `<li>${linkNorms(i)}</li>`).join('');
 // Sistemas de aplicação
 const systemById = Object.fromEntries(SYSTEMS.map(s => [s.id, s]));
 document.getElementById('systems').innerHTML = SYSTEMS.map(s =>
-  `<a class="sys" href="#${s.id}"><span class="sys__dot" style="--c:${s.color}"></span>${s.name}<span class="sys__more" aria-hidden="true">→</span></a>`).join('');
+  `<a class="sys" href="/sistemas/${s.id.slice(4)}" data-sheet="${s.id}"><span class="sys__dot" style="--c:${s.color}"></span>${s.name}<span class="sys__more" aria-hidden="true">→</span></a>`).join('');
 
 // Galeria de fotos reais com créditos (licenças livres exigem a atribuição)
 function fotosHTML(fotos, titulo = '') {
@@ -209,7 +209,7 @@ function renderSystem(s) {
     <p class="tags tags--links">${normTags(s.normas)}</p>
     <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
     <h4>Produtos do guia técnico</h4>
-    <p class="relprod">${s.produtos.map(id => `<a href="#${id}">${productById[id].name}</a>`).join('')}</p>
+    <p class="relprod">${s.produtos.map(id => `<a href="/produtos/${id}" data-sheet="${id}">${productById[id].name}</a>`).join('')}</p>
     <div class="sheet__actions">
       <a href="#contato" class="btn" data-subject="Consulta técnica" data-question="Pergunta sobre ${s.name}: ">Fazer uma pergunta</a>
       <a href="#contato" class="btn btn--ghost" data-subject="Cotação de materiais" data-question="Cotação para ${s.name}: ">Solicitar cotação</a>
@@ -246,7 +246,7 @@ function renderMaterial(m) {
     <h4>Normas de referência</h4>
     <p class="tags tags--links">${normTags(m.normas)}</p>
     <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
-    ${rel ? `<p class="relprod"><a href="#${rel.id}">Ver ficha de ${rel.name} no guia técnico →</a></p>` : ''}
+    ${rel ? `<p class="relprod"><a href="/produtos/${rel.id}" data-sheet="${rel.id}">Ver ficha de ${rel.name} no guia técnico →</a></p>` : ''}
     ${fabs.length ? `<h4>${importers ? 'Importadores' : fabs.some(f => f[2] === 'M') ? 'Fabricantes e importadores' : 'Fabricantes'}</h4>
     <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${u}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span></a>`
@@ -265,7 +265,7 @@ function openProduct(id) {
     s ? renderSystem(s) : renderMaterial(m);
     sheet.classList.remove('sheet--wide');
     if (!sheet.open) sheet.showModal();
-    setSheetTitle();
+    setSheetTitle(id);
     sheet.scrollTop = 0;
     history.replaceState(null, '', '#' + id);
     return;
@@ -292,13 +292,18 @@ function openProduct(id) {
     </div>`;
   sheet.classList.toggle('sheet--wide', !!p.tabelas); // ficha mais larga quando tem tabelas
   if (!sheet.open) sheet.showModal();
-  setSheetTitle();
+  setSheetTitle(id);
   sheet.scrollTop = 0;
   history.replaceState(null, '', '#' + id);
 }
 // Título da aba do navegador acompanha a ficha aberta (volta ao original ao fechar)
 const BASE_TITLE = document.title;
-function setSheetTitle() { const t = document.getElementById('sheetTitle'); if (t) document.title = t.textContent + ' — PipeSystem'; }
+function setSheetTitle(id) {
+  const t = document.getElementById('sheetTitle'); if (t) document.title = t.textContent + ' — PipeSystem';
+  // link para a página própria da ficha (endereço para compartilhar)
+  const path = productById[id] ? '/produtos/' + id : systemById[id] ? '/sistemas/' + id.slice(4) : '/materiais/' + id.slice(4);
+  sheetBody.insertAdjacentHTML('beforeend', `<p class="sheet__perma"><a href="${path}">🔗 Página desta ficha (para compartilhar)</a></p>`);
+}
 const closeSheet = () => sheet.open && sheet.close();
 sheet.querySelector('.sheet__close').addEventListener('click', closeSheet);
 sheet.addEventListener('click', e => {
@@ -315,6 +320,12 @@ sheet.addEventListener('close', () => {
 });
 
 // Qualquer link para um produto, sistema ou material (menu, cartões, fichas) abre a ficha
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[data-sheet]');
+  if (!a || e.button || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  openProduct(a.dataset.sheet);
+});
 const hasSheet = id => productById[id] || systemById[id] || materialById[id];
 document.addEventListener('click', e => {
   const a = e.target.closest('a[href^="#"]');
@@ -384,6 +395,12 @@ fillUnits();
 
 // Planos -> assunto do formulário
 const assunto = document.getElementById('assunto');
+{
+  const qs = new URLSearchParams(location.search);
+  const as = qs.get('assunto'), msg = qs.get('msg');
+  if (as && [...assunto.options].some(o => o.text === as || o.value === as)) assunto.value = as;
+  if (msg) document.querySelector('#contactForm textarea').value = msg;
+}
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-plan], [data-subject]');
   if (!a) return;
@@ -924,14 +941,14 @@ const ARTICLES = [
       .map(x => ({ ...make(x), score: matchText(make(x).title, terms) ? 2 : 0 })).sort((a, b) => b.score - a.score);
 
     const prodText = p => [groupById[p.g].name, p.name, p.desc, ...p.tipos, ...p.escolha, ...p.normas].join(' ');
-    add('Guia técnico de produtos', pick(PRODUCTS, prodText, p => ({ href: '#' + p.id, title: p.name, sub: snippet(prodText(p), terms, p.desc) })),
+    add('Guia técnico de produtos', pick(PRODUCTS, prodText, p => ({ href: '/produtos/' + p.id, sheet: p.id, title: p.name, sub: snippet(prodText(p), terms, p.desc) })),
       { label: 'Ver no guia de produtos', run: () => { guideSearch.value = q; renderGuide(); goTo('produtos'); } });
 
     const sysText = s => [s.name, s.desc, ...s.componentes, ...s.cuidados, ...s.normas].join(' ');
-    add('Áreas de aplicação', pick(SYSTEMS, sysText, s => ({ href: '#' + s.id, title: s.name, sub: snippet(sysText(s), terms, s.desc) })));
+    add('Áreas de aplicação', pick(SYSTEMS, sysText, s => ({ href: '/sistemas/' + s.id.slice(4), sheet: s.id, title: s.name, sub: snippet(sysText(s), terms, s.desc) })));
 
     const matText = m => [m.cat, m.name, m.apps, m.desc, ...m.normas, ...m.specs.flat(), ...(MANUFACTURERS[m.id] || []).map(f => f[0])].join(' ');
-    add('Catálogo de materiais', pick(CATALOG, matText, m => ({ href: '#' + m.id, title: m.name, sub: snippet(matText(m), terms, m.apps) })),
+    add('Catálogo de materiais', pick(CATALOG, matText, m => ({ href: '/materiais/' + m.id.slice(4), sheet: m.id, title: m.name, sub: snippet(matText(m), terms, m.apps) })),
       { label: 'Ver no catálogo', run: () => { searchCatalog(q); goTo('materiais'); } });
 
     const seen = new Set(), norms = [];
@@ -986,7 +1003,7 @@ const ARTICLES = [
     const total = groups.reduce((n, g) => n + g.items.length, 0);
     const item = it => {
       const inner = `<strong>${mark(it.title, terms)}</strong>${it.sub ? `<span>${mark(it.sub, terms)}</span>` : ''}`;
-      if (it.href) return `<a class="sresults__item" href="${esc(it.href)}"${it.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}>${inner}</a>`;
+      if (it.href) return `<a class="sresults__item" href="${esc(it.href)}"${it.sheet ? ` data-sheet="${it.sheet}"` : ''}${it.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}>${inner}</a>`;
       actions.push(it.run);
       return `<button type="button" class="sresults__item" data-act="${actions.length - 1}">${inner}</button>`;
     };
@@ -1037,9 +1054,9 @@ const ARTICLES = [
   const MENUS = {
     servicos: () => group('Serviços', tag('#servicos .svc', 'servico')) +
       group('Receber cotações', [{ href: '#assinaturas', label: 'Assinaturas para distribuidores' }, ...tag('#assinaturas .qplan', 'assinatura')]),
-    sistemas: () => group('Áreas de aplicação', SYSTEMS.map(s => ({ href: '#' + s.id, label: s.name }))),
+    sistemas: () => group('Áreas de aplicação', SYSTEMS.map(s => ({ href: '/sistemas/' + s.id.slice(4), label: s.name, attrs: ` data-sheet="${s.id}"` }))),
     materiais: () => [...new Set(CATALOG.map(m => m.cat))].map(cat =>
-      group(cat, CATALOG.filter(m => m.cat === cat).map(m => ({ href: '#' + m.id, label: m.name })))).join(''),
+      group(cat, CATALOG.filter(m => m.cat === cat).map(m => ({ href: '/materiais/' + m.id.slice(4), label: m.name, attrs: ` data-sheet="${m.id}"` })))).join(''),
     ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc')) +
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }]),
     normas: () => ['aplicacao', 'produto'].map(tipo =>

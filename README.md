@@ -5,7 +5,8 @@ Site estático (HTML, CSS e JavaScript, sem dependências) do portal PipeSystem.
 ## Estrutura
 
 - `site/` — o site: `index.html`, estilos, scripts e dados (produtos, sistemas, catálogo, normas e ferramentas) e imagens em `site/img/`.
-- `scripts/build.mjs` — copia `site/` para `dist/`, a pasta publicada.
+- `scripts/build.mjs` — copia `site/` para `dist/`, a pasta publicada, e gera as páginas das fichas.
+- `scripts/pages.mjs` — gera uma página própria para cada ficha (`/produtos/<id>`, `/sistemas/<id>`, `/materiais/<id>`) a partir dos dados do site, e o `sitemap.xml` com todas as URLs e imagens. Basta editar os dados em `site/*.js`: as páginas são refeitas a cada publicação.
 - `scripts/preview.mjs` — servidor local para conferir `dist/`.
 - `vercel.json` — configuração do deploy na Vercel.
 

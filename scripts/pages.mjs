@@ -1,0 +1,294 @@
+// Gera uma página HTML própria (indexável pelo Google) para cada ficha do portal:
+//   /produtos/<id>   — guia técnico de produtos (PRODUCTS)
+//   /sistemas/<id>   — sistemas / áreas de aplicação (SYSTEMS)
+//   /materiais/<id>  — catálogo de produtos e materiais (CATALOG)
+// Os dados vêm dos mesmos arquivos usados pelo site (site/*.js), executados num contexto isolado.
+// Também gera o sitemap.xml com todas as URLs e imagens.
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { join } from 'node:path';
+import vm from 'node:vm';
+
+export const BASE = 'https://www.pipesystem.com.br';
+
+// ---------- dados ----------
+export function loadData(siteDir) {
+  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js'];
+  const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
+    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, normTags, linkNorms });';
+  return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
+}
+
+// ---------- utilidades ----------
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const plain = s => String(s ?? '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+function cut(text, max) {
+  const t = plain(text);
+  if (t.length <= max) return t;
+  const s = t.slice(0, max - 1); return s.slice(0, s.lastIndexOf(' ')).replace(/[,;:.\s]+$/, '') + '…';
+}
+const abs = src => src.startsWith('http') ? src : `${BASE}/${src.replace(/^\//, '')}`;
+const rel = src => src.startsWith('http') ? src : '/' + src.replace(/^\//, '');
+
+export const pathOf = {
+  produto: id => `/produtos/${id}`,
+  sistema: id => `/sistemas/${id.replace(/^sis-/, '')}`,
+  material: id => `/materiais/${id.replace(/^mat-/, '')}`,
+};
+
+// ---------- blocos reaproveitados das fichas do site ----------
+function fotosHTML(fotos, titulo = '') {
+  if (!fotos || !fotos.length) return '';
+  const credits = fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i)
+    .map(f => `<a href="${esc(f.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(f.autor)}</a> (<a href="${esc(f.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(f.licenca)}</a>)`).join(', ');
+  return `<figure class="pfotos">${titulo ? `<h2 class="page__h">${titulo}</h2>` : ''}
+      <div class="pfotos__grid">${fotos.map((f, i) => `<div class="pfotos__item"><img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${i ? ' loading="lazy"' : ''} decoding="async"><span>${f.legenda}</span></div>`).join('')}</div>
+      <figcaption>Fotos: ${credits}, via Wikimedia Commons</figcaption>
+    </figure>`;
+}
+function tabelasHTML(tabelas, linkNorms) {
+  if (!tabelas) return '';
+  const cell = (t, v, i) => {
+    if (!(t.estrelas || []).includes(i)) return `<td>${linkNorms(v)}</td>`;
+    return v ? `<td class="ptable__stars" aria-label="${v} de 5"><span aria-hidden="true">${'★'.repeat(v)}</span></td>` : '<td class="ptable__na" aria-label="não se aplica">—</td>';
+  };
+  return tabelas.map(t => `<section class="ptable">
+      <h2 class="page__h">${t.titulo}</h2>
+      <div class="ptable__wrap" tabindex="0" role="region" aria-label="${esc(t.titulo)}">
+        <table><thead><tr>${t.colunas.map((c, i) => `<th scope="col"${(t.estrelas || []).includes(i) ? ' class="ptable__c"' : ''}>${c}</th>`).join('')}</tr></thead>
+        <tbody>${t.linhas.map(l => `<tr>${l.map((v, i) => i === 0 ? `<th scope="row">${v}</th>` : cell(t, v, i)).join('')}</tr>`).join('')}</tbody></table>
+      </div>
+      ${t.nota ? `<p class="ptable__note">${linkNorms(t.nota)}</p>` : ''}
+    </section>`).join('');
+}
+const list = (items, linkNorms) => items.map(i => `<li>${linkNorms(i)}</li>`).join('');
+const contato = (assunto, msg) => `/?assunto=${encodeURIComponent(assunto)}&msg=${encodeURIComponent(msg)}#contato`;
+function materialPhoto(D, m) {
+  const ref = D.MATERIAL_PHOTOS[m.id];
+  if (Array.isArray(ref)) return (D.PRODUCTS.find(p => p.id === ref[0])?.fotos || [])[ref[1]];
+  return ref;
+}
+
+// ---------- página ----------
+const FONTS = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;800&family=Space+Grotesk:wght@500;600;700&display=swap';
+const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><path d="M26 6c9 12 16 21 16 30a16 16 0 0 1-32 0c0-9 7-18 16-30z" fill="#1fb6c9"/><path d="M16 38c4 3 8 3 10 0s6-3 10 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><text x="56" y="40" textLength="230" lengthAdjust="spacingAndGlyphs" font-family="Montserrat, 'Arial Black', sans-serif" font-weight="800" font-size="28" fill="#fff">PIPESYSTEM</text><rect x="56" y="50" width="236" height="6" rx="3" fill="#1fb6c9"/><rect x="128" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><rect x="212" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><path d="M286 46l8 7-8 7" fill="none" stroke="#f2a03d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="57" y="80" textLength="235" lengthAdjust="spacing" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="14" fill="#f2a03d">conduzindo soluções</text></svg>`;
+
+function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords }) {
+  const canonical = BASE + url;
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebPage', '@id': canonical + '#pagina', url: canonical, name: title, description, inLanguage: 'pt-BR',
+        isPartOf: { '@id': BASE + '/#site' }, publisher: { '@id': BASE + '/#organizacao' },
+        ...(image ? { primaryImageOfPage: { '@type': 'ImageObject', url: image } } : {}),
+        ...(keywords ? { keywords } : {}),
+        breadcrumb: { '@id': canonical + '#trilha' } },
+      { '@type': 'BreadcrumbList', '@id': canonical + '#trilha',
+        itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, ...(c.url ? { item: BASE + c.url } : {}) })) },
+    ],
+  };
+  const ogImage = image || `${BASE}/img/og-pipesystem.jpg`;
+  return `<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${esc(title)}</title>
+  <meta name="description" content="${esc(description)}">
+  <link rel="canonical" href="${canonical}">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#061527">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="PipeSystem">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="${canonical}">
+  <meta property="og:title" content="${esc(title)}">
+  <meta property="og:description" content="${esc(description)}">
+  <meta property="og:image" content="${esc(ogImage)}">
+  <meta property="og:image:alt" content="${esc(imageAlt || title)}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(title)}">
+  <meta name="twitter:description" content="${esc(description)}">
+  <meta name="twitter:image" content="${esc(ogImage)}">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="${FONTS}" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>
+</head>
+<body class="pg">
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="pg-top">
+  <div class="container pg-top__inner">
+    <a href="/" class="logo" aria-label="PIPESYSTEM — página inicial">${LOGO}</a>
+    <nav class="pg-top__nav" aria-label="Seções do portal">
+      <a href="/#produtos">Produtos</a><a href="/#sistemas">Sistemas</a><a href="/#materiais">Materiais</a><a href="/#normas">Normas</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
+    </nav>
+  </div>
+</header>
+<main id="conteudo" tabindex="-1" class="pg-main">
+  <div class="container">
+    <nav class="crumbs" aria-label="Você está em">
+      <ol>${crumbs.map((c, i) => `<li>${c.url && i < crumbs.length - 1 ? `<a href="${c.url}">${esc(c.name)}</a>` : `<span aria-current="page">${esc(c.name)}</span>`}</li>`).join('')}</ol>
+    </nav>
+    <article class="sheet sheet--page${wide ? ' sheet--wide' : ''}">
+${body}
+    </article>
+  </div>
+</main>
+<footer class="pg-foot">
+  <div class="container pg-foot__inner">
+    <p><strong>PipeSystem</strong> — o portal da hidráulica e dos sistemas de condução de fluidos.</p>
+    <p><a href="/">Página inicial</a> · <a href="/#produtos">Guia técnico</a> · <a href="/#materiais">Catálogo</a> · <a href="/#normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+    <p class="pg-foot__copy">© ${new Date().getFullYear()} PipeSystem Serviços de Consultoria Ltda.</p>
+  </div>
+</footer>
+</body>
+</html>
+`;
+}
+
+// ---------- geração ----------
+export function generate(D, outDir) {
+  const pages = [];
+  const { linkNorms, normTags } = D;
+  const groupById = Object.fromEntries(D.PRODUCT_GROUPS.map(g => [g.id, g]));
+  const productById = Object.fromEntries(D.PRODUCTS.map(p => [p.id, p]));
+  const systemsUsing = id => D.SYSTEMS.filter(s => (s.produtos || []).includes(id));
+  const materialsOf = id => D.CATALOG.filter(m => m.rel === id);
+  const normNote = '<p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>';
+  const links = arr => `<p class="relprod">${arr.map(([href, name]) => `<a href="${href}">${esc(name)}</a>`).join('')}</p>`;
+
+  // Produtos
+  for (const p of D.PRODUCTS) {
+    const g = groupById[p.g]; const url = pathOf.produto(p.id);
+    const irmaos = D.PRODUCTS.filter(x => x.g === p.g && x.id !== p.id);
+    const sist = systemsUsing(p.id), mats = materialsOf(p.id);
+    const body = `      <div class="sheet__head"><div class="prod__icon"><svg viewBox="0 0 64 64" aria-hidden="true">${g.icon}</svg></div>
+        <div><p class="eyebrow">Guia técnico · ${esc(g.name)}</p><h1 id="sheetTitle" class="page__title">${esc(p.name)}</h1></div></div>
+      <p class="sheet__desc page__lead">${linkNorms(p.desc)}</p>
+      ${fotosHTML(p.fotos)}
+      ${tabelasHTML(p.tabelas, linkNorms)}
+      <div class="prod__cols">
+        <section><h2 class="page__h">Tipos</h2><ul>${list(p.tipos, linkNorms)}</ul></section>
+        <section><h2 class="page__h">Como escolher</h2><ul>${list(p.escolha, linkNorms)}</ul></section>
+      </div>
+      <h2 class="page__h">Normas de referência</h2>
+      <p class="tags tags--links">${normTags(p.normas)}</p>${normNote}
+      ${mats.length ? `<h2 class="page__h">No catálogo de materiais</h2>${links(mats.map(m => [pathOf.material(m.id), m.name]))}` : ''}
+      ${sist.length ? `<h2 class="page__h">Onde é usado</h2>${links(sist.map(s => [pathOf.sistema(s.id), s.name]))}` : ''}
+      ${irmaos.length ? `<h2 class="page__h">Outros itens de ${esc(g.name)}</h2>${links(irmaos.map(x => [pathOf.produto(x.id), x.name]))}` : ''}
+      <div class="sheet__actions">
+        <a href="${contato('Cotação de materiais', `Cotação de ${p.name}: (informe diâmetros, quantidades e local de entrega) `)}" class="btn">Solicitar cotação</a>
+        <a href="${contato('Consulta técnica', `Dúvida técnica sobre ${p.name}: `)}" class="btn btn--ghost">Tirar uma dúvida técnica</a>
+      </div>`;
+    const f0 = (p.fotos || [])[0];
+    pages.push({ url, images: (p.fotos || []).map(f => abs(f.src)), html: page({
+      url, wide: !!p.tabelas, body,
+      title: `${p.name} — tipos, normas e como escolher | PipeSystem`,
+      description: cut(`${plain(p.desc)} Tipos, critérios de escolha e normas (${p.normas.slice(0, 3).join(', ')}).`, 158),
+      image: f0 && abs(f0.src), imageAlt: f0 && f0.alt, keywords: [p.name, g.name, ...p.normas].join(', '),
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Guia técnico de produtos', url: '/#produtos' }, { name: p.name, url }],
+    }) });
+  }
+
+  // Sistemas
+  for (const s of D.SYSTEMS) {
+    const url = pathOf.sistema(s.id);
+    const svg = s.svg.replace(/<path class="(p2?|pe)([^"]*)"([^>]*)\/>/g, m => m + m.replace(/class="[^"]*"/, 'class="flowline"'));
+    const fotos = D.SYSTEM_PHOTOS[s.id] || [];
+    const outros = D.SYSTEMS.filter(x => x.id !== s.id);
+    const body = `      <div class="sheet__head"><span class="sys__dot sys__dot--lg" style="--c:${s.color}"></span>
+        <div><p class="eyebrow">Sistema hidráulico</p><h1 id="sheetTitle" class="page__title">${esc(s.name)}</h1></div></div>
+      <figure class="sysfig" style="--c:${s.color}">
+        <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${esc(s.name)}">${svg}</svg>
+        <figcaption>Esquema ilustrativo, sem escala</figcaption>
+      </figure>
+      ${fotosHTML(fotos, 'Instalações reais')}
+      <p class="sheet__desc page__lead">${linkNorms(s.desc)}</p>
+      <div class="prod__cols">
+        <section><h2 class="page__h">Componentes principais</h2><ul>${list(s.componentes, linkNorms)}</ul></section>
+        <section><h2 class="page__h">Pontos de atenção</h2><ul>${list(s.cuidados, linkNorms)}</ul></section>
+      </div>
+      <h2 class="page__h">Normas de referência</h2>
+      <p class="tags tags--links">${normTags(s.normas)}</p>${normNote}
+      <h2 class="page__h">Produtos do guia técnico</h2>${links(s.produtos.filter(id => productById[id]).map(id => [pathOf.produto(id), productById[id].name]))}
+      <h2 class="page__h">Outros sistemas</h2>${links(outros.map(x => [pathOf.sistema(x.id), x.name]))}
+      <div class="sheet__actions">
+        <a href="${contato('Consulta técnica', `Pergunta sobre ${s.name}: `)}" class="btn">Fazer uma pergunta</a>
+        <a href="${contato('Cotação de materiais', `Cotação para ${s.name}: `)}" class="btn btn--ghost">Solicitar cotação</a>
+      </div>`;
+    pages.push({ url, images: fotos.map(f => abs(f.src)), html: page({
+      url, body,
+      title: `${s.name} — sistema hidráulico: componentes e normas | PipeSystem`,
+      description: cut(`${plain(s.desc)}`, 158),
+      image: fotos[0] && abs(fotos[0].src), imageAlt: fotos[0] && fotos[0].alt, keywords: [s.name, ...s.normas].join(', '),
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Sistemas hidráulicos', url: '/#sistemas' }, { name: s.name, url }],
+    }) });
+  }
+
+  // Catálogo de materiais
+  for (const m of D.CATALOG) {
+    const url = pathOf.material(m.id); const foto = materialPhoto(D, m);
+    const relp = productById[m.rel]; const fabs = D.MANUFACTURERS[m.id] || [];
+    const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); const misto = fabs.some(f => f[2] === 'M');
+    const mesmos = D.CATALOG.filter(x => x.cat === m.cat && x.id !== m.id);
+    const fig = foto ? `<figure class="matfig matfig--foto">
+        <img src="${esc(rel(foto.src))}" alt="${esc(foto.alt)}"${foto.inteira ? ' class="inteira"' : ''} decoding="async">
+        <figcaption>${foto.legenda} · Foto: <a href="${esc(foto.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(foto.autor)}</a> (<a href="${esc(foto.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(foto.licenca)}</a>), via Wikimedia Commons</figcaption>
+      </figure>` : `<figure class="matfig" style="--m:${m.tone}">
+        <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${esc(m.name)}">${D.MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
+        <figcaption>Ilustração representativa</figcaption>
+      </figure>`;
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">${esc(m.name)}</h1></div></div>
+      ${fig}
+      <p class="sheet__desc page__lead">${linkNorms(m.desc)}</p>
+      <h2 class="page__h">Dados técnicos</h2>
+      <table class="specs"><tbody>${m.specs.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${linkNorms(v)}</td></tr>`).join('')}</tbody></table>
+      <h2 class="page__h">Aplicações</h2><p class="sheet__desc">${linkNorms(m.apps)}.</p>
+      <h2 class="page__h">Normas de referência</h2>
+      <p class="tags tags--links">${normTags(m.normas)}</p>${normNote}
+      ${relp ? `<p class="relprod"><a href="${pathOf.produto(relp.id)}">Ver ficha de ${esc(relp.name)} no guia técnico →</a></p>` : ''}
+      ${fabs.length ? `<h2 class="page__h">${importers ? 'Importadores' : misto ? 'Fabricantes e importadores' : 'Fabricantes'}</h2>
+      <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">
+        <span class="fabs__name notranslate" translate="no">${esc(n)}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span></a>`
+        : `<span class="fabs__nolink"><span class="fabs__name notranslate" translate="no">${esc(n)}</span><span class="fabs__site">site em breve</span></span>`}
+        <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
+      <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : misto ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="/#anuncie">Anuncie aqui</a>.</p>` : ''}
+      ${mesmos.length ? `<h2 class="page__h">Outros itens de ${esc(m.cat)}</h2>${links(mesmos.map(x => [pathOf.material(x.id), x.name]))}` : ''}
+      <div class="sheet__actions">
+        <a href="${contato('Cotação de materiais', `Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) `)}" class="btn">Solicitar cotação</a>
+        <a href="${contato('Consulta técnica', `Consulta sobre ${m.name}: `)}" class="btn btn--ghost">Consulta técnica</a>
+      </div>`;
+    pages.push({ url, images: foto ? [abs(foto.src)] : [], html: page({
+      url, body,
+      title: `${m.name} — dados técnicos e fabricantes | PipeSystem`,
+      description: cut(`${plain(m.desc)} Dados técnicos, normas e ${importers ? 'importadores' : 'fabricantes'}.`, 158),
+      image: foto && abs(foto.src), imageAlt: foto && foto.alt, keywords: [m.name, m.cat, ...m.normas].join(', '),
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Catálogo de materiais', url: '/#materiais' }, { name: m.name, url }],
+    }) });
+  }
+
+  for (const p of pages) {
+    const file = join(outDir, p.url.replace(/^\//, '') + '.html');
+    mkdirSync(join(file, '..'), { recursive: true });
+    writeFileSync(file, p.html);
+  }
+  return pages;
+}
+
+// ---------- sitemap ----------
+export function sitemap(pages, homeImages, outDir) {
+  const today = new Date().toISOString().slice(0, 10);
+  const urlEntry = (loc, imgs, priority) => [
+    '  <url>', `    <loc>${loc}</loc>`, `    <lastmod>${today}</lastmod>`, `    <priority>${priority}</priority>`,
+    ...imgs.map(i => `    <image:image><image:loc>${esc(i)}</image:loc></image:image>`), '  </url>'].join('\n');
+  const xml = ['<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+    urlEntry(BASE + '/', homeImages, '1.0'),
+    ...pages.map(p => urlEntry(BASE + p.url, p.images, '0.8')),
+    '</urlset>', ''].join('\n');
+  writeFileSync(join(outDir, 'sitemap.xml'), xml);
+}

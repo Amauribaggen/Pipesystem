@@ -3,6 +3,7 @@
 import { cpSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { BASE, loadData, generate, sitemap } from './pages.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const src = join(root, 'site');
@@ -15,6 +16,16 @@ if (!existsSync(join(src, 'index.html'))) {
 
 rmSync(out, { recursive: true, force: true });
 cpSync(src, out, { recursive: true });
+
+// Páginas próprias de cada ficha (produtos, sistemas e materiais) + sitemap.xml com todas as URLs
+const D = loadData(src);
+const pages = generate(D, out);
+const fotos = [...new Set([
+  ...D.PRODUCTS.flatMap(p => (p.fotos || []).map(f => f.src)),
+  ...Object.values(D.SYSTEM_PHOTOS).flatMap(a => a.map(f => f.src)),
+])].map(s => `${BASE}/${s}`);
+sitemap(pages, [`${BASE}/img/og-pipesystem.jpg`, ...fotos], out);
+console.log(`Páginas geradas: ${pages.length} (+ página inicial) · sitemap.xml com ${pages.length + 1} URLs`);
 
 // Resumo do que foi gerado
 let files = 0, bytes = 0;

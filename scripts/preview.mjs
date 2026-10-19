@@ -15,6 +15,7 @@ const types = {
 createServer(async (req, res) => {
   let path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^([/\\])+/, '');
   if (!path || path.endsWith('/') || path.endsWith('\\')) path += 'index.html';
+  else if (!extname(path)) path += '.html';   // URLs limpas, como na Vercel: /produtos/bombas -> produtos/bombas.html
   const file = join(dist, path);
   if (!file.startsWith(dist)) { res.writeHead(403).end(); return; }
   try {
