@@ -1136,3 +1136,58 @@ const ARTICLES = [
   window.addEventListener('load', fitHeader);
   fitHeader();
 })();
+// ===== Vinheta de abertura (vídeo do logotipo) =====
+// Toca em tela cheia na primeira entrada da visita e depois some, revelando a página.
+// Começa sem som (os navegadores só permitem tocar sozinho assim); o visitante pode ativar o som ou pular.
+// Não aparece em links diretos para uma seção/ficha (ex.: /#bombas) nem se o vídeo demorar para carregar.
+(() => {
+  const intro = document.getElementById('intro');
+  const video = document.getElementById('introVideo');
+  const bar = document.getElementById('introProgress');
+  const soundBtn = document.getElementById('introSound');
+  if (!intro || !video) return;
+  const SEEN = 'pipesystem-vinheta-vista';
+  let timer, maxTimer, closing = false;
+
+  function close() {
+    if (closing || intro.hidden) return;
+    closing = true;
+    clearTimeout(timer); clearTimeout(maxTimer);
+    try { sessionStorage.setItem(SEEN, '1'); } catch {}
+    intro.classList.add('intro--out');
+    document.documentElement.classList.remove('intro-open');
+    setTimeout(() => { intro.hidden = true; intro.classList.remove('intro--out'); video.pause(); closing = false; }, 600);
+  }
+  function open() {
+    intro.hidden = false;
+    document.documentElement.classList.add('intro-open');
+    video.muted = true; soundBtn.textContent = '🔇 Ativar som'; soundBtn.setAttribute('aria-pressed', 'false');
+    video.currentTime = 0;
+    video.preload = 'auto';
+    // Se o vídeo não começar em 4 s (internet lenta, bloqueio), a página aparece direto
+    timer = setTimeout(() => { if (video.currentTime < 0.1) close(); }, 4000);
+    // Segurança: a vinheta nunca fica presa na tela por mais de 15 s
+    maxTimer = setTimeout(close, 15000);
+    video.play().catch(close);
+    document.getElementById('introSkip').focus({ preventScroll: true });
+  }
+
+  video.addEventListener('ended', close);
+  // Se o visitante trocar de aba, o navegador pausa o vídeo; ao voltar, ele continua
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !intro.hidden && video.paused) video.play().catch(close); });
+  video.addEventListener('error', close);
+  video.addEventListener('timeupdate', () => { if (video.duration) bar.style.width = (video.currentTime / video.duration * 100) + '%'; });
+  document.getElementById('introSkip').addEventListener('click', close);
+  soundBtn.addEventListener('click', () => {
+    video.muted = !video.muted;
+    soundBtn.textContent = video.muted ? '🔇 Ativar som' : '🔊 Som ativado';
+    soundBtn.setAttribute('aria-pressed', String(!video.muted));
+  });
+  intro.addEventListener('click', e => { if (e.target === intro || e.target === video) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !intro.hidden) close(); });
+  document.getElementById('introReplay')?.addEventListener('click', e => { e.preventDefault(); open(); });
+
+  let seen = false;
+  try { seen = sessionStorage.getItem(SEEN) === '1'; } catch {}
+  if (!seen && !location.hash) open();
+})();

@@ -14,6 +14,16 @@
 </head>
 <body>
 
+<!-- Vinheta de abertura: toca uma vez por visita, sem som (regra dos navegadores), com botões de som e pular -->
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="Vinheta de abertura PipeSystem" hidden>
+  <video id="introVideo" muted playsinline preload="none" src="video/abertura-pipesystem.mp4"></video>
+  <div class="intro__bar">
+    <button type="button" class="intro__btn" id="introSound" aria-pressed="false">🔇 Ativar som</button>
+    <button type="button" class="intro__btn intro__btn--skip" id="introSkip">Pular vinheta ✕</button>
+  </div>
+  <div class="intro__progress" aria-hidden="true"><span id="introProgress"></span></div>
+</div>
+
 <header class="nav" id="top">
   <div class="container nav__inner">
     <a href="#top" class="logo" aria-label="PIPESYSTEM — início">
@@ -822,6 +832,7 @@
   <div class="footer__bottom">
     <div class="container footer__bottom-inner">
       <p>© <span id="year"></span> <span translate="no" class="notranslate">PipeSystem</span> Serviços de Consultoria Ltda. Todos os direitos reservados.</p>
+      <a href="#" class="footer__top" id="introReplay">▶ Assistir à vinheta</a>
       <a href="#top" class="footer__top">Voltar ao topo ↑</a>
     </div>
   </div>

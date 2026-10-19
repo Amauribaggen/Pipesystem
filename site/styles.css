@@ -958,3 +958,19 @@ html.nav-collapse #navLinks .nav__hot { align-self: flex-start; margin: 6px 0; }
 html.nav-collapse .nav__links .btn { margin-top: 8px; }.dd__all { display: block; margin: 0 0 10px; padding: .45em .8em; border-radius: 8px; font-weight: 700; font-size: .88rem; color: #138a99; background: #eef8fa; }
 .dd__all:hover { background: #dff3f6; }
 html.nav-collapse .dd__all, .nav__links .dd__all { break-inside: avoid; }
+/* ===== Vinheta de abertura ===== */
+.intro { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #04101f; transition: opacity .6s ease; }
+.intro[hidden] { display: none; }
+.intro video { width: 100%; height: 100%; object-fit: contain; background: #04101f; }
+.intro--out { opacity: 0; pointer-events: none; }
+.intro__bar { position: absolute; right: 16px; bottom: 22px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.intro__btn { border: 1px solid rgba(255, 255, 255, .35); background: rgba(4, 16, 31, .6); color: #fff; font: 600 .9rem var(--font); padding: .55em 1.1em; border-radius: 999px; cursor: pointer; backdrop-filter: blur(4px); }
+.intro__btn:hover, .intro__btn:focus-visible { border-color: #f2a03d; color: #f2a03d; outline: none; }
+.intro__btn--skip { background: #f2a03d; border-color: #f2a03d; color: #1b1203; }
+.intro__btn--skip:hover, .intro__btn--skip:focus-visible { color: #1b1203; filter: brightness(1.08); }
+.intro__progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255, 255, 255, .12); }
+.intro__progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #1fb6c9, #f2a03d); }
+html.intro-open { overflow: hidden; }
+@media (max-width: 600px) { .intro__bar { left: 16px; right: 16px; justify-content: center; } }
+/* Telas na horizontal: o vídeo ocupa a tela toda (o logotipo fica no centro, nada importante é cortado) */
+@media (min-aspect-ratio: 4/3) { .intro video { object-fit: cover; } }
