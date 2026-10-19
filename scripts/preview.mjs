@@ -18,8 +18,10 @@ createServer(async (req, res) => {
   else if (!extname(path)) path += '.html';   // URLs limpas, como na Vercel: /produtos/bombas -> produtos/bombas.html
   const file = join(dist, path);
   if (!file.startsWith(dist)) { res.writeHead(403).end(); return; }
+  // seções da página inicial (/sistemas, /contato...) entregam index.html, como os rewrites do vercel.json
+  const secoes = /^(cotacoes|produtos|sistemas|materiais|ferramentas|normas|artigos|feiras|para-quem-e|anuncie|assinaturas|quem-somos|contato)\.html$/;
   try {
-    const body = await readFile(file);
+    const body = await readFile(secoes.test(path) ? join(dist, 'index.html') : file);
     res.writeHead(200, { 'Content-Type': types[extname(file).toLowerCase()] || 'application/octet-stream' }).end(body);
   } catch {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Não encontrado');

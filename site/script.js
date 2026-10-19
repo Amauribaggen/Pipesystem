@@ -267,6 +267,7 @@ function openProduct(id) {
     if (!sheet.open) sheet.showModal();
     setSheetTitle(id);
     sheet.scrollTop = 0;
+    if (!/^\/(produtos|sistemas|materiais)\/./.test(location.pathname)) sheet.dataset.back = location.pathname + location.search;
     history.replaceState(null, '', sheetPath(id));   // endereço real da ficha (ex.: /produtos/bombas)
     return;
   }
@@ -294,7 +295,8 @@ function openProduct(id) {
   if (!sheet.open) sheet.showModal();
   setSheetTitle(id);
   sheet.scrollTop = 0;
-  history.replaceState(null, '', sheetPath(id));   // endereço real da ficha (ex.: /produtos/bombas)
+  if (!/^\/(produtos|sistemas|materiais)\/./.test(location.pathname)) sheet.dataset.back = location.pathname + location.search;
+    history.replaceState(null, '', sheetPath(id));   // endereço real da ficha (ex.: /produtos/bombas)
 }
 // Título da aba do navegador acompanha a ficha aberta (volta ao original ao fechar)
 const BASE_TITLE = document.title;
@@ -313,7 +315,7 @@ sheet.addEventListener('click', e => {
 });
 sheet.addEventListener('close', () => {
   document.title = BASE_TITLE;
-  history.replaceState(null, '', '/');   // ao fechar a ficha, volta ao endereço limpo da página inicial
+  history.replaceState(null, '', sheet.dataset.back || '/');   // volta ao endereço de onde a ficha foi aberta
 });
 // Endereço próprio de cada ficha (as páginas são geradas no build: /produtos, /sistemas, /materiais)
 function sheetPath(id) {
@@ -798,7 +800,7 @@ document.addEventListener('click', e => {
   e.preventDefault();
   const sheet = document.getElementById('prodSheet');
   if (sheet && sheet.open) sheet.close();
-  history.replaceState(null, '', location.pathname + location.search);
+  if (location.pathname !== '/' || location.hash) history.pushState(null, '', '/');   // topo = página inicial
   window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 });
 
@@ -1216,22 +1218,54 @@ const ARTICLES = [
 
   let seen = false;
   try { seen = sessionStorage.getItem(SEEN) === '1'; } catch {}
-  if (!seen && !location.hash && !location.search) open();
+  if (!seen && !location.hash && !location.search && location.pathname === '/') open();
 })();
 
-// ===== Endereço limpo =====
-// Os itens do menu levam a seções da própria página (#produtos, #contato...). Depois de rolar até a seção,
-// o "#" e os parâmetros usados só para preencher formulários (?assunto=, ?msg=) saem do endereço.
+// ===== Endereços das seções =====
+// Cada seção da página inicial tem um endereço próprio: clicar em "Sistemas" mostra /sistemas na barra,
+// abrir /sistemas direto (link compartilhado ou F5) leva à seção, e o botão "voltar" volta à seção anterior.
+// Na Vercel, esses endereços entregam a página inicial (rewrites em vercel.json); o canonical continua "/".
+const SECTION_PATHS = {
+  servicos: 'cotacoes', produtos: 'produtos', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'ferramentas',
+  normas: 'normas', artigos: 'artigos', feiras: 'feiras', publico: 'para-quem-e', anuncie: 'anuncie',
+  assinaturas: 'assinaturas', sobre: 'quem-somos', contato: 'contato',
+};
+const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([id, path]) => [path, id]));
 (() => {
-  const clean = () => {
-    const id = location.hash.slice(1);
-    const qs = new URLSearchParams(location.search);
-    const onlyForm = [...qs.keys()].every(k => k === 'assunto' || k === 'msg');
-    if (sheet.open) return;                                         // ficha aberta: mantém /produtos/...
-    if ((id && document.getElementById(id) && !hasSheet(id)) || (location.search && onlyForm)) {
-      setTimeout(() => history.replaceState(null, '', '/' + (onlyForm ? '' : location.search)), 60);
-    }
+  const go = (id, how = 'push', smooth = true) => {
+    const el = document.getElementById(id); if (!el) return;
+    el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    const url = '/' + SECTION_PATHS[id];
+    if (location.pathname + location.search + location.hash !== url) history[how === 'push' ? 'pushState' : 'replaceState']({ secao: id }, '', url);
   };
-  window.addEventListener('hashchange', clean);
-  window.addEventListener('load', clean);
+  // cliques em qualquer link para uma seção (menu, rodapé, botões "Fale conosco"...)
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.defaultPrevented || e.button || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    const id = a.getAttribute('href').slice(1);
+    if (!SECTION_PATHS[id]) return;
+    e.preventDefault();
+    if (sheet.open) sheet.close();
+    go(id);
+  });
+  // "voltar" / "avançar" do navegador (a rolagem é feita aqui, não pelo navegador)
+  history.scrollRestoration = 'manual';
+  window.addEventListener('popstate', () => {
+    const id = SECTION_OF_PATH[location.pathname.slice(1)];
+    if (id) document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  // ao abrir o site por um endereço de seção (/sistemas) ou por um link antigo com "#" (/#sistemas)
+  const start = () => {
+    const byPath = SECTION_OF_PATH[location.pathname.slice(1)];
+    const byHash = SECTION_PATHS[location.hash.slice(1)] ? location.hash.slice(1) : null;
+    const id = byPath || byHash;
+    if (!id || sheet.open) return;
+    const qs = new URLSearchParams(location.search);
+    const onlyForm = [...qs.keys()].every(k => k === 'assunto' || k === 'msg');   // ?assunto=&msg= já preencheram o formulário
+    go(id, 'replace', false);
+    if (location.search && onlyForm) history.replaceState({ secao: id }, '', '/' + SECTION_PATHS[id]);
+  };
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
+  window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (SECTION_PATHS[id] && !sheet.open) go(id, 'replace'); });
 })();

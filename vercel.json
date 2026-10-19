@@ -5,6 +5,9 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/(cotacoes|produtos|sistemas|materiais|ferramentas|normas|artigos|feiras|para-quem-e|anuncie|assinaturas|quem-somos|contato)", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
