@@ -1094,13 +1094,32 @@ const ARTICLES = [
 
   const dds = [...links.querySelectorAll('.dd')];
   const setDd = (dd, open) => { dd.classList.toggle('open', open); dd.querySelector('.dd__btn').setAttribute('aria-expanded', open); };
-  // Mantém o submenu dentro da tela (o de Produtos saía pela esquerda)
+  // Mantém o submenu dentro da tela: nos lados (o de Produtos saía pela esquerda) e embaixo
+  // (em telas baixas, os últimos itens ficavam abaixo da janela): primeiro ganha mais colunas, e se ainda não couber, rola.
   const fit = dd => {
     const menu = dd.querySelector('.dd__menu');
-    menu.style.marginLeft = '0px';
+    Object.assign(menu.style, { marginLeft: '0px', width: '', columns: '', maxHeight: '', overflowY: '' });
+    if (compact()) return;
     requestAnimationFrame(() => {
-      const r = menu.getBoundingClientRect();
+      let r = menu.getBoundingClientRect();
       if (!r.width) return;
+      const avail = innerHeight - r.top - 12;
+      if (r.height > avail) {
+        let n = parseInt(getComputedStyle(menu).columnCount) || 0;
+        if (n) {
+          const colW = r.width / n;
+          while (r.height > avail && (n + 1) * colW <= innerWidth - 24) {
+            n++;
+            Object.assign(menu.style, { width: n * colW + 'px', columnCount: n });
+            r = menu.getBoundingClientRect();
+          }
+        }
+        if (r.height > avail) {   // tela muito baixa: uma coluna só, com rolagem
+          if (n) Object.assign(menu.style, { width: Math.min(r.width, 300) + 'px', columns: 'auto' });
+          Object.assign(menu.style, { maxHeight: avail + 'px', overflowY: 'auto' });
+          r = menu.getBoundingClientRect();
+        }
+      }
       const shift = r.left < 12 ? 12 - r.left : r.right > innerWidth - 12 ? innerWidth - 12 - r.right : 0;
       menu.style.marginLeft = shift + 'px';
     });

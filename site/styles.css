@@ -50,6 +50,8 @@ p { margin: 0 0 1em; }
 .dd__btn svg { width: 12px; height: 12px; transition: transform .2s; }
 .dd__menu { position: absolute; top: calc(100% + 14px); left: -16px; min-width: 190px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 8px; display: none; flex-direction: column; }
 .dd__menu::before { content: ""; position: absolute; inset: -16px 0 auto; height: 16px; }
+/* ponte invisível entre o item do menu e o submenu (vale também quando o submenu rola e corta o ::before) */
+@media (min-width: 1181px) { .dd::after { content: ""; position: absolute; left: -16px; right: -16px; top: 100%; height: 16px; } .dd__menu { overscroll-behavior: contain; } }
 .dd__menu a { padding: .55em .8em; border-radius: 8px; }
 .dd__menu a:hover { background: var(--bg-alt); }
 .dd:hover .dd__menu, .dd:focus-within .dd__menu, .dd.open .dd__menu { display: flex; }
