@@ -267,7 +267,7 @@ function openProduct(id) {
     if (!sheet.open) sheet.showModal();
     setSheetTitle(id);
     sheet.scrollTop = 0;
-    history.replaceState(null, '', '#' + id);
+    history.replaceState(null, '', sheetPath(id));   // endereço real da ficha (ex.: /produtos/bombas)
     return;
   }
   const p = productById[id];
@@ -294,7 +294,7 @@ function openProduct(id) {
   if (!sheet.open) sheet.showModal();
   setSheetTitle(id);
   sheet.scrollTop = 0;
-  history.replaceState(null, '', '#' + id);
+  history.replaceState(null, '', sheetPath(id));   // endereço real da ficha (ex.: /produtos/bombas)
 }
 // Título da aba do navegador acompanha a ficha aberta (volta ao original ao fechar)
 const BASE_TITLE = document.title;
@@ -313,11 +313,12 @@ sheet.addEventListener('click', e => {
 });
 sheet.addEventListener('close', () => {
   document.title = BASE_TITLE;
-  const id = location.hash.slice(1);
-  if (productById[id]) history.replaceState(null, '', '#produtos');
-  if (systemById[id]) history.replaceState(null, '', '#sistemas');
-  if (materialById[id]) history.replaceState(null, '', '#materiais');
+  history.replaceState(null, '', '/');   // ao fechar a ficha, volta ao endereço limpo da página inicial
 });
+// Endereço próprio de cada ficha (as páginas são geradas no build: /produtos, /sistemas, /materiais)
+function sheetPath(id) {
+  return productById[id] ? '/produtos/' + id : systemById[id] ? '/sistemas/' + id.slice(4) : '/materiais/' + id.slice(4);
+}
 
 // Qualquer link para um produto, sistema ou material (menu, cartões, fichas) abre a ficha
 document.addEventListener('click', e => {
@@ -1216,4 +1217,21 @@ const ARTICLES = [
   let seen = false;
   try { seen = sessionStorage.getItem(SEEN) === '1'; } catch {}
   if (!seen && !location.hash && !location.search) open();
+})();
+
+// ===== Endereço limpo =====
+// Os itens do menu levam a seções da própria página (#produtos, #contato...). Depois de rolar até a seção,
+// o "#" e os parâmetros usados só para preencher formulários (?assunto=, ?msg=) saem do endereço.
+(() => {
+  const clean = () => {
+    const id = location.hash.slice(1);
+    const qs = new URLSearchParams(location.search);
+    const onlyForm = [...qs.keys()].every(k => k === 'assunto' || k === 'msg');
+    if (sheet.open) return;                                         // ficha aberta: mantém /produtos/...
+    if ((id && document.getElementById(id) && !hasSheet(id)) || (location.search && onlyForm)) {
+      setTimeout(() => history.replaceState(null, '', '/' + (onlyForm ? '' : location.search)), 60);
+    }
+  };
+  window.addEventListener('hashchange', clean);
+  window.addEventListener('load', clean);
 })();
