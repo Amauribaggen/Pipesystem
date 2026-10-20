@@ -112,10 +112,13 @@ document.getElementById('systems').innerHTML = SYSTEMS.map(s =>
   `<a class="sys" href="/sistemas/${s.id.slice(4)}" data-sheet="${s.id}"><span class="sys__dot" style="--c:${s.color}"></span>${s.name}<span class="sys__more" aria-hidden="true">→</span></a>`).join('');
 
 // Galeria de fotos reais com créditos (licenças livres exigem a atribuição)
-function fotosHTML(fotos, titulo = '') {
+// Teste: fotos ampliáveis só nestas fichas (para estender, inclua o id aqui e em scripts/pages.mjs)
+const ZOOM_TEST = new Set(['sis-gas']);
+// zoom = true: clicar na foto abre a imagem ampliada (lightbox.js)
+function fotosHTML(fotos, titulo = '', zoom = false) {
   if (!fotos) return '';
-  return `<figure class="pfotos">${titulo ? `<h4>${titulo}</h4>` : ''}
-      <div class="pfotos__grid">${fotos.map(f => `<div class="pfotos__item"><img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} loading="lazy"><span>${f.legenda}</span></div>`).join('')}</div>
+  return `<figure class="pfotos${zoom ? ' pfotos--zoom' : ''}">${titulo ? `<h4>${titulo}</h4>` : ''}
+      <div class="pfotos__grid">${fotos.map(f => `<div class="pfotos__item"${zoom ? ' tabindex="0" role="button" aria-label="Ampliar foto: ' + f.legenda + '"' : ''}><img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} loading="lazy"><span>${f.legenda}</span></div>`).join('')}</div>
       <figcaption>Fotos: ${fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i).map(f => `<a href="${f.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${f.autor}</a> (<a href="${f.licUrl}" target="_blank" rel="noopener noreferrer">${f.licenca}</a>)`).join(', ')}, via Wikimedia Commons</figcaption>
     </figure>`;
 }
@@ -146,7 +149,7 @@ function renderSystem(s) {
       <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${s.name}">${s.svg}</svg>
       <figcaption>Esquema ilustrativo, sem escala</figcaption>
     </figure>
-    ${fotosHTML(SYSTEM_PHOTOS[s.id], 'Instalações reais')}
+    ${fotosHTML(SYSTEM_PHOTOS[s.id], 'Instalações reais', ZOOM_TEST.has(s.id))}
     <p class="sheet__desc">${linkNorms(s.desc)}</p>
     <div class="prod__cols">
       <div><h4>Componentes principais</h4><ul>${list(s.componentes)}</ul></div>

@@ -34,12 +34,14 @@ export const pathOf = {
 };
 
 // ---------- blocos reaproveitados das fichas do site ----------
-function fotosHTML(fotos, titulo = '') {
+// Teste: fotos ampliáveis (lightbox.js) só nestas fichas — o mesmo conjunto de site/script.js
+const ZOOM_TEST = new Set(['sis-gas']);
+function fotosHTML(fotos, titulo = '', zoom = false) {
   if (!fotos || !fotos.length) return '';
   const credits = fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i)
     .map(f => `<a href="${esc(f.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(f.autor)}</a> (<a href="${esc(f.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(f.licenca)}</a>)`).join(', ');
-  return `<figure class="pfotos">${titulo ? `<h2 class="page__h">${titulo}</h2>` : ''}
-      <div class="pfotos__grid">${fotos.map((f, i) => `<div class="pfotos__item"><img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)}${i ? ' loading="lazy"' : ''} decoding="async"><span>${f.legenda}</span></div>`).join('')}</div>
+  return `<figure class="pfotos${zoom ? ' pfotos--zoom' : ''}">${titulo ? `<h2 class="page__h">${titulo}</h2>` : ''}
+      <div class="pfotos__grid">${fotos.map((f, i) => `<div class="pfotos__item"${zoom ? ' tabindex="0" role="button" aria-label="Ampliar foto: ' + esc(plain(f.legenda)) + '"' : ''}><img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)}${i ? ' loading="lazy"' : ''} decoding="async"><span>${f.legenda}</span></div>`).join('')}</div>
       <figcaption>Fotos: ${credits}, via Wikimedia Commons</figcaption>
     </figure>`;
 }
@@ -150,6 +152,7 @@ ${body}
     <p class="pg-foot__copy">© ${new Date().getFullYear()} PipeSystem Serviços de Consultoria Ltda.</p>
   </div>
 </footer>
+<script src="/lightbox.js" defer></script>
 </body>
 </html>
 `;
@@ -178,7 +181,7 @@ export function generate(D, outDir) {
         <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${esc(s.name)}">${svg}</svg>
         <figcaption>Esquema ilustrativo, sem escala</figcaption>
       </figure>
-      ${fotosHTML(fotos, 'Instalações reais')}
+      ${fotosHTML(fotos, 'Instalações reais', ZOOM_TEST.has(s.id))}
       <p class="sheet__desc page__lead">${linkNorms(s.desc)}</p>
       <div class="prod__cols">
         <section><h2 class="page__h">Componentes principais</h2><ul>${list(s.componentes, linkNorms)}</ul></section>
