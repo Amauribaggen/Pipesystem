@@ -219,7 +219,7 @@ const MANUFACTURERS = {
   'mat-pvc': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Krona', 'https://www.krona.com.br', 'N'], ['Fortlev', 'https://www.fortlev.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N']],
   'mat-cpvc': [['Tigre (Aquatherm)', 'https://www.tigre.com.br', 'N'], ['Krona', 'https://www.krona.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N']],
   'mat-pex': [['Astra', 'https://www.astra-sa.com', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['Uponor', 'https://www.uponor.com', 'I'], ['Rehau', 'https://www.rehau.com', 'I']],
-  'mat-cobre': [['Termomecanica', 'https://www.termomecanica.com.br', 'N'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['KME', 'https://www.kme.com', 'I'], ['Wieland', 'https://www.wieland.com', 'I']],
+  'mat-cobre': [['Termomecanica', 'https://www.termomecanica.com.br', 'N'], ['Paranapanema (Eluma)', 'https://www.paranapanema.com.br', 'N'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['KME', 'https://www.kme.com', 'I'], ['Wieland', 'https://www.wieland.com', 'I']],
   'mat-aco': [['Tenaris', 'https://www.tenaris.com', 'I'], ['Vallourec', 'https://www.vallourec.com', 'I'], ['ArcelorMittal', 'https://brasil.arcelormittal.com', 'I']],
   'mat-pe': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Kanaflex', 'https://www.kanaflex.com.br', 'N'], ['Polierg', 'https://www.polierg.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['GF Piping Systems', 'https://www.gfps.com', 'I']],
   'mat-ferro': [['Saint-Gobain Canalização (PAM)', 'https://www.saint-gobain-canalizacao.com.br', 'I'], ['Electrosteel Castings', 'https://www.electrosteel.com', 'I']],
