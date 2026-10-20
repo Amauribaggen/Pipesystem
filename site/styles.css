@@ -339,7 +339,8 @@ a.normref:hover { color: var(--teal, #1fb6c9); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .sysfig .flowline { animation: none; }
+  /* O fluxo nos esquemas dos sistemas também continua (pedido do cliente), só mais lento */
+  .sysfig .flowline { animation-duration: 4s; }
   /* O fluido da abertura continua em movimento (pedido do cliente), só um pouco mais lento */
   .flow__wave use { animation-duration: 7s; }
   .flow__current use { animation-duration: 3.5s; }
