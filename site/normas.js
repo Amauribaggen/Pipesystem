@@ -40,6 +40,8 @@ const NORM_GROUPS = [
     { code: 'NR-13', org: 'NR', title: 'Reservatórios de ar comprimido são vasos de pressão sujeitos à NR-13' },
   ]},
   { id: 'saneamento', tipo: 'aplicacao', name: 'Saneamento e redes públicas', normas: [
+    { code: 'NBR 12211', org: 'ABNT', title: 'Estudos de concepção de sistemas públicos de abastecimento de água' },
+    { code: 'NBR 12215', org: 'ABNT', title: 'Projeto de adutora de água para abastecimento público' },
     { code: 'NBR 12218', org: 'ABNT', title: 'Projeto de rede de distribuição de água para abastecimento público — Procedimento' },
     { code: 'NBR 12215-1', org: 'ABNT', title: 'Projeto de adutora de água — Parte 1: Conduto forçado' },
     { code: 'NBR 9649', org: 'ABNT', title: 'Projeto de redes coletoras de esgoto sanitário — Procedimento' },
@@ -52,6 +54,8 @@ const NORM_GROUPS = [
   ]},
   { id: 'industrial', tipo: 'aplicacao', name: 'Industrial, petróleo e combustíveis', normas: [
     { code: 'ASME B31.3', org: 'ASME', title: 'Process Piping — tubulações de processo industrial' },
+    { code: 'ASME B31.4', org: 'ASME', title: 'Pipeline Transportation Systems for Liquids and Slurries — dutos de líquidos' },
+    { code: 'ASME B31.8', org: 'ASME', title: 'Gas Transmission and Distribution Piping Systems — dutos de gás' },
     { code: 'NBR 17505-1', org: 'ABNT', title: 'Armazenamento de líquidos inflamáveis e combustíveis — Parte 1: Disposições gerais' },
     { code: 'API 650', org: 'API', title: 'Welded Tanks for Oil Storage — tanques soldados de armazenamento' },
   ]},

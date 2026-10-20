@@ -161,8 +161,8 @@ export function generate(D, outDir) {
   const { linkNorms, normTags } = D;
   const productById = Object.fromEntries(D.PRODUCTS.map(p => [p.id, p]));
   const materialById = Object.fromEntries(D.CATALOG.map(m => [m.id, m]));
-  const materialOf = id => materialById[D.MATERIAL_OF_PRODUCT[id]];
-  const systemsUsing = m => D.SYSTEMS.filter(s => (s.produtos || []).some(id => D.MATERIAL_OF_PRODUCT[id] === m.id));
+  const materialOf = id => materialById[D.MATERIAL_OF_PRODUCT[id] || id];
+  const systemsUsing = m => D.SYSTEMS.filter(s => (s.produtos || []).some(id => (D.MATERIAL_OF_PRODUCT[id] || id) === m.id));
   const normNote = '<p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>';
   const links = arr => `<p class="relprod">${arr.map(([href, name]) => `<a href="${href}">${esc(name)}</a>`).join('')}</p>`;
 

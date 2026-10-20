@@ -137,6 +137,23 @@ const SYSTEMS = [
       <rect class="b" x="230" y="20" width="76" height="40" rx="4"/><text x="268" y="44">Superior</text>
       <text x="86" y="122">Sucção</text><text class="s" x="178" y="76">Recalque</text>` },
 
+  { id: 'sis-adutoras', name: 'Adutoras / linhas de transporte', color: '#0e7c9e',
+    desc: 'Adutoras são as tubulações que levam a água bruta da captação até a estação de tratamento e a água tratada até os reservatórios, por gravidade ou por recalque. As linhas de transporte (dutos) conduzem água, petróleo, derivados e gás natural por longas distâncias. São redes de grande diâmetro e pressão elevada, enterradas ou aparentes, que exigem atenção ao golpe de aríete, ao ar na linha e à corrosão.',
+    componentes: ['Tubos de ferro fundido dúctil, aço, PEAD ou PRFV', 'Estações elevatórias e boosters de pressão', 'Válvulas de bloqueio (borboleta e gaveta), de retenção e de controle', 'Ventosas nos pontos altos e descargas nos pontos baixos', 'Blocos de ancoragem em curvas, tês, reduções e extremidades', 'Macromedidores de vazão e transmissores de pressão'],
+    cuidados: ['Proteção contra golpe de aríete: tanques de alívio, válvulas antecipadoras e partida e parada suaves das bombas', 'Ventosas bem dimensionadas para expulsar e admitir ar', 'Proteção contra corrosão nos tubos metálicos: revestimentos e proteção catódica', 'Teste hidrostático por trechos antes de entrar em operação', 'Faixa de servidão e sinalização dos dutos enterrados'],
+    normas: ['NBR 12215', 'NBR 12211', 'NBR 7675', 'ASME B31.4', 'ASME B31.8'],
+    produtos: ['mat-ferro', 'tubos-aco', 'mat-pe', 'valvulas', 'flanges', 'bombas', 'juntas-vedacao'],
+    svg: `<path class="b dash" d="M8 154H60C96 154 112 112 146 110S196 132 222 116S270 76 312 74"/>
+      <path class="p2" d="M8 146q8-5 16 0t16 0"/><text x="28" y="166">Captação</text>
+      <circle class="b" cx="66" cy="138" r="11"/><text x="66" y="118">Elevatória</text>
+      <path class="p" d="M40 140H55M77 138C104 134 116 102 146 100S194 122 222 106S268 70 284 68"/>
+      <path class="b" d="M98 126l9 5l-9 5zM116 126l-9 5l9 5z" transform="rotate(-24 107 131)"/>
+      <circle class="b" cx="146" cy="88" r="5"/><path class="b" d="M146 93V100"/><text x="146" y="78">Ventosa</text>
+      <path class="pe" d="M194 118V140"/><text x="194" y="152">Descarga</text>
+      <rect class="b" x="236" y="88" width="14" height="10" rx="2"/><text class="s" x="252" y="112">Ancoragem</text>
+      <rect class="b" x="284" y="40" width="28" height="32" rx="3"/><text x="290" y="32">Reservatório</text>
+      <text x="110" y="62">Adutora (perfil do terreno)</text>` },
+
   { id: 'sis-ramais', name: 'Ramais prediais', color: '#14a3a3',
     desc: 'O ramal predial liga a rede pública ao imóvel. Na entrada de água ficam o ramal, o cavalete com o hidrômetro e o alimentador predial, que vai até o reservatório. Na saída, o ramal de esgoto leva os efluentes do imóvel até a rede coletora pública.',
     componentes: ['Colar de tomada e ramal em PEAD ou PVC', 'Cavalete com registro, hidrômetro e válvula de retenção', 'Caixa de proteção do hidrômetro', 'Alimentador predial e torneira de boia', 'Ligação de esgoto com caixa de inspeção'],
@@ -166,6 +183,11 @@ const SYSTEMS = [
 
 // Fotos de instalações reais (Wikimedia Commons, licenças livres; manter os créditos).
 const SYSTEM_PHOTOS = {
+  'sis-adutoras': [
+    { src: 'img/materiais/mat-ferro-1.webp', alt: 'Montagem de tubo de ferro fundido dúctil em vala', legenda: 'Assentamento de adutora', autor: 'Frankemann', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Ductile_cast_iron_pipes.JPG' },
+    { src: 'img/produtos/valvulas-3.webp', alt: 'Válvulas gaveta instaladas em rede de água', legenda: 'Válvulas de bloqueio', autor: 'Cmineraolesana', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Cmo_subministrament.png' },
+    { src: 'img/sistemas/sis-combustiveis-2.webp', alt: 'Feixe de dutos de transporte atravessando o campo', legenda: 'Linhas de transporte', autor: 'Kevin Trahar', licenca: 'CC BY-SA 2.0', licUrl: 'https://creativecommons.org/licenses/by-sa/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:BP_oil_pipes_-_geograph.org.uk_-_461650.jpg' },
+  ],
   'sis-agua': [
     { src: 'img/sistemas/sis-agua-1.webp', alt: 'Tubulação de cobre de água quente instalada na parede', legenda: 'Rede de cobre', autor: 'Tony Webster', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Water_Pipes_-_Water_Heater.jpg' },
     { src: 'img/sistemas/sis-agua-2.webp', alt: 'Aquecedor de água de acumulação com as ligações de entrada e saída', legenda: 'Aquecedor de acumulação', autor: 'Infrogmation of New Orleans', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Rheem_home_gas_water_heater_tank_-_top_of_tank.jpg' },
