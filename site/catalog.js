@@ -267,7 +267,7 @@ const MANUFACTURERS = {
   'mat-cobre': [['Termomecanica', 'https://www.termomecanica.com.br', 'N'], ['Paranapanema (Eluma)', 'https://www.paranapanema.com.br', 'N'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['KME', 'https://www.kme.com', 'I'], ['Wieland', 'https://www.wieland.com', 'I']],
   'mat-aco': [['Tenaris', 'https://www.tenaris.com', 'I'], ['Vallourec', 'https://www.vallourec.com', 'I'], ['ArcelorMittal', 'https://brasil.arcelormittal.com', 'I']],
   'mat-pe': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Kanaflex', 'https://www.kanaflex.com.br', 'N'], ['Polierg', 'https://www.polierg.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['GF Piping Systems', 'https://www.gfps.com', 'I']],
-  'mat-ferro': [['Saint-Gobain Canalização (PAM)', 'https://www.saint-gobain-canalizacao.com.br', 'I'], ['Electrosteel Castings', 'https://www.electrosteel.com', 'I']],
+  'mat-ferro': [['Saint-Gobain Canalização (PAM)', 'https://www.saint-gobain-canalizacao.com.br', 'N'], ['Electrosteel Castings', 'https://www.electrosteel.com', 'I']],
   'mat-inox': [['Aperam', 'https://www.aperam.com', 'I'], ['Outokumpu', 'https://www.outokumpu.com', 'I'], ['Alleima', 'https://www.alleima.com', 'I']],
   'mat-galv': [['Tupy', 'https://www.tupy.com.br', 'N'], ['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M'], ['ASC Engineered Solutions (Anvil)', 'https://www.asc-es.com', 'I']],
   'mat-conexoes-cobre': [['Paranapanema (Eluma)', 'https://www.paranapanema.com.br', 'N'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['NIBCO', 'https://www.nibco.com', 'I'], ['Viega', 'https://www.viega.com', 'I']],
