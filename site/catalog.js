@@ -44,6 +44,10 @@ const CATALOG = [
     desc: 'Conexões com pontas ranhuradas (curvas, tês, reduções, cruzetas e tampões), unidas por acoplamentos mecânicos com junta de borracha. A montagem é rápida, sem solda e sem rosca. São padrão em redes de sprinklers e hidrantes e cada vez mais usadas em HVAC, água gelada, saneamento e mineração.',
     specs: [['Material', 'Ferro dúctil ASTM A536 (65-45-12), pintado em vermelho ou galvanizado'], ['Diâmetros', '1" a 12" (DN 25 a DN 300)'], ['Pressão', 'Até 300 psi (2,07 MPa), conforme o modelo e o diâmetro'], ['Peças', 'Curvas de 90° e 45°, tês, tês de redução, cruzetas, reduções concêntricas e tampões'], ['Ranhura', 'Laminada (roll groove) ou usinada (cut groove), conforme AWWA C606'], ['Aprovações', 'UL / FM para sistemas de combate a incêndio']],
     normas: ['AWWA C606', 'UL 213', 'ASTM A536', 'NFPA 13'] },
+  { id: 'mat-conexoes-cobre', cat: 'Conexões', name: 'Conexões de Cobre', apps: 'Água quente e fria, gás, GLP e refrigeração', art: 'fittings', tone: '#d1834e', rel: 'conexoes-cobre',
+    desc: 'Conexões de cobre para redes de tubos de cobre, unidas por solda capilar, brasagem ou prensagem. Formam com o tubo um sistema rígido, durável e resistente a altas temperaturas, usado em água quente, gás, GLP, ar-condicionado e refrigeração.',
+    specs: [['Material', 'Cobre desoxidado (Cu-DHP) nos diâmetros menores; latão ou bronze nos maiores e nas transições'], ['Diâmetros', '15 a 104 mm, compatíveis com os tubos de cobre classes A, E e I (NBR 13206)'], ['União', 'Solda capilar (com ou sem anel de solda), brasagem ou prensagem (press-fit) com anel de vedação'], ['Peças', 'Curvas de 45° e 90°, cotovelos, tês, luvas, reduções, uniões, conectores e tampões'], ['Transições', 'Conectores e adaptadores de bronze com rosca para registros, válvulas e equipamentos']],
+    normas: ['NBR 11720', 'NBR 13206', 'NBR 15345', 'ASME B16.22'] },
   { id: 'mat-latao', cat: 'Conexões', name: 'Conexões de latão e bronze', apps: 'Água, gás e GLP', art: 'fittings', tone: '#d8b45a', rel: 'conexoes-cobre',
     desc: 'Conexões em ligas de cobre para redes de cobre, transições entre materiais e instalações de gás e GLP.',
     specs: [['Material', 'Latão forjado e bronze fundido'], ['Diâmetros', '15 a 104 mm (solda) · 1/4" a 2" (rosca)'], ['União', 'Solda capilar, compressão (anilha), prensagem ou rosca'], ['Aplicação', 'Água quente e fria, gás, GLP e refrigeração'], ['Peças', 'Cotovelos, tês, luvas, uniões, adaptadores e transições']],
@@ -225,6 +229,7 @@ const MANUFACTURERS = {
   'mat-ferro': [['Saint-Gobain Canalização (PAM)', 'https://www.saint-gobain-canalizacao.com.br', 'I'], ['Electrosteel Castings', 'https://www.electrosteel.com', 'I']],
   'mat-inox': [['Aperam', 'https://www.aperam.com', 'I'], ['Outokumpu', 'https://www.outokumpu.com', 'I'], ['Alleima', 'https://www.alleima.com', 'I']],
   'mat-galv': [['Tupy', 'https://www.tupy.com.br', 'N'], ['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M'], ['ASC Engineered Solutions (Anvil)', 'https://www.asc-es.com', 'I']],
+  'mat-conexoes-cobre': [['Paranapanema (Eluma)', 'https://www.paranapanema.com.br', 'N'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['NIBCO', 'https://www.nibco.com', 'I'], ['Viega', 'https://www.viega.com', 'I']],
   'mat-latao': [['Viega', 'https://www.viega.com', 'I'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['Swagelok', 'https://www.swagelok.com', 'I']],
   'mat-flanges': [['Bonney Forge', 'https://www.bonneyforge.com', 'I'], ['Galperti', 'https://www.galperti.com', 'I']],
   'mat-ranhurado': [['Victaulic', 'https://www.victaulic.com', 'I'], ['Tyco (Johnson Controls)', 'https://www.tyco-fire.com', 'I'], ['Viking', 'https://www.vikinggroupinc.com', 'I'], ['ASC Engineered Solutions (Gruvlok)', 'https://www.asc-es.com', 'I']],
@@ -254,7 +259,7 @@ const MANUFACTURERS = {
 // [produto, n] reaproveita a n-ésima foto (0 = primeira) da ficha do guia técnico.
 const MATERIAL_PHOTOS = {
   'mat-pvc': ['tubos-pvc', 0], 'mat-cpvc': ['tubos-cpvc', 2], 'mat-cobre': ['tubos-cobre', 1], 'mat-aco': ['tubos-aco', 0],
-  'mat-inox': ['tubos-inox', 0], 'mat-galv': ['conexoes-ferro', 0], 'mat-flanges': ['flanges', 0], 'mat-ranhurado': ['conexoes-ranhuradas', 1],
+  'mat-inox': ['tubos-inox', 0], 'mat-galv': ['conexoes-ferro', 0], 'mat-conexoes-cobre': ['conexoes-cobre', 0], 'mat-flanges': ['flanges', 0], 'mat-ranhurado': ['conexoes-ranhuradas', 1],
   'mat-grooved': ['conexoes-ranhuradas', 0], 'mat-esfera': ['registros-latao', 2], 'mat-gaveta': ['valvulas', 0],
   'mat-globo': { src: 'img/materiais/mat-globo-1.webp', alt: 'Válvula globo de aço fundido com flanges e volante amarelo', legenda: 'Válvula globo flangeada', autor: 'Heather Smith', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Globe-valve.JPG' },
   'mat-borboleta': { src: 'img/materiais/mat-borboleta-1.webp', alt: 'Válvula borboleta de ferro dúctil com redutor de volante', legenda: 'Válvula borboleta com redutor', autor: 'Heather Smith', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Bidirectional_tight_butterfly_valve-The-Alloy-Valve-Stockist.jpg' },

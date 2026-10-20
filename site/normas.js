@@ -83,6 +83,7 @@ const NORM_GROUPS = [
     { code: 'ASME B16.5', org: 'ASME', title: 'Pipe Flanges and Flanged Fittings' },
     { code: 'ASME B16.9', org: 'ASME', title: 'Factory-Made Wrought Buttwelding Fittings' },
     { code: 'ASME B16.11', org: 'ASME', title: 'Forged Fittings, Socket-Welding and Threaded' },
+    { code: 'ASME B16.22', org: 'ASME', title: 'Wrought Copper and Copper Alloy Solder-Joint Pressure Fittings — conexões de cobre para solda' },
     { code: 'ASME B16.20', org: 'ASME', title: 'Metallic Gaskets for Pipe Flanges' },
     { code: 'ASME B16.21', org: 'ASME', title: 'Nonmetallic Flat Gaskets for Pipe Flanges' },
   ]},
