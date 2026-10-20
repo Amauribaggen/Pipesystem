@@ -16,6 +16,21 @@ const SYSTEMS = [
       <text x="150" y="20">Barrilete</text><text class="s" x="218" y="104">Coluna</text><text x="250" y="68">Ramal</text>
       <text class="e" x="316" y="164">Ponto de uso</text>` },
 
+  { id: 'sis-solar', name: 'Aquecimento solar de água', color: '#e8a317',
+    desc: 'Coletores solares instalados na cobertura aquecem a água, que segue para um reservatório térmico isolado (boiler) por termossifão, com circulação natural, ou por bomba comandada por um controlador diferencial de temperatura. Um aquecimento de apoio, elétrico ou a gás, garante água quente nos dias nublados.',
+    componentes: ['Coletores solares planos ou de tubos a vácuo', 'Reservatório térmico (boiler) de baixa ou alta pressão', 'Caixa d’água fria de alimentação', 'Bomba e controlador diferencial (circulação forçada)', 'Aquecimento de apoio elétrico ou a gás', 'Tubulação de cobre, CPVC ou PPR com isolamento térmico'],
+    cuidados: ['Coletores voltados para o norte, com inclinação próxima à latitude do local mais 10°', 'Respiro e válvula de alívio de pressão e temperatura no reservatório', 'Materiais que suportem 80 °C ou mais nas linhas de água quente', 'Isolamento térmico contínuo nas tubulações quentes', 'Proteção contra superaquecimento e, em regiões frias, contra congelamento'],
+    normas: ['NBR 15569', 'NBR 15747-1', 'NBR 5626'],
+    produtos: ['tubos-cobre', 'tubos-cpvc', 'conexoes-cpvc', 'caldeiras', 'bombas', 'valvulas'],
+    svg: `<circle cx="140" cy="14" r="8" fill="#f5b700"/>
+      <path class="b" d="M10 70L90 30L170 70"/><rect class="b" x="20" y="70" width="150" height="70"/>
+      <rect class="b" x="40" y="34" width="44" height="14" rx="2" transform="rotate(-27 62 41)"/><text x="62" y="18">Coletores</text>
+      <rect class="b" x="196" y="30" width="70" height="26" rx="13"/><text x="240" y="72">Reservatório térmico</text>
+      <rect class="b" x="276" y="4" width="34" height="20" rx="3"/><text x="293" y="18">Fria</text>
+      <path class="p thin" style="stroke:#3b8fd9" d="M293 24V43H266M196 50H180V96H40V54"/>
+      <path class="p2" d="M84 30H150V43H196M266 36H308V120"/>
+      <text x="300" y="134">Consumo</text><text x="240" y="86">Apoio elétrico ou a gás</text>` },
+
   { id: 'sis-gas', name: 'Gás natural e GLP', color: '#f2a03d',
     desc: 'A rede interna leva o gás natural, fornecido pela distribuidora, ou o GLP, de uma central de cilindros ou tanques, até fogões, aquecedores e equipamentos. O gás natural é mais leve que o ar e se dispersa para cima. O GLP é mais pesado e se acumula em pontos baixos, por isso exige ventilação e cuidados com ralos e subsolos.',
     componentes: ['Abrigo de medidores ou central de GLP', 'Reguladores de pressão de 1º e 2º estágio', 'Rede em cobre, aço ou multicamada; PE na parte enterrada', 'Registro de bloqueio em cada ponto de consumo', 'Ventilação permanente nos ambientes com aparelhos'],
@@ -29,6 +44,21 @@ const SYSTEMS = [
       <rect class="b" x="252" y="26" width="60" height="28" rx="4"/><text x="282" y="44">Aquecedor</text>
       <rect class="b" x="232" y="82" width="44" height="26" rx="4"/><text x="254" y="99">Fogão</text>
       <text x="230" y="140">Ventilação permanente</text>` },
+
+  { id: 'sis-gases-medicinais', name: 'Gases medicinais e hospitalares', color: '#e85d9a',
+    desc: 'Redes centralizadas levam oxigênio, ar comprimido medicinal, óxido nitroso e vácuo clínico das centrais de suprimento até os postos de utilização em leitos, centros cirúrgicos e UTIs. São instalações críticas para a vida dos pacientes: tubulação de cobre limpa e desengraxada, válvulas de seção, alarmes de pressão e identificação por cores.',
+    componentes: ['Centrais de suprimento: tanque criogênico, baterias de cilindros, compressores e bombas de vácuo', 'Tubulação de cobre sem costura, limpa para oxigênio, unida por brasagem', 'Válvulas de seção por setor, em caixas com visor', 'Painéis de alarme de pressão', 'Postos de utilização em réguas e painéis de cabeceira', 'Identificação por cores: oxigênio verde, ar medicinal amarelo, vácuo cinza e óxido nitroso azul'],
+    cuidados: ['Brasagem com passagem de nitrogênio e nenhum óleo ou graxa em contato com o oxigênio', 'Suprimento primário, secundário e reserva, com comutação automática', 'Testes de estanqueidade, de pureza e de troca de gases (identificação cruzada) antes da liberação', 'Projeto e execução por empresa especializada, com responsável técnico', 'Centrais protegidas, ventiladas e com acesso controlado'],
+    normas: ['NBR 12188', 'ISO 7396-1'],
+    produtos: ['tubos-cobre', 'mat-conexoes-cobre', 'valvulas', 'mat-reguladores', 'manometros'],
+    svg: `<rect class="b" x="14" y="60" width="10" height="50" rx="4"/><rect class="b" x="28" y="60" width="10" height="50" rx="4"/><rect class="b" x="42" y="60" width="10" height="50" rx="4"/>
+      <text x="40" y="126">Central de gases</text>
+      <path class="p" d="M52 80H120M156 80H300M200 80V118M250 80V118M300 80V118"/>
+      <rect class="b" x="120" y="66" width="36" height="28" rx="3"/><text x="138" y="108">Válvulas</text>
+      <circle class="b" cx="138" cy="56" r="5"/><text x="138" y="44">Alarme</text>
+      <rect class="b" x="186" y="118" width="28" height="18" rx="3"/><rect class="b" x="236" y="118" width="28" height="18" rx="3"/><rect class="b" x="286" y="118" width="28" height="18" rx="3"/>
+      <text x="200" y="152">UTI</text><text x="250" y="152">Cirurgia</text><text x="300" y="152">Leitos</text>
+      <text x="228" y="62">O₂ · ar medicinal · vácuo</text>` },
 
   { id: 'sis-incendio', name: 'Rede de incêndio', color: '#e5534b',
     desc: 'Os sistemas hidráulicos de combate a incêndio combinam hidrantes e mangotinhos com chuveiros automáticos (sprinklers). Eles são alimentados por uma reserva técnica de incêndio e por bombas dedicadas. O que cada edificação precisa ter é definido pelas Instruções Técnicas do Corpo de Bombeiros de cada estado.',
@@ -67,6 +97,34 @@ const SYSTEMS = [
       <rect class="b" x="190" y="104" width="18" height="28" rx="3"/><text x="199" y="148">Filtro</text>
       <path class="p" d="M74 116H88M118 116H134M178 116H190M208 116H230V30H300V90H230M300 90V118"/>
       <circle class="b" cx="300" cy="126" r="7"/><text x="265" y="64">Rede em anel</text><text class="e" x="316" y="150">Ponto de uso</text>` },
+
+  { id: 'sis-oleohidraulica', name: 'Hidráulica de potência (óleo hidráulico)', color: '#d9822b',
+    desc: 'Os sistemas oleodinâmicos transmitem força e movimento por meio de óleo sob pressão. A bomba, acionada por um motor, gera a vazão; válvulas direcionais, de pressão e de vazão controlam o fluxo; e cilindros ou motores hidráulicos realizam o trabalho. Estão em prensas, injetoras, máquinas agrícolas e de construção, guindastes, elevadores e comportas.',
+    componentes: ['Reservatório com filtro de retorno, respiro e indicador de nível', 'Bomba de engrenagens, de palhetas ou de pistões', 'Válvula de alívio (limitadora de pressão)', 'Válvulas direcionais, de vazão e de retenção', 'Cilindros e motores hidráulicos', 'Mangueiras de alta pressão, tubos de aço sem costura e conexões de anilha', 'Manômetros, acumuladores e trocador de calor'],
+    cuidados: ['Óleo limpo: filtragem para manter o nível de contaminação exigido (ISO 4406)', 'Pressões de 200 a 350 bar ou mais: usar só componentes certificados para a pressão de trabalho', 'Nunca procurar vazamentos com a mão: um jato de óleo fino pode perfurar a pele', 'Despressurizar o circuito e descarregar os acumuladores antes da manutenção', 'Controlar a temperatura do óleo'],
+    normas: ['ISO 4413', 'ISO 1219-1', 'ISO 4406'],
+    produtos: ['bombas', 'valvulas', 'mat-mangueiras', 'filtros', 'manometros', 'tubos-aco'],
+    svg: `<rect class="b" x="14" y="118" width="70" height="36" rx="4"/><text x="49" y="140">Reservatório</text>
+      <circle class="b" cx="110" cy="100" r="12"/><text x="110" y="128">Bomba</text>
+      <path class="p" d="M60 118V100H98M122 100H170V60M200 48H236"/>
+      <path class="p thin" d="M150 100V128"/><rect class="b" x="144" y="128" width="12" height="10" rx="2"/><text class="s" x="162" y="136">Alívio</text>
+      <path class="pe" d="M146 60V76H30V118M150 138V150H84"/><text class="s" x="34" y="70">Retorno</text>
+      <rect class="b" x="140" y="36" width="60" height="24" rx="2"/><path class="b" d="M170 36V60"/><text x="170" y="28">Direcional</text>
+      <rect class="b" x="236" y="38" width="60" height="22" rx="3"/><rect class="b" x="296" y="45" width="20" height="8" rx="2"/><text x="266" y="30">Cilindro</text>` },
+
+  { id: 'sis-gases-industriais', name: 'Gases industriais e vácuo', color: '#9b6bd6',
+    desc: 'Redes que distribuem nitrogênio, oxigênio, argônio, CO₂, hidrogênio, acetileno e misturas para soldagem, corte, inertização, laboratórios e processos, a partir de tanques criogênicos ou de centrais de cilindros. As redes de vácuo atendem laboratórios, embalagens e processos industriais.',
+    componentes: ['Tanques criogênicos com vaporizadores ou centrais de cilindros (manifolds)', 'Reguladores de pressão de primeiro e de segundo estágio', 'Tubulação de cobre, inox ou aço, conforme o gás', 'Válvulas de bloqueio, de retenção e corta-chamas (gases combustíveis)', 'Pontos de consumo com regulador e manômetro', 'Bombas de vácuo, reservatório e filtros (redes de vácuo)'],
+    cuidados: ['Material compatível com o gás: oxigênio exige tubulação limpa e sem óleo; acetileno não pode ter contato com cobre nem com ligas de alto teor de cobre', 'Ventilação e detecção de vazamentos: gases inertes causam asfixia e os combustíveis podem explodir', 'Cilindros presos, protegidos e longe de fontes de calor', 'Linhas identificadas por cor e pelo nome do gás', 'Teste de estanqueidade e purga antes de colocar em uso'],
+    normas: ['NBR 12176', 'ISO 9539'],
+    produtos: ['tubos-cobre', 'tubos-inox', 'mat-reguladores', 'valvulas', 'manometros', 'filtros'],
+    svg: `<rect class="b" x="16" y="24" width="34" height="80" rx="12"/><text x="33" y="118">Tanque</text><text x="33" y="130">criogênico</text>
+      <path class="b" d="M64 40V90M72 40V90M80 40V90M64 40H80M64 90H80"/><text x="80" y="16">Vaporizador</text>
+      <path class="p" d="M50 60H64M80 60H121M135 60H300M180 60V100M240 60V100M296 60V100"/>
+      <circle class="b" cx="128" cy="60" r="7"/><text x="128" y="44">Regulador</text>
+      <rect class="b" x="174" y="100" width="12" height="12" rx="2"/><rect class="b" x="234" y="100" width="12" height="12" rx="2"/><rect class="b" x="290" y="100" width="12" height="12" rx="2"/>
+      <text class="e" x="172" y="128">Solda</text><text class="e" x="232" y="128">Laboratório</text><text class="e" x="288" y="128">Processo</text>
+      <path class="p2" d="M240 112V146M296 112V146H118"/><circle class="b" cx="108" cy="146" r="10"/><text x="108" y="166">Bomba de vácuo</text><text x="200" y="160">Vácuo</text>` },
 
   { id: 'sis-irrigacao', name: 'Irrigação', color: '#3fb27f',
     desc: 'A irrigação leva água às culturas com eficiência, por aspersão, pivô central ou irrigação localizada (gotejamento e microaspersão). O projeto equilibra vazão, pressão e uniformidade de aplicação. O sistema também pode distribuir fertilizantes junto com a água (fertirrigação).',
@@ -137,6 +195,20 @@ const SYSTEMS = [
       <rect class="b" x="230" y="20" width="76" height="40" rx="4"/><text x="268" y="44">Superior</text>
       <text x="86" y="122">Sucção</text><text class="s" x="178" y="76">Recalque</text>` },
 
+  { id: 'sis-processos-sanitarios', name: 'Processos sanitários (alimentos, bebidas e farmacêutica)', color: '#5fb0c8',
+    desc: 'Nas indústrias de alimentos, bebidas, laticínios, cosméticos e farmacêutica, as tubulações conduzem produtos que não podem ser contaminados. Usam aço inoxidável com acabamento polido, uniões sanitárias de desmontagem rápida, válvulas sanitárias e limpeza automática no local (CIP), sem desmontar a linha.',
+    componentes: ['Tubos e conexões inox 304L ou 316L com acabamento polido', 'Uniões sanitárias tipo clamp (tri-clamp), DIN 11851 (rosca) ou SMS', 'Válvulas borboleta, de assento e de diafragma sanitárias', 'Bombas centrífugas e de lóbulos sanitárias', 'Sistema CIP: tanques de solução alcalina, ácida e água, bomba e retorno', 'Instrumentos sanitários, sem pontos mortos'],
+    cuidados: ['Linhas drenáveis: inclinadas, sem pontos baixos nem trechos mortos', 'Superfície interna lisa (rugosidade baixa) e soldas orbitais sem frestas', 'Juntas e vedações em materiais aprovados para contato com alimentos e fármacos', 'Validação da limpeza (CIP) e da sanitização (SIP)', 'Rastreabilidade dos materiais por certificados'],
+    normas: ['ASME BPE', 'DIN 11850', 'DIN 11851', 'DIN 32676'],
+    produtos: ['tubos-inox', 'conexoes-inox', 'valvulas', 'bombas', 'juntas-vedacao', 'filtros'],
+    svg: `<rect class="b" x="20" y="30" width="40" height="70" rx="10"/><text x="40" y="22">Tanque</text>
+      <circle class="b" cx="120" cy="110" r="11"/><text x="120" y="136">Bomba</text>
+      <path class="p" d="M40 100V110H109M131 110H180V60H230"/>
+      <path class="b" d="M174 80l6 8l6-8zM174 96l6-8l6 8z"/><text class="s" x="190" y="92">Válvula</text>
+      <rect class="b" x="230" y="40" width="70" height="40" rx="4"/><text x="265" y="64">Envase</text>
+      <rect class="b" x="150" y="130" width="50" height="26" rx="4"/><text x="175" y="147">CIP</text>
+      <path class="p2" d="M150 143H30V100M265 80V143H200"/><text class="s" x="270" y="118">Retorno CIP</text>` },
+
   { id: 'sis-adutoras', name: 'Adutoras / linhas de transporte', color: '#0e7c9e',
     desc: 'Adutoras são as tubulações que levam a água bruta da captação até a estação de tratamento e a água tratada até os reservatórios, por gravidade ou por recalque. As linhas de transporte (dutos) conduzem água, petróleo, derivados e gás natural por longas distâncias. São redes de grande diâmetro e pressão elevada, enterradas ou aparentes, que exigem atenção ao golpe de aríete, ao ar na linha e à corrosão.',
     componentes: ['Tubos de ferro fundido dúctil, aço, PEAD ou PRFV', 'Estações elevatórias e boosters de pressão', 'Válvulas de bloqueio (borboleta e gaveta), de retenção e de controle', 'Ventosas nos pontos altos e descargas nos pontos baixos', 'Blocos de ancoragem em curvas, tês, reduções e extremidades', 'Macromedidores de vazão e transmissores de pressão'],
@@ -179,10 +251,57 @@ const SYSTEMS = [
       <text x="108" y="80">Bacia</text><text x="160" y="50">Ramal de esgoto</text>
       <rect class="b" x="270" y="130" width="24" height="20" rx="3"/><text class="e" x="316" y="164">Caixa de inspeção</text>
       <text class="s" x="208" y="88">Tubo de queda</text>` },
+
+  { id: 'sis-pluviais', name: 'Águas pluviais e aproveitamento de chuva', color: '#4aa3df',
+    desc: 'Calhas e condutores verticais e horizontais levam a água da chuva das coberturas até a rede pública de drenagem ou até um reservatório. No aproveitamento, a água passa por um filtro e pelo descarte da primeira chuva e é guardada em cisterna, para usos não potáveis como descargas, rega e lavagem de pisos.',
+    componentes: ['Calhas e rufos', 'Condutores verticais e horizontais, em geral de PVC', 'Ralos e grelhas com proteção contra folhas', 'Filtro e dispositivo de descarte da primeira chuva', 'Cisterna, bomba e reservatório superior exclusivo para a água de reúso', 'Extravasor e caixas de inspeção'],
+    cuidados: ['Calhas e condutores dimensionados pela intensidade de chuva do local', 'Águas pluviais nunca ligadas à rede de esgoto', 'Rede de água de chuva separada e identificada, sem ligação com a rede potável', 'Torneiras de uso restrito, com aviso de água não potável', 'Limpeza periódica de calhas, filtros e cisterna'],
+    normas: ['NBR 10844', 'NBR 15527', 'NBR 5626'],
+    produtos: ['tubos-pvc', 'conexoes-pvc', 'filtros', 'bombas', 'suportes'],
+    svg: `<g class="drip"><circle cx="40" cy="10" r="2"/><circle cx="70" cy="6" r="2"/><circle cx="100" cy="12" r="2"/><circle cx="125" cy="8" r="2"/></g>
+      <path class="b" d="M20 60L80 24L140 60Z"/><rect class="b" x="30" y="60" width="100" height="68"/>
+      <path class="b dash" d="M8 128H312"/>
+      <path class="p" d="M140 60H152V128H176M202 128H222"/><text x="152" y="52">Calha</text><text class="s" x="158" y="96">Condutor</text>
+      <rect class="b" x="176" y="118" width="26" height="20" rx="3"/><text x="189" y="112">Filtro</text>
+      <path class="pe" d="M189 138V156"/><text x="160" y="166">Descarte</text>
+      <rect class="b" x="222" y="120" width="56" height="36" rx="3"/><text x="250" y="142">Cisterna</text>
+      <circle class="b" cx="294" cy="110" r="8"/>
+      <path class="p2" d="M278 130H294V118M294 102V40H260"/>
+      <rect class="b" x="226" y="26" width="34" height="24" rx="3"/><text x="243" y="18">Reúso</text>` },
 ];
 
 // Fotos de instalações reais (Wikimedia Commons, licenças livres; manter os créditos).
 const SYSTEM_PHOTOS = {
+  'sis-pluviais': [
+    { src: 'img/sistemas/sis-pluviais-1.webp', alt: 'Condutores verticais de águas pluviais', legenda: 'Condutores', autor: 'Stilfehler', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Downspouts.jpg' },
+    { src: 'img/sistemas/sis-pluviais-2.webp', alt: 'Fachada com condutor de água de chuva descendo da calha', legenda: 'Calha e condutor', autor: 'Ivangiesen', licenca: 'CC0', licUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en', fonte: 'https://commons.wikimedia.org/wiki/File:External_Gutter.jpg' },
+    { src: 'img/sistemas/sis-pluviais-3.webp', alt: 'Reservatórios de aproveitamento de água de chuva', legenda: 'Reservatórios de chuva', autor: 'Meg Stewart', licenca: 'CC BY-SA 2.0', licUrl: 'https://creativecommons.org/licenses/by-sa/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Rooftop_rainwater_harvesting.jpg' },
+  ],
+  'sis-oleohidraulica': [
+    { src: 'img/sistemas/sis-oleohidraulica-1.webp', alt: 'Unidade hidráulica com cilindros de direção', legenda: 'Unidade hidráulica', autor: 'Spielvogel', licenca: 'CC0', licUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en', fonte: 'https://commons.wikimedia.org/wiki/File:Hydraulic_power_unit._Hydraulisches_Lenkaggregat._Spielvogel.jpg' },
+    { src: 'img/sistemas/sis-oleohidraulica-2.webp', alt: 'Conexões prensadas para mangueiras hidráulicas', legenda: 'Conexões de mangueira', autor: 'Jstapko', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hydraulic_hose_fittings.JPG' },
+    { src: 'img/sistemas/sis-oleohidraulica-3.webp', alt: 'Cilindro hidráulico de uma prensa dobradeira', legenda: 'Cilindro de prensa', autor: 'Márton Kiss-Albert', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hydraulic_press_brake%27s_cylinder.jpg' },
+  ],
+  'sis-gases-medicinais': [
+    { src: 'img/sistemas/sis-gases-medicinais-1.webp', alt: 'Tanque de oxigênio líquido medicinal em hospital', legenda: 'Central de oxigênio', autor: 'Tim Sheerman-Chase', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Liquid_Medical_Oxygen_Storage_Tank.jpg' },
+    { src: 'img/sistemas/sis-gases-medicinais-2.webp', alt: 'Tanque e vaporizadores de oxigênio de hospital', legenda: 'Vaporizadores', autor: 'Jidanni', licenca: 'CC0', licUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en', fonte: 'https://commons.wikimedia.org/wiki/File:Frozen_hospital_oxygen_pipes_01.jpg' },
+    { src: 'img/sistemas/sis-gases-medicinais-3.webp', alt: 'Caminhão abastecendo o tanque de oxigênio líquido de um hospital', legenda: 'Abastecimento', autor: 'Walter Baxter', licenca: 'CC BY-SA 2.0', licUrl: 'https://creativecommons.org/licenses/by-sa/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:A_liquid_oxygen_delivery_at_the_Borders_General_Hospital_-_geograph.org.uk_-_868864.jpg' },
+  ],
+  'sis-solar': [
+    { src: 'img/sistemas/sis-solar-1.webp', alt: 'Aquecedor solar de tubos a vácuo com reservatório na cobertura', legenda: 'Aquecedor compacto', autor: 'రవిచంద్ర', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Solar_water_heater_installed_on_rooftop.jpg' },
+    { src: 'img/sistemas/sis-solar-2.webp', alt: 'Bateria de coletores de tubos a vácuo em cobertura', legenda: 'Coletores a vácuo', autor: 'Greensolarvacuum', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Solar_vacuum_tube_collectors_Thessaloniki.jpg' },
+    { src: 'img/sistemas/sis-solar-3.webp', alt: 'Ligações hidráulicas de um coletor solar no telhado', legenda: 'Ligações do coletor', autor: 'Barelyhere', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Thermal_Solar_Panel_fittings.JPG' },
+  ],
+  'sis-processos-sanitarios': [
+    { src: 'img/sistemas/sis-processos-sanitarios-1.webp', alt: 'Tubulações de aço inoxidável em indústria de bebidas', legenda: 'Tubulação inox', autor: 'Matteo Bagnoli', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Pipelines3.jpg' },
+    { src: 'img/sistemas/sis-processos-sanitarios-2.webp', alt: 'Tanques de fermentação em inox numa cervejaria', legenda: 'Tanques de processo', autor: 'Stephen Craven', licenca: 'CC BY-SA 2.0', licUrl: 'https://creativecommons.org/licenses/by-sa/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Leeds_Brewery-_new_fermentation_tanks_(geograph_5621751).jpg' },
+    { src: 'img/sistemas/sis-processos-sanitarios-3.webp', alt: 'Linha de envase com tubulação inox numa cervejaria', legenda: 'Linha de envase', autor: 'Jan Polák', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Humpolec,_pivovar_Bernard_(53).jpg' },
+  ],
+  'sis-gases-industriais': [
+    { src: 'img/sistemas/sis-gases-industriais-1.webp', alt: 'Tanque de nitrogênio líquido com vaporizador', legenda: 'Tanque criogênico', autor: 'Toby Hudson', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Liquid_Nitrogen_Tank.JPG' },
+    { src: 'img/sistemas/sis-gases-industriais-2.webp', alt: 'Cilindros de gases para soldagem', legenda: 'Cilindros', autor: 'Cjp24', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Gas_cylinders_used_in_arc_welding.jpg' },
+    { src: 'img/sistemas/sis-gases-industriais-3.webp', alt: 'Bomba de vácuo de laboratório', legenda: 'Bomba de vácuo', autor: 'Cirosantilli2', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:KNF_Laboport_series_laboratory_vacuum_pump.jpg' },
+  ],
   'sis-adutoras': [
     { src: 'img/materiais/mat-ferro-1.webp', alt: 'Montagem de tubo de ferro fundido dúctil em vala', legenda: 'Assentamento de adutora', autor: 'Frankemann', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Ductile_cast_iron_pipes.JPG' },
     { src: 'img/produtos/valvulas-3.webp', alt: 'Válvulas gaveta instaladas em rede de água', legenda: 'Válvulas de bloqueio', autor: 'Cmineraolesana', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Cmo_subministrament.png' },

@@ -13,6 +13,7 @@ const NORM_GROUPS = [
   { id: 'esgoto', tipo: 'aplicacao', name: 'Esgoto, águas pluviais e tratamento', normas: [
     { code: 'NBR 8160', org: 'ABNT', title: 'Sistemas prediais de esgoto sanitário — Projeto e execução', note: 'Declividades, ventilação, caixas sifonadas e dimensionamento de ramais e tubos de queda.' },
     { code: 'NBR 10844', org: 'ABNT', title: 'Instalações prediais de águas pluviais — Procedimento' },
+    { code: 'NBR 15527', org: 'ABNT', title: 'Aproveitamento de água de chuva de coberturas para fins não potáveis — Requisitos' },
     { code: 'NBR 17076', org: 'ABNT', title: 'Projeto de sistema de tratamento de esgoto de menor porte — Requisitos', note: 'Substitui as NBR 7229 (tanques sépticos) e NBR 13969, canceladas em 2024.' },
   ]},
   { id: 'gas', tipo: 'aplicacao', name: 'Gás combustível (GN e GLP)', normas: [
@@ -61,6 +62,23 @@ const NORM_GROUPS = [
   ]},
 
   // ---------- Por produto ----------
+  { id: 'oleohidraulica', tipo: 'aplicacao', name: 'Hidráulica de potência (óleo hidráulico)', normas: [
+    { code: 'ISO 4413', org: 'ISO', title: 'Hydraulic fluid power — General rules and safety requirements for systems and their components' },
+    { code: 'ISO 1219-1', org: 'ISO', title: 'Fluid power systems and components — Graphical symbols and circuit diagrams' },
+    { code: 'ISO 4406', org: 'ISO', title: 'Hydraulic fluid power — Fluids — Code for defining the level of contamination by solid particles' },
+  ] },
+  { id: 'gases', tipo: 'aplicacao', name: 'Gases medicinais e industriais', normas: [
+    { code: 'NBR 12188', org: 'ABNT', title: 'Sistemas centralizados de suprimento de gases medicinais, de gases para dispositivos médicos e de vácuo para uso em serviços de saúde' },
+    { code: 'ISO 7396-1', org: 'ISO', title: 'Medical gas pipeline systems — Pipelines for compressed medical gases and vacuum' },
+    { code: 'NBR 12176', org: 'ABNT', title: 'Cilindros para gases — Identificação do conteúdo' },
+    { code: 'ISO 9539', org: 'ISO', title: 'Gas welding equipment — Materials for equipment used in gas welding, cutting and allied processes' },
+  ] },
+  { id: 'sanitario', tipo: 'aplicacao', name: 'Processos sanitários (alimentos, bebidas e farmacêutica)', normas: [
+    { code: 'ASME BPE', org: 'ASME', title: 'Bioprocessing Equipment — tubulações e componentes para processos higiênicos' },
+    { code: 'DIN 11850', org: 'DIN', title: 'Tubos de aço inoxidável para alimentos, química e farmacêutica — dimensões' },
+    { code: 'DIN 11851', org: 'DIN', title: 'Conexões sanitárias roscadas (união SMS/DIN) em aço inoxidável' },
+    { code: 'DIN 32676', org: 'DIN', title: 'Conexões sanitárias tipo clamp para tubos de aço inoxidável' },
+  ] },
   { id: 'plasticos', tipo: 'produto', name: 'Tubos e conexões plásticas', normas: [
     { code: 'NBR 5648', org: 'ABNT', title: 'Tubos e conexões de PVC-U com junta soldável para sistemas prediais de água fria' },
     { code: 'NBR 5688', org: 'ABNT', title: 'Tubos e conexões de PVC-U para sistemas prediais de água pluvial, esgoto sanitário e ventilação' },
