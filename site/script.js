@@ -1,6 +1,6 @@
 // Largura e altura reais das fotos (img-sizes.js é gerado no build), para a página não "pular" enquanto elas carregam
 const imgDims = src => { const d = (window.IMG_SIZES || {})[src]; return d ? ` width="${d[0]}" height="${d[1]}"` : ''; };
-// Fotos com caminho a partir da raiz: com a ficha aberta o endereço é /produtos/..., e "img/..." viraria /produtos/img/...
+// Fotos com caminho a partir da raiz: com a ficha aberta o endereço é /materiais/..., e "img/..." viraria /materiais/img/...
 const imgUrl = src => /^(https?:|data:|\/)/.test(src) ? src : '/' + src;
 
 // Para onde os formulários (contato e artigos) enviam os dados.
@@ -19,11 +19,6 @@ toggle.addEventListener('click', () => {
   const open = links.classList.toggle('open');
   toggle.setAttribute('aria-expanded', open);
 });
-// Menu "Produtos" gerado a partir do guia (products.js)
-document.getElementById('ddMenu').innerHTML = '<a class="dd__all" href="#produtos">Ver o guia técnico completo →</a>' + PRODUCT_GROUPS.map(g =>
-  `<div class="dd__group"><p>${g.name}</p>${PRODUCTS.filter(p => p.g === g.id)
-    .map(p => `<a href="/produtos/${p.id}" data-sheet="${p.id}">${p.name}</a>`).join('')}</div>`).join('');
-
 // (Os submenus de todos os itens são montados no fim deste arquivo — "Submenus do menu superior")
 
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -72,7 +67,7 @@ function matchText(text, terms) {
 
 searchEl.addEventListener('input', renderCatalog);
 
-// Foto real do item do catálogo (própria ou reaproveitada da ficha do guia técnico)
+// Foto real do item do catálogo (própria ou reaproveitada da ficha técnica em products.js)
 function materialPhoto(m) {
   const ref = MATERIAL_PHOTOS[m.id];
   if (Array.isArray(ref)) return (PRODUCTS.find(p => p.id === ref[0])?.fotos || [])[ref[1]];
@@ -103,62 +98,9 @@ function searchCatalog(q) {
 }
 document.querySelectorAll('[data-q]').forEach(a => a.addEventListener('click', () => searchCatalog(a.dataset.q)));
 
-// Guia técnico de produtos
+// Fichas técnicas (products.js): o antigo guia de produtos agora aparece dentro dos itens do catálogo
 const productById = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
-const groupById = Object.fromEntries(PRODUCT_GROUPS.map(g => [g.id, g]));
-const groupIcon = g => `<svg viewBox="0 0 64 64" aria-hidden="true">${g.icon}</svg>`;
-const guideEl = document.getElementById('guide');
-const guideSearch = document.getElementById('guideSearch');
-const guideEmpty = document.getElementById('guideEmpty');
-
-
-function renderGuide() {
-  const terms = queryTerms(guideSearch.value);
-  const card = p => `<a class="pcard" id="${p.id}" href="/produtos/${p.id}" data-sheet="${p.id}"><strong>${p.name}</strong><span>${p.desc}</span><em>Ver ficha técnica →</em></a>`;
-  const q = guideSearch.value.trim();
-  if (q) {
-    // Com busca: uma lista única, do mais ao menos relevante (nome do produto primeiro)
-    const score = p => {
-      const g = groupById[p.g];
-      if (matchText(p.name, terms)) return 4;
-      if (matchText(g.name, terms)) return 3;
-      if (matchText([...p.tipos, ...p.normas].join(' '), terms)) return 2;
-      return matchText([g.name, p.name, p.desc, ...p.tipos, ...p.escolha, ...p.normas].join(' '), terms) ? 1 : 0;
-    };
-    const hits = PRODUCTS.map(p => [p, score(p)]).filter(([, s]) => s).sort((a, b) => b[1] - a[1]).map(([p]) => p);
-    guideEl.innerHTML = hits.length ? `<div class="pgroup">
-      <h3 class="pgroup__title guide__count">${hits.length} produto${hits.length === 1 ? '' : 's'} para “${q.replace(/</g, '&lt;')}”
-        <button type="button" class="guide__clear">Limpar busca ✕</button></h3>
-      <div class="grid grid--4">${hits.map(card).join('')}</div>
-    </div>` : '';
-    guideEmpty.hidden = hits.length > 0;
-    return;
-  }
-  guideEl.innerHTML = PRODUCT_GROUPS.map(g => {
-    const items = PRODUCTS.filter(p => p.g === g.id);
-    if (!items.length) return '';
-    return `<div class="pgroup" id="grupo-${g.id}">
-      <h3 class="pgroup__title">${groupIcon(g)}${g.name}<span>${items.length}</span></h3>
-      <div class="grid grid--4">${items.map(card).join('')}</div>
-    </div>`;
-  }).join('');
-  guideEmpty.hidden = true;
-}
-guideSearch.addEventListener('input', renderGuide);
-// Enter leva aos resultados (o primeiro produto fica em foco)
-guideSearch.addEventListener('keydown', e => {
-  if (e.key !== 'Enter') return;
-  e.preventDefault();
-  renderGuide();
-  const first = guideEl.querySelector('.pcard') || guideEmpty;
-  first.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  if (first.classList.contains('pcard')) first.focus({ preventScroll: true });
-});
-guideEl.addEventListener('click', e => {
-  if (!e.target.closest('.guide__clear')) return;
-  guideSearch.value = ''; renderGuide(); guideSearch.focus();
-});
-renderGuide();
+const materialOf = id => MATERIAL_OF_PRODUCT[id] || id;   // endereço antigo de produto -> item do catálogo
 
 const sheet = document.getElementById('prodSheet');
 const sheetBody = document.getElementById('sheetBody');
@@ -213,8 +155,8 @@ function renderSystem(s) {
     <h4>Normas de referência</h4>
     <p class="tags tags--links">${normTags(s.normas)}</p>
     <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
-    <h4>Produtos do guia técnico</h4>
-    <p class="relprod">${s.produtos.map(id => `<a href="/produtos/${id}" data-sheet="${id}">${productById[id].name}</a>`).join('')}</p>
+    <h4>Produtos e materiais usados</h4>
+    <p class="relprod">${s.produtos.map(id => materialById[materialOf(id)]).filter(Boolean).map(m => `<a href="/materiais/${m.id.slice(4)}" data-sheet="${m.id}">${m.name}</a>`).join('')}</p>
     <div class="sheet__actions">
       <a href="#contato" class="btn" data-subject="Consulta técnica" data-question="Pergunta sobre ${s.name}: ">Fazer uma pergunta</a>
       <a href="#contato" class="btn btn--ghost" data-subject="Cotação de materiais" data-question="Cotação para ${s.name}: ">Solicitar cotação</a>
@@ -231,13 +173,15 @@ function renderSystem(s) {
 const materialById = Object.fromEntries(CATALOG.map(m => [m.id, m]));
 
 function renderMaterial(m) {
-  const rel = productById[m.rel];
+  const p = productById[m.rel];        // ficha técnica completa (fotos, tipos, como escolher, tabelas)
+  const veja = materialById[m.veja];   // item principal que traz a visão geral (ex.: comparativo de válvulas)
+  const normas = [...new Set([...m.normas, ...(p ? p.normas : [])])];
   const fabs = MANUFACTURERS[m.id] || [];
   const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); // lista só de importadores
   const foto = materialPhoto(m);
   sheetBody.innerHTML = `
     <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${m.cat}</p><h3 id="sheetTitle">${m.name}</h3></div></div>
-    ${foto ? `<figure class="matfig matfig--foto">
+    ${p && p.fotos ? fotosHTML(p.fotos) : foto ? `<figure class="matfig matfig--foto">
       <img src="${imgUrl(foto.src)}" alt="${foto.alt}"${imgDims(foto.src)}${foto.inteira ? ' class="inteira"' : ''}>
       <figcaption>${foto.legenda} · Foto: <a href="${foto.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${foto.autor}</a> (<a href="${foto.licUrl}" target="_blank" rel="noopener noreferrer">${foto.licenca}</a>), via Wikimedia Commons</figcaption>
     </figure>` : `<figure class="matfig" style="--m:${m.tone}">
@@ -245,13 +189,18 @@ function renderMaterial(m) {
       <figcaption>Ilustração representativa</figcaption>
     </figure>`}
     <p class="sheet__desc">${linkNorms(m.desc)}</p>
+    ${p ? tabelasHTML(p.tabelas) : ''}
     <h4>Dados técnicos</h4>
     <table class="specs"><tbody>${m.specs.map(([k, v]) => `<tr><th>${k}</th><td>${linkNorms(v)}</td></tr>`).join('')}</tbody></table>
+    ${p ? `<div class="prod__cols">
+      <div><h4>Tipos</h4><ul>${list(p.tipos)}</ul></div>
+      <div><h4>Como escolher</h4><ul>${list(p.escolha)}</ul></div>
+    </div>` : ''}
     <h4>Aplicações</h4><p class="sheet__desc">${linkNorms(m.apps)}.</p>
     <h4>Normas de referência</h4>
-    <p class="tags tags--links">${normTags(m.normas)}</p>
+    <p class="tags tags--links">${normTags(normas)}</p>
     <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
-    ${rel ? `<p class="relprod"><a href="/produtos/${rel.id}" data-sheet="${rel.id}">Ver ficha de ${rel.name} no guia técnico →</a></p>` : ''}
+    ${veja ? `<p class="relprod"><a href="/materiais/${veja.id.slice(4)}" data-sheet="${veja.id}">Veja também: ${veja.name} →</a></p>` : ''}
     ${fabs.length ? `<h4>${importers ? 'Importadores' : fabs.some(f => f[2] === 'M') ? 'Fabricantes e importadores' : 'Fabricantes'}</h4>
     <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${u}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span></a>`
@@ -268,47 +217,22 @@ function openProduct(id) {
   const s = systemById[id], m = materialById[id];
   if (s || m) {
     s ? renderSystem(s) : renderMaterial(m);
-    sheet.classList.remove('sheet--wide');
+    sheet.classList.toggle('sheet--wide', !!(m && productById[m.rel] && productById[m.rel].tabelas));
     if (!sheet.open) sheet.showModal();
     setSheetTitle(id);
     sheet.scrollTop = 0;
-    if (!/^\/(produtos|sistemas|materiais)\/./.test(location.pathname)) sheet.dataset.back = location.pathname + location.search;
-    history.replaceState(null, '', sheetPath(id));   // endereço real da ficha (ex.: /produtos/bombas)
+    if (!/^\/(sistemas|materiais)\/./.test(location.pathname)) sheet.dataset.back = location.pathname + location.search;
+    history.replaceState(null, '', sheetPath(id));   // endereço real da ficha (ex.: /materiais/bombas)
     return;
   }
-  const p = productById[id];
-  if (!p) return;
-  const g = groupById[p.g];
-  sheetBody.innerHTML = `
-    <div class="sheet__head"><div class="prod__icon">${groupIcon(g)}</div>
-      <div><p class="eyebrow">${g.name}</p><h3 id="sheetTitle">${p.name}</h3></div></div>
-    <p class="sheet__desc">${linkNorms(p.desc)}</p>
-    ${fotosHTML(p.fotos)}
-    ${tabelasHTML(p.tabelas)}
-    <div class="prod__cols">
-      <div><h4>Tipos</h4><ul>${list(p.tipos)}</ul></div>
-      <div><h4>Como escolher</h4><ul>${list(p.escolha)}</ul></div>
-    </div>
-    <h4>Normas de referência</h4>
-    <p class="tags tags--links">${normTags(p.normas)}</p>
-    <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
-    <div class="sheet__actions">
-      <a href="#contato" class="btn" data-subject="Cotação de materiais">Solicitar cotação</a>
-      <a href="#contato" class="btn btn--ghost" data-subject="Consulta técnica">Tirar uma dúvida técnica</a>
-    </div>`;
-  sheet.classList.toggle('sheet--wide', !!p.tabelas); // ficha mais larga quando tem tabelas
-  if (!sheet.open) sheet.showModal();
-  setSheetTitle(id);
-  sheet.scrollTop = 0;
-  if (!/^\/(produtos|sistemas|materiais)\/./.test(location.pathname)) sheet.dataset.back = location.pathname + location.search;
-    history.replaceState(null, '', sheetPath(id));   // endereço real da ficha (ex.: /produtos/bombas)
+  if (productById[id]) openProduct(materialOf(id));   // links antigos de produto (/produtos/...)
 }
 // Título da aba do navegador acompanha a ficha aberta (volta ao original ao fechar)
 const BASE_TITLE = document.title;
 function setSheetTitle(id) {
   const t = document.getElementById('sheetTitle'); if (t) document.title = t.textContent + ' — PipeSystem';
   // link para a página própria da ficha (endereço para compartilhar)
-  const path = productById[id] ? '/produtos/' + id : systemById[id] ? '/sistemas/' + id.slice(4) : '/materiais/' + id.slice(4);
+  const path = sheetPath(id);
   sheetBody.insertAdjacentHTML('beforeend', `<p class="sheet__perma"><a href="${path}">🔗 Página desta ficha (para compartilhar)</a></p>`);
 }
 const closeSheet = () => sheet.open && sheet.close();
@@ -322,9 +246,9 @@ sheet.addEventListener('close', () => {
   document.title = BASE_TITLE;
   history.replaceState(null, '', sheet.dataset.back || '/');   // volta ao endereço de onde a ficha foi aberta
 });
-// Endereço próprio de cada ficha (as páginas são geradas no build: /produtos, /sistemas, /materiais)
+// Endereço próprio de cada ficha (as páginas são geradas no build: /sistemas, /materiais)
 function sheetPath(id) {
-  return productById[id] ? '/produtos/' + id : systemById[id] ? '/sistemas/' + id.slice(4) : '/materiais/' + id.slice(4);
+  return systemById[id] ? '/sistemas/' + id.slice(4) : '/materiais/' + id.slice(4);
 }
 
 // Qualquer link para um produto, sistema ou material (menu, cartões, fichas) abre a ficha
@@ -956,7 +880,7 @@ const ARTICLES = [
     ['#publico .audience > div', 'Para quem é'], ['#anuncie .plan', 'Anuncie'], ['#assinaturas .qplan', 'Assinaturas de cotações'],
     ['#assinaturas .qtime__step', 'Assinaturas de cotações'], ['#sobre .person', 'Quem somos'],
   ];
-  const DATA_SECTIONS = new Set(['produtos', 'sistemas', 'materiais', 'normas', 'artigos']);
+  const DATA_SECTIONS = new Set(['sistemas', 'materiais', 'normas', 'artigos']);
   const titleOf = el => clean((el.querySelector('h2, h3, h4, strong, b') || el).textContent);
 
   function search(q) {
@@ -970,15 +894,12 @@ const ARTICLES = [
     const pick = (list, textOf, make) => list.filter(x => matchText(textOf(x), terms))
       .map(x => ({ ...make(x), score: matchText(make(x).title, terms) ? 2 : 0 })).sort((a, b) => b.score - a.score);
 
-    const prodText = p => [groupById[p.g].name, p.name, p.desc, ...p.tipos, ...p.escolha, ...p.normas].join(' ');
-    add('Guia técnico de produtos', pick(PRODUCTS, prodText, p => ({ href: '/produtos/' + p.id, sheet: p.id, title: p.name, sub: snippet(prodText(p), terms, p.desc) })),
-      { label: 'Ver no guia de produtos', run: () => { guideSearch.value = q; renderGuide(); goTo('produtos'); } });
-
     const sysText = s => [s.name, s.desc, ...s.componentes, ...s.cuidados, ...s.normas].join(' ');
     add('Áreas de aplicação', pick(SYSTEMS, sysText, s => ({ href: '/sistemas/' + s.id.slice(4), sheet: s.id, title: s.name, sub: snippet(sysText(s), terms, s.desc) })));
 
-    const matText = m => [m.cat, m.name, m.apps, m.desc, ...m.normas, ...m.specs.flat(), ...(MANUFACTURERS[m.id] || []).map(f => f[0])].join(' ');
-    add('Catálogo de materiais', pick(CATALOG, matText, m => ({ href: '/materiais/' + m.id.slice(4), sheet: m.id, title: m.name, sub: snippet(matText(m), terms, m.apps) })),
+    const matText = m => { const p = productById[m.rel] || { tipos: [], escolha: [], normas: [], desc: '' };
+      return [m.cat, m.name, m.apps, m.desc, p.desc, ...m.normas, ...p.normas, ...p.tipos, ...p.escolha, ...m.specs.flat(), ...(MANUFACTURERS[m.id] || []).map(f => f[0])].join(' '); };
+    add('Produtos e materiais', pick(CATALOG, matText, m => ({ href: '/materiais/' + m.id.slice(4), sheet: m.id, title: m.name, sub: snippet(matText(m), terms, m.apps) })),
       { label: 'Ver no catálogo', run: () => { searchCatalog(q); goTo('materiais'); } });
 
     const seen = new Set(), norms = [];
@@ -1157,14 +1078,8 @@ const ARTICLES = [
     // Depois de escolher um item, mantém o submenu fechado até o mouse sair dele
     dd.addEventListener('mouseleave', () => dd.classList.remove('dd--hold'));
   });
-  const ddProdutos = document.getElementById('ddProdutos');
   // Menu compacto (celular ou cabeçalho sem espaço): tocar em "Produtos" abre a lista; no computador, leva à seção
   const compact = () => matchMedia('(max-width: 1180px)').matches || document.documentElement.classList.contains('nav-collapse');
-  ddProdutos.querySelector('.dd__btn').addEventListener('click', e => {
-    if (!compact()) return; // segue o link #produtos
-    e.preventDefault(); e.stopPropagation();
-    const open = !ddProdutos.classList.contains('open'); setDd(ddProdutos, open); if (open) fit(ddProdutos);
-  });
   document.addEventListener('click', e => dds.forEach(dd => { if (!dd.contains(e.target)) setDd(dd, false); }));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') dds.forEach(dd => setDd(dd, false)); });
   links.addEventListener('click', e => {
@@ -1272,7 +1187,7 @@ const ARTICLES = [
 // abrir /sistemas direto (link compartilhado ou F5) leva à seção, e o botão "voltar" volta à seção anterior.
 // Na Vercel, esses endereços entregam a página inicial (rewrites em vercel.json); o canonical continua "/".
 const SECTION_PATHS = {
-  servicos: 'cotacoes', produtos: 'produtos', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'ferramentas',
+  servicos: 'cotacoes', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'ferramentas',
   normas: 'normas', artigos: 'artigos', feiras: 'feiras', publico: 'para-quem-e', anuncie: 'anuncie',
   assinaturas: 'assinaturas', sobre: 'quem-somos', contato: 'contato',
 };

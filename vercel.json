@@ -6,24 +6,77 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/:secao(cotacoes|produtos|sistemas|materiais|ferramentas|normas|artigos|feiras|para-quem-e|anuncie|assinaturas|quem-somos|contato)", "destination": "/" }
+    {
+      "source": "/:secao(cotacoes|sistemas|materiais|ferramentas|normas|artigos|feiras|para-quem-e|anuncie|assinaturas|quem-somos|contato)",
+      "destination": "/"
+    }
+  ],
+  "redirects": [
+    { "source": "/produtos", "destination": "/materiais", "permanent": true },
+    { "source": "/produtos/tubos-aco", "destination": "/materiais/aco", "permanent": true },
+    { "source": "/produtos/tubos-pvc", "destination": "/materiais/pvc", "permanent": true },
+    { "source": "/produtos/tubos-cpvc", "destination": "/materiais/cpvc", "permanent": true },
+    { "source": "/produtos/tubos-inox", "destination": "/materiais/inox", "permanent": true },
+    { "source": "/produtos/tubos-cobre", "destination": "/materiais/cobre", "permanent": true },
+    { "source": "/produtos/conexoes-ferro", "destination": "/materiais/galv", "permanent": true },
+    { "source": "/produtos/conexoes-pvc", "destination": "/materiais/conexoes-pvc", "permanent": true },
+    { "source": "/produtos/conexoes-cpvc", "destination": "/materiais/conexoes-cpvc", "permanent": true },
+    { "source": "/produtos/conexoes-inox", "destination": "/materiais/conexoes-inox", "permanent": true },
+    { "source": "/produtos/conexoes-cobre", "destination": "/materiais/conexoes-cobre", "permanent": true },
+    { "source": "/produtos/conexoes-forjadas", "destination": "/materiais/conexoes-forjadas", "permanent": true },
+    { "source": "/produtos/conexoes-solda", "destination": "/materiais/conexoes-solda", "permanent": true },
+    { "source": "/produtos/conexoes-ranhuradas", "destination": "/materiais/grooved", "permanent": true },
+    { "source": "/produtos/flanges", "destination": "/materiais/flanges", "permanent": true },
+    { "source": "/produtos/valvulas", "destination": "/materiais/valvulas", "permanent": true },
+    { "source": "/produtos/registros-latao", "destination": "/materiais/registros", "permanent": true },
+    { "source": "/produtos/purgadores", "destination": "/materiais/purgadores", "permanent": true },
+    { "source": "/produtos/manometros", "destination": "/materiais/medidores", "permanent": true },
+    { "source": "/produtos/filtros", "destination": "/materiais/filtros", "permanent": true },
+    { "source": "/produtos/bombas", "destination": "/materiais/bombas", "permanent": true },
+    { "source": "/produtos/compressores", "destination": "/materiais/compressores", "permanent": true },
+    { "source": "/produtos/caldeiras", "destination": "/materiais/caldeiras", "permanent": true },
+    { "source": "/produtos/sprinklers", "destination": "/materiais/sprinklers", "permanent": true },
+    { "source": "/produtos/suportes", "destination": "/materiais/suportes", "permanent": true },
+    { "source": "/produtos/vedantes", "destination": "/materiais/vedantes", "permanent": true },
+    { "source": "/produtos/juntas-vedacao", "destination": "/materiais/juntas", "permanent": true },
+    { "source": "/produtos/ferramentas-hidraulicas", "destination": "/materiais/ferramentas", "permanent": true },
+    { "source": "/produtos/rosqueadeiras", "destination": "/materiais/rosqueadeiras", "permanent": true }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
       ]
     },
     {
       "source": "/img/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
+      ]
     },
     {
       "source": "/video/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000"
+        }
+      ]
     }
   ]
 }

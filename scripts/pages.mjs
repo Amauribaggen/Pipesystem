@@ -1,5 +1,4 @@
 // Gera uma página HTML própria (indexável pelo Google) para cada ficha do portal:
-//   /produtos/<id>   — guia técnico de produtos (PRODUCTS)
 //   /sistemas/<id>   — sistemas / áreas de aplicação (SYSTEMS)
 //   /materiais/<id>  — catálogo de produtos e materiais (CATALOG)
 // Os dados vêm dos mesmos arquivos usados pelo site (site/*.js), executados num contexto isolado.
@@ -14,7 +13,7 @@ export const BASE = 'https://www.pipesystem.com.br';
 export function loadData(siteDir) {
   const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, normTags, linkNorms });';
+    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, normTags, linkNorms });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -30,7 +29,6 @@ const abs = src => src.startsWith('http') ? src : `${BASE}/${src.replace(/^\//, 
 const rel = src => src.startsWith('http') ? src : '/' + src.replace(/^\//, '');
 
 export const pathOf = {
-  produto: id => `/produtos/${id}`,
   sistema: id => `/sistemas/${id.replace(/^sis-/, '')}`,
   material: id => `/materiais/${id.replace(/^mat-/, '')}`,
 };
@@ -131,7 +129,7 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
   <div class="container pg-top__inner">
     <a href="/" class="logo" aria-label="PIPESYSTEM — página inicial">${LOGO}</a>
     <nav class="pg-top__nav" aria-label="Seções do portal">
-      <a href="/#produtos">Produtos</a><a href="/#sistemas">Sistemas</a><a href="/#materiais">Materiais</a><a href="/#normas">Normas</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
+      <a href="/#sistemas">Sistemas</a><a href="/#materiais">Materiais</a><a href="/#normas">Normas</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
     </nav>
   </div>
 </header>
@@ -148,7 +146,7 @@ ${body}
 <footer class="pg-foot">
   <div class="container pg-foot__inner">
     <p><strong>PipeSystem</strong> — o portal da hidráulica e dos sistemas de condução de fluidos.</p>
-    <p><a href="/">Página inicial</a> · <a href="/#produtos">Guia técnico</a> · <a href="/#materiais">Catálogo</a> · <a href="/#normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+    <p><a href="/">Página inicial</a> · <a href="/#materiais">Catálogo de produtos e materiais</a> · <a href="/#normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
     <p class="pg-foot__copy">© ${new Date().getFullYear()} PipeSystem Serviços de Consultoria Ltda.</p>
   </div>
 </footer>
@@ -161,45 +159,12 @@ ${body}
 export function generate(D, outDir) {
   const pages = [];
   const { linkNorms, normTags } = D;
-  const groupById = Object.fromEntries(D.PRODUCT_GROUPS.map(g => [g.id, g]));
   const productById = Object.fromEntries(D.PRODUCTS.map(p => [p.id, p]));
-  const systemsUsing = id => D.SYSTEMS.filter(s => (s.produtos || []).includes(id));
-  const materialsOf = id => D.CATALOG.filter(m => m.rel === id);
+  const materialById = Object.fromEntries(D.CATALOG.map(m => [m.id, m]));
+  const materialOf = id => materialById[D.MATERIAL_OF_PRODUCT[id]];
+  const systemsUsing = m => D.SYSTEMS.filter(s => (s.produtos || []).some(id => D.MATERIAL_OF_PRODUCT[id] === m.id));
   const normNote = '<p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>';
   const links = arr => `<p class="relprod">${arr.map(([href, name]) => `<a href="${href}">${esc(name)}</a>`).join('')}</p>`;
-
-  // Produtos
-  for (const p of D.PRODUCTS) {
-    const g = groupById[p.g]; const url = pathOf.produto(p.id);
-    const irmaos = D.PRODUCTS.filter(x => x.g === p.g && x.id !== p.id);
-    const sist = systemsUsing(p.id), mats = materialsOf(p.id);
-    const body = `      <div class="sheet__head"><div class="prod__icon"><svg viewBox="0 0 64 64" aria-hidden="true">${g.icon}</svg></div>
-        <div><p class="eyebrow">Guia técnico · ${esc(g.name)}</p><h1 id="sheetTitle" class="page__title">${esc(p.name)}</h1></div></div>
-      <p class="sheet__desc page__lead">${linkNorms(p.desc)}</p>
-      ${fotosHTML(p.fotos)}
-      ${tabelasHTML(p.tabelas, linkNorms)}
-      <div class="prod__cols">
-        <section><h2 class="page__h">Tipos</h2><ul>${list(p.tipos, linkNorms)}</ul></section>
-        <section><h2 class="page__h">Como escolher</h2><ul>${list(p.escolha, linkNorms)}</ul></section>
-      </div>
-      <h2 class="page__h">Normas de referência</h2>
-      <p class="tags tags--links">${normTags(p.normas)}</p>${normNote}
-      ${mats.length ? `<h2 class="page__h">No catálogo de materiais</h2>${links(mats.map(m => [pathOf.material(m.id), m.name]))}` : ''}
-      ${sist.length ? `<h2 class="page__h">Onde é usado</h2>${links(sist.map(s => [pathOf.sistema(s.id), s.name]))}` : ''}
-      ${irmaos.length ? `<h2 class="page__h">Outros itens de ${esc(g.name)}</h2>${links(irmaos.map(x => [pathOf.produto(x.id), x.name]))}` : ''}
-      <div class="sheet__actions">
-        <a href="${contato('Cotação de materiais', `Cotação de ${p.name}: (informe diâmetros, quantidades e local de entrega) `)}" class="btn">Solicitar cotação</a>
-        <a href="${contato('Consulta técnica', `Dúvida técnica sobre ${p.name}: `)}" class="btn btn--ghost">Tirar uma dúvida técnica</a>
-      </div>`;
-    const f0 = (p.fotos || [])[0];
-    pages.push({ url, images: (p.fotos || []).map(f => abs(f.src)), html: page({
-      url, wide: !!p.tabelas, body,
-      title: `${p.name} — tipos, normas e como escolher | PipeSystem`,
-      description: cut(`${plain(p.desc)} Tipos, critérios de escolha e normas (${p.normas.slice(0, 3).join(', ')}).`, 158),
-      image: f0 && abs(f0.src), imageAlt: f0 && f0.alt, keywords: [p.name, g.name, ...p.normas].join(', '),
-      crumbs: [{ name: 'Início', url: '/' }, { name: 'Guia técnico de produtos', url: '/#produtos' }, { name: p.name, url }],
-    }) });
-  }
 
   // Sistemas
   for (const s of D.SYSTEMS) {
@@ -221,7 +186,7 @@ export function generate(D, outDir) {
       </div>
       <h2 class="page__h">Normas de referência</h2>
       <p class="tags tags--links">${normTags(s.normas)}</p>${normNote}
-      <h2 class="page__h">Produtos do guia técnico</h2>${links(s.produtos.filter(id => productById[id]).map(id => [pathOf.produto(id), productById[id].name]))}
+      <h2 class="page__h">Produtos e materiais usados</h2>${links([...new Set(s.produtos.map(materialOf).filter(Boolean))].map(m => [pathOf.material(m.id), m.name]))}
       <h2 class="page__h">Outros sistemas</h2>${links(outros.map(x => [pathOf.sistema(x.id), x.name]))}
       <div class="sheet__actions">
         <a href="${contato('Consulta técnica', `Pergunta sobre ${s.name}: `)}" class="btn">Fazer uma pergunta</a>
@@ -239,10 +204,12 @@ export function generate(D, outDir) {
   // Catálogo de materiais
   for (const m of D.CATALOG) {
     const url = pathOf.material(m.id); const foto = materialPhoto(D, m);
-    const relp = productById[m.rel]; const fabs = D.MANUFACTURERS[m.id] || [];
+    const p = productById[m.rel]; const veja = materialById[m.veja]; const fabs = D.MANUFACTURERS[m.id] || [];
+    const normas = [...new Set([...m.normas, ...(p ? p.normas : [])])]; const sist = systemsUsing(m);
+    const fotos = p && p.fotos && p.fotos.length ? p.fotos : null;
     const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); const misto = fabs.some(f => f[2] === 'M');
     const mesmos = D.CATALOG.filter(x => x.cat === m.cat && x.id !== m.id);
-    const fig = foto ? `<figure class="matfig matfig--foto">
+    const fig = fotos ? fotosHTML(fotos) : foto ? `<figure class="matfig matfig--foto">
         <img src="${esc(rel(foto.src))}" alt="${esc(foto.alt)}"${dims(foto.src)}${foto.inteira ? ' class="inteira"' : ''} decoding="async">
         <figcaption>${foto.legenda} · Foto: <a href="${esc(foto.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(foto.autor)}</a> (<a href="${esc(foto.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(foto.licenca)}</a>), via Wikimedia Commons</figcaption>
       </figure>` : `<figure class="matfig" style="--m:${m.tone}">
@@ -252,12 +219,18 @@ export function generate(D, outDir) {
     const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">${esc(m.name)}</h1></div></div>
       ${fig}
       <p class="sheet__desc page__lead">${linkNorms(m.desc)}</p>
+      ${p ? tabelasHTML(p.tabelas, linkNorms) : ''}
       <h2 class="page__h">Dados técnicos</h2>
       <table class="specs"><tbody>${m.specs.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${linkNorms(v)}</td></tr>`).join('')}</tbody></table>
+      ${p ? `<div class="prod__cols">
+        <section><h2 class="page__h">Tipos</h2><ul>${list(p.tipos, linkNorms)}</ul></section>
+        <section><h2 class="page__h">Como escolher</h2><ul>${list(p.escolha, linkNorms)}</ul></section>
+      </div>` : ''}
       <h2 class="page__h">Aplicações</h2><p class="sheet__desc">${linkNorms(m.apps)}.</p>
       <h2 class="page__h">Normas de referência</h2>
-      <p class="tags tags--links">${normTags(m.normas)}</p>${normNote}
-      ${relp ? `<p class="relprod"><a href="${pathOf.produto(relp.id)}">Ver ficha de ${esc(relp.name)} no guia técnico →</a></p>` : ''}
+      <p class="tags tags--links">${normTags(normas)}</p>${normNote}
+      ${veja ? `<p class="relprod"><a href="${pathOf.material(veja.id)}">Veja também: ${esc(veja.name)} →</a></p>` : ''}
+      ${sist.length ? `<h2 class="page__h">Onde é usado</h2>${links(sist.map(x => [pathOf.sistema(x.id), x.name]))}` : ''}
       ${fabs.length ? `<h2 class="page__h">${importers ? 'Importadores' : misto ? 'Fabricantes e importadores' : 'Fabricantes'}</h2>
       <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">
         <span class="fabs__name notranslate" translate="no">${esc(n)}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span></a>`
@@ -269,12 +242,14 @@ export function generate(D, outDir) {
         <a href="${contato('Cotação de materiais', `Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) `)}" class="btn">Solicitar cotação</a>
         <a href="${contato('Consulta técnica', `Consulta sobre ${m.name}: `)}" class="btn btn--ghost">Consulta técnica</a>
       </div>`;
-    pages.push({ url, images: foto ? [abs(foto.src)] : [], html: page({
-      url, body,
-      title: `${m.name} — dados técnicos e fabricantes | PipeSystem`,
+    const imgs = fotos ? fotos.map(f => abs(f.src)) : foto ? [abs(foto.src)] : [];
+    const capa = fotos ? fotos[0] : foto;
+    pages.push({ url, images: imgs, html: page({
+      url, body, wide: !!(p && p.tabelas),
+      title: `${m.name} — dados técnicos, tipos, normas e fabricantes | PipeSystem`,
       description: cut(`${plain(m.desc)} Dados técnicos, normas e ${importers ? 'importadores' : 'fabricantes'}.`, 158),
-      image: foto && abs(foto.src), imageAlt: foto && foto.alt, keywords: [m.name, m.cat, ...m.normas].join(', '),
-      crumbs: [{ name: 'Início', url: '/' }, { name: 'Catálogo de materiais', url: '/#materiais' }, { name: m.name, url }],
+      image: capa && abs(capa.src), imageAlt: capa && capa.alt, keywords: [m.name, m.cat, ...normas].join(', '),
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Catálogo de produtos e materiais', url: '/materiais' }, { name: m.name, url }],
     }) });
   }
 
