@@ -34,9 +34,8 @@ export const pathOf = {
 };
 
 // ---------- blocos reaproveitados das fichas do site ----------
-// Teste: fotos ampliáveis (lightbox.js) só nestas fichas — o mesmo conjunto de site/script.js
-const ZOOM_TEST = new Set(['sis-gas']);
-function fotosHTML(fotos, titulo = '', zoom = false) {
+// zoom (padrão): clicar na foto abre a imagem ampliada (site/lightbox.js)
+function fotosHTML(fotos, titulo = '', zoom = true) {
   if (!fotos || !fotos.length) return '';
   const credits = fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i)
     .map(f => `<a href="${esc(f.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(f.autor)}</a> (<a href="${esc(f.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(f.licenca)}</a>)`).join(', ');
@@ -181,7 +180,7 @@ export function generate(D, outDir) {
         <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${esc(s.name)}">${svg}</svg>
         <figcaption>Esquema ilustrativo, sem escala</figcaption>
       </figure>
-      ${fotosHTML(fotos, 'Instalações reais', ZOOM_TEST.has(s.id))}
+      ${fotosHTML(fotos, 'Instalações reais')}
       <p class="sheet__desc page__lead">${linkNorms(s.desc)}</p>
       <div class="prod__cols">
         <section><h2 class="page__h">Componentes principais</h2><ul>${list(s.componentes, linkNorms)}</ul></section>
@@ -212,7 +211,7 @@ export function generate(D, outDir) {
     const fotos = p && p.fotos && p.fotos.length ? p.fotos : null;
     const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); const misto = fabs.some(f => f[2] === 'M');
     const mesmos = D.CATALOG.filter(x => x.cat === m.cat && x.id !== m.id);
-    const fig = fotos ? fotosHTML(fotos) : foto ? `<figure class="matfig matfig--foto">
+    const fig = fotos ? fotosHTML(fotos) : foto ? `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar foto: ${esc(plain(foto.legenda))}" data-legenda="${esc(plain(foto.legenda))}">
         <img src="${esc(rel(foto.src))}" alt="${esc(foto.alt)}"${dims(foto.src)}${foto.inteira ? ' class="inteira"' : ''} decoding="async">
         <figcaption>${foto.legenda} · Foto: <a href="${esc(foto.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(foto.autor)}</a> (<a href="${esc(foto.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(foto.licenca)}</a>), via Wikimedia Commons</figcaption>
       </figure>` : `<figure class="matfig" style="--m:${m.tone}">

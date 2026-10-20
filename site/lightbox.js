@@ -1,4 +1,5 @@
-// Ampliar fotos das galerias (.pfotos--zoom): clique na foto abre a imagem grande, com legenda e créditos.
+// Ampliar fotos das galerias (.pfotos--zoom) e das fotos únicas do catálogo (.matfig--zoom):
+// clique na foto abre a imagem grande, com legenda e créditos.
 // Setas (ou ← →) passam entre as fotos da mesma galeria; Esc, × ou clique fora fecham.
 // Funciona na página inicial (dentro da ficha) e nas páginas próprias das fichas.
 (() => {
@@ -37,6 +38,14 @@
   }
 
   function open(item) {
+    if (item.classList.contains('matfig--zoom')) {   // foto única: a figura é o próprio item
+      const im = item.querySelector('img');
+      fotos = [{ src: im.currentSrc || im.src, alt: im.alt, legenda: item.dataset.legenda || '' }];
+      if (!box) build();
+      const fc = item.querySelector('figcaption');
+      box.querySelector('.lbox__credit').innerHTML = fc ? fc.innerHTML.replace(/^[^<]*·\s*/, '') : '';
+      show(0); box.showModal(); return;
+    }
     const gallery = item.closest('.pfotos');
     const items = [...gallery.querySelectorAll('.pfotos__item')];
     fotos = items.map(el => {
@@ -50,14 +59,14 @@
   }
 
   document.addEventListener('click', e => {
-    const item = e.target.closest('.pfotos--zoom .pfotos__item');
-    if (!item) return;
+    const item = e.target.closest('.pfotos--zoom .pfotos__item, .matfig--zoom');
+    if (!item || e.target.closest('a')) return;   // links dos créditos continuam funcionando
     e.preventDefault();
     open(item);
   });
   // teclado: Enter ou espaço na foto também amplia
   document.addEventListener('keydown', e => {
-    const item = e.target.closest && e.target.closest('.pfotos--zoom .pfotos__item');
+    const item = e.target.closest && e.target.closest('.pfotos--zoom .pfotos__item, .matfig--zoom');
     if (!item || (e.key !== 'Enter' && e.key !== ' ')) return;
     e.preventDefault();
     open(item);
