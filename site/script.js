@@ -1250,18 +1250,22 @@ const SECTION_PATHS = {
 };
 const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([id, path]) => [path, id]));
 (() => {
+  // id pode ser a própria seção ou um item dentro dela (ex.: #lmatTool em Ferramentas): rola até o item
+  // e mostra na barra o endereço da seção (/ferramentas), sem "#"
+  const sectionOf = id => SECTION_PATHS[id] ? id : document.getElementById(id)?.closest('section[id]')?.id;
   const go = (id, how = 'push', smooth = true) => {
-    const el = document.getElementById(id); if (!el) return;
+    const el = document.getElementById(id), sec = sectionOf(id); if (!el || !SECTION_PATHS[sec]) return;
     el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
-    const url = '/' + SECTION_PATHS[id];
-    if (location.pathname + location.search + location.hash !== url) history[how === 'push' ? 'pushState' : 'replaceState']({ secao: id }, '', url);
+    if (sec !== id && !el.matches('dialog')) { el.classList.remove('search-flash'); void el.offsetWidth; el.classList.add('search-flash'); }   // destaca o cartão escolhido no submenu
+    const url = '/' + SECTION_PATHS[sec];
+    if (location.pathname + location.search + location.hash !== url) history[how === 'push' ? 'pushState' : 'replaceState']({ secao: sec }, '', url);
   };
-  // cliques em qualquer link para uma seção (menu, rodapé, botões "Fale conosco"...)
+  // cliques em qualquer link para uma seção ou item de seção (menu, rodapé, botões "Fale conosco"...)
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#"]');
     if (!a || e.defaultPrevented || e.button || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
     const id = a.getAttribute('href').slice(1);
-    if (!SECTION_PATHS[id]) return;
+    if (!id || !SECTION_PATHS[sectionOf(id)]) return;
     e.preventDefault();
     if (sheet.open) sheet.close();
     go(id);
@@ -1276,14 +1280,14 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   // ao abrir o site por um endereço de seção (/sistemas) ou por um link antigo com "#" (/#sistemas)
   const start = () => {
     const byPath = SECTION_OF_PATH[location.pathname.slice(1)];
-    const byHash = SECTION_PATHS[location.hash.slice(1)] ? location.hash.slice(1) : null;
-    const id = byPath || byHash;
+    const h = location.hash.slice(1), byHash = h && SECTION_PATHS[sectionOf(h)] ? h : null;
+    const id = byHash || byPath;   // /contato#lmatTool (link antigo) vai ao item e corrige para /ferramentas
     if (!id || sheet.open) return;
     const qs = new URLSearchParams(location.search);
     const onlyForm = [...qs.keys()].every(k => k === 'assunto' || k === 'msg');   // ?assunto=&msg= já preencheram o formulário
     go(id, 'replace', false);
-    if (location.search && onlyForm) history.replaceState({ secao: id }, '', '/' + SECTION_PATHS[id]);
+    if (location.search && onlyForm) history.replaceState({ secao: sectionOf(id) }, '', '/' + SECTION_PATHS[sectionOf(id)]);
   };
   if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
-  window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (SECTION_PATHS[id] && !sheet.open) go(id, 'replace'); });
+  window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (id && SECTION_PATHS[sectionOf(id)] && !sheet.open) go(id, 'replace'); });
 })();
