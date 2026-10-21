@@ -478,6 +478,102 @@
         </div>
       </div>
 
+      <div class="tool lmat" id="lmatTool">
+        <h3>Lista de materiais do empreendimento</h3>
+        <p class="lmat__intro">Informe as características do prédio ou das casas e receba uma lista orientativa de tubos, conexões, registros e equipamentos das instalações de água fria, água quente, gás, esgoto, águas pluviais e incêndio, com quantidades e metragens. Serve para estimar custos e pedir cotações. Não substitui o projeto hidráulico.</p>
+        <form class="lmat__form" id="lmatForm" novalidate>
+          <fieldset class="lmat__box">
+            <legend>1. Empreendimento</legend>
+            <div class="form form--3">
+              <label class="full">Nome do empreendimento <span>opcional</span><input id="lmNome" placeholder="Ex.: Residencial Jardim das Águas"></label>
+              <label>Tipo
+                <select id="lmTipo">
+                  <option value="edificio">Edifício residencial</option>
+                  <option value="casa">Casas (térreas ou sobrados)</option>
+                </select>
+              </label>
+              <label><span class="lmat__lbl" data-edif>Andares-tipo</span><span class="lmat__lbl" data-casa hidden>Pavimentos por casa</span><input type="number" id="lmPav" value="8" min="1" max="60" step="1"></label>
+              <label>Pé-direito <span>m, piso a piso</span><input type="number" id="lmPe" value="2.88" min="2.4" max="6" step="0.01"></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="lmat__box">
+            <legend>2. Unidades por tipo</legend>
+            <div id="lmTypes"></div>
+            <button type="button" class="btn btn--ghost btn--sm" id="lmAddType">+ Adicionar outro tipo</button>
+          </fieldset>
+
+          <fieldset class="lmat__box">
+            <legend>3. Água quente e gás</legend>
+            <div class="form form--3">
+              <label>Aquecimento da água
+                <select id="lmAq">
+                  <option value="eletrico">Chuveiro elétrico (sem água quente)</option>
+                  <option value="gas">Aquecedor a gás de passagem</option>
+                  <option value="central">Central / solar com boiler</option>
+                </select>
+              </label>
+              <label>Tubos de água quente
+                <select id="lmAqMat">
+                  <option value="pex">PEX</option>
+                  <option value="cpvc">CPVC</option>
+                  <option value="cobre">Cobre</option>
+                </select>
+              </label>
+              <label>Gás
+                <select id="lmGas">
+                  <option value="gn">Gás natural encanado</option>
+                  <option value="glp">GLP em central (cilindros ou tanque)</option>
+                  <option value="p13">Botijão P13 individual</option>
+                  <option value="nenhum">Sem gás (cooktop elétrico)</option>
+                </select>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="lmat__box">
+            <legend>4. Opções</legend>
+            <div class="lmat__checks">
+              <label data-edif><input type="checkbox" id="lmMed" checked> Medição individual de água (hidrômetro por unidade)</label>
+              <label data-edif><input type="checkbox" id="lmComum" checked> Áreas comuns no térreo (sanitários, copa, jardim)</label>
+              <label data-edif><input type="checkbox" id="lmInc" checked> Sistema de hidrantes (combate a incêndio)</label>
+              <label><input type="checkbox" id="lmLoucas"> Incluir louças e metais</label>
+            </div>
+            <div class="form form--3">
+              <label>Margem para perdas e cortes <span>%</span><input type="number" id="lmPerda" value="10" min="0" max="50" step="1"></label>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="btn">Gerar lista de materiais</button>
+        </form>
+
+        <div class="lmat__out" id="lmatOut" hidden>
+          <div id="lmatPrint">
+            <div class="lmat__head">
+              <div>
+                <p class="eyebrow">Lista orientativa de materiais</p>
+                <h4 id="lmOutTitle"></h4>
+              </div>
+              <div class="lmat__actions">
+                <button type="button" class="btn btn--ghost btn--sm" id="lmCopy">Copiar</button>
+                <button type="button" class="btn btn--ghost btn--sm" id="lmCsv">Baixar planilha (CSV)</button>
+                <button type="button" class="btn btn--ghost btn--sm" id="lmPrint">Imprimir / PDF</button>
+                <a href="#contato" class="btn btn--sm" id="lmQuote" data-subject="Cotação de materiais">Pedir cotação desta lista</a>
+              </div>
+            </div>
+            <div class="lmat__stats" id="lmStats"></div>
+            <div id="lmWarn"></div>
+            <div class="lmat__tablewrap">
+              <table class="table lmat__table">
+                <thead><tr><th>Material</th><th class="num">Qtd.</th><th>Un.</th><th>Observação</th></tr></thead>
+                <tbody id="lmRows"></tbody>
+              </table>
+            </div>
+            <p class="hint">Estimativa por índices médios de obra (comprimentos por ponto e por ambiente, colunas por pavimento), com a margem de perdas informada em tubos e conexões. Diâmetros das colunas, do barrilete e do recalque calculados pelos pesos da NBR 5626 e pela fórmula de Forchheimer. Projeto e quantitativo final devem ser feitos por profissional habilitado, seguindo as NBR 5626, 8160, 10844, 15526 e 13523 e a Instrução Técnica do Corpo de Bombeiros do estado.</p>
+          </div>
+        </div>
+      </div>
+
       <div class="adslot adslot--sponsor" data-ad="basico" data-place="Ferramentas — patrocinador das calculadoras"></div>
 
       <div class="webtools" id="webtools">
@@ -914,5 +1010,6 @@
 <script src="img-sizes.js"></script>
 <script src="lightbox.js"></script>
 <script src="script.js"></script>
+<script src="bom.js"></script>
 </body>
 </html>
