@@ -17,6 +17,19 @@ npm run build     # gera dist/
 npm run preview   # abre dist/ em http://localhost:3000
 ```
 
+## Preços SINAPI (Dimensionamento Inteligente)
+
+O orçamento por estado usa o relatório de insumos do SINAPI (Caixa), sem desoneração.
+
+- `site/sinapi-regras.js` — qual insumo SINAPI dá o preço de cada material da lista (editável).
+- `site/sinapi-precos.js` — preços dos 27 estados, gerado; não edite à mão.
+
+Para atualizar todo mês: baixe o pacote `SINAPI-AAAA-MM-formato-xlsx.zip` em [caixa.gov.br › Downloads › SINAPI Relatórios Mensais](https://www.caixa.gov.br/site/Paginas/downloads.aspx#categoria_888) e rode:
+
+```bash
+node scripts/sinapi.mjs caminho/SINAPI-AAAA-MM-formato-xlsx.zip
+```
+
 ## Deploy
 
 A Vercel executa `npm run build` e publica `dist/` a cada push na branch `main`.

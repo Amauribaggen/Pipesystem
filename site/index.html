@@ -601,6 +601,17 @@
             </div>
             <div class="lmat__stats" id="lmStats"></div>
             <div id="lmWarn"></div>
+            <div class="lmat__sin" id="lmSinapi" hidden>
+              <div class="lmat__sinhead">
+                <div>
+                  <p class="eyebrow">Orçamento de referência · <span id="lmSinRef"></span></p>
+                  <h5>Valores de material por grupo</h5>
+                </div>
+                <label class="lmat__uf">Estado da obra<select id="lmUf" aria-label="Estado onde a obra será executada"></select></label>
+              </div>
+              <div id="lmSinRes"><p class="hint">Escolha o estado para ver o resumo em reais e baixar a planilha com os preços do SINAPI.</p></div>
+              <button type="button" class="btn btn--sm" id="lmSinXlsx" hidden>Baixar planilha com preços SINAPI</button>
+            </div>
             <div class="lmat__tablewrap">
               <table class="table lmat__table">
                 <thead><tr><th>Material</th><th class="num">Qtd.</th><th>Un.</th><th class="lmat__pc num">Preço unit. (R$)</th><th class="lmat__pc num">Total (R$)</th><th>Observação</th></tr></thead>
@@ -1049,6 +1060,8 @@
 <script src="img-sizes.js"></script>
 <script src="lightbox.js"></script>
 <script src="script.js"></script>
+<script src="sinapi-regras.js"></script>
+<script src="sinapi-precos.js"></script>
 <script src="bom.js"></script>
 </body>
 </html>

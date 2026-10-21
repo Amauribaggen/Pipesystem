@@ -316,6 +316,18 @@ a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
 .lmat__stats div { background: rgba(31, 182, 201, .1); border: 1px solid rgba(31, 182, 201, .3); border-radius: 12px; padding: 10px 14px; }
 .lmat__stats span { display: block; font-size: .75rem; color: #9fb4cc; }
 .lmat__stats strong { font-family: var(--display); font-size: 1.1rem; color: #fff; }
+.lmat__sin { margin: 20px 0 8px; padding: 18px 20px; border: 1px solid rgba(242, 160, 61, .45); border-radius: 14px; background: rgba(242, 160, 61, .06); }
+.lmat__sinhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 20px; margin-bottom: 12px; }
+.lmat__sinhead .eyebrow { color: var(--accent) !important; margin-bottom: .3em; }
+.lmat__sinhead h5 { color: #fff; font: 700 1.05rem var(--display); margin: 0; }
+.lmat__uf { display: flex; flex-direction: column; gap: 6px; font-size: .85rem; font-weight: 600; color: #dbe7f4; min-width: 240px; }
+.lmat__uf select { font: 500 .95rem var(--font); padding: .6em .8em; border-radius: 10px; border: 1px solid rgba(255, 255, 255, .2); background: rgba(255, 255, 255, .06); color: #fff; }
+.lmat__uf select option { color: var(--ink); }
+.lmat__sintab td.num, .lmat__sintab th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lmat__sintab small { color: #9fb4cc; font-weight: 400; }
+.lmat__sintab tfoot th { color: var(--accent); font: 700 1rem var(--display); border-top: 2px solid rgba(242, 160, 61, .5); padding-top: 10px; text-transform: none; letter-spacing: 0; }
+.lmat__sin .hint { margin-top: 10px; }
+#lmSinXlsx { margin-top: 12px; }
 .lmat__tablewrap { overflow-x: auto; margin-top: 16px; }
 .lmat__pc, .lmat__sub, .lmat__foot { display: none; }   /* espaços de preço: só no Imprimir / PDF */
 .lmat__table td.num, .lmat__table th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -326,6 +338,7 @@ a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
   html.print-lmat #lmatPrint, html.print-lmat #lmatPrint * { visibility: visible !important; color: #000 !important; background: none !important; box-shadow: none !important; }
   html.print-lmat #lmatPrint { position: absolute; left: 0; top: 0; width: 100%; }
   html.print-lmat .lmat__actions { display: none !important; }
+  html.print-lmat .lmat__uf, html.print-lmat #lmSinXlsx { display: none !important; }
   html.print-lmat .lmat__stats div { border-color: #999 !important; }
   html.print-lmat .lmat__table td, html.print-lmat .lmat__table th { border-bottom-color: #ccc !important; }
   html.print-lmat .lmat__tablewrap { overflow: visible; }

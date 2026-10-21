@@ -552,6 +552,7 @@
       return head + `<tr><td>${esc(r.item)}</td><td class="num">${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)}</td><td>${r.un}</td>${pc}<td>${esc(r.note)}</td></tr>`;
     }).join('') + sub(g);
     $('lmQuote').dataset.question = asText(true);
+    renderSinapi();
   }
   function asText(short) {
     const lines = [$('lmOutTitle').textContent, ...last.stats.map(([k, v]) => `${k}: ${v}`), ''];
@@ -625,18 +626,23 @@
     return new Blob([...parts, ...dir, e], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   }
   const xe = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-  function xlsx() {
+  // sin (opcional): preços SINAPI do estado escolhido → preenche o preço e acrescenta as colunas de fonte
+  function xlsx(sin) {
     // estilos: 1 título, 2 cabeçalho, 3 preço (a preencher), 4 moeda, 5 grupo, 6 total, 7 nota
     const rows = [], cell = (ref, v, st = 0) => v === '' ? `<c r="${ref}" s="${st}"/>` : typeof v === 'number' ? `<c r="${ref}" s="${st}"><v>${v}</v></c>`
       : v && v.f ? `<c r="${ref}" s="${st}"><f>${xe(v.f)}</f></c>` : `<c r="${ref}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${xe(v ?? '')}</t></is></c>`;
     const row = (r, cells) => rows.push(`<row r="${r}">${cells.map(([c, v, st]) => cell(c + r, v, st)).join('')}</row>`);
-    row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + $('lmOutTitle').textContent, 1]]);
-    row(2, [['A', 'Lista orientativa. Preencha a coluna "Preço unitário": os totais por item, por grupo e o total geral são calculados automaticamente.', 7]]);
-    row(4, ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Observação'].map((t, i) => ['ABCDEFG'[i], t, 2]));
+    row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + $('lmOutTitle').textContent + (sin ? ` — preços SINAPI ${SINAPI_PRECOS.ref}, ${sin.uf}` : ''), 1]]);
+    row(2, [['A', sin ? `Preços de referência de material do SINAPI (Caixa), ${SINAPI_PRECOS.ref}, sem desoneração, ${UF_NOMES[sin.uf]}. Sem mão de obra, BDI e frete, salvo indicação. Itens "sem referência" ficam em branco: preencha com cotação.`
+      : 'Lista orientativa. Preencha a coluna "Preço unitário": os totais por item, por grupo e o total geral são calculados automaticamente.', 7]]);
+    const cols = sin ? 'ABCDEFGHI' : 'ABCDEFG';
+    row(4, ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Observação', 'Fonte do preço', 'Link para conferência'].slice(0, cols.length).map((t, i) => [cols[i], t, 2]));
     let r = 5;
     const first = r;
     for (const it of last.rows) {
-      row(r, [['A', it.group], ['B', it.item], ['C', it.qty], ['D', it.un], ['E', '', 3], ['F', { f: `IF(E${r}="","",C${r}*E${r})` }, 4], ['G', it.note]]);
+      const p = sin && sin.prices.get(it);
+      row(r, [['A', it.group], ['B', it.item], ['C', it.qty], ['D', it.un], ['E', p ? p.p : '', 3], ['F', { f: `IF(E${r}="","",C${r}*E${r})` }, 4], ['G', it.note],
+        ...(sin ? [['H', p ? p.fonte : 'Sem referência SINAPI — cotar com fornecedores'], ['I', p ? p.url : '']] : [])]);
       r++;
     }
     const lastR = r - 1;
@@ -647,11 +653,11 @@
     r++;
     row(r, [['B', 'TOTAL GERAL', 6], ['F', { f: `SUM(F${first}:F${lastR})` }, 6]]);
     row(r + 2, [['A', 'Gerado em pipesystem.com.br. Não substitui o projeto hidráulico.', 7]]);
-    const widths = [30, 62, 9, 6, 18, 18, 48];
+    const widths = [30, 62, 9, 6, 18, 18, 48, 80, 60].slice(0, cols.length);
     const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">` +
       `<sheetViews><sheetView workbookViewId="0"><pane ySplit="4" topLeftCell="A5" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>` +
       `<cols>${widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('')}</cols>` +
-      `<sheetData>${rows.join('')}</sheetData><autoFilter ref="A4:G${lastR}"/></worksheet>`;
+      `<sheetData>${rows.join('')}</sheetData><autoFilter ref="A4:${cols.at(-1)}${lastR}"/></worksheet>`;
     const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">` +
       `<numFmts count="1"><numFmt numFmtId="164" formatCode="&quot;R$&quot; #,##0.00"/></numFmts>` +
       `<fonts count="4"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="14"/><color rgb="FFF2A03D"/><name val="Calibri"/></font>` +
@@ -681,6 +687,92 @@
     a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
   $('lmCsv').addEventListener('click', downloadXlsx);
+
+  // ---------- Preços SINAPI por estado ----------
+  // Regras em sinapi-regras.js (material → insumo) e preços em sinapi-precos.js (gerado de 1 em 1 mês com scripts/sinapi.mjs).
+  const UF_NOMES = { AC: 'Acre', AL: 'Alagoas', AM: 'Amazonas', AP: 'Amapá', BA: 'Bahia', CE: 'Ceará', DF: 'Distrito Federal', ES: 'Espírito Santo',
+    GO: 'Goiás', MA: 'Maranhão', MG: 'Minas Gerais', MS: 'Mato Grosso do Sul', MT: 'Mato Grosso', PA: 'Pará', PB: 'Paraíba', PE: 'Pernambuco',
+    PI: 'Piauí', PR: 'Paraná', RJ: 'Rio de Janeiro', RN: 'Rio Grande do Norte', RO: 'Rondônia', RR: 'Roraima', RS: 'Rio Grande do Sul',
+    SC: 'Santa Catarina', SE: 'Sergipe', SP: 'São Paulo', TO: 'Tocantins' };
+  const HAS_SINAPI = typeof SINAPI_PRECOS !== 'undefined' && typeof SINAPI_REGRAS !== 'undefined';
+  const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  // preço de um insumo no estado; sem preço lá → mediana dos estados que têm preço
+  function insumo(code, ui) {
+    const it = SINAPI_PRECOS.ins[code]; if (!it) return null;
+    const p = it[2 + ui];
+    if (p != null) return { p, med: false };
+    const all = it.slice(2).filter(x => x != null).sort((a, b) => a - b);
+    const n = all.length, mid = n >> 1;
+    return n ? { p: n % 2 ? all[mid] : (all[mid - 1] + all[mid]) / 2, med: true } : null;
+  }
+  const fixed = (w, nota) => ({ p: w.v, fonte: w.fonte + (nota ? `. ${nota}` : '') + ' (valor único para todos os estados)', url: w.url || '' });
+  function resolve(spec, m, ui, uf) {
+    if (typeof spec === 'string') spec = { c: spec };
+    if (spec.zero) return { p: 0, fonte: `Sem custo de material: ${spec.zero}`, url: '' };
+    if (spec.v != null) return fixed(spec);
+    if (spec.by) {
+      const key = (spec.key || (x => x))(m[spec.g || 1] || ''), sub = spec.by[key];
+      const r = sub ? resolve(typeof sub === 'string' ? { c: sub, nota: spec.nota } : { nota: spec.nota, ...sub }, m, ui, uf) : null;
+      return r || (spec.fbBy?.[key] ? fixed(spec.fbBy[key]) : spec.fb ? fixed(spec.fb) : null);
+    }
+    const codes = [].concat(spec.c || spec.s), vals = codes.map(c => insumo(c, ui));
+    if (vals.some(v => !v)) return spec.fb ? fixed(spec.fb, spec.nota) : null;
+    let p = vals.reduce((s, v) => s + v.p, 0);
+    if (!spec.s) p /= vals.length;
+    p = p * (spec.f || 1) + (spec.mais ? spec.mais.v : 0);
+    const med = vals.some(v => v.med);
+    const fonte = `SINAPI ${SINAPI_PRECOS.ref} — ${uf}, ${codes.length > 1 ? (spec.s ? 'soma dos insumos ' : 'média dos insumos ') : 'insumo '}${codes.join(', ')}` +
+      (med ? ` (sem preço em ${uf}: mediana dos estados com preço)` : '') + (spec.nota ? `. ${spec.nota}` : '') + (spec.mais ? ` + ${spec.mais.fonte}` : '');
+    return { p: Math.round(p * 100) / 100, fonte, url: SINAPI_PRECOS.fonte + (spec.mais ? ' ; ' + spec.mais.url : ''), med };
+  }
+  function priceList(uf) {
+    const ui = SINAPI_PRECOS.ufs.indexOf(uf), prices = new Map();
+    for (const it of last.rows) {
+      for (const [re, spec] of SINAPI_REGRAS) {
+        const m = it.item.match(re);
+        if (m) { const r = resolve(spec, m, ui, uf); if (r) prices.set(it, r); break; }
+      }
+    }
+    return prices;
+  }
+  function renderSinapi() {
+    const box = $('lmSinapi'), uf = $('lmUf').value;
+    if (!HAS_SINAPI) { box.hidden = true; return; }
+    box.hidden = false;
+    const out = $('lmSinRes');
+    if (!uf || !last) { out.innerHTML = ''; $('lmSinXlsx').hidden = true; return; }
+    const prices = priceList(uf), groups = new Map();
+    let total = 0, semRef = 0, web = 0;
+    for (const it of last.rows) {
+      const g = groups.get(it.group) || { v: 0, n: 0, sem: 0 };
+      const p = prices.get(it);
+      if (p) { g.v += p.p * it.qty; total += p.p * it.qty; if (!/^SINAPI|^Sem custo/.test(p.fonte)) web++; } else { g.sem++; semRef++; }
+      g.n++; groups.set(it.group, g);
+    }
+    out.innerHTML = `<table class="table lmat__sintab"><thead><tr><th>Grupo</th><th class="num">Valor (R$)</th><th class="num">%</th></tr></thead><tbody>` +
+      [...groups].map(([g, x]) => `<tr><td>${esc(g)}${x.sem ? ` <small>(${x.sem} sem referência)</small>` : ''}</td><td class="num">${brl(x.v)}</td><td class="num">${total ? num(x.v / total * 100, 1) : '0'}%</td></tr>`).join('') +
+      `</tbody><tfoot><tr><th>Total de material — ${esc(UF_NOMES[uf])}</th><th class="num">${brl(total)}</th><th class="num">100%</th></tr></tfoot></table>` +
+      `<p class="hint">${prices.size} de ${last.rows.length} itens com preço: SINAPI ${SINAPI_PRECOS.ref} (Caixa, sem desoneração, capital do estado)` +
+      (web ? `, e ${web} com preço pesquisado na internet` : '') + '.' +
+      (semRef ? ` <b>${semRef} ${semRef > 1 ? 'itens ficam' : 'item fica'} sem referência</b> e fora do total: cote com fornecedores.` : '') +
+      ' Só material: sem mão de obra, BDI e frete.</p>';
+    $('lmSinXlsx').hidden = false;
+    $('lmSinXlsx').textContent = `Baixar planilha com preços SINAPI — ${uf}`;
+  }
+  if (HAS_SINAPI) {
+    $('lmUf').innerHTML = '<option value="">Escolha o estado da obra…</option>' +
+      SINAPI_PRECOS.ufs.map(u => `<option value="${u}">${u} — ${UF_NOMES[u] || u}</option>`).join('');
+    try { const s = localStorage.getItem('lmUf'); if (s && SINAPI_PRECOS.ufs.includes(s)) $('lmUf').value = s; } catch {}
+    $('lmSinRef').textContent = `SINAPI ${SINAPI_PRECOS.ref}`;
+    $('lmUf').addEventListener('change', () => { try { localStorage.setItem('lmUf', $('lmUf').value); } catch {} renderSinapi(); });
+    $('lmSinXlsx').addEventListener('click', () => {
+      const uf = $('lmUf').value; if (!uf || !last) return;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(xlsx({ uf, prices: priceList(uf) }));
+      a.download = `dimensionamento-inteligente-pipesystem-sinapi-${uf}.xlsx`;
+      a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+  }
   window.lmatXlsx = () => last && downloadXlsx();   // usado pelo formulário de contato quando a lista não cabe no e-mail
   $('lmPrint').addEventListener('click', () => {
     document.documentElement.classList.add('print-lmat');
