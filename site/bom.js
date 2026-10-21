@@ -92,7 +92,24 @@
     const pvc = (g, name, m) => add(g, `Tubo PVC soldável ${name}`, m, 'm', { pack: ['barra', 6] });
     // água fria: PVC soldável ou PPR (termofusão, barras de 3 m, sem adesivo)
     const ppr = $('lmAfMat').value === 'ppr', matAF = ppr ? 'ppr' : 'pvc';
-    const af = (g, name, m) => ppr ? add(g, `Tubo PPR ${name}`, m, 'm', { pack: ['barra', 3] }) : pvc(g, name, m);
+    // cada tubo de água fria traz joelhos, tês e luvas pelo fator de conexões por metro (fatores-conexoes.js);
+    // o trecho sai do nome: coluna / recalque / alimentação, barrilete ou ramal (distribuição horizontal)
+    const FC = typeof FATORES_CONEXOES !== 'undefined' ? FATORES_CONEXOES : null;
+    const af = (g, name, m) => {
+      if (ppr) add(g, `Tubo PPR ${name}`, m, 'm', { pack: ['barra', 3] }); else pvc(g, name, m);
+      if (!FC || !(m > 0)) return;
+      const label = name.split(' — ')[0], d = parseInt(label, 10);
+      const trecho = /coluna|recalque|alimentação/.test(name) ? 'coluna' : /barrilete/.test(name) ? 'barrilete' : 'ramal';
+      let f = trecho === 'ramal' ? FC.ramal[d] : FC[trecho];
+      if (!f) { const ks = Object.keys(FC.ramal).map(Number); f = FC.ramal[ks.reduce((a, b) => Math.abs(b - d) < Math.abs(a - d) ? b : a)]; }
+      const k = m / 10, nota = { note: 'Fator de conexões por metro' };
+      add(g, `${AF.j} ${label}`, k * f.j, 'un', nota);
+      add(g, `${AF.t} ${label}`, k * f.t, 'un', nota);
+      add(g, `${AF.l} ${label}`, k * f.l * (ppr ? FC.luvaPPR || 1 : 1), 'un', nota);
+      if (!ppr) joints += k * (f.j + f.t + f.l);
+    };
+    // bujão em cada saída roscada que vai receber metal ou aparelho (torneira, chuveiro, ducha, máquina, engate, gás)
+    const plug = (g, n, gasPt) => { add(g, `Bujão de ferro galvanizado 1/2" para ponto de ${gasPt ? 'gás' : 'água'}`, n, 'un', { note: 'Fecha a saída até a instalação do metal ou do aparelho' }); threads += n; };
     const AF = ppr ? { j: 'Joelho 90° PPR', t: 'Tê PPR', l: 'Luva PPR', bucha: 'Conector PPR com inserto metálico 25 mm x 1/2"', cx: 'Conexões PPR' }
       : { j: 'Joelho 90° soldável', t: 'Tê soldável', l: 'Luva soldável', bucha: 'Joelho 90° soldável com bucha de latão 25 mm x 1/2" (azul)', cx: 'Conexões soldáveis' };
     const esg = (g, d, m) => add(g, `Tubo PVC ${g === 'Águas pluviais' ? 'para águas pluviais' : 'esgoto série normal'} ${d} mm`, m, 'm', { pack: ['barra', 6] });
@@ -123,19 +140,15 @@
       const lDist = areas * (0.5 * sq + 2) + (casa ? 3 * (pav - 1) : 0), lSub = fria * 2.5;
       af(A_, `${dName} — distribuição interna`, lDist * U);
       af(A_, '25 mm (3/4") — ramais e sub-ramais', lSub * U);
-      add(A_, `${AF.j} ${dName}`, areas * 2 * U);
-      add(A_, `${AF.t} ${dName}`, areas * U);
-      add(A_, `${AF.l} ${dName}`, Math.ceil(lDist / 6) * U);
-      add(A_, `${AF.j} 25 mm (3/4")`, fria * 2 * U);
-      add(A_, `${AF.t} 25 mm (3/4")`, Math.ceil(fria * 0.6) * U);
       add(A_, AF.bucha, fria * U, 'un', { note: 'Saída para os pontos de utilização' });
+      plug(A_, fria * U);
       add(A_, 'Registro de gaveta 3/4" com acabamento', (areas - vr) * U, 'un', { loss: false, note: 'Um por ambiente molhado' });
       add(A_, 'Registro de pressão 3/4" com acabamento', ban * U, 'un', { loss: false, note: 'Chuveiros' });
       if (med) {
         add(A_, 'Hidrômetro individual 3/4" (modelo aceito pela concessionária)', U, 'un', { loss: false });
         add(A_, 'Kit cavalete para hidrômetro 3/4" com registro de esfera', U, 'un', { loss: false });
       }
-      if (!ppr) joints += (areas * 4 + Math.ceil(lDist / 6) + fria * 3.6) * U; threads += (fria + areas + ban) * U;
+      if (!ppr) joints += fria * U; threads += (fria + areas + ban) * U;
 
       // Água quente
       if (hot) {
@@ -145,6 +158,7 @@
         add(Q_, hS + ' — sub-ramais', lhS * U, 'm', { pack: [packN, packL] });
         add(Q_, `${cx}: joelhos, tês e luvas`, (qAreas * 3 + quente * 3) * U);
         add(Q_, `${cx}: terminal com rosca 1/2"`, quente * U, 'un', { note: 'Saída para os pontos de água quente' });
+        plug(Q_, quente * U);
         add(Q_, 'Registro de gaveta água quente com acabamento', qAreas * U, 'un', { loss: false });
         add(Q_, 'Isolamento térmico tubular (espuma elastomérica)', lhD * U, 'm');
         if (aq === 'gas') {
@@ -161,6 +175,7 @@
         add(G_, 'Tubo de cobre classe A 15 mm (gás)', lg * U, 'm', { pack: ['barra', 5] });
         add(G_, 'Conexões de cobre 15 mm para gás (joelhos, tês)', (gPts * 3 + gPts - 1) * U);
         add(G_, 'Conector terminal de cobre 15 mm x 1/2"', gPts * U);
+        plug(G_, gPts * U, true);
         add(G_, 'Registro de esfera para gás 1/2"', (gPts + 1) * U, 'un', { loss: false, note: 'Um por aparelho e um de corte da unidade' });
         add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', gPts * U, 'un', { loss: false });
         add(G_, gas === 'p13' ? 'Regulador de pressão para botijão P13 (NBR 8473)' : 'Regulador de pressão de 2º estágio', U, 'un', { loss: false });
@@ -285,12 +300,10 @@
       add(B_, `Registro de gaveta ${pName} (topo das colunas)`, nPrum, 'un', { loss: false });
       add(B_, `Registro de gaveta ${bName} (saídas do reservatório)`, 2, 'un', { loss: false });
       add(B_, `${AF.t} ${bName}`, nPrum);
-      add(B_, `${AF.j} ${bName}`, 6 + nPrum);
       add(B_, `${AF.t} ${pName} (derivações dos andares)`, nPrum * pav);
-      add(B_, `${AF.l} ${pName}`, Math.ceil(nPrum * (H + 3) / 6));
       if (med) af(B_, '25 mm (3/4") — ramais de andar até os hidrômetros', units * 3);
       if (pav > 12) warn.push('Edifício alto: preveja válvulas redutoras de pressão nas colunas (pressão estática máxima de 40 mca nos pontos, NBR 5626). Elas não estão na lista.');
-      vertical += nPrum * (H + 3); horizontal += lBar; if (!ppr) joints += nPrum * (pav + 2) + 12;
+      vertical += nPrum * (H + 3); horizontal += lBar; if (!ppr) joints += nPrum * (pav + 1);
 
       // Esgoto: colunas, ventilação e coletor
       const lTQ = H + 1, n75 = nCoz * 2;
@@ -361,6 +374,7 @@
         add(W_, 'Joelho 90° esgoto 100 mm', nRalo + garFloors * 2);
         add(W_, 'Torneira de lavagem 3/4" com chave', garFloors * 2, 'un', { loss: false });
         af(W_, '25 mm (3/4") — pontos de lavagem', garFloors * 30);
+        plug(W_, garFloors * 2);
         add(W_, 'Registro de gaveta 3/4" com acabamento', garFloors, 'un', { loss: false });
         add(W_, 'Caixa separadora de água e óleo', 1, 'un', { loss: false });
         if (pisosGar) {
@@ -408,8 +422,8 @@
       if (comum) {
         af(C_, '32 mm (1") — distribuição', 30);
         af(C_, '25 mm (3/4") — ramais', 40);
-        add(C_, `${AF.cx} 25 e 32 mm`, 40);
         add(C_, 'Torneira de jardim 3/4"', 4, 'un', { loss: false });
+        plug(C_, 4);
         add(C_, 'Registro de gaveta 3/4" com acabamento', 4, 'un', { loss: false });
         esg(C_, 100, 15); esg(C_, 50, 12); esg(C_, 40, 8);
         add(C_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', 3);
@@ -425,13 +439,14 @@
         const n = saloes;
         af(C_, '32 mm (1") — distribuição', n * 15);
         af(C_, '25 mm (3/4") — ramais', n * 15);
-        add(C_, `${AF.cx} 25 e 32 mm (salões de festas)`, n * 20);
+        plug(C_, n * 5);
         add(C_, 'Registro de gaveta 3/4" com acabamento', n * 3, 'un', { loss: false });
         esg(C_, 100, n * 6); esg(C_, 50, n * 6); esg(C_, 40, n * 5);
         add(C_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', n * 2);
         add(C_, 'Caixa de gordura (copa dos salões)', n, 'un', { loss: false });
         if (hasGas) {
           add(G_, 'Tubo de cobre classe A 15 mm (gás)', n * 12, 'm', { pack: ['barra', 5] });
+          plug(G_, n, true);
           add(G_, 'Registro de esfera para gás 1/2"', n, 'un', { loss: false });
           add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', n, 'un', { loss: false });
         }
@@ -449,7 +464,7 @@
         af(V_, '32 mm (1") — distribuição', 15);
         af(V_, '25 mm (3/4") — ramais das máquinas e tanques', n * 2.5 + 10);
         add(V_, AF.bucha, n + 2);
-        add(V_, `${AF.cx} 25 e 32 mm`, n * 3 + 8);
+        plug(V_, n + 2);
         add(V_, 'Registro de esfera 3/4" (um por máquina)', n, 'un', { loss: false });
         add(V_, 'Torneira para máquina de lavar', n, 'un', { loss: false });
         add(V_, 'Tanque com torneira', 2, 'un', { loss: false });
@@ -501,7 +516,7 @@
       const J_ = 'Churrasqueiras';
       if (churN) {
         af(J_, '25 mm (3/4") — pontos de água das churrasqueiras', churN * 8);
-        add(J_, `${AF.cx} 25 mm`, churN * 5);
+        plug(J_, churN);
         esg(J_, 50, churN * 6);
         add(J_, 'Caixa de gordura pequena', churN, 'un', { loss: false });
         if (loucas) add(J_, 'Cuba e torneira da churrasqueira', churN, 'cj', { loss: false });
@@ -512,6 +527,7 @@
         else {
           if (churN) {
             add(G_, 'Tubo de cobre classe A 15 mm (gás)', churN * 15, 'm', { pack: ['barra', 5] });
+            plug(G_, churN, true);
             add(G_, 'Registro de esfera para gás 1/2"', churN, 'un', { loss: false });
             add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', churN, 'un', { loss: false });
           }
@@ -533,6 +549,7 @@
       pvc(X_, '32 mm (1") — rede de água não potável (tubo identificado)', lRede);
       add(X_, 'Conexões soldáveis 32 e 25 mm', Math.ceil(lRede / 3));
       add(X_, 'Torneira de uso restrito com placa "Água não potável"', casa ? 2 * nCasas : 4 + 2 * pisosGar, 'un', { loss: false });
+      plug(X_, casa ? 2 * nCasas : 4 + 2 * pisosGar);
       add(X_, 'Fita de identificação de tubulação "Água não potável" (rolo 30 m)', Math.ceil(lRede / 30), 'un');
       add(X_, 'Válvula de retenção 1"', casa ? nCasas : 2, 'un', { loss: false });
       add(X_, 'Registro de esfera 1"', (casa ? nCasas : 1) * 3, 'un', { loss: false });

@@ -133,6 +133,7 @@ const SINAPI_REGRAS = (() => {
     [/^Tanque com torneira/, { s: ['10423', '7603'] }],
     [/^Sifão/, '44945'], [/^Válvula de escoamento/, '6158'], [/^Engate flexível/, '11683'],
     // Consumíveis
+    [/^Bujão de ferro galvanizado 1\/2"/, '4888'],
     [/^Adesivo para PVC/, '20080'],
     [/^Solução limpadora/, { c: '20083', f: 0.2, nota: 'frasco de 1 L proporcional a 200 mL' }],
     [/^Fita veda-rosca/, '3143'],
