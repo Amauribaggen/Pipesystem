@@ -479,8 +479,8 @@
       </div>
 
       <div class="tool lmat" id="lmatTool">
-        <h3>Lista de materiais do empreendimento</h3>
-        <p class="lmat__intro">Informe as características do prédio ou das casas e receba uma lista orientativa de tubos, conexões, registros e equipamentos das instalações de água fria, água quente, gás, esgoto, águas pluviais e incêndio, com quantidades e metragens. Serve para estimar custos e pedir cotações. Não substitui o projeto hidráulico.</p>
+        <h3 class="lmat__title">Dimensionamento Inteligente</h3>
+        <p class="lmat__intro">Informe as características do prédio ou das casas e receba uma lista orientativa de tubos, conexões, registros e equipamentos das instalações de água fria, água quente, gás, esgoto, águas pluviais, incêndio, sprinklers, piscina e aproveitamento de água de chuva, com quantidades e metragens. Ferramenta desenvolvida pela equipe PipeSystem com apoio de inteligência artificial. Serve para estimar custos e pedir cotações. Não substitui o projeto hidráulico.</p>
         <form class="lmat__form" id="lmatForm" novalidate>
           <fieldset class="lmat__box">
             <legend>1. Empreendimento</legend>
@@ -531,9 +531,47 @@
             </div>
           </fieldset>
 
+          <fieldset class="lmat__box" data-edif>
+            <legend>4. Garagem</legend>
+            <div class="form form--3">
+              <label>Vagas de garagem<input type="number" id="lmVagas" value="40" min="0" max="2000" step="1"></label>
+              <label>Pisos de garagem <span>subsolos ou pavimentos</span><input type="number" id="lmPisosGar" value="1" min="0" max="10" step="1"></label>
+              <label>Vagas com recarga de veículos elétricos <span>0 = não</span><input type="number" id="lmEv" value="0" min="0" max="2000" step="1"></label>
+            </div>
+          </fieldset>
+
           <fieldset class="lmat__box">
-            <legend>4. Opções</legend>
-            <div class="lmat__checks">
+            <legend><span data-edif>5.</span><span data-casa hidden>4.</span> Lazer e serviços</legend>
+            <div class="form form--3">
+              <label>Piscina <span>área em m², 0 = não</span><input type="number" id="lmPisc" value="0" min="0" max="2000" step="1"></label>
+              <label data-edif>Salões de festas<input type="number" id="lmSalao" value="1" min="0" max="10" step="1"></label>
+              <label>Churrasqueiras
+                <select id="lmChur">
+                  <option value="nenhuma">Não haverá</option>
+                  <option value="carvao">A carvão</option>
+                  <option value="gas">A gás</option>
+                </select>
+              </label>
+              <label>Churrasqueiras nas áreas comuns <span>além das varandas</span><input type="number" id="lmChurN" value="0" min="0" max="20" step="1"></label>
+              <label data-edif>Lavanderia coletiva <span>nº de máquinas, 0 = não</span><input type="number" id="lmLavCol" value="0" min="0" max="50" step="1"></label>
+            </div>
+            <div class="lmat__checks lmat__checks--top">
+              <label><input type="checkbox" id="lmChuva"> Aproveitamento de água de chuva para uso não potável (NBR 15527)</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="lmat__box">
+            <legend><span data-edif>6.</span><span data-casa hidden>5.</span> Incêndio e opções</legend>
+            <div class="form form--3" data-edif>
+              <label>Rede de sprinklers
+                <select id="lmSpk">
+                  <option value="nao">Não haverá</option>
+                  <option value="garagem">Só na garagem</option>
+                  <option value="todo">Na garagem e nos apartamentos</option>
+                </select>
+              </label>
+            </div>
+            <div class="lmat__checks lmat__checks--top">
               <label data-edif><input type="checkbox" id="lmMed" checked> Medição individual de água (hidrômetro por unidade)</label>
               <label data-edif><input type="checkbox" id="lmComum" checked> Áreas comuns no térreo (sanitários, copa, jardim)</label>
               <label data-edif><input type="checkbox" id="lmInc" checked> Sistema de hidrantes (combate a incêndio)</label>
@@ -544,19 +582,19 @@
             </div>
           </fieldset>
 
-          <button type="submit" class="btn">Gerar lista de materiais</button>
+          <button type="submit" class="btn">Gerar dimensionamento e lista de materiais</button>
         </form>
 
         <div class="lmat__out" id="lmatOut" hidden>
           <div id="lmatPrint">
             <div class="lmat__head">
               <div>
-                <p class="eyebrow">Lista orientativa de materiais</p>
+                <p class="eyebrow">Dimensionamento Inteligente · lista orientativa</p>
                 <h4 id="lmOutTitle"></h4>
               </div>
               <div class="lmat__actions">
                 <button type="button" class="btn btn--ghost btn--sm" id="lmCopy">Copiar</button>
-                <button type="button" class="btn btn--ghost btn--sm" id="lmCsv">Baixar planilha (CSV)</button>
+                <button type="button" class="btn btn--ghost btn--sm" id="lmCsv">Baixar planilha Excel (com preços)</button>
                 <button type="button" class="btn btn--ghost btn--sm" id="lmPrint">Imprimir / PDF</button>
                 <a href="#contato" class="btn btn--sm" id="lmQuote" data-subject="Cotação de materiais">Pedir cotação desta lista</a>
               </div>
@@ -569,7 +607,7 @@
                 <tbody id="lmRows"></tbody>
               </table>
             </div>
-            <p class="hint">Estimativa por índices médios de obra (comprimentos por ponto e por ambiente, colunas por pavimento), com a margem de perdas informada em tubos e conexões. Diâmetros das colunas, do barrilete e do recalque calculados pelos pesos da NBR 5626 e pela fórmula de Forchheimer. Projeto e quantitativo final devem ser feitos por profissional habilitado, seguindo as NBR 5626, 8160, 10844, 15526 e 13523 e a Instrução Técnica do Corpo de Bombeiros do estado.</p>
+            <p class="hint">Estimativa por índices médios de obra (comprimentos por ponto e por ambiente, colunas por pavimento), com a margem de perdas informada em tubos e conexões. Diâmetros das colunas, do barrilete e do recalque calculados pelos pesos da NBR 5626 e pela fórmula de Forchheimer. Projeto e quantitativo final devem ser feitos por profissional habilitado, seguindo as NBR 5626, 8160, 10844, 15526, 13523, 10897 (sprinklers), 10339 (piscinas) e 15527 (água de chuva) e as Instruções Técnicas do Corpo de Bombeiros do estado. A planilha Excel traz a coluna de preço unitário e os totais por grupo e geral, prontos para a cotação.</p>
           </div>
         </div>
       </div>

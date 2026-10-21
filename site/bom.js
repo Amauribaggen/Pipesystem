@@ -56,7 +56,8 @@
     cobre: ['Tubo de cobre classe E 22 mm', 'Tubo de cobre classe E 15 mm', 'barra', 5, 'Conexão de cobre'],
   };
   const GROUPS = ['Reservação e recalque', 'Água fria — colunas e barrilete', 'Água fria — unidades', 'Água quente', 'Gás', 'Esgoto sanitário',
-    'Águas pluviais', 'Combate a incêndio', 'Áreas comuns', 'Louças e metais', 'Consumíveis e fixação'];
+    'Águas pluviais', 'Combate a incêndio', 'Sprinklers', 'Garagem', 'Áreas comuns', 'Piscina', 'Churrasqueiras', 'Lavanderia coletiva',
+    'Aproveitamento de água de chuva', 'Louças e metais', 'Consumíveis e fixação'];
   const pickPipe = (mat, Q, vmax) => {
     const list = dimPipes[mat];
     const i = list.findIndex(([, D]) => 4 * Q / 1000 / (Math.PI * Math.pow(D / 1000, 2)) <= vmax);
@@ -73,6 +74,12 @@
     const med = !casa && $('lmMed').checked, comum = !casa && $('lmComum').checked, inc = !casa && $('lmInc').checked, loucas = $('lmLoucas').checked;
     const perda = 1 + Math.max(0, parseFloat($('lmPerda').value) || 0) / 100;
     const hot = aq !== 'eletrico', hasGas = gas !== 'nenhum';
+    const val = id => Math.max(0, Math.round(parseFloat($(id).value) || 0));
+    const vagas = casa ? 0 : val('lmVagas'), pisosGar = casa ? 0 : val('lmPisosGar'), ev = casa ? 0 : val('lmEv');
+    const piscA = val('lmPisc'), saloes = casa ? 0 : val('lmSalao'), chur = $('lmChur').value, churN = chur === 'nenhuma' ? 0 : val('lmChurN');
+    const lavCol = casa ? 0 : val('lmLavCol'), chuva = $('lmChuva').checked;
+    let spk = casa ? 'nao' : $('lmSpk').value;
+    const Hs = pisosGar * 3; // profundidade dos subsolos de garagem
     const H = casa ? pe * pav : pe * (pav + 1); // altura até a cobertura (edifício: térreo + andares-tipo)
     const items = new Map(), warn = [];
     const add = (group, item, qty, un = 'un', o = {}) => {
@@ -86,6 +93,7 @@
     const tp = types.filter(t => t.n > 0);
     if (!tp.length) return null;
 
+    let aptArea = 0, nChurVar = 0, nBicos = 0;
     let units = 0, unitsPerFloor = 0, pop = 0, ptF = 0, ptQ = 0, ptG = 0, pesoTot = 0, uhc = 0, plate = 0, joints = 0, threads = 0, nTQ = 0, nCoz = 0, nVar = 0;
     const A_ = 'Água fria — unidades', Q_ = 'Água quente', G_ = 'Gás', E_ = 'Esgoto sanitário', L_ = 'Louças e metais';
     for (const t of tp) {
@@ -97,11 +105,12 @@
       const areas = ban + lav + 2 + vr;              // banheiros, lavabos, cozinha, serviço, varanda
       const fria = ban * 4 + lav * 2 + 2 + 2 + vr;    // bacia, lavatório, chuveiro, ducha | bacia, lavatório | pia, lava-louça | tanque, máquina | pia
       const qAreas = hot ? ban + 1 : 0, quente = hot ? ban * 2 + 1 : 0;
-      const gPts = hasGas ? 1 + (aq === 'gas' ? 1 : 0) : 0;
+      const gPts = hasGas ? 1 + (aq === 'gas' ? 1 : 0) + (chur === 'gas' ? vr : 0) : 0;
       const peso = ban * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + lav * 0.6 + 0.7 + 1 + 0.7 + 1 + vr * 0.7;
       ptF += fria * U; ptQ += quente * U; ptG += gPts * U; pesoTot += peso * U;
       uhc += U * (ban * (6 + 1 + 2) + lav * 7 + 3 + 2 + 3 + 3 + vr * 3);
       nTQ += (casa ? (pav > 1 ? ban + lav : 0) : ban + lav) * t.n; nCoz += t.n; nVar += vr * t.n;
+      aptArea += t.area * U; if (chur !== 'nenhuma') nChurVar += vr * U;
 
       // Água fria
       const [dName] = pickPipe('pvc', 0.3 * Math.sqrt(peso), 2);
@@ -287,9 +296,10 @@
       vertical += nCond * (H + 2);
 
       // Incêndio
+      const areaGar = vagas * 25, garFloors = vagas ? Math.max(1, pisosGar) : 0; // 25 m² por vaga, com circulação
       if (inc) {
-        const nHid = (plate > 750 ? 2 : 1) * (pav + 1);
-        add(I_, 'Tubo de aço galvanizado 2 1/2" (DN 65)', H + 5 + 15, 'm', { pack: ['barra', 6] });
+        const nHid = (plate > 750 ? 2 : 1) * (pav + 1) + (garFloors ? garFloors * (areaGar / garFloors > 750 ? 2 : 1) : 0);
+        add(I_, 'Tubo de aço galvanizado 2 1/2" (DN 65)', H + Hs + 5 + 15, 'm', { pack: ['barra', 6] });
         add(I_, 'Conexões galvanizadas 2 1/2" (tês, joelhos, uniões)', nHid + 8);
         add(I_, 'Válvula angular 2 1/2" com adaptador storz', nHid, 'un', { loss: false });
         add(I_, 'Abrigo para mangueira', nHid, 'un', { loss: false });
@@ -301,7 +311,57 @@
         add(I_, 'Registro de gaveta 2 1/2"', 2, 'un', { loss: false });
         add(I_, 'Bomba de reforço de incêndio (conforme cálculo)', 1, 'cj', { loss: false });
         warn.push('Hidrantes: quantidade e reserva técnica de incêndio dependem da Instrução Técnica do Corpo de Bombeiros do estado. Confirme com o projeto aprovado.');
-        vertical += H + 5;
+        vertical += H + Hs + 5;
+      }
+
+      // Garagem: ralos, lavagem e drenagem dos subsolos
+      if (vagas) {
+        const W_ = 'Garagem', nRalo = Math.ceil(areaGar / 150);
+        add(W_, 'Ralo com grelha 150 x 150 mm (piso de garagem)', nRalo);
+        esg(W_, 100, nRalo * 6 + garFloors * 20);
+        add(W_, 'Joelho 90° esgoto 100 mm', nRalo + garFloors * 2);
+        add(W_, 'Torneira de lavagem 3/4" com chave', garFloors * 2, 'un', { loss: false });
+        pvc(W_, '25 mm (3/4") — pontos de lavagem', garFloors * 30);
+        add(W_, 'Registro de gaveta 3/4" com acabamento', garFloors, 'un', { loss: false });
+        add(W_, 'Caixa separadora de água e óleo', 1, 'un', { loss: false });
+        if (pisosGar) {
+          add(W_, 'Poço de drenagem com 2 bombas submersíveis (lavagem e infiltração)', 1, 'cj', { loss: false, note: 'Subsolo abaixo da rede pública' });
+          add(W_, 'Tubo de aço galvanizado 2" (DN 50) — recalque da drenagem', Hs + 15, 'm', { pack: ['barra', 6] });
+          add(W_, 'Válvula de retenção 2"', 2, 'un', { loss: false });
+          add(W_, 'Registro de gaveta 2"', 2, 'un', { loss: false });
+        }
+        pesoTot += garFloors * 2 * 0.4; joints += nRalo * 3 + garFloors * 12; vertical += Hs;
+      }
+
+      // Sprinklers (NBR 10897): garagem risco ordinário ≈ 12 m²/bico; apartamentos risco leve ≈ 18 m²/bico
+      if (ev && spk === 'nao') {
+        spk = 'garagem';
+        warn.push('Recarga de veículos elétricos: a lista inclui sprinklers na garagem, exigidos por muitos Corpos de Bombeiros nas vagas com carregador. Confirme na Instrução Técnica do seu estado.');
+      }
+      if (spk !== 'nao' && (vagas || spk === 'todo')) {
+        const S_ = 'Sprinklers', bG = vagas ? Math.ceil(areaGar / 12) : 0, bA = spk === 'todo' ? Math.ceil(aptArea * 1.15 / 18) : 0;
+        const b = bG + bA, floors = garFloors + (spk === 'todo' ? pav + 1 : 0);
+        nBicos = b;
+        add(S_, 'Bico de sprinkler 68 °C K80 1/2" — garagem (upright ou pendente)', bG, 'un', { note: ev ? `Inclui as ${ev} vagas com recarga de veículos elétricos` : '', loss: false });
+        add(S_, 'Bico de sprinkler residencial 68 °C 1/2" — apartamentos e circulações', bA, 'un', { loss: false });
+        add(S_, 'Bicos de reserva com armário e chave de troca', Math.max(6, Math.ceil(b * 0.02)), 'un', { loss: false });
+        add(S_, 'Tubo de aço carbono 1" (DN 25) — ramais', b * 3, 'm', { pack: ['barra', 6] });
+        add(S_, 'Tubo de aço carbono 1 1/4" (DN 32) — ramais', b * 0.6, 'm', { pack: ['barra', 6] });
+        add(S_, 'Tubo de aço carbono 2" (DN 50) — subgerais', b * 0.4, 'm', { pack: ['barra', 6] });
+        add(S_, 'Tubo de aço carbono 4" (DN 100) — coluna e alimentação', (spk === 'todo' ? H : 0) + Hs + 20, 'm', { pack: ['barra', 6] });
+        add(S_, 'Conexões 1" e 1 1/4" (tês, joelhos, reduções)', b * 1.2);
+        add(S_, 'Tê de redução com saída 1/2" para bico', b);
+        add(S_, 'Acoplamentos e conexões ranhuradas 2" a 4"', Math.ceil(b / 4) + floors * 4);
+        add(S_, 'Suporte de tubulação (tirante e abraçadeira)', Math.ceil(b * 4 / 3));
+        add(S_, 'Válvula de controle seccional com chave supervisora', floors, 'un', { loss: false });
+        add(S_, 'Chave detectora de fluxo', floors, 'un', { loss: false });
+        add(S_, 'Conjunto de teste e dreno', floors, 'un', { loss: false });
+        add(S_, 'Válvula de governo e alarme (VGA) 4"', 1, 'un', { loss: false });
+        add(S_, 'Registro de recalque de sprinklers no passeio', 1, 'un', { loss: false });
+        add(S_, 'Bomba principal e bomba jóquei de sprinklers (conforme cálculo)', 1, 'cj', { loss: false });
+        add(S_, 'Manômetro 0 a 20 bar', 4, 'un', { loss: false });
+        warn.push('Sprinklers: a reserva técnica de incêndio soma hidrantes e sprinklers. Bicos, diâmetros e bombas saem do cálculo hidráulico da NBR 10897.');
+        vertical += (spk === 'todo' ? H : 0) + Hs;
       }
 
       // Áreas comuns
@@ -318,6 +378,46 @@
           add(C_, 'Cuba e torneira de copa', 1, 'cj', { loss: false });
         }
         pesoTot += 2 * 0.6 + 0.7 + 4 * 0.4;
+      }
+
+      // Salões de festas: 2 sanitários e copa por salão
+      if (saloes) {
+        const n = saloes;
+        pvc(C_, '32 mm (1") — distribuição', n * 15);
+        pvc(C_, '25 mm (3/4") — ramais', n * 15);
+        add(C_, 'Conexões soldáveis 25 e 32 mm (salões de festas)', n * 20);
+        add(C_, 'Registro de gaveta 3/4" com acabamento', n * 3, 'un', { loss: false });
+        esg(C_, 100, n * 6); esg(C_, 50, n * 6); esg(C_, 40, n * 5);
+        add(C_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', n * 2);
+        add(C_, 'Caixa de gordura (copa dos salões)', n, 'un', { loss: false });
+        if (hasGas) {
+          add(G_, 'Tubo de cobre classe A 15 mm (gás)', n * 12, 'm', { pack: ['barra', 5] });
+          add(G_, 'Registro de esfera para gás 1/2"', n, 'un', { loss: false });
+          add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', n, 'un', { loss: false });
+        }
+        if (loucas) {
+          add(C_, 'Bacia sanitária com caixa acoplada (salões)', n * 2, 'un', { loss: false });
+          add(C_, 'Lavatório com torneira (salões)', n * 2, 'un', { loss: false });
+          add(C_, 'Cuba e torneira de copa', n, 'cj', { loss: false });
+        }
+        pesoTot += n * (2 * 0.6 + 0.7); joints += n * 40;
+      }
+
+      // Lavanderia coletiva
+      if (lavCol) {
+        const V_ = 'Lavanderia coletiva', n = lavCol;
+        pvc(V_, '32 mm (1") — distribuição', 15);
+        pvc(V_, '25 mm (3/4") — ramais das máquinas e tanques', n * 2.5 + 10);
+        add(V_, 'Joelho 90° soldável com bucha de latão 25 mm x 1/2" (azul)', n + 2);
+        add(V_, 'Conexões soldáveis 25 e 32 mm', n * 3 + 8);
+        add(V_, 'Registro de esfera 3/4" (um por máquina)', n, 'un', { loss: false });
+        add(V_, 'Torneira para máquina de lavar', n, 'un', { loss: false });
+        add(V_, 'Tanque com torneira', 2, 'un', { loss: false });
+        esg(V_, 50, n * 1.5 + 10); esg(V_, 75, 12);
+        add(V_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', Math.ceil(n / 3));
+        add(V_, 'Ralo linear com grelha (piso da lavanderia)', 2);
+        add(V_, 'Joelho 90° esgoto 50 mm', n + 2);
+        pesoTot += n * 1 + 2 * 0.7; joints += n * 6 + 20;
       }
     }
 
@@ -336,6 +436,70 @@
       } else add(G_, 'Abrigo de entrada e regulador geral (fornecidos pela concessionária)', 1, 'cj', { loss: false });
       vertical += nGp * (H + 3); threads += nGp * pav * 2;
     }
+    // Piscina (NBR 10339): filtragem do volume em 6 h
+    if (piscA) {
+      const K_ = 'Piscina', vol = piscA * 1.4, qf = vol / 6, sq = Math.sqrt(piscA);
+      add(K_, `Filtro de areia para piscina (vazão ≥ ${num(qf, 1)} m³/h)`, 1, 'un', { loss: false, note: `Volume estimado ${num(vol, 0)} m³ (profundidade média 1,4 m)` });
+      add(K_, `Motobomba de piscina com pré-filtro (${num(qf, 1)} m³/h)`, 1, 'un', { loss: false });
+      add(K_, 'Skimmer (coadeira)', Math.ceil(piscA / 40), 'un', { loss: false });
+      add(K_, 'Dispositivo de retorno', Math.ceil(piscA / 20) + 1, 'un', { loss: false });
+      add(K_, 'Dispositivo de aspiração', Math.ceil(piscA / 50), 'un', { loss: false });
+      add(K_, 'Ralo de fundo antiaprisionamento (par interligado)', 1, 'cj', { loss: false, note: 'Segurança contra sucção, NBR 10339' });
+      pvc(K_, '50 mm (1 1/2") — sucção e retorno', 6 * sq + 20);
+      pvc(K_, '60 mm (2") — dreno de fundo', 20);
+      add(K_, 'Conexões soldáveis 50 e 60 mm', Math.ceil(sq * 3) + 20);
+      add(K_, 'Registro de esfera 50 mm (casa de máquinas)', 6, 'un', { loss: false });
+      add(K_, 'Torneira de boia 3/4" (reposição de água)', 1, 'un', { loss: false });
+      add(K_, 'Chuveiro / ducha de piscina', 1, 'un', { loss: false });
+      add(K_, 'Clorador / dosador automático', 1, 'un', { loss: false });
+      esg(K_, 75, 15);
+      joints += Math.ceil(sq * 3) + 20;
+    }
+
+    // Churrasqueiras: pia em cada churrasqueira das áreas comuns; ponto de gás quando a gás
+    if (chur !== 'nenhuma' && (churN || nChurVar)) {
+      const J_ = 'Churrasqueiras';
+      if (churN) {
+        pvc(J_, '25 mm (3/4") — pontos de água das churrasqueiras', churN * 8);
+        add(J_, 'Conexões soldáveis 25 mm', churN * 5);
+        esg(J_, 50, churN * 6);
+        add(J_, 'Caixa de gordura pequena', churN, 'un', { loss: false });
+        if (loucas) add(J_, 'Cuba e torneira da churrasqueira', churN, 'cj', { loss: false });
+        pesoTot += churN * 0.7; joints += churN * 8;
+      }
+      if (chur === 'gas') {
+        if (!hasGas) warn.push('Churrasqueira a gás precisa de gás: escolha gás natural, GLP ou botijão.');
+        else {
+          if (churN) {
+            add(G_, 'Tubo de cobre classe A 15 mm (gás)', churN * 15, 'm', { pack: ['barra', 5] });
+            add(G_, 'Registro de esfera para gás 1/2"', churN, 'un', { loss: false });
+            add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', churN, 'un', { loss: false });
+          }
+          add(J_, 'Churrasqueira a gás (queimadores, equipamento)', churN + nChurVar, 'un', { loss: false, note: nChurVar ? `${int(nChurVar)} nas varandas, ponto de gás incluído em Gás` : '' });
+        }
+      } else add(J_, 'Churrasqueira a carvão: coifa e duto de exaustão (fora da hidráulica)', churN + nChurVar, 'un', { loss: false });
+    }
+
+    // Aproveitamento de água de chuva (NBR 15527): rede separada, uso não potável
+    if (chuva) {
+      const X_ = 'Aproveitamento de água de chuva', roof = plate, nCasas = casa ? tp.reduce((s, t) => s + t.n, 0) : 1;
+      const vol = Math.max(casa ? nCasas * 1 : 5, roof * 0.05), lRede = 2 * Math.sqrt(roof) + (casa ? 15 * nCasas : 30 + pisosGar * 20);
+      add(X_, 'Cisterna de água de chuva (volume útil)', vol, 'm³', { loss: false, note: '≈ 50 mm de chuva sobre a cobertura' });
+      add(X_, 'Filtro autolimpante de água de chuva', Math.ceil(roof / 300) * (casa ? nCasas : 1), 'un', { loss: false });
+      add(X_, 'Dispositivo de descarte da primeira chuva', Math.ceil(roof / 300) * (casa ? nCasas : 1), 'un', { loss: false });
+      add(X_, 'Freio d\'água (entrada calma) e sifão-ladrão', casa ? nCasas : 1, 'cj', { loss: false });
+      add(X_, 'Conjunto motobomba para água não potável', casa ? nCasas : 2, 'un', { loss: false });
+      add(X_, 'Clorador de pastilhas', casa ? nCasas : 1, 'un', { loss: false });
+      pvc(X_, '32 mm (1") — rede de água não potável (tubo identificado)', lRede);
+      add(X_, 'Conexões soldáveis 32 e 25 mm', Math.ceil(lRede / 3));
+      add(X_, 'Torneira de uso restrito com placa "Água não potável"', casa ? 2 * nCasas : 4 + 2 * pisosGar, 'un', { loss: false });
+      add(X_, 'Fita de identificação de tubulação "Água não potável" (rolo 30 m)', Math.ceil(lRede / 30), 'un');
+      add(X_, 'Válvula de retenção 1"', casa ? nCasas : 2, 'un', { loss: false });
+      add(X_, 'Registro de esfera 1"', (casa ? nCasas : 1) * 3, 'un', { loss: false });
+      warn.push('Água de chuva: a rede não potável deve ser totalmente separada da potável, identificada e sem conexão cruzada (NBR 15527 e NBR 5626).');
+      joints += Math.ceil(lRede / 3);
+    }
+
     if (hasGas && gas === 'p13' && !casa) warn.push('Botijão P13 dentro de apartamentos não é aceito pela maioria dos Corpos de Bombeiros em edifícios novos: prefira gás natural ou GLP em central.');
     if (aq === 'gas' && !hasGas) warn.push('O aquecedor a gás precisa de gás: escolha gás natural, GLP ou botijão.');
     if (aq === 'central') warn.push('Aquecimento central ou solar: a lista inclui só a distribuição dentro das unidades. Boiler, coletores e recirculação devem ser dimensionados à parte.');
@@ -361,6 +525,9 @@
       ['Pontos de água fria', int(ptF)], ['Pontos de água quente', int(ptQ)], ['Pontos de gás', int(ptG)],
       [casa ? 'Altura da casa' : 'Altura do edifício', `${num(H, 1)} m`],
     ];
+    if (vagas) stats.push(['Área de garagem', `${int(vagas * 25)} m²`]);
+    if (nBicos) stats.push(['Bicos de sprinkler', int(nBicos)]);
+    if (piscA) stats.push(['Volume da piscina', `${num(piscA * 1.4, 0)} m³`]);
     return { rows, stats, warn, casa, pav, units };
   }
 
@@ -407,13 +574,82 @@
     catch { e.target.textContent = 'Não foi possível copiar'; }
     setTimeout(() => { e.target.textContent = 'Copiar'; }, 2000);
   });
+  // ---------- Planilha Excel (.xlsx) com preço unitário e totais ----------
+  // ZIP sem compressão + SpreadsheetML mínimo; fórmulas gravadas em inglês, válidas em qualquer idioma do Excel.
+  const crcTable = Array.from({ length: 256 }, (_, n) => { for (let k = 0; k < 8; k++) n = n & 1 ? 0xEDB88320 ^ (n >>> 1) : n >>> 1; return n >>> 0; });
+  const crc32 = b => { let c = 0xFFFFFFFF; for (const x of b) c = crcTable[(c ^ x) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  function zip(files) {
+    const enc = new TextEncoder(), parts = [], dir = [];
+    let off = 0;
+    for (const [name, text] of files) {
+      const n = enc.encode(name), d = enc.encode(text), crc = crc32(d);
+      const h = new DataView(new ArrayBuffer(30));
+      [[0, 0x04034b50, 4], [4, 20, 2], [6, 0x0800, 2], [12, 33, 2], [14, crc, 4], [18, d.length, 4], [22, d.length, 4], [26, n.length, 2]]
+        .forEach(([o, v, s]) => s === 4 ? h.setUint32(o, v, true) : h.setUint16(o, v, true));
+      const c = new DataView(new ArrayBuffer(46));
+      [[0, 0x02014b50, 4], [4, 20, 2], [6, 20, 2], [8, 0x0800, 2], [14, 33, 2], [16, crc, 4], [20, d.length, 4], [24, d.length, 4], [28, n.length, 2], [42, off, 4]]
+        .forEach(([o, v, s]) => s === 4 ? c.setUint32(o, v, true) : c.setUint16(o, v, true));
+      parts.push(h, n, d); dir.push(c, n); off += 30 + n.length + d.length;
+    }
+    const size = dir.reduce((s, p) => s + p.byteLength, 0), e = new DataView(new ArrayBuffer(22));
+    [[0, 0x06054b50, 4], [8, files.length, 2], [10, files.length, 2], [12, size, 4], [16, off, 4]]
+      .forEach(([o, v, s]) => s === 4 ? e.setUint32(o, v, true) : e.setUint16(o, v, true));
+    return new Blob([...parts, ...dir, e], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  }
+  const xe = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  function xlsx() {
+    // estilos: 1 título, 2 cabeçalho, 3 preço (a preencher), 4 moeda, 5 grupo, 6 total, 7 nota
+    const rows = [], cell = (ref, v, st = 0) => v === '' ? `<c r="${ref}" s="${st}"/>` : typeof v === 'number' ? `<c r="${ref}" s="${st}"><v>${v}</v></c>`
+      : v && v.f ? `<c r="${ref}" s="${st}"><f>${xe(v.f)}</f></c>` : `<c r="${ref}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${xe(v ?? '')}</t></is></c>`;
+    const row = (r, cells) => rows.push(`<row r="${r}">${cells.map(([c, v, st]) => cell(c + r, v, st)).join('')}</row>`);
+    row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + $('lmOutTitle').textContent, 1]]);
+    row(2, [['A', 'Lista orientativa. Preencha a coluna "Preço unitário": os totais por item, por grupo e o total geral são calculados automaticamente.', 7]]);
+    row(4, ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Observação'].map((t, i) => ['ABCDEFG'[i], t, 2]));
+    let r = 5;
+    const first = r;
+    for (const it of last.rows) {
+      row(r, [['A', it.group], ['B', it.item], ['C', it.qty], ['D', it.un], ['E', '', 3], ['F', { f: `IF(E${r}="","",C${r}*E${r})` }, 4], ['G', it.note]]);
+      r++;
+    }
+    const lastR = r - 1;
+    r++;
+    row(r++, [['A', 'Subtotais por grupo', 5], ['B', '', 5], ['C', '', 5], ['D', '', 5], ['E', '', 5], ['F', '', 5], ['G', '', 5]]);
+    for (const g of [...new Set(last.rows.map(x => x.group))])
+      row(r++, [['B', g], ['F', { f: `SUMIF($A$${first}:$A$${lastR},"${g.replace(/"/g, '""')}",$F$${first}:$F$${lastR})` }, 4]]);
+    r++;
+    row(r, [['B', 'TOTAL GERAL', 6], ['F', { f: `SUM(F${first}:F${lastR})` }, 6]]);
+    row(r + 2, [['A', 'Gerado em pipesystem.com.br. Não substitui o projeto hidráulico.', 7]]);
+    const widths = [30, 62, 9, 6, 18, 18, 48];
+    const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">` +
+      `<sheetViews><sheetView workbookViewId="0"><pane ySplit="4" topLeftCell="A5" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>` +
+      `<cols>${widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('')}</cols>` +
+      `<sheetData>${rows.join('')}</sheetData><autoFilter ref="A4:G${lastR}"/></worksheet>`;
+    const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">` +
+      `<numFmts count="1"><numFmt numFmtId="164" formatCode="&quot;R$&quot; #,##0.00"/></numFmts>` +
+      `<fonts count="4"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="14"/><color rgb="FFF2A03D"/><name val="Calibri"/></font>` +
+      `<font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><i/><sz val="10"/><color rgb="FF5B6B80"/><name val="Calibri"/></font></fonts>` +
+      `<fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>` +
+      `<fill><patternFill patternType="solid"><fgColor rgb="FF0A2240"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFF4D6"/></patternFill></fill>` +
+      `<fill><patternFill patternType="solid"><fgColor rgb="FFDDF5F8"/></patternFill></fill></fills>` +
+      `<borders count="2"><border/><border><left style="thin"><color rgb="FFBFBFBF"/></left><right style="thin"><color rgb="FFBFBFBF"/></right><top style="thin"><color rgb="FFBFBFBF"/></top><bottom style="thin"><color rgb="FFBFBFBF"/></bottom></border></borders>` +
+      `<cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="8"><xf/>` +
+      `<xf fontId="1" applyFont="1"/><xf fontId="2" fillId="2" applyFont="1" applyFill="1"/>` +
+      `<xf numFmtId="164" fillId="3" borderId="1" applyNumberFormat="1" applyFill="1" applyBorder="1"><protection locked="0"/></xf>` +
+      `<xf numFmtId="164" applyNumberFormat="1"/><xf fontId="2" fillId="2" applyFont="1" applyFill="1"/>` +
+      `<xf numFmtId="164" fontId="2" fillId="2" applyNumberFormat="1" applyFont="1" applyFill="1"/><xf fontId="3" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+    return zip([
+      ['[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`],
+      ['_rels/.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+      ['xl/workbook.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Cotação" sheetId="1" r:id="rId1"/></sheets><calcPr fullCalcOnLoad="1"/></workbook>`],
+      ['xl/_rels/workbook.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+      ['xl/worksheets/sheet1.xml', sheet],
+      ['xl/styles.xml', styles],
+    ]);
+  }
   $('lmCsv').addEventListener('click', () => {
-    const q = s => `"${String(s).replace(/"/g, '""')}"`;
-    const csv = [['Grupo', 'Material', 'Quantidade', 'Unidade', 'Observação'].map(q).join(';'),
-      ...last.rows.map(r => [r.group, r.item, r.un === 'm³' ? num(r.qty, 1) : r.qty, r.un, r.note].map(q).join(';'))].join('\r\n');
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
-    a.download = 'lista-de-materiais-pipesystem.csv';
+    a.href = URL.createObjectURL(xlsx());
+    a.download = 'dimensionamento-inteligente-pipesystem.xlsx';
     a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
   $('lmPrint').addEventListener('click', () => {
