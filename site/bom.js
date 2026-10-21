@@ -543,21 +543,30 @@
       (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo, ${int(last.units)} unidades`);
     $('lmStats').innerHTML = last.stats.map(([k, v]) => `<div><span>${k}</span><strong>${v}</strong></div>`).join('');
     $('lmWarn').innerHTML = last.warn.map(w => `<p class="hint warn">${esc(w)}</p>`).join('');
+    // colunas de preço e subtotais por grupo: só aparecem no Imprimir / PDF, em branco para preencher
+    const pc = '<td class="lmat__pc"></td><td class="lmat__pc"></td>';
+    const sub = grp => `<tr class="lmat__sub"><td colspan="4">Subtotal — ${esc(grp)} (R$)</td><td class="lmat__pc"></td><td></td></tr>`;
     let g = '';
     $('lmRows').innerHTML = last.rows.map(r => {
-      const head = r.group !== g ? `<tr class="lmat__group"><th colspan="4">${esc(g = r.group)}</th></tr>` : '';
-      return head + `<tr><td>${esc(r.item)}</td><td class="num">${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)}</td><td>${r.un}</td><td>${esc(r.note)}</td></tr>`;
-    }).join('');
+      const head = r.group !== g ? (g ? sub(g) : '') + `<tr class="lmat__group"><th colspan="6">${esc(g = r.group)}</th></tr>` : '';
+      return head + `<tr><td>${esc(r.item)}</td><td class="num">${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)}</td><td>${r.un}</td>${pc}<td>${esc(r.note)}</td></tr>`;
+    }).join('') + sub(g);
     $('lmQuote').dataset.question = asText(true);
   }
   function asText(short) {
     const lines = [$('lmOutTitle').textContent, ...last.stats.map(([k, v]) => `${k}: ${v}`), ''];
+    // cada item com espaço para o preço unitário e o total; subtotal por grupo e total geral no fim
+    const blank = 'R$ ________';
     let g = '';
     for (const r of last.rows) {
-      if (r.group !== g) lines.push('', (g = r.group).toUpperCase());
-      lines.push(`- ${r.item}: ${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)} ${r.un}${r.note && !short ? ` (${r.note})` : ''}`);
+      if (r.group !== g) {
+        if (g) lines.push(`Subtotal ${g}: ${blank}`);
+        lines.push('', (g = r.group).toUpperCase());
+      }
+      lines.push(`- ${r.item}: ${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)} ${r.un}${r.note && !short ? ` (${r.note})` : ''} | Preço unit.: ${blank} | Total: ${blank}`);
     }
-    return (short ? 'Cotação para a lista de materiais gerada no portal:\n\n' : '') + lines.join('\n') +
+    lines.push(`Subtotal ${g}: ${blank}`, '', `TOTAL GERAL: ${blank}`);
+    return (short ? 'Cotação para a lista de materiais gerada no portal (preencha o preço unitário e o total de cada item):\n\n' : '') + lines.join('\n') +
       '\n\nLista orientativa gerada em pipesystem.com.br. Não substitui o projeto hidráulico.';
   }
   let shown = false;
