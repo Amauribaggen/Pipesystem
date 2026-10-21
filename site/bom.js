@@ -557,6 +557,8 @@
     const lines = [$('lmOutTitle').textContent, ...last.stats.map(([k, v]) => `${k}: ${v}`), ''];
     // cada item com espaço para o preço unitário e o total; subtotal por grupo e total geral no fim
     const blank = 'R$ ________';
+    const qty = r => r.un === 'm³' ? num(r.qty, 1) : int(r.qty);
+    if (short) return quoteTable(lines, qty);
     let g = '';
     for (const r of last.rows) {
       if (r.group !== g) {
@@ -568,6 +570,23 @@
     lines.push(`Subtotal ${g}: ${blank}`, '', `TOTAL GERAL: ${blank}`);
     return (short ? 'Cotação para a lista de materiais gerada no portal (preencha o preço unitário e o total de cada item):\n\n' : '') + lines.join('\n') +
       '\n\nLista orientativa gerada em pipesystem.com.br. Não substitui o projeto hidráulico.';
+  }
+  // Pedido de cotação: o e-mail (mailto) só aceita texto puro, então a tabela é montada em texto, colunas com "|"
+  function quoteTable(lines, qty) {
+    const W = Math.max(...last.rows.map(r => r.item.length)), P = 16;
+    const cols = (n, mat, q, un, pu, tot) => `${n.padStart(3)} | ${mat.padEnd(W)} | ${q.padStart(6)} | ${un.padEnd(3)} | ${pu.padEnd(P)} | ${tot}`.trimEnd();
+    const rule = `${'-'.repeat(3)}-+-${'-'.repeat(W)}-+-${'-'.repeat(6)}-+-${'-'.repeat(3)}-+-${'-'.repeat(P)}-+-${'-'.repeat(P)}`;
+    const out = ['Cotação para a lista de materiais gerada no portal.', 'Preencha o preço unitário e o total de cada item e devolva este e-mail.', '', ...lines,
+      cols('Nº', 'Material', 'Qtd.', 'Un.', 'Preço unit. (R$)', 'Total (R$)'), rule];
+    let g = '', i = 0;
+    const sub = grp => out.push(cols('', `Subtotal — ${grp}`, '', '', '', ''), rule);
+    for (const r of last.rows) {
+      if (r.group !== g) { if (g) sub(g); out.push(`>>> ${(g = r.group).toUpperCase()}`); }
+      out.push(cols(String(++i), r.item, qty(r), r.un, '', ''));
+    }
+    sub(g);
+    out.push(cols('', 'TOTAL GERAL', '', '', '', ''), '', 'Lista orientativa gerada em pipesystem.com.br. Não substitui o projeto hidráulico.');
+    return out.join('\n');
   }
   let shown = false;
   const live = () => { if (shown) render(); };
