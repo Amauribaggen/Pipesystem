@@ -684,19 +684,19 @@
   }
   const xe = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   // sin (opcional): preços SINAPI do estado escolhido → preenche o preço e acrescenta as colunas de fonte
-  function xlsx(sin) {
+  function xlsx(sin, data = last, title = $('lmOutTitle').textContent) {
     // estilos: 1 título, 2 cabeçalho, 3 preço (a preencher), 4 moeda, 5 grupo, 6 total, 7 nota
     const rows = [], cell = (ref, v, st = 0) => v === '' ? `<c r="${ref}" s="${st}"/>` : typeof v === 'number' ? `<c r="${ref}" s="${st}"><v>${v}</v></c>`
       : v && v.f ? `<c r="${ref}" s="${st}"><f>${xe(v.f)}</f></c>` : `<c r="${ref}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${xe(v ?? '')}</t></is></c>`;
     const row = (r, cells) => rows.push(`<row r="${r}">${cells.map(([c, v, st]) => cell(c + r, v, st)).join('')}</row>`);
-    row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + $('lmOutTitle').textContent + (sin ? ` — preços SINAPI ${SINAPI_PRECOS.ref}, ${sin.uf}` : ''), 1]]);
+    row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + title + (sin ? ` — preços SINAPI ${SINAPI_PRECOS.ref}, ${sin.uf}` : ''), 1]]);
     row(2, [['A', sin ? `Preços de referência de material do SINAPI (Caixa), ${SINAPI_PRECOS.ref}, sem desoneração, ${UF_NOMES[sin.uf]}. Sem mão de obra, BDI e frete, salvo indicação. Itens "sem referência" ficam em branco: preencha com cotação.`
       : 'Lista orientativa. Preencha a coluna "Preço unitário": os totais por item, por grupo e o total geral são calculados automaticamente.', 7]]);
     const cols = sin ? 'ABCDEFGHI' : 'ABCDEFG';
     row(4, ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Observação', 'Fonte do preço', 'Link para conferência'].slice(0, cols.length).map((t, i) => [cols[i], t, 2]));
     let r = 5;
     const first = r;
-    for (const it of last.rows) {
+    for (const it of data.rows) {
       const p = sin && sin.prices.get(it);
       row(r, [['A', it.group], ['B', it.item], ['C', it.qty], ['D', it.un], ['E', p ? p.p : '', 3], ['F', { f: `IF(E${r}="","",C${r}*E${r})` }, 4], ['G', it.note],
         ...(sin ? [['H', p ? p.fonte : 'Sem referência SINAPI — cotar com fornecedores'], ['I', p ? p.url : '']] : [])]);
@@ -705,7 +705,7 @@
     const lastR = r - 1;
     r++;
     row(r++, [['A', 'Subtotais por grupo', 5], ['B', '', 5], ['C', '', 5], ['D', '', 5], ['E', '', 5], ['F', '', 5], ['G', '', 5]]);
-    for (const g of [...new Set(last.rows.map(x => x.group))])
+    for (const g of [...new Set(data.rows.map(x => x.group))])
       row(r++, [['B', g], ['F', { f: `SUMIF($A$${first}:$A$${lastR},"${g.replace(/"/g, '""')}",$F$${first}:$F$${lastR})` }, 4]]);
     r++;
     row(r, [['B', 'TOTAL GERAL', 6], ['F', { f: `SUM(F${first}:F${lastR})` }, 6]]);
@@ -782,14 +782,17 @@
       (med ? ` (sem preço em ${uf}: mediana dos estados com preço)` : '') + (spec.nota ? `. ${spec.nota}` : '') + (spec.mais ? ` + ${spec.mais.fonte}` : '');
     return { p: Math.round(p * 100) / 100, fonte, url: SINAPI_PRECOS.fonte + (spec.mais ? ' ; ' + spec.mais.url : ''), med };
   }
-  function priceList(uf) {
-    const ui = SINAPI_PRECOS.ufs.indexOf(uf), prices = new Map();
-    for (const it of last.rows) {
-      for (const [re, spec] of SINAPI_REGRAS) {
-        const m = it.item.match(re);
-        if (m) { const r = resolve(spec, m, ui, uf); if (r) prices.set(it, r); break; }
-      }
+  function priceOf(name, uf) {
+    const ui = SINAPI_PRECOS.ufs.indexOf(uf);
+    for (const [re, spec] of SINAPI_REGRAS) {
+      const m = name.match(re);
+      if (m) return resolve(spec, m, ui, uf);
     }
+    return null;
+  }
+  function priceList(uf, rows = last.rows) {
+    const prices = new Map();
+    for (const it of rows) { const r = priceOf(it.item, uf); if (r) prices.set(it, r); }
     return prices;
   }
   function renderSinapi() {
@@ -831,6 +834,13 @@
     });
   }
   window.lmatXlsx = () => last && downloadXlsx();   // usado pelo formulário de contato quando a lista não cabe no e-mail
+  // usados pelo validador de listas exportadas (validador.js)
+  window.lmatApi = {
+    price: (name, uf) => HAS_SINAPI ? priceOf(name, uf) : null,
+    xlsx: (data, sin, title) => xlsx(sin, data, title),
+    ufs: () => HAS_SINAPI ? SINAPI_PRECOS.ufs.map(u => [u, UF_NOMES[u] || u]) : [],
+    ref: () => HAS_SINAPI ? SINAPI_PRECOS.ref : '',
+  };
   $('lmPrint').addEventListener('click', () => {
     document.documentElement.classList.add('print-lmat');
     window.print();

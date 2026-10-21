@@ -22,6 +22,7 @@ npm run preview   # abre dist/ em http://localhost:3000
 O orçamento por estado usa o relatório de insumos do SINAPI (Caixa), sem desoneração.
 
 - `site/fatores-conexoes.js` — joelhos, tês e luvas a cada 10 m de tubo de água fria, por diâmetro e trecho (editável; calibre com projetos executivos).
+- `site/validador.js` — validação, no navegador, de listas exportadas do Revit/CAD (CSV, TXT UTF-16 do Revit, XLSX): reconhece os materiais, confere a lista por regras e calcula o orçamento SINAPI.
 - `site/sinapi-regras.js` — qual insumo SINAPI dá o preço de cada material da lista (editável).
 - `site/sinapi-precos.js` — preços dos 27 estados, gerado; não edite à mão.
 

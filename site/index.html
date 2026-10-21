@@ -641,6 +641,37 @@
             <p class="hint">Estimativa por índices médios de obra (comprimentos por ponto e por ambiente, colunas por pavimento), com a margem de perdas informada em tubos e conexões. Diâmetros das colunas, do barrilete e do recalque calculados pelos pesos da NBR 5626 e pela fórmula de Forchheimer. Projeto e quantitativo final devem ser feitos por profissional habilitado, seguindo as NBR 5626, 8160, 10844, 15526, 13523, 10897 (sprinklers), 10339 (piscinas) e 15527 (água de chuva) e as Instruções Técnicas do Corpo de Bombeiros do estado. A planilha Excel traz a coluna de preço unitário e os totais por grupo e geral, prontos para a cotação.</p>
           </div>
         </div>
+
+        <div class="lmat__val" id="lmVal">
+          <p class="eyebrow">Já tem a lista do projeto?</p>
+          <h4>Validar lista exportada do Revit ou CAD</h4>
+          <p>Envie a tabela de quantitativos exportada do Revit, do AutoCAD MEP / Plant 3D ou de outro programa, em CSV, TXT ou Excel (.xlsx). O site reconhece cada material, confere unidades, quantidades, conexões por metro, bujões e adesivo, aponta o que parece faltar ou sobrar e calcula o orçamento SINAPI do estado. O arquivo é lido no seu navegador e não é enviado para nenhum servidor.</p>
+          <label class="lmat__drop" id="lmValDrop">
+            <input type="file" id="lmValFile" accept=".csv,.txt,.tsv,.xlsx" class="lmat__file">
+            <span class="lmat__dropmain"><b>Escolha o arquivo</b> ou arraste aqui</span>
+            <span class="lmat__dropsub" id="lmValName">CSV, TXT (exportação de tabela do Revit) ou XLSX</span>
+          </label>
+          <div class="lmat__valbar">
+            <button type="button" class="btn btn--ghost btn--sm" id="lmValModelo">Baixar modelo de planilha (CSV)</button>
+            <details class="lmat__how"><summary>Como exportar do Revit</summary>
+              <p>Crie uma tabela de quantitativos (Vista › Tabelas › Tabela/Quantidades) para Tubos e outra para Conexões de tubo, com os campos Família e tipo, Tamanho, Comprimento e Contagem. Depois use Arquivo › Exportar › Relatórios › Tabela e salve o .txt. No AutoCAD MEP ou Plant 3D, exporte o relatório de lista de materiais (BOM) em CSV ou Excel.</p>
+            </details>
+          </div>
+          <div class="lmat__valout" id="lmValOut" hidden>
+            <p class="hint" id="lmValCols"></p>
+            <div class="lmat__stats" id="lmValStats"></div>
+            <h5>O que conferir</h5>
+            <div class="lmat__tablewrap" id="lmValAlerts"></div>
+            <div class="lmat__sin">
+              <div class="lmat__sinhead">
+                <div><p class="eyebrow">Orçamento da lista</p><h5>Valores de material por grupo</h5></div>
+                <label class="lmat__uf">Estado da obra<select id="lmValUf" aria-label="Estado da obra para a lista enviada"></select></label>
+              </div>
+              <div id="lmValSum"></div>
+              <button type="button" class="btn btn--sm" id="lmValXlsx" hidden>Baixar lista validada com preços SINAPI</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="adslot adslot--sponsor" data-ad="basico" data-place="Ferramentas — patrocinador das calculadoras"></div>
@@ -1083,5 +1114,6 @@
 <script src="sinapi-regras.js"></script>
 <script src="sinapi-precos.js"></script>
 <script src="bom.js"></script>
+<script src="validador.js"></script>
 </body>
 </html>
