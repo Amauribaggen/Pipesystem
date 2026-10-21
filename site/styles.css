@@ -287,6 +287,8 @@ a.normref:hover { color: var(--teal, #1fb6c9); }
 .lmat { margin-top: 20px; }
 .lmat__title { color: var(--accent) !important; font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin-bottom: .6em !important; }
 .lmat__checks--top { margin: 16px 0 0; }
+.lmat__head .eyebrow, .section--dark .lmat__head .eyebrow { color: var(--accent); }
+a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
 .lmat__box .lmat__checks:last-child { margin-bottom: 0; }
 .lmat__intro { color: #b3c4d8; max-width: 900px; margin: -.4em 0 22px; }
 .lmat__box { border: 1px solid rgba(255, 255, 255, .1); border-radius: 12px; padding: 18px 20px 20px; margin: 0 0 16px; min-width: 0; }
