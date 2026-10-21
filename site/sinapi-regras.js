@@ -42,7 +42,7 @@ const SINAPI_REGRAS = (() => {
     [/^Registro de gaveta (3\/4" com acabamento|água quente)/, '6005'],
     [/^Registro de gaveta ([\d /]+)"/, { ...map(gaveta), g: 1 }],
     [/^Conjunto motobomba de recalque/, { c: '735', nota: 'bomba centrífuga 1,48 HP, 4 estágios' }],
-    [/^Conjunto motobomba para água não potável/, '731'],
+    [/^Conjunto motobomba (para água não potável|da cisterna)/, '731'],
     [/^Chave-boia/, '7588'],
     [/^Torneira de boia \(alimentação/, '11763'],
     [/^Torneira de boia 3\/4"/, '11830'],
@@ -58,7 +58,7 @@ const SINAPI_REGRAS = (() => {
     [/^Conexões PPR 25 e 32/, { c: ['36360', '36298', '38434', '38456'] }],
     [/^Conexões PPR 25 mm/, { c: ['36360', '36298'] }],
     // Incêndio em aço ranhurado (Grooved): tubo de aço carbono schedule 40 ranhurado; peças de ferro fundido
-    [/^Tubo de aço ranhurado ([\d /]+)"/, { by: { '2': '21148', '2 1/2': '21147', '4': '21151' }, g: 1, nota: 'tubo de aço carbono schedule 40 (ranhura feita na obra)' }],
+    [/^Tubo de aço galvanizado leve ranhurado ([\d /]+)"/, { by: { '1': '21010', '1 1/4': '21011', '1 1/2': '21012', '2': '21013', '2 1/2': '21014', '3': '21015', '4': '21016' }, g: 1, nota: 'tubo galvanizado classe leve NBR 5580' }],
     [/^Tê ranhurado ([\d /]+)"/, { by: { '2': '40419', '2 1/2': '40420', '3': '40421' }, g: 1 }],
     [/^Curva 90° ranhurada ([\d /]+)"/, { by: { '2': '40413', '2 1/2': '40415', '3': '40417' }, g: 1 }],
     [/^Acoplamento rígido ranhurado ([\d /]+)"/, { by: { '2': '40410', '2 1/2': '40411', '3': '40412' }, g: 1 }],

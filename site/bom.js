@@ -44,7 +44,7 @@
   }
   $('lmTipo').addEventListener('change', () => {
     const casa = isCasa();
-    $('lmPav').value = casa ? 2 : 8; $('lmPe').value = casa ? 3 : 2.88;
+    $('lmPav').value = casa ? 2 : 8; $('lmPe').value = casa ? 3 : 2.88; $('lmCist').value = casa ? 'sem' : 'com';
     if (casa && $('lmGas').value === 'gn') $('lmGas').value = 'p13';
     syncTipo();
   });
@@ -79,6 +79,7 @@
     const piscA = val('lmPisc'), saloes = casa ? 0 : val('lmSalao'), chur = $('lmChur').value, churN = chur === 'nenhuma' ? 0 : val('lmChurN');
     const lavCol = casa ? 0 : val('lmLavCol'), chuva = $('lmChuva').checked;
     let spk = casa ? 'nao' : $('lmSpk').value;
+    const cist = $('lmCist').value === 'com';
     const Hs = pisosGar * 3; // profundidade dos subsolos de garagem
     const H = casa ? pe * pav : pe * (pav + 1); // altura até a cobertura (edifício: térreo + andares-tipo)
     const items = new Map(), warn = [];
@@ -214,7 +215,17 @@
         add(R_, `Caixa d'água de polietileno ${vol.toLocaleString('pt-BR')} L`, t.n, 'un', { loss: false });
       }
       const nCasas = tp.reduce((s, t) => s + t.n, 0);
-      add(R_, "Adaptador soldável com flange para caixa d'água 32 mm", nCasas * 3);
+      if (cist) {   // cisterna enterrada + bomba que enche a caixa d'água
+        for (const t of tp) {
+          const v = Math.max(2, 2 * t.dorm) * 150, vol = tankSizes.find(s => s >= v) || 10000;
+          add(R_, `Caixa d'água de polietileno ${vol.toLocaleString('pt-BR')} L — cisterna (reservatório inferior)`, t.n, 'un', { loss: false, note: '1 dia de consumo' });
+        }
+        add(R_, 'Conjunto motobomba da cisterna (1/2 cv)', nCasas, 'un', { loss: false });
+        af(R_, '25 mm (3/4") — recalque da cisterna', nCasas * (pe * pav + 6));
+        add(R_, 'Válvula de retenção vertical 3/4"', nCasas, 'un', { loss: false });
+        add(R_, 'Chave-boia / controle de nível', nCasas * 2, 'un', { loss: false });
+      }
+      add(R_, "Adaptador soldável com flange para caixa d'água 32 mm", nCasas * (cist ? 5 : 3));
       add(R_, 'Torneira de boia 3/4"', nCasas, 'un', { loss: false });
       af(R_, '32 mm (1") — barrilete e extravasor', nCasas * 8);
       add(R_, 'Registro de gaveta 1" com acabamento', nCasas * 2, 'un', { loss: false });
@@ -234,9 +245,20 @@
       add(P_, 'Caixa de areia 60 x 60 cm', nCasas, 'un', { loss: false });
       esg(P_, 100, nCasas * 10);
     } else {
-      // Reservação: 2 dias de consumo, 60% inferior / 40% superior
+      if (!cist) {
+        // Sem cisterna: a rede pública abastece direto o reservatório superior, que guarda 1 dia de consumo
+        add(R_, 'Reservatório superior (volume útil)', cons / 1000, 'm³', { loss: false, note: '1 dia de consumo, alimentação direta pela rede' + (inc ? ', mais a reserva de incêndio' : '') });
+        const [aName] = pickPipe(matAF, cons / 86400 * 3, 1.5);
+        af(R_, `${aName} — alimentação direta do reservatório superior`, H + 10);
+        add(R_, `Registro de gaveta ${aName}`, 2, 'un', { loss: false });
+        add(R_, 'Torneira de boia (alimentação do reservatório superior)', 1, 'un', { loss: false });
+        add(R_, 'Hidrômetro geral e cavalete (conforme concessionária)', 1, 'cj', { loss: false });
+        warn.push('Sem cisterna: a pressão da rede pública precisa vencer a altura do reservatório superior (' + num(H + 3, 0) + ' m). Confirme com a concessionária; em prédios altos a cisterna com bombas costuma ser obrigatória.');
+        vertical += H + 10;
+      } else {
+      // Reservação: 2 dias de consumo, 60% inferior (cisterna) / 40% superior
       const res = cons * 2 / 1000;
-      add(R_, 'Reservatório inferior (volume útil)', res * 0.6, 'm³', { loss: false, note: '60% de 2 dias de consumo' });
+      add(R_, 'Reservatório inferior / cisterna (volume útil)', res * 0.6, 'm³', { loss: false, note: '60% de 2 dias de consumo' });
       add(R_, 'Reservatório superior (volume útil)', res * 0.4, 'm³', { loss: false, note: '40% de 2 dias de consumo' + (inc ? ', mais a reserva de incêndio' : '') });
       // Recalque: Forchheimer, bombas 6 h/dia
       const Qr = cons / 1000 / (6 * 3600), Dr = 1.3 * Math.sqrt(Qr) * Math.pow(6 / 24, 0.25) * 1000;
@@ -252,6 +274,7 @@
       add(R_, 'Torneira de boia (alimentação do reservatório inferior)', 1, 'un', { loss: false });
       add(R_, 'Hidrômetro geral e cavalete (conforme concessionária)', 1, 'cj', { loss: false });
       vertical += H + 10;
+      }
 
       // Colunas e barrilete
       const nPrum = med ? Math.ceil(unitsPerFloor / 4) : unitsPerFloor * 2;
@@ -302,10 +325,12 @@
 
       // Incêndio
       const areaGar = vagas * 25, garFloors = vagas ? Math.max(1, pisosGar) : 0; // 25 m² por vaga, com circulação
-      // tubulação da rede de incêndio: aço galvanizado roscado ou aço ranhurado (Grooved), com acoplamento em cada emenda
+      // tubulação da rede de incêndio: aço galvanizado classe média roscado, ou classe leve ranhurado (Grooved) com acoplamento em cada emenda
+      // (a ranhura laminada não corta a parede, por isso o sistema ranhurado aceita o tubo leve)
       const groove = $('lmIncMat').value === 'groove';
       const steel = (g, pol, dn, trecho, m, tes, curvas) => {
-        add(g, `Tubo de aço ${groove ? 'ranhurado' : 'galvanizado'} ${pol}" (DN ${dn}) — ${trecho}`, m, 'm', { pack: ['barra', 6] });
+        add(g, `Tubo de aço ${groove ? 'galvanizado leve ranhurado' : 'galvanizado'} ${pol}" (DN ${dn}) — ${trecho}`, m, 'm',
+          { pack: ['barra', 6], note: groove ? 'Classe leve NBR 5580, ranhura laminada' : 'Classe média NBR 5580, roscável' });
         if (!groove) return add(g, `Conexões galvanizadas ${pol}" (tês, joelhos, uniões)`, tes + curvas + Math.ceil(m / 6));
         add(g, `Tê ranhurado ${pol}" (DN ${dn})`, tes);
         add(g, `Curva 90° ranhurada ${pol}" (DN ${dn})`, curvas);
