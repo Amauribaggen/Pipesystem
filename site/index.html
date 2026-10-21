@@ -431,6 +431,51 @@
           </table>
           <p class="hint">BSP (Whitworth gás, 55°) e NPT (60°, cônica) não são intercambiáveis.</p>
         </div>
+
+        <div class="tool tool--wide" id="dimTool">
+          <h3>Dimensionamento hidráulico — água fria</h3>
+          <div class="dim">
+            <div>
+              <div class="seg" id="dimTabs">
+                <button class="is-on" data-k="vazao">Por vazão</button>
+                <button data-k="pesos">Por aparelhos</button>
+              </div>
+              <div class="form">
+                <label class="full" data-dim="vazao">Vazão de projeto <span>L/s</span><input type="number" id="dimQ" value="0.8" min="0" step="0.05"></label>
+                <div class="dim__apps full" data-dim="pesos" id="dimApps" hidden></div>
+                <label>Material
+                  <select id="dimMat">
+                    <option value="pvc">PVC soldável (NBR 5648)</option>
+                    <option value="cobre">Cobre classe E (NBR 13206)</option>
+                    <option value="aco">Aço galvanizado (NBR 5580)</option>
+                  </select>
+                </label>
+                <label>Velocidade máxima
+                  <select id="dimV">
+                    <option value="3">3,0 m/s (limite NBR 5626)</option>
+                    <option value="2.5">2,5 m/s</option>
+                    <option value="2" selected>2,0 m/s (menos ruído)</option>
+                    <option value="1.5">1,5 m/s</option>
+                  </select>
+                </label>
+                <label class="full">Comprimento total <span>m (real + equivalente das conexões)</span><input type="number" id="dimL" value="30" min="0" step="1"></label>
+              </div>
+            </div>
+            <div>
+              <div class="results">
+                <div><span>Diâmetro indicado</span><strong id="dimD">—</strong></div>
+                <div><span>Velocidade</span><strong id="dimVel">—</strong></div>
+                <div><span>Perda de carga</span><strong id="dimHf">—</strong></div>
+              </div>
+              <p class="hint" id="dimHint"></p>
+              <table class="table dim__table">
+                <thead><tr><th>Diâmetro</th><th>Ø int. (mm)</th><th>v (m/s)</th><th>J (m/100m)</th></tr></thead>
+                <tbody id="dimRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <p class="hint">Vazão por aparelhos: Q = 0,3 × √ΣP (pesos da NBR 5626, uso simultâneo provável). Perda de carga por Fair-Whipple-Hsiao. Resultado indicativo: confira a pressão disponível em cada ponto de utilização.</p>
+        </div>
       </div>
 
       <div class="adslot adslot--sponsor" data-ad="basico" data-place="Ferramentas — patrocinador das calculadoras"></div>

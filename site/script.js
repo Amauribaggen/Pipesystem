@@ -326,6 +326,62 @@ convFrom.addEventListener('change', calcConv);
 convVal.addEventListener('input', calcConv);
 fillUnits();
 
+// Dimensionamento de água fria (NBR 5626): diâmetro pela velocidade máxima, perda por Fair-Whipple-Hsiao
+const dimPipes = {
+  pvc: [['20 mm (1/2")', 17], ['25 mm (3/4")', 21.6], ['32 mm (1")', 27.8], ['40 mm (1 1/4")', 35.2], ['50 mm (1 1/2")', 44], ['60 mm (2")', 53.4], ['75 mm (2 1/2")', 66.6], ['85 mm (3")', 75.6], ['110 mm (4")', 97.8]],
+  cobre: [['15 mm', 14], ['22 mm', 20.8], ['28 mm', 26.8], ['35 mm', 33.6], ['42 mm', 40.4], ['54 mm', 52.2], ['66 mm', 64.7], ['79 mm', 77], ['104 mm', 102.4]],
+  aco: [['1/2" (DN 15)', 16], ['3/4" (DN 20)', 21.6], ['1" (DN 25)', 27], ['1 1/4" (DN 32)', 35.7], ['1 1/2" (DN 40)', 41.6], ['2" (DN 50)', 52.8], ['2 1/2" (DN 65)', 68.6], ['3" (DN 80)', 80.9], ['4" (DN 100)', 105.3]],
+};
+// J em kPa/m com Q em L/s e D em mm: tubos lisos (PVC, cobre) e aço galvanizado
+const dimJ = (mat, Q, D) => mat === 'aco' ? 20.2e6 * Math.pow(Q, 1.88) * Math.pow(D, -4.88) : 8.69e6 * Math.pow(Q, 1.75) * Math.pow(D, -4.75);
+const dimApps = [
+  ['Bacia c/ caixa acoplada', 0.3, 2], ['Bacia c/ válvula de descarga', 32, 0], ['Chuveiro / ducha', 0.4, 2], ['Lavatório', 0.3, 2],
+  ['Pia de cozinha', 0.7, 1], ['Tanque', 0.7, 1], ['Máquina de lavar roupa', 1, 1], ['Máquina de lavar louça', 1, 0],
+  ['Bidê', 0.1, 0], ['Banheira', 1, 0], ['Mictório c/ válvula', 2.8, 0], ['Torneira de jardim', 0.4, 0],
+];
+const dimAppsEl = document.getElementById('dimApps');
+dimAppsEl.innerHTML = dimApps.map(([n, p, q], i) =>
+  `<label>${n} <span>peso ${String(p).replace('.', ',')}</span><input type="number" data-i="${i}" value="${q}" min="0" step="1" aria-label="Quantidade: ${n}"></label>`).join('');
+let dimMode = 'vazao';
+const dimEls = ['dimQ', 'dimMat', 'dimV', 'dimL'].map(id => document.getElementById(id));
+function calcDim() {
+  const [qEl, matEl, vEl, lEl] = dimEls;
+  const mat = matEl.value, vmax = parseFloat(vEl.value), L = parseFloat(lEl.value) || 0;
+  const hint = document.getElementById('dimHint'), rows = document.getElementById('dimRows');
+  let Q = parseFloat(qEl.value), sumP = 0;
+  if (dimMode === 'pesos') {
+    sumP = [...dimAppsEl.querySelectorAll('input')].reduce((s, el) => s + (parseFloat(el.value) || 0) * dimApps[el.dataset.i][1], 0);
+    Q = 0.3 * Math.sqrt(sumP);
+  }
+  const set = (d, v, h) => { document.getElementById('dimD').textContent = d; document.getElementById('dimVel').textContent = v; document.getElementById('dimHf').textContent = h; };
+  hint.classList.remove('warn');
+  if (!(Q > 0)) { set('—', '—', '—'); hint.textContent = dimMode === 'pesos' ? 'Informe a quantidade de aparelhos.' : 'Informe a vazão.'; rows.innerHTML = ''; return; }
+  const list = dimPipes[mat].map(([name, D]) => {
+    const v = 4 * Q / 1000 / (Math.PI * Math.pow(D / 1000, 2));
+    return { name, D, v, J: dimJ(mat, Q, D) / 9.80665 }; // kPa/m -> m/m
+  });
+  let k = list.findIndex(p => p.v <= vmax);
+  const fits = k >= 0;
+  if (!fits) k = list.length - 1;
+  const p = list[k];
+  set(p.name, `${num(p.v)} m/s`, `${num(p.J * L)} mca`);
+  const qTxt = `Vazão de projeto: ${num(Q)} L/s (${num(Q * 3.6)} m³/h)` + (dimMode === 'pesos' ? `, ΣP = ${num(sumP, 1)}.` : '.');
+  if (!fits) { hint.textContent = `${qTxt} Nenhum diâmetro da lista atende a ${num(vmax, 1)} m/s: divida a vazão em mais ramais ou consulte um projetista.`; hint.classList.add('warn'); }
+  else hint.textContent = `${qTxt} Perda unitária: ${num(p.J * 100)} m/100m.`;
+  rows.innerHTML = list.slice(Math.max(0, k - 1), k + 3).map(r =>
+    `<tr${r === p ? ' class="is-on"' : ''}><td>${r.name}</td><td>${num(r.D, 1)}</td><td>${num(r.v)}</td><td>${num(r.J * 100)}</td></tr>`).join('');
+}
+document.getElementById('dimTabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  dimMode = b.dataset.k;
+  document.querySelectorAll('#dimTabs button').forEach(x => x.classList.toggle('is-on', x === b));
+  document.querySelectorAll('#dimTool [data-dim]').forEach(el => { el.hidden = el.dataset.dim !== dimMode; });
+  calcDim();
+});
+dimEls.forEach(el => el.addEventListener('input', calcDim));
+dimAppsEl.addEventListener('input', calcDim);
+calcDim();
+
 // Planos -> assunto do formulário
 const assunto = document.getElementById('assunto');
 {
