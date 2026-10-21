@@ -1095,6 +1095,9 @@ main:focus { outline: none; }
 .attach-note { position: relative; padding: 12px 40px 12px 14px; border: 2px solid var(--accent); border-radius: 12px; background: #fff7ec; color: #5a3a06; font-size: .92rem; line-height: 1.5; }
 .attach-note b { display: block; color: #8a4b00; margin-bottom: 2px; }
 .attach-note__file { font-weight: 600; word-break: break-all; }
+.attach-note ol { margin: 6px 0 0; padding-left: 1.3em; }
+.attach-note li { margin: 3px 0; }
+.attach-note li b { display: inline; margin: 0; }
 .attach-note__close { position: absolute; top: 6px; right: 8px; border: 0; background: none; font-size: 1.3rem; line-height: 1; color: #8a4b00; cursor: pointer; padding: 4px; }
 
 /* Fotos ampliáveis (.pfotos--zoom) e visualizador (lightbox.js) */

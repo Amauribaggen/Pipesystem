@@ -674,12 +674,14 @@
       ['xl/styles.xml', styles],
     ]);
   }
-  $('lmCsv').addEventListener('click', () => {
+  const downloadXlsx = () => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(xlsx());
     a.download = 'dimensionamento-inteligente-pipesystem.xlsx';
     a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  });
+  };
+  $('lmCsv').addEventListener('click', downloadXlsx);
+  window.lmatXlsx = () => last && downloadXlsx();   // usado pelo formulário de contato quando a lista não cabe no e-mail
   $('lmPrint').addEventListener('click', () => {
     document.documentElement.classList.add('print-lmat');
     window.print();

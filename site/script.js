@@ -469,10 +469,44 @@ contactForm.addEventListener('submit', async e => {
     } finally { btn.disabled = false; btn.textContent = 'Enviar mensagem'; }
     return;
   }
-  const body = (file ? attachLine(file.name) : '') + `Nome: ${f.get('nome')}\nE-mail: ${f.get('email')}\nEmpresa: ${f.get('empresa') || '-'}\n\n${f.get('mensagem')}`;
-  window.location.href = `mailto:info@pipesystem.com.br?subject=${encodeURIComponent('[Site] ' + f.get('assunto'))}&body=${encodeURIComponent(body)}`;
+  const head = `Nome: ${f.get('nome')}\nE-mail: ${f.get('email')}\nEmpresa: ${f.get('empresa') || '-'}\n\n`;
+  const mailto = body => `mailto:info@pipesystem.com.br?subject=${encodeURIComponent('[Site] ' + f.get('assunto'))}&body=${encodeURIComponent(body)}`;
+  let url = mailto((file ? attachLine(file.name) : '') + head + f.get('mensagem'));
+  // O Windows não abre o e-mail (Outlook etc.) quando o link mailto passa de ~2.000 caracteres, sem nenhum aviso.
+  // Mensagem longa (ex.: lista de materiais): copia o texto completo, baixa a planilha e abre o e-mail com um texto curto.
+  const long = url.length > MAILTO_MAX;
+  if (long) {
+    const msg = f.get('mensagem'), isList = window.lmatXlsx && msg.startsWith('Cotação para a lista de materiais');
+    let copied = false;
+    try { await navigator.clipboard.writeText(msg); copied = true; } catch {}
+    if (isList) window.lmatXlsx();
+    const steps = [copied ? '>>> A LISTA COMPLETA FOI COPIADA: CLIQUE AQUI E COLE COM Ctrl+V <<<' : '>>> COLE AQUI A LISTA DE MATERIAIS (botão "Copiar" no site) <<<'];
+    if (isList) steps.push(`>>> ANEXE A PLANILHA "${LMAT_FILE}" (baixada agora, pasta Downloads) <<<`);
+    if (file) steps.push(`>>> ANEXE O ARQUIVO "${file.name}" <<<`);
+    url = mailto(steps.join('\n') + '\n\n' + head + msg.split('\n')[0] + '\n\n');
+    longNote(contactForm, copied, isList, file && file.name);
+  }
+  window.location.href = url;
+  if (long) return;
   if (file) attachNote(contactForm, file.name); else toast('Abrindo seu programa de e-mail para enviar a mensagem…');
 });
+const MAILTO_MAX = 1900, LMAT_FILE = 'dimensionamento-inteligente-pipesystem.xlsx';
+function longNote(form, copied, isList, fileName) {
+  let n = form.querySelector('.attach-note');
+  if (!n) {
+    n = document.createElement('div'); n.className = 'attach-note full'; n.setAttribute('role', 'alert');
+    form.querySelector('[type=submit]').insertAdjacentElement('beforebegin', n);
+  }
+  const items = [copied ? '<li><b>Cole a lista:</b> ela já foi copiada. Clique no corpo do e-mail e use <b>Ctrl+V</b>.</li>'
+    : '<li><b>Cole a lista:</b> volte ao Dimensionamento Inteligente, clique em “Copiar” e cole no e-mail com <b>Ctrl+V</b>.</li>'];
+  if (isList) items.push(`<li><b>Anexe a planilha</b> “${LMAT_FILE}”, baixada agora na pasta Downloads (botão 📎 do e-mail).</li>`);
+  if (fileName) items.push('<li><b>Anexe o arquivo</b> <span class="attach-note__file"></span>.</li>');
+  n.innerHTML = '<b>A mensagem é grande demais para ir inteira pelo link de e-mail.</b> Seu programa de e-mail abriu com um texto curto. Antes de enviar:' +
+    `<ol>${items.join('')}</ol><button type="button" class="attach-note__close" aria-label="Fechar aviso">×</button>`;
+  if (fileName) n.querySelector('.attach-note__file').textContent = `“${fileName}”`;
+  n.querySelector('.attach-note__close').addEventListener('click', () => n.remove());
+  n.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
 
 // Anexos: enquanto os formulários abrem o e-mail do visitante (mailto), o arquivo não vai junto (o navegador
 // não permite). Por isso o site avisa em três lugares: ao escolher o arquivo, no topo do e-mail e num aviso fixo.
