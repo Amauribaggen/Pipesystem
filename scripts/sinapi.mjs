@@ -56,6 +56,13 @@ const ufCol = rows[head].findIndex(v => v === 'AC'), ufs = rows[head].slice(ufCo
 const mes = rows.find(r => /M[êe]s de Refer/i.test(r[0] || ''))?.[1], emissao = rows.find(r => /Data de emiss/i.test(r[0] || ''))?.[1];
 const capitais = rows[head - 4]?.slice(ufCol, ufCol + ufs.length);
 
+// Busca para montar regras: node scripts/sinapi.mjs pacote.zip --buscar "POLIPROPILENO" [UF]
+if (process.argv[3] === '--buscar') {
+  const re = new RegExp(process.argv[4], 'i'), ui = ufs.indexOf((process.argv[5] || 'SC').toUpperCase());
+  for (const r of rows.slice(head + 1)) if (r[1] && re.test(r[2] || '')) console.log(`${r[1]} | ${r[2]} | ${r[3]} | ${ufs[ui]} = ${r[ufCol + ui] ?? '—'}`);
+  process.exit(0);
+}
+
 // insumos usados nas regras
 const regras = runInNewContext(readFileSync(join(root, 'site', 'sinapi-regras.js'), 'utf8') + ';SINAPI_REGRAS');
 const codes = new Set();

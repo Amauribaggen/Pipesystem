@@ -448,6 +448,7 @@
                     <option value="pvc">PVC soldável (NBR 5648)</option>
                     <option value="cobre">Cobre classe E (NBR 13206)</option>
                     <option value="aco">Aço galvanizado (NBR 5580)</option>
+                    <option value="ppr">Polipropileno PPR</option>
                   </select>
                 </label>
                 <label>Velocidade máxima
@@ -504,8 +505,14 @@
           </fieldset>
 
           <fieldset class="lmat__box">
-            <legend>3. Água quente e gás</legend>
+            <legend>3. Materiais, água quente e gás</legend>
             <div class="form form--3">
+              <label>Tubos de água fria
+                <select id="lmAfMat">
+                  <option value="pvc">PVC soldável (tubos e conexões)</option>
+                  <option value="ppr">Polipropileno PPR (termofusão)</option>
+                </select>
+              </label>
               <label>Aquecimento da água
                 <select id="lmAq">
                   <option value="eletrico">Chuveiro elétrico (sem água quente)</option>
@@ -568,6 +575,12 @@
                   <option value="nao">Não haverá</option>
                   <option value="garagem">Só na garagem</option>
                   <option value="todo">Na garagem e nos apartamentos</option>
+                </select>
+              </label>
+              <label>Tubos da rede de incêndio <span>prumadas, barriletes e sprinklers</span>
+                <select id="lmIncMat">
+                  <option value="galv">Aço galvanizado com conexões roscadas</option>
+                  <option value="groove">Aço ranhurado com conexões ranhuradas (Grooved)</option>
                 </select>
               </label>
             </div>

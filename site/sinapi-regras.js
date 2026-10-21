@@ -49,6 +49,19 @@ const SINAPI_REGRAS = (() => {
     [/^Hidrômetro geral/, { c: '12772', nota: 'hidrômetro 1 1/2"' }],
     [/^Padrão de entrada de água/, { s: ['12774', '3729'], nota: 'hidrômetro 3/4" + kit cavalete' }],
     [/^Adaptador soldável com flange/, { c: '44256', nota: 'adaptador com flanges 28 mm (aproximação)' }],
+    // Água fria em PPR (PN 20 até 25 mm, PN 12 a partir de 32 mm)
+    [/^Tubo PPR (\d+) mm/, { by: { 20: '36274', 25: '36278', 32: '38971', 40: '38972', 50: '38973', 63: '38974', 75: '38975', 90: '38976', 110: '38977' }, g: 1 }],
+    [/^Joelho 90° PPR (\d+) mm/, { by: { 20: '36359', 25: '36360', 32: '38434', 40: '38435', 50: '38436', 63: '38437', 75: '38438', 90: '38439', 110: '38440' }, g: 1 }],
+    [/^Tê PPR (\d+) mm/, { by: { 20: '36362', 25: '36298', 32: '38456', 40: '38457', 50: '38458', 63: '38459', 75: '38460', 90: '38461', 110: '38462' }, g: 1 }],
+    [/^Luva PPR (\d+) mm/, { by: { 20: '36320', 25: '36324', 32: '38441', 40: '38442', 50: '38443', 63: '38444', 75: '38445', 90: '38446', 110: '38447' }, g: 1 }],
+    [/^Conector PPR com inserto metálico/, '38996'],
+    [/^Conexões PPR 25 e 32/, { c: ['36360', '36298', '38434', '38456'] }],
+    [/^Conexões PPR 25 mm/, { c: ['36360', '36298'] }],
+    // Incêndio em aço ranhurado (Grooved): tubo de aço carbono schedule 40 ranhurado; peças de ferro fundido
+    [/^Tubo de aço ranhurado ([\d /]+)"/, { by: { '2': '21148', '2 1/2': '21147', '4': '21151' }, g: 1, nota: 'tubo de aço carbono schedule 40 (ranhura feita na obra)' }],
+    [/^Tê ranhurado ([\d /]+)"/, { by: { '2': '40419', '2 1/2': '40420', '3': '40421' }, g: 1 }],
+    [/^Curva 90° ranhurada ([\d /]+)"/, { by: { '2': '40413', '2 1/2': '40415', '3': '40417' }, g: 1 }],
+    [/^Acoplamento rígido ranhurado ([\d /]+)"/, { by: { '2': '40410', '2 1/2': '40411', '3': '40412' }, g: 1 }],
     // Água fria
     [/^Tubo PVC soldável (\d+) mm/, { ...map(pvcTubo, k => String(k)), g: 1 }],
     [/^Joelho 90° soldável com bucha de latão/, '20147'],
