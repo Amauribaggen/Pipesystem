@@ -132,7 +132,11 @@
       if (!ppr) joints += k * (f.j + f.t + f.l);
     };
     // bujão em cada saída roscada que vai receber metal ou aparelho (torneira, chuveiro, ducha, máquina, engate, gás)
-    const plug = (g, n, gasPt) => { add(g, `Bujão de ferro galvanizado 1/2" para ponto de ${gasPt ? 'gás' : 'água'}`, n, 'un', { note: 'Fecha a saída até a instalação do metal ou do aparelho' }); threads += n; };
+    // Pontos de espera: toda saída fica fechada com bujão (roscas) ou tampão (esgoto) para o teste de estanqueidade
+    // antes de fechar paredes e forros, e assim fica até a instalação do metal, do aparelho ou do bico.
+    const plug = (g, n, gasPt) => { add(g, `Bujão de ferro galvanizado 1/2" para ponto de ${gasPt ? 'gás' : 'água'}`, n, 'un', { note: `Fecha o ponto de espera para o teste de estanqueidade (${gasPt ? 'NBR 15526' : 'NBR 5626'}) até a instalação do ${gasPt ? 'aparelho' : 'metal ou aparelho'}` }); threads += n; };
+    const plugT = (g, item, n, norma) => { add(g, item, n, 'un', { loss: false, note: `Fecha o ponto de espera para o teste de estanqueidade (${norma})` }); threads += n; };
+    const cap = (g, d, n) => add(g, `Tampão de teste PVC esgoto ${d} mm (ponto de espera)`, n, 'un', { note: 'Fecha o ponto de espera para o teste de estanqueidade do esgoto (NBR 8160)' });
     const AF = ppr ? { j: 'Joelho 90° PPR', t: 'Tê PPR', l: 'Luva PPR', bucha: 'Conector PPR com inserto metálico 25 mm x 1/2"', cx: 'Conexões PPR' }
       : { j: 'Joelho 90° soldável', t: 'Tê soldável', l: 'Luva soldável', bucha: 'Joelho 90° soldável com bucha de latão 25 mm x 1/2" (azul)', cx: 'Conexões soldáveis' };
     const esg = (g, d, m) => add(g, `Tubo PVC ${g === 'Águas pluviais' ? 'para águas pluviais' : 'esgoto série normal'} ${d} mm`, m, 'm', { pack: ['barra', 6] });
@@ -143,6 +147,7 @@
       const note = r.pack ? `${int(q / r.pack[1])} ${r.pack[0]}${q / r.pack[1] > 1 ? 's' : ''} de ${r.pack[1]} m` + (r.note ? ` · ${r.note}` : '') : r.note || '';
       return { ...r, qty: q, note, norma: (typeof normaDoMaterial === 'function' ? normaDoMaterial(r.item) : '') };
     }).sort((a, b) => GROUPS.indexOf(a.group) - GROUPS.indexOf(b.group));
+    warn.push('Pontos de espera: a lista inclui bujões e tampões em todas as saídas de água, gás, esgoto, ar comprimido e sprinklers, para os testes de estanqueidade antes de fechar paredes e forros.');
     if (gal) return galpao();
 
     // ---------- Galpões (logístico, industrial, comercial, cross-docking, refrigerado) ----------
@@ -208,7 +213,7 @@
           const nAq = Math.ceil(nChu / 3);
           add(Q_, 'Aquecedor de passagem a gás 33 L/min (vestiários)', nAq, 'un', { loss: false, note: 'Um para cada 3 chuveiros em uso simultâneo' });
           add(Q_, 'Duto de exaustão do aquecedor (kit chaminé)', nAq, 'un', { loss: false });
-          if (hasGas) { add(G_, 'Tubo de cobre classe A 22 mm (gás dos aquecedores)', nAq * 15, 'm', { pack: ['barra', 5] }); add(G_, 'Registro de esfera para gás 3/4"', nAq, 'un', { loss: false }); ptG += nAq; }
+          if (hasGas) { add(G_, 'Tubo de cobre classe A 22 mm (gás dos aquecedores)', nAq * 15, 'm', { pack: ['barra', 5] }); add(G_, 'Registro de esfera para gás 3/4"', nAq, 'un', { loss: false }); plugT(G_, 'Bujão de ferro galvanizado 3/4" para ponto de gás', nAq, 'NBR 15526'); ptG += nAq; }
         }
         if (aq === 'central') add(Q_, 'Boiler / acumulador e aquecimento central dos vestiários (dimensionar à parte)', 1, 'cj', { loss: false });
         threads += nChu;
@@ -226,6 +231,7 @@
       add(E_, 'Joelho 90° esgoto 40 mm', nLav + beb);
       add(E_, 'Anel de vedação para saída de bacia sanitária', nBac);
       add(E_, 'Tubo PVC esgoto 50 mm — ramais de ventilação', nucleos * 8, 'm', { pack: ['barra', 6] });
+      cap(E_, 100, nBac); cap(E_, 50, nChu + nMic); cap(E_, 40, nLav + beb);
       let uhcG = nBac * 6 + nLav + nMic * 2 + nChu * 2 + beb + nucleos * 3 + (ref === 'cozinha' ? 20 : ref === 'copa' ? 6 : 0);
       const dCol = uhcG <= 180 ? 100 : uhcG <= 700 ? 150 : 200, lCol = Lg + 30 + nucleos * 15;
       esg(E_, dCol, lCol);
@@ -240,6 +246,7 @@
         af(RF_, '25 mm (3/4") — pontos de pias e equipamentos', coz ? 40 : 10);
         plug(RF_, coz ? 8 : 2);
         esg(RF_, 100, 20); esg(RF_, 75, coz ? 25 : 8);
+        cap(RF_, 50, coz ? 6 : 2);
         add(RF_, coz ? 'Caixa de gordura industrial (dimensionar pelo nº de refeições, NBR 8160)' : 'Caixa de gordura', 1, 'un', { loss: false });
         if (coz) {
           add(RF_, 'Ralo linear com grelha inox (piso da cozinha)', 3, 'un', { loss: false });
@@ -249,6 +256,7 @@
             add(G_, 'Conexões galvanizadas 1" (gás)', 16);
             add(G_, 'Registro de esfera para gás 1/2" (fogão, forno, caldeirão)', 4, 'un', { loss: false });
             add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', 4, 'un', { loss: false });
+            plug(G_, 4, true);
             add(G_, 'Detector de vazamento de gás com válvula de bloqueio', 1, 'un', { loss: false });
             ptG += 4; threads += 24;
           } else warn.push('Cozinha industrial sem gás: escolha gás natural ou GLP no item 3, ou preveja equipamentos elétricos.');
@@ -336,6 +344,7 @@
         add(S_, 'Bicos de reserva com armário e chave de troca', Math.max(6, Math.ceil(b * 0.02)), 'un', { loss: false });
         steel(S_, esfr ? '2' : '1 1/2', esfr ? 50 : 40, 'ramais de sprinklers', lRam, 0, Math.ceil(lRam / 40));
         add(S_, `Tê de redução com saída para bico (${esfr ? '1"' : '3/4"'})`, b);
+        plugT(S_, `Bujão de ferro galvanizado ${esfr ? '1"' : '3/4"'} para saída de sprinkler`, b, 'teste hidrostático, NBR 10897 / NFPA 13, antes da instalação dos bicos');
         steel(S_, '6', 150, 'troncos (subgerais) de sprinklers', lTr, Math.ceil(lRam / (Wg / nTr)), nTr * 2);
         steel(S_, '6', 150, 'alimentação das válvulas de governo', nVGA * (peG + 3), nVGA, nVGA * 2);
         add(S_, 'Válvula de governo e alarme (VGA) 6"', nVGA, 'un', { loss: false, note: 'Uma a cada 3.700 m², aproximadamente' });
@@ -369,6 +378,7 @@
           add(PR_, 'Registro de esfera 2"', 6, 'un', { loss: false });
           add(PR_, 'Filtro Y 2"', 1, 'un', { loss: false });
           add(PR_, 'Hidrômetro da água de processo 2"', 1, 'un', { loss: false });
+          plugT(PR_, 'Bujão de ferro galvanizado 1" para ponto de água de processo', 6, 'NBR 5626');
           threads += 30; horizontal += Lg + 40;
         }
         if (nAr) {
@@ -382,6 +392,7 @@
           add(AR_, 'Tubo de alumínio 20 mm — descidas aos pontos de consumo', nAr * 4, 'm', { pack: ['barra', 6] });
           add(AR_, 'Conjunto filtro, regulador e lubrificador (FRL) 1/2"', nAr, 'un', { loss: false });
           add(AR_, 'Engate rápido 1/2"', nAr, 'un', { loss: false });
+          plugT(AR_, 'Bujão de ferro galvanizado 1/2" para ponto de ar comprimido', nAr, 'teste de pressão da rede de ar');
           add(AR_, 'Válvula de esfera 1/2"', nAr + 4, 'un', { loss: false });
           add(AR_, 'Purgador automático de condensado', Math.ceil(anel / 30) + 1, 'un', { loss: false });
           horizontal += anel;
@@ -398,6 +409,7 @@
         add(SE_, 'Chuveiro de emergência com lava-olhos (ANSI Z358.1)', emerg, 'un', { loss: false, note: $('lgBat').checked && gt !== 'comercial' ? 'Inclui a sala de recarga de baterias' : '' });
         af(SE_, '32 mm (1") — alimentação dos chuveiros de emergência', emerg * 15);
         add(SE_, 'Registro de esfera 1" (sempre aberto, com lacre)', emerg, 'un', { loss: false });
+        plugT(SE_, 'Bujão de ferro galvanizado 1" para ponto do chuveiro de emergência', emerg, 'NBR 5626');
         add(SE_, 'Ralo com grelha 150 x 150 mm', emerg, 'un', { loss: false });
         esg(SE_, 100, emerg * 6);
         joints += emerg * 6;
@@ -407,6 +419,7 @@
       if (gt === 'crossdocking' && $('lgLav').checked) {
         add(LV_, 'Hidrolavadora de alta pressão (box de lavagem)', 1, 'un', { loss: false });
         af(LV_, '32 mm (1") — alimentação do box de lavagem', 30);
+        plugT(LV_, 'Bujão de ferro galvanizado 1" para ponto da hidrolavadora', 1, 'NBR 5626');
         add(LV_, 'Canaleta com grelha de ferro fundido (box de lavagem)', 15, 'm');
         add(LV_, 'Caixa de areia (sedimentação)', 1, 'un', { loss: false });
         add(LV_, 'Caixa separadora de água e óleo', 1, 'un', { loss: false });
@@ -608,6 +621,7 @@
       add(E_, 'Joelho 90° esgoto 40 mm', n40 * U);
       add(E_, 'Anel de vedação para saída de bacia sanitária', (ban + lav) * U);
       add(E_, 'Tubo PVC esgoto 50 mm — ramais de ventilação', (ban + lav) * 1.5 * U, 'm', { pack: ['barra', 6] });
+      cap(E_, 100, (ban + lav) * U); cap(E_, 50, n50 * U); cap(E_, 40, n40 * U);
       joints += ((ban + lav) * 3 + n50 + n40 + 2) * U;
 
       // Louças e metais
@@ -813,6 +827,7 @@
         add(S_, 'Tubo de aço galvanizado 1 1/4" (DN 32) — ramais de sprinklers', b * 0.6, 'm', { pack: ['barra', 6] });
         add(S_, 'Conexões galvanizadas 1" e 1 1/4" (tês, joelhos, reduções)', b * 1.2);
         add(S_, 'Tê de redução com saída 1/2" para bico', b);
+        plugT(S_, 'Bujão de ferro galvanizado 1/2" para saída de sprinkler', b, 'teste hidrostático, NBR 10897, antes da instalação dos bicos');
         steel(S_, '2', 50, 'subgerais de sprinklers', b * 0.4, Math.ceil(b / 8), floors * 2);
         steel(S_, '4', 100, 'prumada de sprinklers', (spk === 'todo' ? H : 0) + Hs + 3, floors, 2);
         steel(S_, '4', 100, 'barrilete de sprinklers', 20, 2, 4);
@@ -836,6 +851,7 @@
         plug(C_, 4);
         add(C_, 'Registro de gaveta 3/4" com acabamento', 4, 'un', { loss: false });
         esg(C_, 100, 15); esg(C_, 50, 12); esg(C_, 40, 8);
+        cap(C_, 100, 2); cap(C_, 40, 3);
         add(C_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', 3);
         if (loucas) {
           add(C_, 'Bacia e lavatório acessíveis (PNE), com barras de apoio', 2, 'cj', { loss: false });
@@ -852,6 +868,7 @@
         plug(C_, n * 5);
         add(C_, 'Registro de gaveta 3/4" com acabamento', n * 3, 'un', { loss: false });
         esg(C_, 100, n * 6); esg(C_, 50, n * 6); esg(C_, 40, n * 5);
+        cap(C_, 100, n * 2); cap(C_, 40, n * 3);
         add(C_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', n * 2);
         add(C_, 'Caixa de gordura (copa dos salões)', n, 'un', { loss: false });
         if (hasGas) {
@@ -879,6 +896,7 @@
         add(V_, 'Torneira para máquina de lavar', n, 'un', { loss: false });
         add(V_, 'Tanque com torneira', 2, 'un', { loss: false });
         esg(V_, 50, n * 1.5 + 10); esg(V_, 75, 12);
+        cap(V_, 50, n); cap(V_, 40, 2);
         add(V_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', Math.ceil(n / 3));
         add(V_, 'Ralo linear com grelha (piso da lavanderia)', 2);
         add(V_, 'Joelho 90° esgoto 50 mm', n + 2);
@@ -928,6 +946,7 @@
         af(J_, '25 mm (3/4") — pontos de água das churrasqueiras', churN * 8);
         plug(J_, churN);
         esg(J_, 50, churN * 6);
+        cap(J_, 50, churN);
         add(J_, 'Caixa de gordura pequena', churN, 'un', { loss: false });
         if (loucas) add(J_, 'Cuba e torneira da churrasqueira', churN, 'cj', { loss: false });
         pesoTot += churN * 0.7; joints += churN * 8;
