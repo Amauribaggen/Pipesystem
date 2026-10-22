@@ -27,7 +27,7 @@ export function institutionalPages() {
       `<p class="sheet__desc page__lead">Esta política explica quais dados pessoais o portal PipeSystem coleta, para que usa, com quem compartilha e como você pode exercer seus direitos, conforme a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 — LGPD).</p>`,
       sec('1. Quem é o responsável pelos seus dados', `<p>O controlador dos dados é a ${identificacao()}. Para qualquer assunto sobre privacidade, inclusive falar com o encarregado pelo tratamento de dados, use ${contato()}.</p>`),
       sec('2. Quais dados coletamos', ul([
-        '<b>Dados que você nos envia:</b> nome, e-mail, telefone, empresa, cidade, mensagem e arquivos anexados nos formulários de contato, cotação, cadastro e envio de artigos, ou quando você fala conosco por e-mail ou WhatsApp. Hoje os formulários abrem o seu programa de e-mail com a mensagem pronta: os dados só chegam até nós quando você envia o e-mail.',
+        '<b>Dados que você nos envia:</b> nome, e-mail, telefone, empresa, cidade, mensagem e arquivos anexados nos formulários de contato, cotação, cadastro e envio de artigos, ou quando você fala conosco por e-mail ou WhatsApp. Os formulários enviam a mensagem e o arquivo direto para o e-mail da PipeSystem, pelo serviço de envio de e-mails Resend; o site não guarda essas informações num banco de dados.',
         '<b>Medição de audiência sem cookies:</b> usamos o Vercel Web Analytics, que registra de forma agregada as páginas visitadas, a página de origem, o país, o tipo de dispositivo e o navegador. Ele não usa cookies e não identifica quem você é.',
         '<b>Registros técnicos da hospedagem:</b> o provedor do site (Vercel) registra dados como endereço IP, data e hora de acesso, por segurança e para o funcionamento do site.',
         '<b>Armazenamento no navegador:</b> guardamos, só durante a visita, a informação de que a vinheta de abertura já foi exibida. Se você escolher a versão em inglês, o site grava o cookie <code>googtrans</code> e carrega o tradutor do Google, um serviço de terceiros sujeito à política de privacidade do Google.',
@@ -43,9 +43,9 @@ export function institutionalPages() {
       ]) + `<p>As bases legais são: o seu consentimento; os procedimentos preliminares a um contrato que você solicitou (como uma cotação); o nosso legítimo interesse em manter e melhorar o portal, sempre respeitando os seus direitos; e o cumprimento de obrigação legal.</p>`),
       sec('4. Com quem compartilhamos', ul([
         '<b>Fornecedores e distribuidores parceiros</b>, apenas para atender ao pedido de cotação que você fez.',
-        '<b>Prestadores de serviço</b> que operam o site e o e-mail (hospedagem e encaminhamento de mensagens), que só podem usar os dados para prestar o serviço.',
+        '<b>Prestadores de serviço</b> que operam o site e o e-mail (hospedagem na Vercel, envio dos formulários pelo Resend e encaminhamento de mensagens), que só podem usar os dados para prestar o serviço.',
         '<b>Autoridades</b>, quando houver obrigação legal ou ordem judicial.',
-      ]) + `<p><b>Não vendemos dados pessoais.</b> Alguns desses prestadores, como a Vercel, ficam fora do Brasil; nesses casos a transferência segue as garantias previstas na LGPD.</p>`),
+      ]) + `<p><b>Não vendemos dados pessoais.</b> Alguns desses prestadores, como a Vercel e o Resend, ficam fora do Brasil; nesses casos a transferência segue as garantias previstas na LGPD.</p>`),
       sec('5. Por quanto tempo guardamos', `<p>Pelo tempo necessário para a finalidade que motivou a coleta e para cumprir obrigações legais. Depois disso, os dados são excluídos ou anonimizados.</p>`),
       sec('6. Seus direitos', ul([
         'Confirmar se tratamos dados seus e acessá-los.',

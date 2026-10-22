@@ -3,12 +3,10 @@ const imgDims = src => { const d = (window.IMG_SIZES || {})[src]; return d ? ` w
 // Fotos com caminho a partir da raiz: com a ficha aberta o endereço é /materiais/..., e "img/..." viraria /materiais/img/...
 const imgUrl = src => /^(https?:|data:|\/)/.test(src) ? src : '/' + src;
 
-// Para onde os formulários (contato e artigos) enviam os dados.
-// - Na Netlify (*.netlify.app) usa o Netlify Forms automaticamente.
-// - Na Vercel não há recebimento de formulários embutido: cole em FORMS_ENDPOINT a URL de um
-//   serviço como o Formspree (ex.: 'https://formspree.io/f/abcdwxyz'). Enquanto estiver vazio,
-//   o envio abre o programa de e-mail do visitante, já preenchido para info@pipesystem.com.br.
-const FORMS_ENDPOINT = '';
+// Para onde os formulários (contato e artigos) enviam os dados: a função api/enviar.js, que manda
+// tudo (com o arquivo anexado) para info@pipesystem.com.br pelo Resend. Se ficar vazio, o envio
+// volta a abrir o programa de e-mail do visitante, já preenchido.
+const FORMS_ENDPOINT = '/api/enviar';
 const FORM_POST_URL = FORMS_ENDPOINT || (/\.netlify\.app$/.test(location.hostname) ? '/' : '');
 const postForm = data => fetch(FORM_POST_URL, { method: 'POST', body: data, headers: FORMS_ENDPOINT ? { Accept: 'application/json' } : {} });
 
@@ -407,7 +405,7 @@ document.addEventListener('click', e => {
 
 // Anexo da lista de materiais (aparece em cotações e negócios & leilões)
 const UPLOAD_SUBJECTS = ['Cotação de materiais', 'Negócios & leilões'];
-const MAX_FILE = 8 * 1024 * 1024; // 8 MB
+const MAX_FILE = 4 * 1024 * 1024; // 4 MB (limite de envio da Vercel)
 const uploadBox = document.getElementById('uploadBox');
 const fileInput = document.getElementById('arquivo');
 const uploadDrop = document.getElementById('uploadDrop');
@@ -429,7 +427,7 @@ function showFile() {
   if (!f) return clearFile();
   if (f.size > MAX_FILE) {
     clearFile();
-    uploadError.textContent = `O arquivo tem ${fmtSize(f.size)}. O limite é 8 MB — envie uma versão menor ou em PDF.`;
+    uploadError.textContent = `O arquivo tem ${fmtSize(f.size)}. O limite é 4 MB — envie uma versão menor ou em PDF.`;
     uploadError.hidden = false;
     return;
   }
@@ -463,15 +461,16 @@ contactForm.addEventListener('submit', async e => {
   if (PUBLISHED) {
     const btn = contactForm.querySelector('[type=submit]');
     btn.disabled = true; btn.textContent = file ? 'Enviando arquivo…' : 'Enviando…';
+    let falhou = false;
     try {
       const res = await postForm(f);
       if (!res.ok) throw new Error(res.status);
       contactForm.reset(); clearFile(); syncUpload();
       toast(file ? 'Mensagem e lista de materiais enviadas. Responderemos em breve.' : 'Mensagem enviada. Responderemos em breve.');
-    } catch {
-      toast('Não foi possível enviar agora. Tente de novo ou escreva para info@pipesystem.com.br.');
-    } finally { btn.disabled = false; btn.textContent = 'Enviar mensagem'; }
-    return;
+    } catch { falhou = true; }
+    finally { btn.disabled = false; btn.textContent = 'Enviar mensagem'; }
+    if (!falhou) return;
+    // se o envio pelo site falhar, nenhum pedido se perde: abre o e-mail do visitante com a mensagem pronta
   }
   const head = `Nome: ${f.get('nome')}\nE-mail: ${f.get('email')}\nEmpresa: ${f.get('empresa') || '-'}\n\n`;
   const mailto = body => `mailto:info@pipesystem.com.br?subject=${encodeURIComponent('[Site] ' + f.get('assunto'))}&body=${encodeURIComponent(body)}`;
@@ -902,14 +901,14 @@ const ARTICLES = [
   const file = document.getElementById('artFile'), drop = document.getElementById('artDrop');
   const box = document.getElementById('artFileBox'), nameEl = document.getElementById('artFileName');
   const link = document.getElementById('artLink'), err = document.getElementById('artError');
-  const MAX = 8 * 1024 * 1024;
+  const MAX = 4 * 1024 * 1024;
   const size = b => b < 1048576 ? `${Math.max(1, Math.round(b / 1024))} KB` : `${(b / 1048576).toFixed(1).replace('.', ',')} MB`;
   const showErr = m => { err.textContent = m; err.hidden = !m; };
   const clear = () => { file.value = ''; box.hidden = true; drop.hidden = false; };
   const show = () => {
     const f = file.files[0];
     if (!f) return clear();
-    if (f.size > MAX) { clear(); return showErr(`O arquivo tem ${size(f.size)}. O limite é 8 MB — envie um PDF menor ou um link.`); }
+    if (f.size > MAX) { clear(); return showErr(`O arquivo tem ${size(f.size)}. O limite é 4 MB — envie um PDF menor ou um link.`); }
     showErr(''); nameEl.textContent = `${f.name} · ${size(f.size)}`; box.hidden = false; drop.hidden = true;
   };
   file.addEventListener('change', show);
@@ -932,14 +931,16 @@ const ARTICLES = [
     if (!hasFile) f.delete('arquivo');
     if (published) {
       const btn = form.querySelector('[type=submit]'); btn.disabled = true; btn.textContent = 'Enviando…';
+      let falhou = false;
       try {
         const res = await postForm(f);
         if (!res.ok) throw new Error(res.status);
         form.reset(); clear();
         toast('Artigo enviado! Nossa equipe vai avaliar e entrar em contato.');
-      } catch { showErr('Não foi possível enviar agora. Tente de novo ou escreva para info@pipesystem.com.br.'); }
+      } catch { falhou = true; }
       finally { btn.disabled = false; btn.textContent = 'Enviar artigo para avaliação'; }
-      return;
+      if (!falhou) return;
+      // se o envio pelo site falhar, abre o e-mail do visitante com o artigo pronto (como antes)
     }
     const body = (hasFile ? attachLine(file.files[0].name) : '') + `Nome: ${f.get('nome')}\nE-mail: ${f.get('email')}\nTítulo: ${f.get('titulo')}\nAutor(es): ${f.get('autores') || '-'}\nLink: ${f.get('link') || '-'}\n\nResumo:\n${f.get('resumo') || '-'}`;
     window.location.href = `mailto:info@pipesystem.com.br?subject=${encodeURIComponent('[Site] Artigo técnico: ' + f.get('titulo'))}&body=${encodeURIComponent(body)}`;

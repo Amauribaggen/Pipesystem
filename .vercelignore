@@ -2,5 +2,6 @@
 /*
 !/site
 !/scripts
+!/api
 !/package.json
 !/vercel.json
