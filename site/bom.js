@@ -573,7 +573,7 @@
       let q = r.loss ? r.qty * perda : r.qty;
       q = r.un === 'm³' ? Math.round(q * 10) / 10 : Math.ceil(q - 1e-9);
       const note = r.pack ? `${int(q / r.pack[1])} ${r.pack[0]}${q / r.pack[1] > 1 ? 's' : ''} de ${r.pack[1]} m` + (r.note ? ` · ${r.note}` : '') : r.note || '';
-      return { ...r, qty: q, note };
+      return { ...r, qty: q, note, norma: (typeof normaDoMaterial === 'function' ? normaDoMaterial(r.item) : '') };
     }).sort((a, b) => GROUPS.indexOf(a.group) - GROUPS.indexOf(b.group));
 
     const stats = [
@@ -602,11 +602,11 @@
     $('lmWarn').innerHTML = last.warn.map(w => `<p class="hint warn">${esc(w)}</p>`).join('');
     // colunas de preço e subtotais por grupo: só aparecem no Imprimir / PDF, em branco para preencher
     const pc = '<td class="lmat__pc"></td><td class="lmat__pc"></td>';
-    const sub = grp => `<tr class="lmat__sub"><td colspan="4">Subtotal — ${esc(grp)} (R$)</td><td class="lmat__pc"></td><td></td></tr>`;
+    const sub = grp => `<tr class="lmat__sub"><td colspan="5">Subtotal — ${esc(grp)} (R$)</td><td class="lmat__pc"></td><td></td></tr>`;
     let g = '';
     $('lmRows').innerHTML = last.rows.map(r => {
-      const head = r.group !== g ? (g ? sub(g) : '') + `<tr class="lmat__group"><th colspan="6">${esc(g = r.group)}</th></tr>` : '';
-      return head + `<tr><td>${esc(r.item)}</td><td class="num">${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)}</td><td>${r.un}</td>${pc}<td>${esc(r.note)}</td></tr>`;
+      const head = r.group !== g ? (g ? sub(g) : '') + `<tr class="lmat__group"><th colspan="7">${esc(g = r.group)}</th></tr>` : '';
+      return head + `<tr><td>${esc(r.item)}</td><td class="num">${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)}</td><td>${r.un}</td><td class="lmat__norma">${esc(r.norma || '—')}</td>${pc}<td>${esc(r.note)}</td></tr>`;
     }).join('') + sub(g);
     $('lmQuote').dataset.question = asText(true);
     renderSinapi();
@@ -623,7 +623,7 @@
         if (g) lines.push(`Subtotal ${g}: ${blank}`);
         lines.push('', (g = r.group).toUpperCase());
       }
-      lines.push(`- ${r.item}: ${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)} ${r.un}${r.note && !short ? ` (${r.note})` : ''} | Preço unit.: ${blank} | Total: ${blank}`);
+      lines.push(`- ${r.item}: ${r.un === 'm³' ? num(r.qty, 1) : int(r.qty)} ${r.un}${r.norma ? ` | Norma: ${r.norma}` : ''}${r.note && !short ? ` (${r.note})` : ''} | Preço unit.: ${blank} | Total: ${blank}`);
     }
     lines.push(`Subtotal ${g}: ${blank}`, '', `TOTAL GERAL: ${blank}`);
     return (short ? 'Cotação para a lista de materiais gerada no portal (preencha o preço unitário e o total de cada item):\n\n' : '') + lines.join('\n') +
@@ -631,19 +631,19 @@
   }
   // Pedido de cotação: o e-mail (mailto) só aceita texto puro, então a tabela é montada em texto, colunas com "|"
   function quoteTable(lines, qty) {
-    const W = Math.max(...last.rows.map(r => r.item.length)), P = 16;
-    const cols = (n, mat, q, un, pu, tot) => `${n.padStart(3)} | ${mat.padEnd(W)} | ${q.padStart(6)} | ${un.padEnd(3)} | ${pu.padEnd(P)} | ${tot}`.trimEnd();
+    const W = Math.max(...last.rows.map(r => r.item.length)), P = 16, NW = Math.max(5, ...last.rows.map(r => (r.norma || '').length));
+    const cols = (n, mat, q, un, nr, pu, tot) => `${n.padStart(3)} | ${mat.padEnd(W)} | ${q.padStart(6)} | ${un.padEnd(3)} | ${nr.padEnd(NW)} | ${pu.padEnd(P)} | ${tot}`.trimEnd();
     const rule = `${'-'.repeat(3)}-+-${'-'.repeat(W)}-+-${'-'.repeat(6)}-+-${'-'.repeat(3)}-+-${'-'.repeat(P)}-+-${'-'.repeat(P)}`;
     const out = ['Cotação para a lista de materiais gerada no portal.', 'Preencha o preço unitário e o total de cada item e devolva este e-mail.', '', ...lines,
-      cols('Nº', 'Material', 'Qtd.', 'Un.', 'Preço unit. (R$)', 'Total (R$)'), rule];
+      cols('Nº', 'Material', 'Qtd.', 'Un.', 'Norma', 'Preço unit. (R$)', 'Total (R$)'), rule];
     let g = '', i = 0;
-    const sub = grp => out.push(cols('', `Subtotal — ${grp}`, '', '', '', ''), rule);
+    const sub = grp => out.push(cols('', `Subtotal — ${grp}`, '', '', '', '', ''), rule);
     for (const r of last.rows) {
       if (r.group !== g) { if (g) sub(g); out.push(`>>> ${(g = r.group).toUpperCase()}`); }
-      out.push(cols(String(++i), r.item, qty(r), r.un, '', ''));
+      out.push(cols(String(++i), r.item, qty(r), r.un, r.norma || '—', '', ''));
     }
     sub(g);
-    out.push(cols('', 'TOTAL GERAL', '', '', '', ''), '', 'Lista orientativa gerada em pipesystem.com.br. Não substitui o projeto hidráulico.');
+    out.push(cols('', 'TOTAL GERAL', '', '', '', '', ''), '', 'Lista orientativa gerada em pipesystem.com.br. Não substitui o projeto hidráulico.');
     return out.join('\n');
   }
   let shown = false;
@@ -692,14 +692,14 @@
     row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + title + (sin ? ` — preços SINAPI ${SINAPI_PRECOS.ref}, ${sin.uf}` : ''), 1]]);
     row(2, [['A', sin ? `Preços de referência de material do SINAPI (Caixa), ${SINAPI_PRECOS.ref}, sem desoneração, ${UF_NOMES[sin.uf]}. Sem mão de obra, BDI e frete, salvo indicação. Itens "sem referência" ficam em branco: preencha com cotação.`
       : 'Lista orientativa. Preencha a coluna "Preço unitário": os totais por item, por grupo e o total geral são calculados automaticamente.', 7]]);
-    const cols = sin ? 'ABCDEFGHI' : 'ABCDEFG';
-    row(4, ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Observação', 'Fonte do preço', 'Link para conferência'].slice(0, cols.length).map((t, i) => [cols[i], t, 2]));
+    const cols = sin ? 'ABCDEFGHIJ' : 'ABCDEFGH';
+    row(4, ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Norma', 'Observação', 'Fonte do preço', 'Link para conferência'].slice(0, cols.length).map((t, i) => [cols[i], t, 2]));
     let r = 5;
     const first = r;
     for (const it of data.rows) {
       const p = sin && sin.prices.get(it);
-      row(r, [['A', it.group], ['B', it.item], ['C', it.qty], ['D', it.un], ['E', p ? p.p : '', 3], ['F', { f: `IF(E${r}="","",C${r}*E${r})` }, 4], ['G', it.note],
-        ...(sin ? [['H', p ? p.fonte : 'Sem referência SINAPI — cotar com fornecedores'], ['I', p ? p.url : '']] : [])]);
+      row(r, [['A', it.group], ['B', it.item], ['C', it.qty], ['D', it.un], ['E', p ? p.p : '', 3], ['F', { f: `IF(E${r}="","",C${r}*E${r})` }, 4], ['G', it.norma || ''], ['H', it.note],
+        ...(sin ? [['I', p ? p.fonte : 'Sem referência SINAPI — cotar com fornecedores'], ['J', p ? p.url : '']] : [])]);
       r++;
     }
     const lastR = r - 1;
@@ -710,7 +710,7 @@
     r++;
     row(r, [['B', 'TOTAL GERAL', 6], ['F', { f: `SUM(F${first}:F${lastR})` }, 6]]);
     row(r + 2, [['A', 'Gerado em pipesystem.com.br. Não substitui o projeto hidráulico.', 7]]);
-    const widths = [30, 62, 9, 6, 18, 18, 48, 80, 60].slice(0, cols.length);
+    const widths = [30, 62, 9, 6, 18, 18, 24, 48, 80, 60].slice(0, cols.length);
     const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">` +
       `<sheetViews><sheetView workbookViewId="0"><pane ySplit="4" topLeftCell="A5" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>` +
       `<cols>${widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('')}</cols>` +

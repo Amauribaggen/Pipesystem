@@ -241,7 +241,8 @@
     const api = window.lmatApi, prices = new Map(), data = { rows: [] };
     for (const i of res.itens) {
       const row = { group: ['bujao', 'adesivo'].includes(i.peca) ? 'Acessórios e consumíveis' : GRUPO[i.sys] || (i.peca === 'registro' ? 'Registros e válvulas' : 'Outros'), item: i.desc, qty: Math.round(i.qty * 100) / 100, un: i.un,
-        note: (i.canon ? `Reconhecido como: ${i.canon}` : 'Não reconhecido') + ` · linha ${i.linha} do arquivo` };
+        note: (i.canon ? `Reconhecido como: ${i.canon}` : 'Não reconhecido') + ` · linha ${i.linha} do arquivo`,
+        norma: i.canon && typeof normaDoMaterial === 'function' ? normaDoMaterial(i.canon) : '' };
       data.rows.push(row);
       const p = uf && i.canon && api ? api.price(i.canon, uf) : null;
       if (p) prices.set(row, p);

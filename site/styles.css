@@ -351,6 +351,7 @@ a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
 .lmat__pc, .lmat__sub, .lmat__foot { display: none; }   /* espaços de preço: só no Imprimir / PDF */
 .lmat__table td.num, .lmat__table th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .lmat__table td:last-child { color: #9fb4cc; font-size: .84rem; }
+.lmat__table td.lmat__norma { color: #7ee7f2; font-size: .8rem; white-space: nowrap; }
 .lmat__table tr.lmat__group th { padding-top: 18px; color: #fff; font: 700 .95rem var(--display); text-transform: none; letter-spacing: 0; border-bottom-color: rgba(31, 182, 201, .5); }
 @media print {
   html.print-lmat body * { visibility: hidden !important; }
