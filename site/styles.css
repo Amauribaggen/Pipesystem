@@ -284,7 +284,7 @@ a.normref:hover { color: var(--teal, #1fb6c9); }
 .dim__apps input { width: 72px; flex: none; padding: .45em .6em; }
 .dim__table { margin-top: 16px; }
 .dim__table tr.is-on td { color: #7ee7f2; font-weight: 700; background: rgba(31, 182, 201, .08); }
-.lmat { margin-top: 20px; }
+.lmat { margin: 0 0 28px; }   /* primeiro bloco da seção Dimensionamento */
 .lmat__title { color: var(--accent) !important; font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin-bottom: .6em !important; }
 .lmat__checks--top { margin: 16px 0 0; }
 .lmat__head .eyebrow, .section--dark .lmat__head .eyebrow { color: var(--accent); }

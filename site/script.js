@@ -1280,14 +1280,14 @@ const ARTICLES = [
 // abrir /sistemas direto (link compartilhado ou F5) leva à seção, e o botão "voltar" volta à seção anterior.
 // Na Vercel, esses endereços entregam a página inicial (rewrites em vercel.json); o canonical continua "/".
 const SECTION_PATHS = {
-  servicos: 'cotacoes', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'ferramentas',
+  servicos: 'cotacoes', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'dimensionamento',
   normas: 'normas', artigos: 'artigos', feiras: 'feiras', publico: 'para-quem-e', anuncie: 'anuncie',
   assinaturas: 'assinaturas', sobre: 'quem-somos', contato: 'contato',
 };
 const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([id, path]) => [path, id]));
 (() => {
-  // id pode ser a própria seção ou um item dentro dela (ex.: #lmatTool em Ferramentas): rola até o item
-  // e mostra na barra o endereço da seção (/ferramentas), sem "#"
+  // id pode ser a própria seção ou um item dentro dela (ex.: #lmatTool em Dimensionamento): rola até o item
+  // e mostra na barra o endereço da seção (/dimensionamento), sem "#"
   const sectionOf = id => SECTION_PATHS[id] ? id : document.getElementById(id)?.closest('section[id]')?.id;
   const go = (id, how = 'push', smooth = true) => {
     const el = document.getElementById(id), sec = sectionOf(id); if (!el || !SECTION_PATHS[sec]) return;
@@ -1317,7 +1317,7 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   const start = () => {
     const byPath = SECTION_OF_PATH[location.pathname.slice(1)];
     const h = location.hash.slice(1), byHash = h && SECTION_PATHS[sectionOf(h)] ? h : null;
-    const id = byHash || byPath;   // /contato#lmatTool (link antigo) vai ao item e corrige para /ferramentas
+    const id = byHash || byPath;   // /contato#lmatTool (link antigo) vai ao item e corrige para /dimensionamento
     if (!id || sheet.open) return;
     const qs = new URLSearchParams(location.search);
     const onlyForm = [...qs.keys()].every(k => k === 'assunto' || k === 'msg');   // ?assunto=&msg= já preencheram o formulário

@@ -105,7 +105,7 @@
       <a href="#servicos" class="nav__hot">Cotações</a>
       <a href="#sistemas">Sistemas</a>
       <a href="#materiais">Materiais</a>
-      <a href="#ferramentas">Ferramentas</a>
+      <a href="#ferramentas">Dimensionamento</a>
       <a href="#normas">Normas</a>
       <a href="#artigos">Artigos</a>
       <a href="#feiras">Feiras</a>
@@ -370,114 +370,10 @@
   <section class="section section--dark" id="ferramentas">
     <div class="container">
       <header class="section__head">
-        <p class="eyebrow">Utilidades</p>
-        <h2>Ferramentas de cálculo</h2>
-        <p>Dimensionamento rápido e conversões do dia a dia. Resultados indicativos — confirme sempre com as normas aplicáveis.</p>
+        <p class="eyebrow">Dimensionamento</p>
+        <h2>Dimensionamento e ferramentas de cálculo</h2>
+        <p>Comece pelo Dimensionamento Inteligente: informe as características do empreendimento e receba a lista orientativa de materiais. Abaixo, calculadoras rápidas para o dia a dia. Resultados indicativos — confirme sempre com as normas aplicáveis.</p>
       </header>
-      <div class="tools">
-        <div class="tool" id="hwTool">
-          <h3>Perda de carga — Hazen-Williams</h3>
-          <div class="form">
-            <label>Vazão <span>L/s</span><input type="number" id="hwQ" value="1.5" min="0" step="0.1"></label>
-            <label>Diâmetro interno <span>mm</span><input type="number" id="hwD" value="40" min="1" step="1"></label>
-            <label>Comprimento <span>m</span><input type="number" id="hwL" value="100" min="0" step="1"></label>
-            <label>Material <span>C</span>
-              <select id="hwC">
-                <option value="150">PVC / CPVC / PEX (150)</option>
-                <option value="140">Cobre (140)</option>
-                <option value="130">Aço-carbono novo (130)</option>
-                <option value="120">Aço galvanizado (120)</option>
-                <option value="100">Ferro fundido usado (100)</option>
-              </select>
-            </label>
-          </div>
-          <div class="results">
-            <div><span>Perda de carga</span><strong id="hwHf">—</strong></div>
-            <div><span>Perda unitária</span><strong id="hwJ">—</strong></div>
-            <div><span>Velocidade</span><strong id="hwV">—</strong></div>
-          </div>
-          <p class="hint" id="hwHint"></p>
-        </div>
-
-        <div class="tool">
-          <h3>Conversão de unidades</h3>
-          <div class="seg" id="convTabs">
-            <button class="is-on" data-k="pressao">Pressão</button>
-            <button data-k="vazao">Vazão</button>
-            <button data-k="comprimento">Comprimento</button>
-          </div>
-          <div class="form form--conv">
-            <label>Valor<input type="number" id="convVal" value="1" step="any"></label>
-            <label>De<select id="convFrom"></select></label>
-          </div>
-          <ul class="convList" id="convOut"></ul>
-        </div>
-
-        <div class="tool">
-          <h3>Bitolas — polegada × DN</h3>
-          <table class="table">
-            <thead><tr><th>Rosca (BSP/NPT)</th><th>DN</th><th>Ø ext. aço (mm)</th></tr></thead>
-            <tbody>
-              <tr><td>1/2"</td><td>15</td><td>21,3</td></tr>
-              <tr><td>3/4"</td><td>20</td><td>26,9</td></tr>
-              <tr><td>1"</td><td>25</td><td>33,7</td></tr>
-              <tr><td>1 1/4"</td><td>32</td><td>42,4</td></tr>
-              <tr><td>1 1/2"</td><td>40</td><td>48,3</td></tr>
-              <tr><td>2"</td><td>50</td><td>60,3</td></tr>
-              <tr><td>2 1/2"</td><td>65</td><td>76,1</td></tr>
-              <tr><td>3"</td><td>80</td><td>88,9</td></tr>
-              <tr><td>4"</td><td>100</td><td>114,3</td></tr>
-            </tbody>
-          </table>
-          <p class="hint">BSP (Whitworth gás, 55°) e NPT (60°, cônica) não são intercambiáveis.</p>
-        </div>
-
-        <div class="tool tool--wide" id="dimTool">
-          <h3>Dimensionamento hidráulico — água fria</h3>
-          <div class="dim">
-            <div>
-              <div class="seg" id="dimTabs">
-                <button class="is-on" data-k="vazao">Por vazão</button>
-                <button data-k="pesos">Por aparelhos</button>
-              </div>
-              <div class="form">
-                <label class="full" data-dim="vazao">Vazão de projeto <span>L/s</span><input type="number" id="dimQ" value="0.8" min="0" step="0.05"></label>
-                <div class="dim__apps full" data-dim="pesos" id="dimApps" hidden></div>
-                <label>Material
-                  <select id="dimMat">
-                    <option value="pvc">PVC soldável (NBR 5648)</option>
-                    <option value="cobre">Cobre classe E (NBR 13206)</option>
-                    <option value="aco">Aço galvanizado (NBR 5580)</option>
-                    <option value="ppr">Polipropileno PPR</option>
-                  </select>
-                </label>
-                <label>Velocidade máxima
-                  <select id="dimV">
-                    <option value="3">3,0 m/s (limite NBR 5626)</option>
-                    <option value="2.5">2,5 m/s</option>
-                    <option value="2" selected>2,0 m/s (menos ruído)</option>
-                    <option value="1.5">1,5 m/s</option>
-                  </select>
-                </label>
-                <label class="full">Comprimento total <span>m (real + equivalente das conexões)</span><input type="number" id="dimL" value="30" min="0" step="1"></label>
-              </div>
-            </div>
-            <div>
-              <div class="results">
-                <div><span>Diâmetro indicado</span><strong id="dimD">—</strong></div>
-                <div><span>Velocidade</span><strong id="dimVel">—</strong></div>
-                <div><span>Perda de carga</span><strong id="dimHf">—</strong></div>
-              </div>
-              <p class="hint" id="dimHint"></p>
-              <table class="table dim__table">
-                <thead><tr><th>Diâmetro</th><th>Ø int. (mm)</th><th>v (m/s)</th><th>J (m/100m)</th></tr></thead>
-                <tbody id="dimRows"></tbody>
-              </table>
-            </div>
-          </div>
-          <p class="hint">Vazão por aparelhos: Q = 0,3 × √ΣP (pesos da NBR 5626, uso simultâneo provável). Perda de carga por Fair-Whipple-Hsiao. Resultado indicativo: confira a pressão disponível em cada ponto de utilização.</p>
-        </div>
-      </div>
 
       <div class="tool lmat" id="lmatTool">
         <h3 class="lmat__title">Dimensionamento Inteligente</h3>
@@ -671,6 +567,111 @@
               <button type="button" class="btn btn--sm" id="lmValXlsx" hidden>Baixar lista validada com preços SINAPI</button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="tools">
+        <div class="tool" id="hwTool">
+          <h3>Perda de carga — Hazen-Williams</h3>
+          <div class="form">
+            <label>Vazão <span>L/s</span><input type="number" id="hwQ" value="1.5" min="0" step="0.1"></label>
+            <label>Diâmetro interno <span>mm</span><input type="number" id="hwD" value="40" min="1" step="1"></label>
+            <label>Comprimento <span>m</span><input type="number" id="hwL" value="100" min="0" step="1"></label>
+            <label>Material <span>C</span>
+              <select id="hwC">
+                <option value="150">PVC / CPVC / PEX (150)</option>
+                <option value="140">Cobre (140)</option>
+                <option value="130">Aço-carbono novo (130)</option>
+                <option value="120">Aço galvanizado (120)</option>
+                <option value="100">Ferro fundido usado (100)</option>
+              </select>
+            </label>
+          </div>
+          <div class="results">
+            <div><span>Perda de carga</span><strong id="hwHf">—</strong></div>
+            <div><span>Perda unitária</span><strong id="hwJ">—</strong></div>
+            <div><span>Velocidade</span><strong id="hwV">—</strong></div>
+          </div>
+          <p class="hint" id="hwHint"></p>
+        </div>
+
+        <div class="tool">
+          <h3>Conversão de unidades</h3>
+          <div class="seg" id="convTabs">
+            <button class="is-on" data-k="pressao">Pressão</button>
+            <button data-k="vazao">Vazão</button>
+            <button data-k="comprimento">Comprimento</button>
+          </div>
+          <div class="form form--conv">
+            <label>Valor<input type="number" id="convVal" value="1" step="any"></label>
+            <label>De<select id="convFrom"></select></label>
+          </div>
+          <ul class="convList" id="convOut"></ul>
+        </div>
+
+        <div class="tool">
+          <h3>Bitolas — polegada × DN</h3>
+          <table class="table">
+            <thead><tr><th>Rosca (BSP/NPT)</th><th>DN</th><th>Ø ext. aço (mm)</th></tr></thead>
+            <tbody>
+              <tr><td>1/2"</td><td>15</td><td>21,3</td></tr>
+              <tr><td>3/4"</td><td>20</td><td>26,9</td></tr>
+              <tr><td>1"</td><td>25</td><td>33,7</td></tr>
+              <tr><td>1 1/4"</td><td>32</td><td>42,4</td></tr>
+              <tr><td>1 1/2"</td><td>40</td><td>48,3</td></tr>
+              <tr><td>2"</td><td>50</td><td>60,3</td></tr>
+              <tr><td>2 1/2"</td><td>65</td><td>76,1</td></tr>
+              <tr><td>3"</td><td>80</td><td>88,9</td></tr>
+              <tr><td>4"</td><td>100</td><td>114,3</td></tr>
+            </tbody>
+          </table>
+          <p class="hint">BSP (Whitworth gás, 55°) e NPT (60°, cônica) não são intercambiáveis.</p>
+        </div>
+
+        <div class="tool tool--wide" id="dimTool">
+          <h3>Dimensionamento hidráulico — água fria</h3>
+          <div class="dim">
+            <div>
+              <div class="seg" id="dimTabs">
+                <button class="is-on" data-k="vazao">Por vazão</button>
+                <button data-k="pesos">Por aparelhos</button>
+              </div>
+              <div class="form">
+                <label class="full" data-dim="vazao">Vazão de projeto <span>L/s</span><input type="number" id="dimQ" value="0.8" min="0" step="0.05"></label>
+                <div class="dim__apps full" data-dim="pesos" id="dimApps" hidden></div>
+                <label>Material
+                  <select id="dimMat">
+                    <option value="pvc">PVC soldável (NBR 5648)</option>
+                    <option value="cobre">Cobre classe E (NBR 13206)</option>
+                    <option value="aco">Aço galvanizado (NBR 5580)</option>
+                    <option value="ppr">Polipropileno PPR</option>
+                  </select>
+                </label>
+                <label>Velocidade máxima
+                  <select id="dimV">
+                    <option value="3">3,0 m/s (limite NBR 5626)</option>
+                    <option value="2.5">2,5 m/s</option>
+                    <option value="2" selected>2,0 m/s (menos ruído)</option>
+                    <option value="1.5">1,5 m/s</option>
+                  </select>
+                </label>
+                <label class="full">Comprimento total <span>m (real + equivalente das conexões)</span><input type="number" id="dimL" value="30" min="0" step="1"></label>
+              </div>
+            </div>
+            <div>
+              <div class="results">
+                <div><span>Diâmetro indicado</span><strong id="dimD">—</strong></div>
+                <div><span>Velocidade</span><strong id="dimVel">—</strong></div>
+                <div><span>Perda de carga</span><strong id="dimHf">—</strong></div>
+              </div>
+              <p class="hint" id="dimHint"></p>
+              <table class="table dim__table">
+                <thead><tr><th>Diâmetro</th><th>Ø int. (mm)</th><th>v (m/s)</th><th>J (m/100m)</th></tr></thead>
+                <tbody id="dimRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <p class="hint">Vazão por aparelhos: Q = 0,3 × √ΣP (pesos da NBR 5626, uso simultâneo provável). Perda de carga por Fair-Whipple-Hsiao. Resultado indicativo: confira a pressão disponível em cada ponto de utilização.</p>
         </div>
       </div>
 
@@ -1051,7 +1052,7 @@
       <a href="#servicos">Cotações</a>
       <a href="#sistemas">Sistemas</a>
       <a href="#materiais">Materiais</a>
-      <a href="#ferramentas">Ferramentas</a>
+      <a href="#ferramentas">Dimensionamento</a>
       <a href="#normas">Normas</a>
       <a href="#artigos">Artigos</a>
       <a href="#feiras">Feiras</a>
