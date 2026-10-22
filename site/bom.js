@@ -16,6 +16,7 @@
     ['dorm', 'Dormitórios', 'number', 0, 10], ['ban', 'Banheiros', 'number', 0, 10], ['lav', 'Lavabos', 'number', 0, 5],
   ];
   const isCasa = () => $('lmTipo').value === 'casa';
+  const isGalpao = () => $('lmTipo').value.startsWith('galpao');
   function renderTypes() {
     $('lmTypes').innerHTML = types.map((t, i) => `
       <div class="lmat__type" data-i="${i}">
@@ -40,9 +41,28 @@
     const casa = isCasa();
     document.querySelectorAll('#lmatTool [data-edif]').forEach(el => { el.hidden = casa; });
     document.querySelectorAll('#lmatTool [data-casa]').forEach(el => { el.hidden = !casa; });
+    // galpões: escondem os campos do residencial e mostram os seus, inclusive os específicos de cada tipo (data-gt)
+    const gal = isGalpao(), gt = gal ? $('lmTipo').value.slice(7) : '';
+    document.querySelectorAll('#lmatTool [data-res]').forEach(el => { el.hidden = gal; });
+    document.querySelectorAll('#lmatTool [data-gal]').forEach(el => { el.hidden = !gal; });
+    document.querySelectorAll('#lmatTool [data-gt]').forEach(el => { el.hidden = !gal || !el.dataset.gt.split(' ').includes(gt); });
     renderTypes();
   }
+  // valores típicos ao escolher cada tipo de galpão (o usuário ajusta depois)
+  const GALPAO = {
+    logistico: { lgArea: 10000, lgPe: 12, lgEstoq: 10, lgEsc: 400, lgFunc: 80, lgTurnos: 2, lgRef: 'copa', lgDocas: 20, lgPatio: 8000, lgSpk: 'esfr' },
+    industrial: { lgArea: 6000, lgPe: 10, lgEstoq: 6, lgEsc: 600, lgFunc: 150, lgTurnos: 3, lgRef: 'cozinha', lgDocas: 6, lgPatio: 5000, lgSpk: 'conv' },
+    comercial: { lgArea: 3000, lgPe: 9, lgEstoq: 5, lgEsc: 300, lgFunc: 60, lgTurnos: 1, lgRef: 'copa', lgDocas: 4, lgPatio: 6000, lgSpk: 'conv' },
+    crossdocking: { lgArea: 8000, lgPe: 10, lgEstoq: 3, lgEsc: 300, lgFunc: 120, lgTurnos: 3, lgRef: 'copa', lgDocas: 60, lgPatio: 20000, lgSpk: 'conv' },
+    refrigerado: { lgArea: 8000, lgPe: 12, lgEstoq: 10, lgEsc: 400, lgFunc: 90, lgTurnos: 3, lgRef: 'copa', lgDocas: 16, lgPatio: 8000, lgSpk: 'esfr', lgCam: 6000 },
+  };
   $('lmTipo').addEventListener('change', () => {
+    if (isGalpao()) {
+      Object.entries(GALPAO[$('lmTipo').value.slice(7)]).forEach(([id, val]) => { $(id).value = val; });
+      $('lmCist').value = 'com'; $('lmAq').value = 'eletrico';
+      $('lmGas').value = $('lgRef').value === 'cozinha' ? 'glp' : 'nenhum';
+      return syncTipo();
+    }
     const casa = isCasa();
     $('lmPav').value = casa ? 2 : 8; $('lmPe').value = casa ? 3 : 2.88; $('lmCist').value = casa ? 'sem' : 'com';
     if (casa && $('lmGas').value === 'gn') $('lmGas').value = 'p13';
@@ -55,9 +75,10 @@
     cpvc: ['Tubo CPVC 28 mm (1")', 'Tubo CPVC 22 mm (3/4")', 'barra', 3, 'Conexão CPVC'],
     cobre: ['Tubo de cobre classe E 22 mm', 'Tubo de cobre classe E 15 mm', 'barra', 5, 'Conexão de cobre'],
   };
-  const GROUPS = ['Reservação e recalque', 'Água fria — colunas e barrilete', 'Água fria — unidades', 'Água quente', 'Gás', 'Esgoto sanitário',
-    'Águas pluviais', 'Combate a incêndio', 'Sprinklers', 'Garagem', 'Áreas comuns', 'Piscina', 'Churrasqueiras', 'Lavanderia coletiva',
-    'Aproveitamento de água de chuva', 'Louças e metais', 'Consumíveis e fixação'];
+  const GROUPS = ['Reservação e recalque', 'Água fria — rede geral', 'Água fria — colunas e barrilete', 'Água fria — unidades', 'Vestiários e sanitários',
+    'Água quente', 'Gás', 'Esgoto sanitário', 'Refeitório', 'Águas pluviais', 'Docas e pátio', 'Combate a incêndio', 'Sprinklers', 'Água de processo',
+    'Ar comprimido', 'Segurança (chuveiros de emergência)', 'Câmaras frias', 'Lavagem de veículos', 'Efluentes industriais', 'Garagem', 'Áreas comuns',
+    'Piscina', 'Churrasqueiras', 'Lavanderia coletiva', 'Aproveitamento de água de chuva', 'Louças e metais', 'Consumíveis e fixação'];
   const pickPipe = (mat, Q, vmax) => {
     const list = dimPipes[mat];
     const i = list.findIndex(([, D]) => 4 * Q / 1000 / (Math.PI * Math.pow(D / 1000, 2)) <= vmax);
@@ -71,8 +92,9 @@
     const pav = Math.max(1, Math.round(parseFloat($('lmPav').value) || 1));
     const pe = parseFloat($('lmPe').value) || 2.88;
     const aq = $('lmAq').value, aqMat = $('lmAqMat').value, gas = $('lmGas').value;
-    const med = !casa && $('lmMed').checked, comum = !casa && $('lmComum').checked, inc = !casa && $('lmInc').checked, loucas = $('lmLoucas').checked;
-    const perda = 1 + Math.max(0, parseFloat($('lmPerda').value) || 0) / 100;
+    const gal = isGalpao();
+    const med = !casa && $('lmMed').checked, comum = !casa && $('lmComum').checked, inc = !casa && $('lmInc').checked, loucas = $(gal ? 'lgLoucas' : 'lmLoucas').checked;
+    const perda = 1 + Math.max(0, parseFloat($(gal ? 'lgPerda' : 'lmPerda').value) || 0) / 100;
     const hot = aq !== 'eletrico', hasGas = gas !== 'nenhum';
     const val = id => Math.max(0, Math.round(parseFloat($(id).value) || 0));
     const vagas = casa ? 0 : val('lmVagas'), pisosGar = casa ? 0 : val('lmPisosGar'), ev = casa ? 0 : val('lmEv');
@@ -83,6 +105,7 @@
     const Hs = pisosGar * 3; // profundidade dos subsolos de garagem
     const H = casa ? pe * pav : pe * (pav + 1); // altura até a cobertura (edifício: térreo + andares-tipo)
     const items = new Map(), warn = [];
+    let joints = 0, threads = 0;   // emendas soldadas e roscas, para adesivo e fita veda-rosca
     const add = (group, item, qty, un = 'un', o = {}) => {
       if (!(qty > 0)) return;
       const k = group + '|' + item;
@@ -113,11 +136,398 @@
     const AF = ppr ? { j: 'Joelho 90° PPR', t: 'Tê PPR', l: 'Luva PPR', bucha: 'Conector PPR com inserto metálico 25 mm x 1/2"', cx: 'Conexões PPR' }
       : { j: 'Joelho 90° soldável', t: 'Tê soldável', l: 'Luva soldável', bucha: 'Joelho 90° soldável com bucha de latão 25 mm x 1/2" (azul)', cx: 'Conexões soldáveis' };
     const esg = (g, d, m) => add(g, `Tubo PVC ${g === 'Águas pluviais' ? 'para águas pluviais' : 'esgoto série normal'} ${d} mm`, m, 'm', { pack: ['barra', 6] });
+    // Arredonda, aplica perdas e ordena a lista
+    const build = () => [...items.values()].map(r => {
+      let q = r.loss ? r.qty * perda : r.qty;
+      q = r.un === 'm³' ? Math.round(q * 10) / 10 : Math.ceil(q - 1e-9);
+      const note = r.pack ? `${int(q / r.pack[1])} ${r.pack[0]}${q / r.pack[1] > 1 ? 's' : ''} de ${r.pack[1]} m` + (r.note ? ` · ${r.note}` : '') : r.note || '';
+      return { ...r, qty: q, note, norma: (typeof normaDoMaterial === 'function' ? normaDoMaterial(r.item) : '') };
+    }).sort((a, b) => GROUPS.indexOf(a.group) - GROUPS.indexOf(b.group));
+    if (gal) return galpao();
+
+    // ---------- Galpões (logístico, industrial, comercial, cross-docking, refrigerado) ----------
+    // Índices de obra para galpões: planta retangular 2:1, sanitários pela NR-24, pluviais pela NBR 10844 (150 mm/h),
+    // incêndio por IT do Corpo de Bombeiros, NBR 10897 e NFPA 13 (ESFR). Lista orientativa: o projeto define o resto.
+    function galpao() {
+      const gt = $('lmTipo').value.slice(7);
+      const NOMES = { logistico: 'Galpão logístico', industrial: 'Galpão industrial', comercial: 'Galpão comercial', crossdocking: 'Galpão cross-docking', refrigerado: 'Galpão refrigerado' };
+      const v = id => Math.max(0, parseFloat($(id).value) || 0);
+      const A = Math.max(200, v('lgArea')), peG = Math.max(4, v('lgPe') || 10), est = v('lgEstoq'), esc = v('lgEsc');
+      const F = Math.max(1, Math.round(v('lgFunc'))), tur = Math.min(3, Math.max(1, Math.round(v('lgTurnos') || 1)));
+      const ref = $('lgRef').value, docas = Math.round(v('lgDocas')), patio = v('lgPatio'), sif = $('lgPluv').value === 'sif';
+      const spkG = $('lgSpk').value, hid = $('lgHid').checked, groove = $('lgIncMat').value === 'groove', chuvaG = $('lgChuva').checked;
+      const Lg = Math.sqrt(2 * A), Wg = A / Lg, Pg = 2 * (Lg + Wg);   // planta retangular 2:1
+      const heavy = gt === 'industrial' || gt === 'refrigerado';
+      const cam = gt === 'refrigerado' ? Math.min(A, v('lgCam')) : 0, cong = gt === 'refrigerado' && $('lgTemp').value === 'congelado';
+      const V_ = 'Vestiários e sanitários', B_ = 'Água fria — rede geral', R_ = 'Reservação e recalque', E_ = 'Esgoto sanitário', P_ = 'Águas pluviais',
+        I_ = 'Combate a incêndio', S_ = 'Sprinklers', RF_ = 'Refeitório', D_ = 'Docas e pátio', PR_ = 'Água de processo', AR_ = 'Ar comprimido',
+        SE_ = 'Segurança (chuveiros de emergência)', CF_ = 'Câmaras frias', LV_ = 'Lavagem de veículos', EF_ = 'Efluentes industriais',
+        Q_ = 'Água quente', G_ = 'Gás', L_ = 'Louças e metais', F_ = 'Consumíveis e fixação', X_ = 'Aproveitamento de água de chuva';
+      let vertical = 0, horizontal = 0, ptG = 0;
+
+      // Pessoas e aparelhos (NR-24: 1 bacia e 1 lavatório a cada 20 trabalhadores; chuveiro a cada 10 em trabalho pesado ou 20)
+      const pEsc = esc ? Math.ceil(esc / 7) : 0;
+      const pub = gt === 'comercial' ? Math.round(v('lgPub')) : 0;
+      const mot = gt === 'crossdocking' && $('lgMot').checked ? Math.max(1, Math.ceil(docas / 10)) : 0;
+      const bac = Math.max(2, Math.ceil(F / 20)), mic = Math.ceil(F / 40), chu = Math.max(2, Math.ceil(F / (heavy ? 10 : 20))), beb = Math.max(1, Math.ceil(F / 50));
+      const bacE = pEsc ? Math.max(2, Math.ceil(pEsc / 20)) : 0, bacP = pub ? 2 * Math.ceil(pub / 100) : 0, micP = pub ? Math.ceil(pub / 200) : 0;
+      const nBac = bac + bacE + bacP + mot, nLav = nBac, nMic = mic + micP, nChu = chu + mot;
+      const nucleos = 1 + (A > 6000 ? 1 : 0) + (esc ? 1 : 0) + (pub ? 1 : 0) + (mot ? 1 : 0);
+      const torn = Math.ceil(docas / 4) + Math.ceil(Pg / 60);    // torneiras de lavagem nas docas e no perímetro
+      let peso = nBac * 0.3 + nLav * 0.3 + nMic * 0.3 + nChu * (hot ? 0.4 : 0.1) + beb * 0.1 + nucleos * 0.7 + torn * 0.4;
+      if (ref !== 'nao') peso += ref === 'cozinha' ? 4 * 0.7 : 0.7;
+
+      // Consumo diário (L): funcionários com banho 70 L, escritório 50 L, refeição 25 L (cozinha) ou 10 L (copa), público 15 L
+      const refeicoes = ref === 'nao' ? 0 : F * tur;
+      let cons = F * tur * 70 + pEsc * 50 + refeicoes * (ref === 'cozinha' ? 25 : 10) + pub * 15 + mot * 6 * 50 + docas * 20;
+
+      // Vestiários e sanitários
+      af(V_, '32 mm (1") — distribuição dos vestiários e sanitários', nucleos * 15);
+      af(V_, '25 mm (3/4") — ramais dos aparelhos', (nBac + nLav + nMic + nChu + beb) * 2.5);
+      add(V_, AF.bucha, nLav + nChu + beb + nucleos, 'un', { note: 'Saída para os pontos de utilização' });
+      plug(V_, nLav + nChu + beb + nucleos);
+      add(V_, 'Registro de gaveta 3/4" com acabamento', nucleos * 3, 'un', { loss: false, note: 'Um por ambiente molhado' });
+      add(V_, 'Registro de pressão 3/4" com acabamento', nChu, 'un', { loss: false, note: 'Chuveiros' });
+      threads += (nLav + nChu + beb) * 2;
+      const [dMain] = pickPipe(matAF, 0.3 * Math.sqrt(peso), 2);
+      af(B_, `${dMain} — rede geral (reservatório até os núcleos sanitários)`, Lg + 20 * nucleos);
+      add(B_, `Registro de gaveta ${dMain}`, nucleos + 2, 'un', { loss: false });
+      horizontal += Lg + 20 * nucleos;
+
+      // Água quente dos vestiários
+      if (hot) {
+        const [hD, hS, packN, packL, cx] = HOT[aqMat];
+        const lq = nucleos * 12;
+        add(Q_, hD + ' — distribuição dos vestiários', lq, 'm', { pack: [packN, packL] });
+        add(Q_, hS + ' — sub-ramais dos chuveiros', nChu * 2.5, 'm', { pack: [packN, packL] });
+        add(Q_, `${cx}: joelhos, tês e luvas`, nucleos * 6 + nChu * 3);
+        add(Q_, `${cx}: terminal com rosca 1/2"`, nChu, 'un', { note: 'Saída para os chuveiros' });
+        plug(Q_, nChu);
+        add(Q_, 'Isolamento térmico tubular (espuma elastomérica)', lq, 'm');
+        if (aq === 'gas') {
+          const nAq = Math.ceil(nChu / 3);
+          add(Q_, 'Aquecedor de passagem a gás 33 L/min (vestiários)', nAq, 'un', { loss: false, note: 'Um para cada 3 chuveiros em uso simultâneo' });
+          add(Q_, 'Duto de exaustão do aquecedor (kit chaminé)', nAq, 'un', { loss: false });
+          if (hasGas) { add(G_, 'Tubo de cobre classe A 22 mm (gás dos aquecedores)', nAq * 15, 'm', { pack: ['barra', 5] }); add(G_, 'Registro de esfera para gás 3/4"', nAq, 'un', { loss: false }); ptG += nAq; }
+        }
+        if (aq === 'central') add(Q_, 'Boiler / acumulador e aquecimento central dos vestiários (dimensionar à parte)', 1, 'cj', { loss: false });
+        threads += nChu;
+      }
+
+      // Esgoto sanitário
+      esg(E_, 100, nBac * 2 + nucleos * 10);
+      esg(E_, 50, (nChu + nMic + nucleos) * 1.5);
+      esg(E_, 40, (nLav + beb) * 1.2);
+      add(E_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', nucleos * 2 + Math.ceil(nChu / 2));
+      add(E_, 'Ralo seco 100 mm (boxes dos chuveiros)', nChu);
+      add(E_, 'Joelho 90° esgoto 100 mm', nBac + nucleos * 2);
+      add(E_, 'Junção simples 100 x 50 mm', nBac);
+      add(E_, 'Joelho 90° esgoto 50 mm', nChu + nMic);
+      add(E_, 'Joelho 90° esgoto 40 mm', nLav + beb);
+      add(E_, 'Anel de vedação para saída de bacia sanitária', nBac);
+      add(E_, 'Tubo PVC esgoto 50 mm — ramais de ventilação', nucleos * 8, 'm', { pack: ['barra', 6] });
+      let uhcG = nBac * 6 + nLav + nMic * 2 + nChu * 2 + beb + nucleos * 3 + (ref === 'cozinha' ? 20 : ref === 'copa' ? 6 : 0);
+      const dCol = uhcG <= 180 ? 100 : uhcG <= 700 ? 150 : 200, lCol = Lg + 30 + nucleos * 15;
+      esg(E_, dCol, lCol);
+      add(E_, `Coletor predial: ${dCol} mm (${int(uhcG)} UHC)`, 1, 'cj', { loss: false, note: 'Diâmetro pela soma das unidades Hunter (NBR 8160)' });
+      add(E_, 'Caixa de inspeção 60 x 60 cm', Math.ceil(lCol / 25) + nucleos, 'un', { loss: false });
+      joints += nBac * 4 + nChu * 2 + nMic * 2 + nLav * 2 + nucleos * 12;
+
+      // Refeitório
+      if (ref !== 'nao') {
+        const coz = ref === 'cozinha';
+        af(RF_, '32 mm (1") — distribuição do refeitório', 20);
+        af(RF_, '25 mm (3/4") — pontos de pias e equipamentos', coz ? 40 : 10);
+        plug(RF_, coz ? 8 : 2);
+        esg(RF_, 100, 20); esg(RF_, 75, coz ? 25 : 8);
+        add(RF_, coz ? 'Caixa de gordura industrial (dimensionar pelo nº de refeições, NBR 8160)' : 'Caixa de gordura', 1, 'un', { loss: false });
+        if (coz) {
+          add(RF_, 'Ralo linear com grelha inox (piso da cozinha)', 3, 'un', { loss: false });
+          add(RF_, 'Lavatório de mãos com acionamento sem contato (cozinha)', 2, 'un', { loss: false });
+          if (hasGas) {
+            add(G_, 'Tubo de aço galvanizado 1" (DN 25) — rede de gás da cozinha', 40, 'm', { pack: ['barra', 6] });
+            add(G_, 'Conexões galvanizadas 1" (gás)', 16);
+            add(G_, 'Registro de esfera para gás 1/2" (fogão, forno, caldeirão)', 4, 'un', { loss: false });
+            add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', 4, 'un', { loss: false });
+            add(G_, 'Detector de vazamento de gás com válvula de bloqueio', 1, 'un', { loss: false });
+            ptG += 4; threads += 24;
+          } else warn.push('Cozinha industrial sem gás: escolha gás natural ou GLP no item 3, ou preveja equipamentos elétricos.');
+        }
+        joints += coz ? 40 : 12;
+      }
+      if (ptG) {
+        if (gas === 'glp') { add(G_, 'Central de GLP (cilindros P190 ou tanque, dimensionar com a distribuidora)', 1, 'cj', { loss: false }); add(G_, 'Regulador de pressão de 1º estágio', 1, 'un', { loss: false }); }
+        else if (gas === 'gn') add(G_, 'Abrigo de entrada e regulador geral (fornecidos pela concessionária)', 1, 'cj', { loss: false });
+        add(G_, 'Regulador de pressão de 2º estágio', 1, 'un', { loss: false });
+      }
+
+      // Docas e pátio: ralos dos poços das docas, torneiras de lavagem e drenagem do pátio
+      af(D_, '25 mm (3/4") — pontos de lavagem (docas e perímetro)', torn * 12);
+      add(D_, 'Torneira de lavagem 3/4" com chave', torn, 'un', { loss: false });
+      plug(D_, torn);
+      if (docas) {
+        add(D_, 'Ralo com grelha no poço da doca (rampa)', docas, 'un', { loss: false });
+        esg(D_, 100, docas * 8);
+        add(D_, 'Joelho 90° esgoto 100 mm', docas);
+        joints += docas * 3;
+      }
+
+      // Águas pluviais (NBR 10844, intensidade de projeto 150 mm/h)
+      const Qp = 150 * (A + patio) / 3600;   // L/s
+      let nCond;
+      const calhaL = 2 * Lg + (Wg > 40 ? Lg : 0);
+      add(P_, 'Calha em chapa galvanizada ou aço (cobertura)', calhaL, 'm', { note: Wg > 40 ? 'Duas calhas de beiral e uma calha central' : 'Duas calhas de beiral' });
+      if (sif) {
+        const nb = Math.max(4, Math.ceil(A / 600)), nd = Math.max(2, Math.ceil(nb / 8)), lh = 2 * Lg + nb * 6;
+        nCond = nd;
+        add(P_, 'Bocal (ralo) sifônico para calha', nb, 'un', { loss: false });
+        add(P_, 'Tubo PEAD 110 a 160 mm — coletores horizontais sob a cobertura (sifônico)', lh, 'm');
+        add(P_, 'Tubo PEAD 200 mm — descidas do sistema sifônico', nd * (peG + 3), 'm');
+        add(P_, 'Conexões PEAD por eletrofusão ou solda de topo (sifônico)', nb * 4 + nd * 4);
+        add(P_, 'Trilho e suporte de fixação do sistema sifônico', Math.ceil(lh / 1.5));
+        warn.push('Pluvial sifônico: diâmetros, bocais e descidas saem do cálculo hidráulico do fabricante do sistema.');
+      } else {
+        nCond = Math.max(4, Math.ceil(A / 300));
+        esg(P_, 150, nCond * (peG + 2));
+        add(P_, 'Bocal de calha / saída 150 mm', nCond);
+        add(P_, 'Joelho 90° 150 mm (pluvial)', nCond * 2);
+        joints += nCond * 4;
+      }
+      add(P_, 'Tubo PEAD corrugado 300 mm — coletor pluvial enterrado (perímetro)', Pg * 0.6, 'm', { pack: ['barra', 6] });
+      add(P_, 'Caixa de passagem pluvial 80 x 80 cm', Math.ceil(Pg * 0.6 / 30) + Math.ceil(nCond / 2), 'un', { loss: false });
+      if (patio) {
+        add(P_, 'Canaleta de drenagem com grelha de ferro fundido (pátio)', 2 * Math.sqrt(patio), 'm');
+        add(P_, 'Boca de lobo / caixa com grelha 60 x 60 cm (pátio)', Math.ceil(patio / 400), 'un', { loss: false });
+        add(P_, 'Tubo PEAD corrugado 400 mm — drenagem do pátio', patio / 20, 'm', { pack: ['barra', 6] });
+        add(P_, 'Poço de visita do pátio', Math.ceil(patio / 20 / 30) + 1, 'un', { loss: false });
+      }
+      add(P_, 'Reservatório de detenção de águas pluviais (volume útil)', (A + patio) * 0.03, 'm³', { loss: false, note: '≈ 30 mm sobre as áreas impermeáveis, se a lei municipal exigir' });
+      vertical += nCond * (peG + 2); horizontal += Pg;
+
+      // Incêndio: hidrantes em anel e sprinklers (controle ou ESFR)
+      const steel = (g, pol, dn, trecho, m, tes, curvas) => {
+        add(g, `Tubo de aço ${groove ? 'galvanizado leve ranhurado' : 'galvanizado'} ${pol}" (DN ${dn}) — ${trecho}`, m, 'm',
+          { pack: ['barra', 6], note: groove ? 'Classe leve NBR 5580, ranhura laminada' : 'Classe média NBR 5580, roscável' });
+        if (!groove) return add(g, `Conexões galvanizadas ${pol}" (tês, joelhos, uniões)`, tes + curvas + Math.ceil(m / 6));
+        if (tes) add(g, `Tê ranhurado ${pol}" (DN ${dn})`, tes);
+        if (curvas) add(g, `Curva 90° ranhurada ${pol}" (DN ${dn})`, curvas);
+        add(g, `Acoplamento rígido ranhurado ${pol}" (DN ${dn})`, Math.ceil(m / 6) + tes * 3 + curvas * 2, 'un', { note: 'Emendas das barras e ligações de tês e curvas' });
+      };
+      let rti = 0, nBicos = 0;
+      if (hid) {
+        const nHid = Math.max(2, Math.ceil(Pg / 40)) + Math.floor(A / 5000);
+        steel(I_, '4', 100, 'anel de hidrantes em volta do galpão', Pg * 1.1 + 20, nHid, 10);
+        steel(I_, '2 1/2', 65, 'derivações dos hidrantes', nHid * 6, 0, nHid);
+        add(I_, 'Válvula angular 2 1/2" com adaptador storz', nHid, 'un', { loss: false });
+        add(I_, 'Abrigo para mangueira', nHid, 'un', { loss: false });
+        add(I_, 'Mangueira de incêndio 2 1/2", 15 m', nHid * 2, 'un', { loss: false });
+        add(I_, 'Esguicho regulável 2 1/2"', nHid, 'un', { loss: false });
+        add(I_, 'Chave de mangueira storz', nHid, 'un', { loss: false });
+        add(I_, 'Válvula de bloqueio 4" para setorizar o anel', Math.ceil(nHid / 4) + 1, 'un', { loss: false });
+        add(I_, 'Registro de recalque (hidrante de recalque) no passeio', 1, 'un', { loss: false });
+        rti += 2 * 1000 * 60 / 1000;   // 2 hidrantes simultâneos, 1.000 L/min, 60 min
+      }
+      if (spkG !== 'nao') {
+        const esfr = spkG === 'esfr', b = Math.ceil(A / 9), bSeco = cong ? Math.ceil(cam / 9) : 0, nVGA = Math.max(1, Math.ceil(A / 3700));
+        const nTr = Math.max(1, Math.ceil(Wg / 35)), lRam = A / 3 * 1.05, lTr = nTr * Lg * 1.05;
+        nBicos = b;
+        add(S_, esfr ? 'Bico ESFR K-25 pendente 74 °C (supressão)' : 'Bico de sprinkler K-115 74 °C para armazenagem (controle)', b - bSeco, 'un', { loss: false, note: 'Cerca de 9 m² por bico' });
+        if (bSeco) add(S_, 'Bico de sprinkler seco pendente (dry pendent) — câmaras congeladas', bSeco, 'un', { loss: false });
+        add(S_, 'Bicos de reserva com armário e chave de troca', Math.max(6, Math.ceil(b * 0.02)), 'un', { loss: false });
+        steel(S_, esfr ? '2' : '1 1/2', esfr ? 50 : 40, 'ramais de sprinklers', lRam, 0, Math.ceil(lRam / 40));
+        add(S_, `Tê de redução com saída para bico (${esfr ? '1"' : '3/4"'})`, b);
+        steel(S_, '6', 150, 'troncos (subgerais) de sprinklers', lTr, Math.ceil(lRam / (Wg / nTr)), nTr * 2);
+        steel(S_, '6', 150, 'alimentação das válvulas de governo', nVGA * (peG + 3), nVGA, nVGA * 2);
+        add(S_, 'Válvula de governo e alarme (VGA) 6"', nVGA, 'un', { loss: false, note: 'Uma a cada 3.700 m², aproximadamente' });
+        add(S_, 'Válvula de bloqueio 6" com chave supervisora', nVGA, 'un', { loss: false });
+        add(S_, 'Chave detectora de fluxo', nVGA, 'un', { loss: false });
+        add(S_, 'Conjunto de teste e dreno', nVGA, 'un', { loss: false });
+        if (cong) add(S_, 'Sistema de pré-ação (ou tubo seco) para as câmaras congeladas, com compressor de ar', 1, 'cj', { loss: false });
+        add(S_, 'Suporte de tubulação (tirante, abraçadeira e contraventamento)', Math.ceil(lRam / 3.5 + lTr / 3.5), 'un');
+        add(S_, 'Registro de recalque de sprinklers no passeio', 1, 'un', { loss: false });
+        rti += esfr ? 12 * 600 * 60 / 1000 : 260 * 12 * 90 / 1000;   // ESFR: 12 bicos x 60 min; controle: 260 m² x 12 mm/min x 90 min
+        vertical += nVGA * (peG + 3);
+        if (esfr && (est > 12.2 || peG > 13.7)) warn.push('ESFR: acima de 12,2 m de armazenagem ou 13,7 m de pé-direito, a NFPA 13 exige bicos especiais ou sprinklers nos porta-paletes (in-rack). Confirme no projeto.');
+        if (!esfr && est > 3.7) warn.push('Sprinklers de controle com armazenagem acima de 3,7 m costumam exigir sprinklers também nos porta-paletes (in-rack). Avalie o ESFR.');
+      } else if (A > 1500 && gt !== 'comercial') warn.push('Galpões grandes costumam exigir chuveiros automáticos pelas Instruções Técnicas do Corpo de Bombeiros (área, altura e carga de incêndio). Confirme antes de dispensar.');
+      if (hid || spkG !== 'nao') {
+        add(I_, 'Casa de bombas de incêndio: bomba principal elétrica, bomba reserva a diesel e bomba jóquei (conforme cálculo)', 1, 'cj', { loss: false });
+        add(I_, 'Manômetro 0 a 20 bar', 4, 'un', { loss: false });
+        add(I_, 'Válvula de alívio e medidor de vazão para teste da bomba', 1, 'cj', { loss: false });
+        warn.push(`Reserva técnica de incêndio estimada em ${num(rti, 0)} m³ (hidrantes${spkG !== 'nao' ? ' e sprinklers' : ''}). O volume oficial sai da Instrução Técnica do Corpo de Bombeiros do estado e do cálculo hidráulico.`);
+      }
+
+      // Industrial: água de processo, ar comprimido, chuveiros de emergência e efluente
+      const emerg = (gt === 'industrial' ? Math.round(v('lgEmerg')) : 0) + (gt !== 'comercial' && $('lgBat').checked ? 1 : 0);
+      if (gt === 'industrial') {
+        const proc = v('lgProc'), nAr = Math.round(v('lgAr'));
+        if (proc) {
+          add(PR_, 'Reservatório de água de processo (volume útil)', proc, 'm³', { loss: false, note: '1 dia de consumo do processo' });
+          add(PR_, `Conjunto de pressurização com 2 bombas (≈ ${num(proc / 16, 1)} m³/h)`, 1, 'cj', { loss: false, note: 'Processo em 16 h por dia' });
+          add(PR_, 'Tubo de aço galvanizado 2" (DN 50) — rede de água de processo', Lg + 40, 'm', { pack: ['barra', 6] });
+          add(PR_, 'Conexões galvanizadas 2" (tês, joelhos, uniões)', Math.ceil((Lg + 40) / 6) + 10);
+          add(PR_, 'Registro de esfera 2"', 6, 'un', { loss: false });
+          add(PR_, 'Filtro Y 2"', 1, 'un', { loss: false });
+          add(PR_, 'Hidrômetro da água de processo 2"', 1, 'un', { loss: false });
+          threads += 30; horizontal += Lg + 40;
+        }
+        if (nAr) {
+          const q = nAr * 0.25, anel = Pg * 0.7;   // 0,25 m³/min por ponto
+          add(AR_, `Compressor de parafuso (≈ ${num(q * 1.3, 1)} m³/min, com margem)`, 1, 'un', { loss: false });
+          add(AR_, 'Reservatório de ar comprimido 1.000 L (NR-13)', Math.max(1, Math.ceil(q / 5)), 'un', { loss: false });
+          add(AR_, 'Secador de ar por refrigeração', 1, 'un', { loss: false });
+          add(AR_, 'Filtros coalescentes (antes e depois do secador)', 2, 'un', { loss: false });
+          add(AR_, 'Tubo de alumínio 40 mm — anel de ar comprimido', anel, 'm', { pack: ['barra', 6] });
+          add(AR_, 'Conexões de alumínio 40 mm (tês, cotovelos, uniões)', Math.ceil(anel / 6) + nAr);
+          add(AR_, 'Tubo de alumínio 20 mm — descidas aos pontos de consumo', nAr * 4, 'm', { pack: ['barra', 6] });
+          add(AR_, 'Conjunto filtro, regulador e lubrificador (FRL) 1/2"', nAr, 'un', { loss: false });
+          add(AR_, 'Engate rápido 1/2"', nAr, 'un', { loss: false });
+          add(AR_, 'Válvula de esfera 1/2"', nAr + 4, 'un', { loss: false });
+          add(AR_, 'Purgador automático de condensado', Math.ceil(anel / 30) + 1, 'un', { loss: false });
+          horizontal += anel;
+        }
+        if ($('lgEfl').checked) {
+          add(EF_, 'Tubo PVC esgoto 100 mm — rede de efluente industrial (separada do esgoto sanitário)', Lg, 'm', { pack: ['barra', 6] });
+          add(EF_, 'Caixa separadora de água e óleo', 1, 'un', { loss: false });
+          add(EF_, 'Caixa de amostragem e medição de vazão do efluente', 1, 'un', { loss: false });
+          add(EF_, 'Estação de tratamento de efluentes industriais (projeto específico)', 1, 'cj', { loss: false });
+          warn.push('Efluente industrial: o tratamento e o lançamento dependem da licença ambiental e das exigências da concessionária.');
+        }
+      }
+      if (emerg) {
+        add(SE_, 'Chuveiro de emergência com lava-olhos (ANSI Z358.1)', emerg, 'un', { loss: false, note: $('lgBat').checked && gt !== 'comercial' ? 'Inclui a sala de recarga de baterias' : '' });
+        af(SE_, '32 mm (1") — alimentação dos chuveiros de emergência', emerg * 15);
+        add(SE_, 'Registro de esfera 1" (sempre aberto, com lacre)', emerg, 'un', { loss: false });
+        add(SE_, 'Ralo com grelha 150 x 150 mm', emerg, 'un', { loss: false });
+        esg(SE_, 100, emerg * 6);
+        joints += emerg * 6;
+      }
+
+      // Cross-docking: box de lavagem de veículos
+      if (gt === 'crossdocking' && $('lgLav').checked) {
+        add(LV_, 'Hidrolavadora de alta pressão (box de lavagem)', 1, 'un', { loss: false });
+        af(LV_, '32 mm (1") — alimentação do box de lavagem', 30);
+        add(LV_, 'Canaleta com grelha de ferro fundido (box de lavagem)', 15, 'm');
+        add(LV_, 'Caixa de areia (sedimentação)', 1, 'un', { loss: false });
+        add(LV_, 'Caixa separadora de água e óleo', 1, 'un', { loss: false });
+        esg(LV_, 100, 25);
+        cons += 3000;
+      }
+
+      // Refrigerado: drenos dos evaporadores, aquecimento do piso e água de condensação
+      if (gt === 'refrigerado' && cam) {
+        const nEv = Math.max(1, Math.ceil(cam / 120)), refr = { amonia: 'amônia', co2: 'CO₂', hfc: 'HFC/HFO' }[$('lgRefr').value];
+        add(CF_, `Central frigorífica a ${refr} e ${int(nEv)} evaporadores (projeto de refrigeração)`, 1, 'cj', { loss: false, note: 'A tubulação frigorífica fica fora desta lista' });
+        if (cong) {
+          add(CF_, 'Tubo de cobre 28 mm — drenos de condensado dos evaporadores', nEv * 12, 'm', { pack: ['barra', 5] });
+          add(CF_, 'Cabo de aquecimento autorregulável para os drenos (câmara congelada)', nEv * 12, 'm');
+          add(CF_, 'Tubo PE-RT 20 mm — aquecimento do piso das câmaras (circuito de glicol)', cam * 3.3, 'm', { note: 'Evita o congelamento do solo sob a câmara' });
+          add(CF_, 'Coletor (manifold) do aquecimento de piso', Math.ceil(cam / 300), 'un', { loss: false });
+          add(CF_, 'Bomba de circulação e trocador de calor do glicol do piso', 1, 'cj', { loss: false });
+        } else add(CF_, 'Tubo PVC esgoto 40 mm — drenos de condensado dos evaporadores', nEv * 12, 'm', { pack: ['barra', 6] });
+        add(CF_, 'Sifão e caixa de descarga dos drenos de condensado', nEv, 'un', { loss: false });
+        add(CF_, 'Isolamento térmico dos drenos (espuma elastomérica)', nEv * 12, 'm');
+        add(CF_, 'Ralo sifonado com grelha inox (antecâmaras e docas refrigeradas)', Math.ceil(cam / 500) + docas, 'un', { loss: false });
+        if ($('lgCondens').value === 'evap') {
+          const kW = cam * (cong ? 0.12 : 0.08), mk = kW * 1.5 * 20;   // ~1,5 L/h por kW rejeitado, 20 h/dia
+          cons += mk;
+          add(CF_, 'Tubo de aço galvanizado 1 1/2" — reposição de água do condensador evaporativo', 40, 'm', { pack: ['barra', 6] });
+          add(CF_, 'Válvula de nível / torneira de boia 1 1/2"', 1, 'un', { loss: false });
+          add(CF_, 'Tratamento químico da água de condensação (dosadores)', 1, 'cj', { loss: false });
+          esg(CF_, 75, 20);
+          warn.push(`Condensador evaporativo: reposição de água estimada em ${num(mk / 1000, 1)} m³/dia, já somada ao consumo.`);
+        }
+        if ($('lgRefr').value === 'amonia') warn.push('Amônia: a sala de máquinas segue NR-13, NBR 16069 e as exigências de ventilação, detecção e chuveiro de emergência.');
+      }
+
+      // Reservação e recalque (2 dias de consumo, com cisterna) ou superior direto
+      const H = peG + 5;
+      if (cist) {
+        const res = cons * 2 / 1000;
+        add(R_, 'Reservatório inferior / cisterna (volume útil)', res * 0.6, 'm³', { loss: false, note: '60% de 2 dias de consumo' });
+        add(R_, 'Reservatório superior / castelo d\'água (volume útil)', res * 0.4, 'm³', { loss: false, note: '40% de 2 dias de consumo' });
+        const Qr = cons / 1000 / (6 * 3600), Dr = 1.3 * Math.sqrt(Qr) * Math.pow(6 / 24, 0.25) * 1000;
+        const ri = Math.max(0, dimPipes.aco.findIndex(([, D]) => D >= Dr));
+        const [rec] = dimPipes.aco[ri], [suc] = dimPipes.aco[Math.min(ri + 1, dimPipes.aco.length - 1)];
+        add(R_, `Tubo de aço galvanizado ${rec} — recalque`, H + 20, 'm', { pack: ['barra', 6] });
+        add(R_, `Tubo de aço galvanizado ${suc} — sucção`, 6, 'm', { pack: ['barra', 6] });
+        add(R_, `Conexões galvanizadas ${rec} (joelhos, tês, uniões)`, 14);
+        add(R_, `Válvula de retenção vertical ${rec}`, 2, 'un', { loss: false });
+        add(R_, `Registro de gaveta ${rec}`, 4, 'un', { loss: false });
+        add(R_, `Conjunto motobomba de recalque (Q ≈ ${num(Qr * 3600, 1)} m³/h, Hman ≈ ${num(H + 8, 0)} mca)`, 2, 'un', { loss: false, note: '1 em operação e 1 reserva' });
+        add(R_, 'Chave-boia / controle de nível', 2, 'un', { loss: false });
+        add(R_, 'Torneira de boia (alimentação do reservatório inferior)', 1, 'un', { loss: false });
+        vertical += H + 20;
+      } else {
+        add(R_, 'Reservatório superior / castelo d\'água (volume útil)', cons / 1000, 'm³', { loss: false, note: '1 dia de consumo, alimentação direta pela rede' });
+        const [aName] = pickPipe(matAF, cons / 86400 * 3, 1.5);
+        af(R_, `${aName} — alimentação direta do reservatório`, H + 30);
+        add(R_, 'Torneira de boia (alimentação do reservatório superior)', 1, 'un', { loss: false });
+        warn.push('Sem cisterna: confirme se a pressão da rede pública vence a altura do reservatório.');
+      }
+      add(R_, 'Hidrômetro geral e cavalete (conforme concessionária)', 1, 'cj', { loss: false });
+      if (rti) add(R_, 'Reserva técnica de incêndio (volume útil, estimado)', rti, 'm³', { loss: false, note: 'Reservatório separado ou volume exclusivo, conforme a Instrução Técnica' });
+
+      // Aproveitamento de água de chuva: cobertura grande, uso em descargas, lavagem e irrigação
+      if (chuvaG) {
+        const vol = Math.max(10, Math.min(A * 0.05, (nBac + torn) * 0.5 * 7 + 20)), lRede = Lg + 40;
+        add(X_, 'Cisterna de água de chuva (volume útil)', vol, 'm³', { loss: false, note: 'Limitada ao consumo não potável de cerca de 1 semana' });
+        add(X_, 'Filtro autolimpante de água de chuva', Math.max(1, Math.ceil(A / 2000)), 'un', { loss: false });
+        add(X_, 'Dispositivo de descarte da primeira chuva', Math.max(1, Math.ceil(A / 2000)), 'un', { loss: false });
+        add(X_, 'Freio d\'água (entrada calma) e sifão-ladrão', 1, 'cj', { loss: false });
+        add(X_, 'Conjunto motobomba para água não potável', 2, 'un', { loss: false });
+        add(X_, 'Clorador de pastilhas', 1, 'un', { loss: false });
+        pvc(X_, '32 mm (1") — rede de água não potável (tubo identificado)', lRede);
+        add(X_, 'Conexões soldáveis 32 e 25 mm', Math.ceil(lRede / 3));
+        add(X_, 'Fita de identificação de tubulação "Água não potável" (rolo 30 m)', Math.ceil(lRede / 30), 'un');
+        add(X_, 'Válvula de retenção 1"', 2, 'un', { loss: false });
+        add(X_, 'Registro de esfera 1"', 3, 'un', { loss: false });
+        warn.push('Água de chuva: a rede não potável deve ser separada da potável, identificada e sem conexão cruzada (NBR 15527 e NBR 5626).');
+        joints += Math.ceil(lRede / 3);
+      }
+
+      // Louças e metais
+      if (loucas) {
+        add(L_, 'Bacia sanitária com caixa acoplada ou válvula de descarga', nBac, 'un', { loss: false });
+        add(L_, 'Assento sanitário', nBac, 'un', { loss: false });
+        add(L_, 'Lavatório ou bancada com cuba', nLav, 'un', { loss: false });
+        add(L_, 'Torneira de lavatório com fechamento automático', nLav, 'un', { loss: false });
+        if (nMic) add(L_, 'Mictório com válvula de fechamento automático', nMic, 'un', { loss: false });
+        add(L_, hot ? 'Chuveiro / ducha (água quente)' : 'Chuveiro elétrico', nChu, 'un', { loss: false });
+        add(L_, 'Bebedouro de pressão (NR-24)', beb, 'un', { loss: false });
+        add(L_, 'Kit sanitário acessível (bacia, lavatório e barras de apoio, NBR 9050)', nucleos, 'cj', { loss: false });
+        add(L_, 'Tanque de limpeza (DML)', nucleos, 'un', { loss: false });
+        add(L_, 'Sifão', nLav + nucleos, 'un', { loss: false });
+        add(L_, 'Engate flexível', nLav + nBac, 'un', { loss: false });
+      }
+
+      // Consumíveis e fixação
+      add(F_, 'Adesivo para PVC (frasco 175 g)', Math.ceil(joints / 50), 'un');
+      add(F_, 'Solução limpadora para PVC (frasco 200 mL)', Math.ceil(joints / 100), 'un');
+      add(F_, 'Fita veda-rosca 18 mm x 25 m', Math.ceil(threads / 20), 'un');
+      add(F_, 'Abraçadeira tipo D com parafuso e bucha (trechos aparentes)', Math.ceil(vertical / 2 + horizontal / 1.5), 'un');
+      if (ptG) add(F_, 'Vareta de solda para brasagem de cobre', Math.ceil(ptG * 5 / 12) + 1, 'un');
+
+      if (hasGas && !ptG) warn.push('Gás escolhido no item 3, mas sem uso no galpão (refeitório com cozinha ou aquecedor a gás). Nenhum item de gás foi incluído.');
+      warn.push('Galpão: quantidades por índices médios (planta retangular 2:1). Sanitários pela NR-24; confirme as exigências do Código de Obras municipal.');
+
+      const stats = [
+        ['Área do galpão', `${int(A)} m²`], ['Funcionários', `${int(F)} por turno · ${tur} turno${tur > 1 ? 's' : ''}`],
+        ['Consumo diário', `${num(cons / 1000, 1)} m³`], ['Vazão de água fria', `${num(0.3 * Math.sqrt(peso))} L/s`],
+        ['Vazão pluvial (150 mm/h)', `${num(Qp, 0)} L/s`], ['Bacias / chuveiros', `${int(nBac)} / ${int(nChu)}`],
+      ];
+      if (nBicos) stats.push(['Bicos de sprinkler', int(nBicos)]);
+      if (rti) stats.push(['Reserva de incêndio estimada', `${num(rti, 0)} m³`]);
+      if (cam) stats.push(['Câmaras frias', `${int(cam)} m² · ${cong ? 'congelado' : 'resfriado'}`]);
+      if (docas) stats.push(['Docas', int(docas)]);
+      return { rows: build(), stats, warn, casa: false, pav: 1, units: 0, titulo: NOMES[gt], subtitulo: ` · ${int(A)} m², ${int(F)} funcionários por turno` };
+    }
+
     const tp = types.filter(t => t.n > 0);
     if (!tp.length) return null;
 
     let aptArea = 0, nChurVar = 0, nBicos = 0;
-    let units = 0, unitsPerFloor = 0, pop = 0, ptF = 0, ptQ = 0, ptG = 0, pesoTot = 0, uhc = 0, plate = 0, joints = 0, threads = 0, nTQ = 0, nCoz = 0, nVar = 0;
+    let units = 0, unitsPerFloor = 0, pop = 0, ptF = 0, ptQ = 0, ptG = 0, pesoTot = 0, uhc = 0, plate = 0, nTQ = 0, nCoz = 0, nVar = 0;
     const A_ = 'Água fria — unidades', Q_ = 'Água quente', G_ = 'Gás', E_ = 'Esgoto sanitário', L_ = 'Louças e metais';
     for (const t of tp) {
       const U = casa ? t.n : t.n * pav, ban = Math.round(t.ban), lav = Math.round(t.lav), vr = t.varanda ? 1 : 0;
@@ -568,13 +978,7 @@
     add(F_, 'Abraçadeira tipo D com parafuso e bucha (colunas e trechos aparentes)', Math.ceil(vertical / 2 + horizontal / 1.5), 'un');
     if (hasGas || (hot && aqMat === 'cobre')) add(F_, 'Vareta de solda para brasagem de cobre', Math.ceil((ptG * 5 + (hot && aqMat === 'cobre' ? ptQ * 4 : 0)) / 12) + 1, 'un');
 
-    // Arredonda, aplica perdas e ordena
-    const rows = [...items.values()].map(r => {
-      let q = r.loss ? r.qty * perda : r.qty;
-      q = r.un === 'm³' ? Math.round(q * 10) / 10 : Math.ceil(q - 1e-9);
-      const note = r.pack ? `${int(q / r.pack[1])} ${r.pack[0]}${q / r.pack[1] > 1 ? 's' : ''} de ${r.pack[1]} m` + (r.note ? ` · ${r.note}` : '') : r.note || '';
-      return { ...r, qty: q, note, norma: (typeof normaDoMaterial === 'function' ? normaDoMaterial(r.item) : '') };
-    }).sort((a, b) => GROUPS.indexOf(a.group) - GROUPS.indexOf(b.group));
+    const rows = build();
 
     const stats = [
       [casa ? 'Casas' : 'Unidades', int(units)], ['População estimada', `${int(pop)} pessoas`],
@@ -596,7 +1000,7 @@
     if (!last) { out.hidden = true; return; }
     out.hidden = false;
     const nome = $('lmNome').value.trim();
-    $('lmOutTitle').textContent = (nome || (last.casa ? 'Conjunto de casas' : 'Edifício residencial')) +
+    $('lmOutTitle').textContent = last.titulo ? (nome || last.titulo) + last.subtitulo : (nome || (last.casa ? 'Conjunto de casas' : 'Edifício residencial')) +
       (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo, ${int(last.units)} unidades`);
     $('lmStats').innerHTML = last.stats.map(([k, v]) => `<div><span>${k}</span><strong>${v}</strong></div>`).join('');
     $('lmWarn').innerHTML = last.warn.map(w => `<p class="hint warn">${esc(w)}</p>`).join('');

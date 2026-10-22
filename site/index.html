@@ -379,7 +379,7 @@
 
       <div class="tool lmat" id="lmatTool">
         <h3 class="lmat__title">Dimensionamento Inteligente</h3>
-        <p class="lmat__intro">Informe as características do prédio ou das casas e receba uma lista orientativa de tubos, conexões, registros e equipamentos das instalações de água fria, água quente, gás, esgoto, águas pluviais, incêndio, sprinklers, piscina e aproveitamento de água de chuva, com quantidades e metragens. Ferramenta desenvolvida pela equipe PipeSystem com apoio de inteligência artificial. Serve para estimar custos e pedir cotações. Não substitui o projeto hidráulico.</p>
+        <p class="lmat__intro">Informe as características do prédio, das casas ou do galpão (logístico, industrial, comercial, cross-docking ou refrigerado) e receba uma lista orientativa de tubos, conexões, registros e equipamentos das instalações de água fria, água quente, gás, esgoto, águas pluviais, incêndio, sprinklers, piscina e aproveitamento de água de chuva, com quantidades e metragens. Ferramenta desenvolvida pela equipe PipeSystem com apoio de inteligência artificial. Serve para estimar custos e pedir cotações. Não substitui o projeto hidráulico.</p>
         <form class="lmat__form" id="lmatForm" novalidate>
           <fieldset class="lmat__box">
             <legend>1. Empreendimento</legend>
@@ -387,12 +387,21 @@
               <label class="full">Nome do empreendimento <span>opcional</span><input id="lmNome" placeholder="Ex.: Residencial Jardim das Águas"></label>
               <label>Tipo
                 <select id="lmTipo">
-                  <option value="edificio">Edifício residencial</option>
-                  <option value="casa">Casas (térreas ou sobrados)</option>
+                  <optgroup label="Residencial">
+                    <option value="edificio">Edifício residencial</option>
+                    <option value="casa">Casas (térreas ou sobrados)</option>
+                  </optgroup>
+                  <optgroup label="Galpões">
+                    <option value="galpao-logistico">Galpão logístico (armazenagem)</option>
+                    <option value="galpao-industrial">Galpão industrial</option>
+                    <option value="galpao-comercial">Galpão comercial (atacado, varejo, showroom)</option>
+                    <option value="galpao-crossdocking">Galpão cross-docking</option>
+                    <option value="galpao-refrigerado">Galpão refrigerado (câmaras frias)</option>
+                  </optgroup>
                 </select>
               </label>
-              <label><span class="lmat__lbl" data-edif>Andares-tipo</span><span class="lmat__lbl" data-casa hidden>Pavimentos por casa</span><input type="number" id="lmPav" value="8" min="1" max="60" step="1"></label>
-              <label>Pé-direito <span>m, piso a piso</span><input type="number" id="lmPe" value="2.88" min="2.4" max="6" step="0.01"></label>
+              <label data-res><span class="lmat__lbl" data-edif>Andares-tipo</span><span class="lmat__lbl" data-casa hidden>Pavimentos por casa</span><input type="number" id="lmPav" value="8" min="1" max="60" step="1"></label>
+              <label data-res>Pé-direito <span>m, piso a piso</span><input type="number" id="lmPe" value="2.88" min="2.4" max="6" step="0.01"></label>
               <label>Reservação de água
                 <select id="lmCist">
                   <option value="com">Com cisterna (reservatório inferior e bombas)</option>
@@ -402,10 +411,43 @@
             </div>
           </fieldset>
 
-          <fieldset class="lmat__box">
+          <fieldset class="lmat__box" data-res>
             <legend>2. Unidades por tipo</legend>
             <div id="lmTypes"></div>
             <button type="button" class="btn btn--ghost btn--sm" id="lmAddType">+ Adicionar outro tipo</button>
+          </fieldset>
+
+          <fieldset class="lmat__box" data-gal hidden>
+            <legend>2. Galpão e equipe</legend>
+            <div class="form form--3">
+              <label>Área construída do galpão <span>m²</span><input type="number" id="lgArea" value="10000" min="200" max="200000" step="100"></label>
+              <label>Pé-direito livre <span>m, até a cobertura</span><input type="number" id="lgPe" value="12" min="4" max="40" step="0.5"></label>
+              <label>Altura de armazenagem <span>m, topo da carga</span><input type="number" id="lgEstoq" value="10" min="0" max="40" step="0.5"></label>
+              <label>Escritórios e mezanino <span>m², 0 = não</span><input type="number" id="lgEsc" value="400" min="0" max="20000" step="10"></label>
+              <label>Funcionários por turno<input type="number" id="lgFunc" value="80" min="1" max="5000" step="1"></label>
+              <label>Turnos por dia
+                <select id="lgTurnos">
+                  <option value="1">1 turno</option>
+                  <option value="2" selected>2 turnos</option>
+                  <option value="3">3 turnos</option>
+                </select>
+              </label>
+              <label>Refeitório
+                <select id="lgRef">
+                  <option value="nao">Não haverá</option>
+                  <option value="copa" selected>Copa (refeições prontas)</option>
+                  <option value="cozinha">Cozinha industrial</option>
+                </select>
+              </label>
+              <label>Docas de carga e descarga<input type="number" id="lgDocas" value="20" min="0" max="400" step="1"></label>
+              <label>Pátio e estacionamento <span>m² pavimentados</span><input type="number" id="lgPatio" value="8000" min="0" max="500000" step="100"></label>
+              <label>Águas pluviais da cobertura
+                <select id="lgPluv">
+                  <option value="grav">Convencional (calhas e condutores)</option>
+                  <option value="sif">Sifônico (a vácuo, menos descidas)</option>
+                </select>
+              </label>
+            </div>
           </fieldset>
 
           <fieldset class="lmat__box">
@@ -442,7 +484,7 @@
             </div>
           </fieldset>
 
-          <fieldset class="lmat__box" data-edif>
+          <fieldset class="lmat__box" data-edif data-res>
             <legend>4. Garagem</legend>
             <div class="form form--3">
               <label>Vagas de garagem<input type="number" id="lmVagas" value="40" min="0" max="2000" step="1"></label>
@@ -451,7 +493,7 @@
             </div>
           </fieldset>
 
-          <fieldset class="lmat__box">
+          <fieldset class="lmat__box" data-res>
             <legend><span data-edif>5.</span><span data-casa hidden>4.</span> Lazer e serviços</legend>
             <div class="form form--3">
               <label>Piscina <span>área em m², 0 = não</span><input type="number" id="lmPisc" value="0" min="0" max="2000" step="1"></label>
@@ -471,7 +513,7 @@
             </div>
           </fieldset>
 
-          <fieldset class="lmat__box">
+          <fieldset class="lmat__box" data-res>
             <legend><span data-edif>6.</span><span data-casa hidden>5.</span> Incêndio e opções</legend>
             <div class="form form--3" data-edif>
               <label>Rede de sprinklers
@@ -496,6 +538,73 @@
             </div>
             <div class="form form--3">
               <label>Margem para perdas e cortes <span>%</span><input type="number" id="lmPerda" value="10" min="0" max="50" step="1"></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="lmat__box" data-gal hidden>
+            <legend>4. Operação do galpão</legend>
+            <p class="hint" data-gt="logistico">Armazenagem em porta-paletes: a altura de armazenagem (item 2) define o tipo de sprinkler e a reserva de incêndio.</p>
+            <p class="hint" data-gt="crossdocking">Cross-docking: carga que entra e sai no mesmo dia, muitas docas e pouca armazenagem.</p>
+            <div class="form form--3" data-gt="industrial">
+              <label>Água de processo <span>m³/dia, 0 = não</span><input type="number" id="lgProc" value="20" min="0" max="5000" step="1"></label>
+              <label>Pontos de ar comprimido <span>0 = não</span><input type="number" id="lgAr" value="20" min="0" max="500" step="1"></label>
+              <label>Chuveiros de emergência e lava-olhos<input type="number" id="lgEmerg" value="2" min="0" max="50" step="1"></label>
+            </div>
+            <div class="form form--3" data-gt="comercial">
+              <label>Público simultâneo máximo <span>pessoas</span><input type="number" id="lgPub" value="600" min="0" max="20000" step="10"></label>
+            </div>
+            <div class="form form--3" data-gt="refrigerado">
+              <label>Área de câmaras frias <span>m²</span><input type="number" id="lgCam" value="6000" min="0" max="200000" step="100"></label>
+              <label>Temperatura das câmaras
+                <select id="lgTemp">
+                  <option value="resfriado">Resfriado (0 a 10 °C)</option>
+                  <option value="congelado" selected>Congelado (−18 a −25 °C)</option>
+                </select>
+              </label>
+              <label>Fluido refrigerante
+                <select id="lgRefr">
+                  <option value="amonia">Amônia (NH₃)</option>
+                  <option value="co2">CO₂ (transcrítico ou cascata)</option>
+                  <option value="hfc">HFC / HFO (expansão direta)</option>
+                </select>
+              </label>
+              <label>Condensação
+                <select id="lgCondens">
+                  <option value="evap">Condensador evaporativo (consome água)</option>
+                  <option value="ar">Condensador a ar</option>
+                </select>
+              </label>
+            </div>
+            <div class="lmat__checks lmat__checks--top">
+              <label data-gt="industrial"><input type="checkbox" id="lgEfl" checked> Efluente industrial (rede separada, caixa separadora e tratamento)</label>
+              <label data-gt="crossdocking"><input type="checkbox" id="lgLav"> Box de lavagem de veículos</label>
+              <label data-gt="crossdocking"><input type="checkbox" id="lgMot" checked> Sanitários e chuveiros para motoristas</label>
+              <label data-gt="logistico industrial crossdocking refrigerado"><input type="checkbox" id="lgBat" checked> Sala de recarga de baterias de empilhadeiras (lava-olhos e ponto de água)</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="lmat__box" data-gal hidden>
+            <legend>5. Incêndio e opções</legend>
+            <div class="form form--3">
+              <label>Chuveiros automáticos (sprinklers)
+                <select id="lgSpk">
+                  <option value="nao">Não haverá</option>
+                  <option value="conv">Sprinklers de controle (convencionais)</option>
+                  <option value="esfr" selected>ESFR — supressão (armazenagem alta)</option>
+                </select>
+              </label>
+              <label>Tubos da rede de incêndio
+                <select id="lgIncMat">
+                  <option value="groove" selected>Aço ranhurado com conexões ranhuradas (Grooved)</option>
+                  <option value="galv">Aço galvanizado com conexões roscadas</option>
+                </select>
+              </label>
+              <label>Margem para perdas e cortes <span>%</span><input type="number" id="lgPerda" value="10" min="0" max="50" step="1"></label>
+            </div>
+            <div class="lmat__checks lmat__checks--top">
+              <label><input type="checkbox" id="lgHid" checked> Sistema de hidrantes (anel em volta do galpão)</label>
+              <label><input type="checkbox" id="lgChuva" checked> Aproveitamento de água de chuva para descargas e lavagem (NBR 15527)</label>
+              <label><input type="checkbox" id="lgLoucas"> Incluir louças e metais</label>
             </div>
           </fieldset>
 
