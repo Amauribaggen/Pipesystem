@@ -3,8 +3,8 @@
 // (o rodapé da página inicial fica em site/index.html).
 export const EMPRESA = {
   razao: 'PipeSystem Serviços de Consultoria Ltda.',
-  cnpj: '',        // ex.: '00.000.000/0001-00'
-  endereco: '',    // ex.: 'Rua Exemplo, 123 — Joinville/SC — CEP 89200-000'
+  cnpj: '66.598.446/0001-78',
+  endereco: 'Itajaí/SC',
   email: 'info@pipesystem.com.br',
   whatsapp: '+55 (47) 98802-7372',
   whatsappUrl: 'https://wa.me/5547988027372',
