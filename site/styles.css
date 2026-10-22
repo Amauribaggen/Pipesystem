@@ -1166,3 +1166,18 @@ main:focus { outline: none; }
 .matfig--zoom:hover::after, .matfig--zoom:focus-visible::after { opacity: 1; }
 .matfig--zoom:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
 @media (hover: none) { .matfig--zoom::after { opacity: .9; } }
+
+/* Rodapé institucional, páginas legais e política de publicidade */
+.footer__legal { display: grid; gap: 4px; }
+.footer__links { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .8rem; }
+.footer__links a { color: inherit; opacity: .8; text-decoration: underline; text-underline-offset: 3px; }
+.footer__links a:hover { opacity: 1; color: var(--accent); }
+.inst__list { margin: 0 0 1em; padding-left: 1.2em; display: grid; gap: .45em; }
+.inst__list li, .sheet--page > p:not(.eyebrow) { line-height: 1.65; }
+.inst__date { margin-top: 28px; font-size: .85rem; color: var(--muted); }
+.sheet--page code { background: var(--bg-alt); padding: .1em .35em; border-radius: 4px; font-size: .9em; }
+.pg-foot__copy a { color: inherit; text-decoration: underline; }
+.adpolicy { margin-top: 12px; padding: 10px 14px; border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); border-radius: 0 10px 10px 0; font-size: .92rem; }
+.adpolicy__tag { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: var(--accent); color: #1b1203; padding: .1em .5em; border-radius: 4px; }
+.ad--sponsored { padding: 0; overflow: visible; }
+.ad--sponsored img { display: block; width: 100%; height: auto; border-radius: inherit; }

@@ -695,10 +695,18 @@ const AD_FORMATS = {
   basico: { plan: 'Banner Básico', size: '300 × 100 px' },
   card: { plan: 'Banner Básico', size: 'cartão 300 × 250 px' },
 };
+// Anúncios contratados: o nome do espaço (data-place) -> banner do anunciante. Aparecem sempre com o rótulo "Patrocinado".
+// Exemplo: 'Fichas técnicas — patrocínio da ficha': { img: 'img/anuncios/empresa.webp', url: 'https://empresa.com.br', anunciante: 'Empresa X' },
+const ADS = {};
 function adHTML(kind, place, id) {
-  const f = AD_FORMATS[kind];
+  const f = AD_FORMATS[kind], ad = ADS[place];
+  if (ad) return `<a class="ad ad--${kind} ad--sponsored" ${id ? `id="${id}"` : ''} href="${ad.url}" target="_blank" rel="sponsored noopener">
+    <span class="ad__label">Patrocinado</span>
+    <img src="${imgUrl(ad.img)}" alt="Anúncio: ${ad.anunciante}" loading="lazy">
+  </a>`;
+  // espaço ainda livre: convite para anunciar
   return `<a class="ad ad--${kind}" ${id ? `id="${id}"` : ''} href="#contato" data-plan="${f.plan}" data-question="Tenho interesse no espaço publicitário: ${place} (${f.plan}, ${f.size}). ">
-    <span class="ad__label">Publicidade</span>
+    <span class="ad__label">Espaço publicitário</span>
     <span class="ad__main"><b>Seu banner aqui!</b><small>${place}</small></span>
     <span class="ad__meta"><span class="ad__size">${f.plan} · ${f.size}</span><span class="ad__cta">Anuncie →</span></span>
   </a>`;
@@ -918,6 +926,7 @@ const ARTICLES = [
     if (!hasFile && !hasLink) return showErr('Anexe o arquivo do artigo ou informe o link onde podemos acessá-lo.');
     if (hasLink && !link.checkValidity()) return showErr('O link precisa começar com http:// ou https://');
     if (!form.autorizacao.checked) return showErr('Confirme que você é autor(a) ou tem autorização para divulgar o trabalho.');
+    if (!form.privacidade.checked) return showErr('Para enviar, aceite a Política de Privacidade e os Termos de Uso.');
     if (!hasFile) f.delete('arquivo');
     if (published) {
       const btn = form.querySelector('[type=submit]'); btn.disabled = true; btn.textContent = 'Enviando…';

@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import vm from 'node:vm';
+import { EMPRESA, institutionalPages } from './institucional.mjs';
 
 export const BASE = 'https://www.pipesystem.com.br';
 
@@ -148,10 +149,13 @@ ${body}
   <div class="container pg-foot__inner">
     <p><strong>PipeSystem</strong> — o portal da hidráulica e dos sistemas de condução de fluidos.</p>
     <p><a href="/">Página inicial</a> · <a href="/#materiais">Catálogo de produtos e materiais</a> · <a href="/#normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
-    <p class="pg-foot__copy">© ${new Date().getFullYear()} PipeSystem Serviços de Consultoria Ltda.</p>
+    <p class="pg-foot__copy">© ${new Date().getFullYear()} ${[EMPRESA.razao, EMPRESA.cnpj && 'CNPJ ' + EMPRESA.cnpj, EMPRESA.endereco].filter(Boolean).join(' · ')} · <a href="/privacidade">Política de Privacidade</a> · <a href="/termos">Termos de Uso</a></p>
   </div>
 </footer>
 <script src="/lightbox.js" defer></script>
+<!-- Medição de audiência sem cookies (Vercel Web Analytics): dados agregados e anônimos -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
 `;
@@ -253,6 +257,12 @@ export function generate(D, outDir) {
       image: capa && abs(capa.src), imageAlt: capa && capa.alt, keywords: [m.name, m.cat, ...normas].join(', '),
       crumbs: [{ name: 'Início', url: '/' }, { name: 'Catálogo de produtos e materiais', url: '/materiais' }, { name: m.name, url }],
     }) });
+  }
+
+  // Política de Privacidade e Termos de Uso
+  for (const p of institutionalPages()) {
+    pages.push({ url: p.url, images: [], html: page({ url: p.url, title: p.title, description: p.description, body: p.body,
+      crumbs: [{ name: 'Início', url: '/' }, { name: p.h1, url: p.url }] }) });
   }
 
   for (const p of pages) {
