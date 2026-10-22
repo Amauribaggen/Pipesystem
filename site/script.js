@@ -143,6 +143,7 @@ function renderSystem(s) {
   sheetBody.innerHTML = `
     <div class="sheet__head"><span class="sys__dot sys__dot--lg" style="--c:${s.color}"></span>
       <div><p class="eyebrow">Sistema hidráulico</p><h3 id="sheetTitle">${s.name}</h3></div></div>
+    ${revisaoHTML(s)}
     <figure class="sysfig" style="--c:${s.color}">
       <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${s.name}">${s.svg}</svg>
       <figcaption>Esquema ilustrativo, sem escala</figcaption>
@@ -182,6 +183,7 @@ function renderMaterial(m) {
   const foto = materialPhoto(m);
   sheetBody.innerHTML = `
     <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${m.cat}</p><h3 id="sheetTitle">${m.name}</h3></div></div>
+    ${revisaoHTML(m)}
     ${p && p.fotos ? fotosHTML(p.fotos) : foto ? `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar foto: ${foto.legenda}" data-legenda="${foto.legenda}">
       <img src="${imgUrl(foto.src)}" alt="${foto.alt}"${imgDims(foto.src)}${foto.inteira ? ' class="inteira"' : ''}>
       <figcaption>${foto.legenda} · Foto: <a href="${foto.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${foto.autor}</a> (<a href="${foto.licUrl}" target="_blank" rel="noopener noreferrer">${foto.licenca}</a>), via Wikimedia Commons</figcaption>

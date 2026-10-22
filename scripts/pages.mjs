@@ -14,7 +14,7 @@ export const BASE = 'https://www.pipesystem.com.br';
 export function loadData(siteDir) {
   const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, normTags, linkNorms });';
+    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -81,7 +81,7 @@ export const SIZES = {};
 const dims = src => SIZES[src] ? ` width="${SIZES[src][0]}" height="${SIZES[src][1]}"` : '';
 const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><path d="M26 6c9 12 16 21 16 30a16 16 0 0 1-32 0c0-9 7-18 16-30z" fill="#1fb6c9"/><path d="M16 38c4 3 8 3 10 0s6-3 10 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><text x="56" y="40" textLength="230" lengthAdjust="spacingAndGlyphs" font-family="Montserrat, 'Arial Black', sans-serif" font-weight="800" font-size="28" fill="#fff">PIPESYSTEM</text><rect x="56" y="50" width="236" height="6" rx="3" fill="#1fb6c9"/><rect x="128" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><rect x="212" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><path d="M286 46l8 7-8 7" fill="none" stroke="#f2a03d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="57" y="80" textLength="235" lengthAdjust="spacing" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="14" fill="#f2a03d">conduzindo soluções</text></svg>`;
 
-function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords }) {
+function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords, reviewed }) {
   const canonical = BASE + url;
   const ld = {
     '@context': 'https://schema.org',
@@ -90,6 +90,7 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
         isPartOf: { '@id': BASE + '/#site' }, publisher: { '@id': BASE + '/#organizacao' },
         ...(image ? { primaryImageOfPage: { '@type': 'ImageObject', url: image } } : {}),
         ...(keywords ? { keywords } : {}),
+        ...(reviewed ? { lastReviewed: reviewed, reviewedBy: { '@id': BASE + '/#organizacao' } } : {}),
         breadcrumb: { '@id': canonical + '#trilha' } },
       { '@type': 'BreadcrumbList', '@id': canonical + '#trilha',
         itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, ...(c.url ? { item: BASE + c.url } : {}) })) },
@@ -149,7 +150,7 @@ ${body}
   <div class="container pg-foot__inner">
     <p><strong>PipeSystem</strong> — o portal da hidráulica e dos sistemas de condução de fluidos.</p>
     <p><a href="/">Página inicial</a> · <a href="/#materiais">Catálogo de produtos e materiais</a> · <a href="/#normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
-    <p class="pg-foot__copy">© ${new Date().getFullYear()} ${[EMPRESA.razao, EMPRESA.cnpj && 'CNPJ ' + EMPRESA.cnpj, EMPRESA.endereco].filter(Boolean).join(' · ')} · <a href="/privacidade">Política de Privacidade</a> · <a href="/termos">Termos de Uso</a></p>
+    <p class="pg-foot__copy">© ${new Date().getFullYear()} ${[EMPRESA.razao, EMPRESA.cnpj && 'CNPJ ' + EMPRESA.cnpj, EMPRESA.endereco].filter(Boolean).join(' · ')} · <a href="/politica-editorial">Política Editorial</a> · <a href="/privacidade">Política de Privacidade</a> · <a href="/termos">Termos de Uso</a></p>
   </div>
 </footer>
 <script src="/lightbox.js" defer></script>
@@ -180,6 +181,7 @@ export function generate(D, outDir) {
     const outros = D.SYSTEMS.filter(x => x.id !== s.id);
     const body = `      <div class="sheet__head"><span class="sys__dot sys__dot--lg" style="--c:${s.color}"></span>
         <div><p class="eyebrow">Sistema hidráulico</p><h1 id="sheetTitle" class="page__title">${esc(s.name)}</h1></div></div>
+      ${D.revisaoHTML(s)}
       <figure class="sysfig" style="--c:${s.color}">
         <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${esc(s.name)}">${svg}</svg>
         <figcaption>Esquema ilustrativo, sem escala</figcaption>
@@ -199,7 +201,7 @@ export function generate(D, outDir) {
         <a href="${contato('Cotação de materiais', `Cotação para ${s.name}: `)}" class="btn btn--ghost">Solicitar cotação</a>
       </div>`;
     pages.push({ url, images: fotos.map(f => abs(f.src)), html: page({
-      url, body,
+      url, body, reviewed: D.revisaoData(s),
       title: `${s.name} — sistema hidráulico: componentes e normas | PipeSystem`,
       description: cut(`${plain(s.desc)}`, 158),
       image: fotos[0] && abs(fotos[0].src), imageAlt: fotos[0] && fotos[0].alt, keywords: [s.name, ...s.normas].join(', '),
@@ -223,6 +225,7 @@ export function generate(D, outDir) {
         <figcaption>Ilustração representativa</figcaption>
       </figure>`;
     const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">${esc(m.name)}</h1></div></div>
+      ${D.revisaoHTML(m)}
       ${fig}
       <p class="sheet__desc page__lead">${linkNorms(m.desc)}</p>
       ${p ? tabelasHTML(p.tabelas, linkNorms) : ''}
@@ -251,7 +254,7 @@ export function generate(D, outDir) {
     const imgs = fotos ? fotos.map(f => abs(f.src)) : foto ? [abs(foto.src)] : [];
     const capa = fotos ? fotos[0] : foto;
     pages.push({ url, images: imgs, html: page({
-      url, body, wide: !!(p && p.tabelas),
+      url, body, wide: !!(p && p.tabelas), reviewed: D.revisaoData(m),
       title: `${m.name} — dados técnicos, tipos, normas e fabricantes | PipeSystem`,
       description: cut(`${plain(m.desc)} Dados técnicos, normas e ${importers ? 'importadores' : 'fabricantes'}.`, 158),
       image: capa && abs(capa.src), imageAlt: capa && capa.alt, keywords: [m.name, m.cat, ...normas].join(', '),

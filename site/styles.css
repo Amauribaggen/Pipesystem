@@ -1181,3 +1181,11 @@ main:focus { outline: none; }
 .adpolicy__tag { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: var(--accent); color: #1b1203; padding: .1em .5em; border-radius: 4px; }
 .ad--sponsored { padding: 0; overflow: visible; }
 .ad--sponsored img { display: block; width: 100%; height: auto; border-radius: inherit; }
+
+/* Selo de revisão das fichas */
+.review { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: -4px 0 14px; padding: 7px 12px; border-radius: 10px; background: #eaf7f0; border: 1px solid #c8ead8; color: #22543d; font-size: .8rem; line-height: 1.4; }
+.review svg { width: 18px; height: 18px; flex: none; fill: #3fb27f; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.review svg path:first-child { stroke: none; }
+.review b { color: #1d4a35; }
+.review a { margin-left: auto; color: #1d7a52; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.review span { flex: 1 1 180px; min-width: 0; }

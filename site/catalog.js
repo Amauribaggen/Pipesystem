@@ -321,3 +321,14 @@ const MATERIAL_PHOTOS = {
 
 // Cada ficha técnica do antigo guia (products.js) agora aparece dentro de um item do catálogo.
 const MATERIAL_OF_PRODUCT = Object.fromEntries(CATALOG.filter(m => m.rel).map(m => [m.rel, m.id]));
+
+// Selo de revisão das fichas (sistemas e catálogo). Ao revisar uma ficha, informe a data nela: revisado: 'AAAA-MM-DD'.
+// Sem data própria, vale a data geral abaixo. Critérios na página /politica-editorial.
+const REVISAO = { por: 'Equipe Técnica PipeSystem', data: '2026-10-22' };
+const revisaoData = item => item.revisado || REVISAO.data;
+function revisaoHTML(item) {
+  const mes = new Date(revisaoData(item) + 'T12:00:00').toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  return `<p class="review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 2.1 3.2-.3.9 3.1 2.8 1.6-1 3 1 3-2.8 1.6-.9 3.1-3.2-.3L12 22l-2.4-2.1-3.2.3-.9-3.1-2.8-1.6 1-3-1-3 2.8-1.6.9-3.1 3.2.3z"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8" fill="none"/></svg>`
+    + `<span>Revisado pela <b>${REVISAO.por}</b> · atualizado em ${mes}</span> <a href="/politica-editorial">Política Editorial</a></p>`;
+}
+

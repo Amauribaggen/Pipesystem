@@ -97,7 +97,42 @@ export function institutionalPages() {
     ],
   };
 
-  return [privacidade, termos].map(p => ({
+  const editorial = {
+    url: '/politica-editorial',
+    title: 'Política Editorial | PipeSystem',
+    description: 'Como a Equipe Técnica PipeSystem produz, revisa e atualiza o conteúdo técnico do portal, com independência em relação a anunciantes e fabricantes.',
+    h1: 'Política Editorial',
+    body: [
+      `<p class="sheet__desc page__lead">O PipeSystem existe para ser uma fonte técnica confiável e independente sobre hidráulica e condução de fluidos. Esta política explica como o conteúdo é produzido, revisado e atualizado, e como separamos informação técnica de interesses comerciais.</p>`,
+      sec('1. Quem produz e revisa', ul([
+        'As fichas de sistemas e do catálogo, os esquemas e as ferramentas são preparados e revisados pela <b>Equipe Técnica PipeSystem</b>.',
+        'Cada ficha mostra o selo <b>"Revisado pela Equipe Técnica PipeSystem"</b> com o mês da última atualização.',
+        'Artigos de autores convidados ou enviados por leitores trazem sempre o nome do autor e a fonte original.',
+        'Ferramentas digitais podem apoiar a pesquisa e a redação, mas nenhum conteúdo técnico é publicado sem a revisão da Equipe Técnica.',
+      ])),
+      sec('2. Fontes', ul([
+        'Normas técnicas vigentes (ABNT, ISO, ASME, NFPA, ASTM, DIN e outras), sempre citadas com link para o site oficial da entidade.',
+        'Catálogos e manuais técnicos de fabricantes, literatura técnica e publicações de entidades do setor.',
+        'Experiência prática de projeto, instalação e manutenção da equipe e dos consultores.',
+      ])),
+      sec('3. Como revisamos e atualizamos', ul([
+        'Antes de publicar, conferimos dados técnicos, unidades, normas citadas e links.',
+        'Revisamos as fichas pelo menos uma vez por ano e sempre que uma norma importante é publicada, revisada ou cancelada.',
+        'Normas canceladas ou substituídas são retiradas ou atualizadas, e a data no selo da ficha muda.',
+        'Fotos de terceiros são usadas somente com licença livre e com o crédito ao autor.',
+      ])),
+      sec('4. Independência em relação a anunciantes e fabricantes', ul([
+        'Anunciantes e patrocinadores <b>não alteram</b> o conteúdo das fichas, as normas citadas, os resultados das ferramentas nem a ordem das listas editoriais.',
+        'As listas de fabricantes e importadores seguem critérios técnicos e de presença no mercado brasileiro, sem pagamento para entrar.',
+        'Todo anúncio ou conteúdo pago é identificado como <b>"Patrocinado"</b> ou <b>"Espaço publicitário"</b> e fica separado do conteúdo técnico.',
+        'Quando uma empresa contratar um perfil ou destaque, isso será sempre identificado, nunca misturado ao conteúdo editorial.',
+      ])),
+      sec('5. Limites do conteúdo', `<p>O conteúdo é orientativo e não substitui o projeto feito por profissional habilitado, com ART ou RRT, nem a leitura da norma completa. Veja os <a href="/termos">Termos de Uso</a>.</p>`),
+      sec('6. Correções', `<p>Encontrou um erro, uma norma desatualizada ou uma informação incompleta? Avise por ${contato()}. Analisamos todas as mensagens e, quando procedente, corrigimos a ficha e atualizamos a data de revisão.</p>`),
+    ],
+  };
+
+  return [editorial, privacidade, termos].map(p => ({
     ...p,
     body: `      <div class="sheet__head"><div><p class="eyebrow">Institucional</p><h1 id="sheetTitle" class="page__title">${p.h1}</h1></div></div>
 ${p.body.join('\n')}
