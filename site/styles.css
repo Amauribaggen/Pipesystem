@@ -1004,12 +1004,13 @@ font[style] { background: transparent !important; box-shadow: none !important; }
   .dd:has(.dd__btn--link) .dd__menu { display: none !important; }
 }
 /* Menu "Cotações" em destaque: laranja, piscando para chamar a atenção */
-#navLinks .nav__hot { color: #f2a03d; font-weight: 700; padding: .3em .75em; border-radius: 999px; border: 1.5px solid #f2a03d; animation: navHot 1.6s ease-in-out infinite; }
-#navLinks .nav__hot:hover, #navLinks .nav__hot:focus-visible { color: #1b1203; background: #f2a03d; animation-play-state: paused; }
+/* "Cotações": pisca 5 vezes ao abrir a página e depois fica parado, aceso em laranja */
+#navLinks .nav__hot { color: #1b1203; background: #f2a03d; font-weight: 700; padding: .3em .75em; border-radius: 999px; border: 1.5px solid #f2a03d; box-shadow: 0 0 12px 1px rgba(242, 160, 61, .4); animation: navHot 1.6s ease-in-out 5; }
+#navLinks .nav__hot:hover, #navLinks .nav__hot:focus-visible { color: #1b1203; background: #ffb95e; border-color: #ffb95e; animation-play-state: paused; }
 #navLinks .nav__hot svg { color: currentColor; }
 @keyframes navHot {
-  0%, 100% { background: rgba(242, 160, 61, .08); box-shadow: 0 0 0 0 rgba(242, 160, 61, 0); color: #f2a03d; }
-  50% { background: rgba(242, 160, 61, .95); box-shadow: 0 0 14px 2px rgba(242, 160, 61, .55); color: #1b1203; }
+  0%, 100% { background: #f2a03d; box-shadow: 0 0 12px 1px rgba(242, 160, 61, .4); color: #1b1203; }
+  50% { background: rgba(242, 160, 61, .08); box-shadow: 0 0 0 0 rgba(242, 160, 61, 0); color: #f2a03d; }
 }
 @media (max-width: 1180px) { #navLinks .nav__hot { align-self: flex-start; margin: 6px 0; } }
 /* Tabelas técnicas da ficha (comparativo de válvulas, materiais) */
