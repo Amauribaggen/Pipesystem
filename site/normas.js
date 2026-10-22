@@ -4,11 +4,52 @@
 // ASTM, ASME, ISO, API e ASHRAE → página oficial da entidade (resumo e compra).
 // Títulos e situação das NBR conferidos no ABNT Catálogo em 17/10/2026.
 const NORM_GROUPS = [
+  // ---------- Normas usadas pelas ferramentas de cálculo do site ----------
+  { id: 'dimensionamento', tipo: 'aplicacao', name: 'Dimensionamento Inteligente (normas usadas nos cálculos)', normas: [
+    { code: 'NBR 5626', org: 'ABNT', title: 'Sistemas prediais de água fria e água quente — Projeto, execução, operação e manutenção', note: 'No Dimensionamento Inteligente: pesos dos aparelhos e vazão de projeto, velocidade máxima de 3 m/s, perda de carga (Fair-Whipple-Hsiao), reservação e pressões. Norma de sistema para metais, registros e reservatórios.' },
+    { code: 'NBR 5648', org: 'ABNT', title: 'Tubos e conexões de PVC-U com junta soldável para sistemas prediais de água fria', note: 'No Dimensionamento Inteligente: tubos e conexões de PVC soldável de água fria e diâmetros internos usados no cálculo.' },
+    { code: 'NBR 15813-1', org: 'ABNT', title: 'Sistemas de tubulações plásticas para instalações prediais de água quente e fria — Polipropileno copolímero random PP-R — Parte 1: Tubos', note: 'No Dimensionamento Inteligente: tubos e conexões de PPR (PN 12 e PN 20) da água fria.' },
+    { code: 'NBR 15884-1', org: 'ABNT', title: 'Sistemas de tubulações plásticas para instalações prediais de água quente e fria — Policloreto de vinila clorado (CPVC) — Parte 1: Tubos', note: 'No Dimensionamento Inteligente: tubos e conexões de CPVC da água quente.' },
+    { code: 'NBR 15939-1', org: 'ABNT', title: 'Sistemas de tubulações plásticas para instalações prediais de água quente e fria — Polietileno reticulado (PE-X) — Parte 1: Requisitos e métodos de ensaio', note: 'No Dimensionamento Inteligente: tubos e conexões de PEX da água quente.' },
+    { code: 'NBR 13206', org: 'ABNT', title: 'Tubo de cobre leve, médio e pesado, sem costura, para condução de fluidos', note: 'No Dimensionamento Inteligente: tubos de cobre classe E (água quente) e classe A (gás).' },
+    { code: 'NBR 11720', org: 'ABNT', title: 'Conexões para união de tubos de cobre por soldagem ou brasagem capilar', note: 'No Dimensionamento Inteligente: joelhos, tês e conectores de cobre.' },
+    { code: 'NBR 5580', org: 'ABNT', title: 'Tubos de aço-carbono para usos comuns na condução de fluidos', note: 'No Dimensionamento Inteligente: tubos galvanizados classe média (roscados) e classe leve (ranhurados) de recalque, gás e incêndio.' },
+    { code: 'NBR 6943', org: 'ABNT', title: 'Conexões de ferro fundido com rosca ABNT NBR NM ISO 7-1 para tubulações', note: 'No Dimensionamento Inteligente: conexões galvanizadas roscadas e bujões dos pontos de espera.' },
+    { code: 'NBR NM ISO 7-1', org: 'ABNT', title: 'Rosca para tubos onde a junta de vedação sob pressão é feita pela rosca (BSP cônica)', note: 'No Dimensionamento Inteligente: rosca das conexões galvanizadas, saídas com bucha de latão e bujões.' },
+    { code: 'AWWA C606', org: 'AWWA', title: 'Grooved and Shouldered Joints', note: 'No Dimensionamento Inteligente: tês, curvas e acoplamentos do sistema ranhurado (Grooved) da rede de incêndio.' },
+    { code: 'ASTM A106', org: 'ASTM', title: 'Seamless Carbon Steel Pipe for High-Temperature Service', note: 'No Dimensionamento Inteligente: tubo de aço carbono sem costura (schedule 40), quando usado.' },
+    { code: 'NBR 15705', org: 'ABNT', title: 'Instalações hidráulicas prediais — Registro de gaveta — Requisitos e métodos de ensaio', note: 'No Dimensionamento Inteligente: registros de gaveta dos ambientes, colunas, barrilete e recalque.' },
+    { code: 'NBR 15704-1', org: 'ABNT', title: 'Registro — Requisitos e métodos de ensaio — Parte 1: Registros de pressão', note: 'No Dimensionamento Inteligente: registros de pressão dos chuveiros.' },
+    { code: 'NBR 14799', org: 'ABNT', title: 'Reservatório com corpo em polietileno, com tampa em polietileno ou em polipropileno, para água potável, com volume nominal de até 3 000 L (inclusive) — Requisitos e métodos de ensaio', note: 'No Dimensionamento Inteligente: caixas d’água e cisternas de polietileno das casas.' },
+    { code: 'NBR 15097-1', org: 'ABNT', title: 'Aparelhos sanitários de material cerâmico — Parte 1: Requisitos e métodos de ensaios', note: 'No Dimensionamento Inteligente: bacias, lavatórios e tanques de louça. Confira no ABNT Catálogo a edição vigente.' },
+    { code: 'NBR 9050', org: 'ABNT', title: 'Acessibilidade a edificações, mobiliário, espaços e equipamentos urbanos', note: 'No Dimensionamento Inteligente: sanitários acessíveis (PNE) das áreas comuns.' },
+    { code: 'NBR 8160', org: 'ABNT', title: 'Sistemas prediais de esgoto sanitário — Projeto e execução', note: 'No Dimensionamento Inteligente: unidades Hunter de contribuição (UHC), diâmetro do coletor predial, colunas, ventilação, caixas sifonadas, de gordura e de inspeção.' },
+    { code: 'NBR 5688', org: 'ABNT', title: 'Tubos e conexões de PVC-U para sistemas prediais de água pluvial, esgoto sanitário e ventilação', note: 'No Dimensionamento Inteligente: tubos e conexões de esgoto (série normal) e águas pluviais (série R).' },
+    { code: 'NBR 10844', org: 'ABNT', title: 'Instalações prediais de águas pluviais — Procedimento', note: 'No Dimensionamento Inteligente: condutores, calhas, ralos e caixas de areia.' },
+    { code: 'NBR 15527', org: 'ABNT', title: 'Aproveitamento de água de chuva de coberturas para fins não potáveis — Requisitos', note: 'No Dimensionamento Inteligente: cisterna, filtro, descarte da primeira chuva e rede não potável separada.' },
+    { code: 'NBR 10339', org: 'ABNT', title: 'Piscina — Projeto, execução e manutenção', note: 'No Dimensionamento Inteligente: filtragem, recirculação e ralos de fundo antiaprisionamento da piscina.' },
+    { code: 'NBR 15526', org: 'ABNT', title: 'Redes de distribuição interna para gases combustíveis em instalações residenciais — Projeto e execução', note: 'No Dimensionamento Inteligente: prumadas, ramais, medidores e registros de gás natural e GLP.' },
+    { code: 'NBR 14177', org: 'ABNT', title: 'Tubo flexível metálico para instalações de gás combustível de baixa pressão', note: 'No Dimensionamento Inteligente: flexíveis de ligação de cooktops, aquecedores e churrasqueiras a gás.' },
+    { code: 'NBR 8473', org: 'ABNT', title: 'Regulador de baixa pressão para gás liquefeito de petróleo (GLP) com capacidade até 4 kg/h', note: 'No Dimensionamento Inteligente: regulador do botijão P13.' },
+    { code: 'NBR 13523', org: 'ABNT', title: 'Central de gás liquefeito de petróleo — GLP', note: 'No Dimensionamento Inteligente: central de GLP e uso de botijões.' },
+    { code: 'NBR 13103', org: 'ABNT', title: 'Instalação de aparelhos a gás — Requisitos', note: 'No Dimensionamento Inteligente: aquecedores de passagem a gás e dutos de exaustão.' },
+    { code: 'NBR 13714', org: 'ABNT', title: 'Sistemas de hidrantes e de mangotinhos para combate a incêndio', note: 'No Dimensionamento Inteligente: hidrantes, abrigos, mangueiras, esguichos, registro de recalque e bomba de incêndio.' },
+    { code: 'NBR 11861', org: 'ABNT', title: 'Mangueira de incêndio — Requisitos e métodos de ensaio', note: 'No Dimensionamento Inteligente: mangueiras de 1 1/2" dos hidrantes.' },
+    { code: 'NBR 10897', org: 'ABNT', title: 'Sistemas de proteção contra incêndio por chuveiros automáticos — Requisitos', note: 'No Dimensionamento Inteligente: área por bico de sprinkler (risco leve e ordinário), VGA, chaves de fluxo, teste e dreno.' },
+    { code: 'NFPA 13', org: 'NFPA', title: 'Standard for the Installation of Sprinkler Systems', note: 'No Dimensionamento Inteligente: sprinklers ESFR de armazenagem.' },
+    { code: 'NBR 14105-1', org: 'ABNT', title: 'Medidores de pressão — Parte 1: Medidores analógicos de pressão com sensor de elemento elástico', note: 'No Dimensionamento Inteligente: manômetros da rede de incêndio.' },
+    { code: 'NR-13', org: 'NR', title: 'Caldeiras, vasos de pressão, tubulações e tanques metálicos de armazenamento', note: 'No Dimensionamento Inteligente: sala de máquinas de refrigeração com amônia.' },
+    { code: 'NBR 16069', org: 'ABNT', title: 'Segurança em sistemas frigoríficos', note: 'No Dimensionamento Inteligente: refrigeração com amônia.' },
+  ]},
   // ---------- Por aplicação ----------
   { id: 'agua', tipo: 'aplicacao', name: 'Água fria e quente predial', normas: [
     { code: 'NBR 5626', org: 'ABNT', title: 'Sistemas prediais de água fria e água quente — Projeto, execução, operação e manutenção', note: 'Norma-base das instalações hidráulicas prediais: pressões, vazões, dimensionamento e materiais.' },
     { code: 'NBR 15569', org: 'ABNT', title: 'Sistema de aquecimento solar de água em circuito direto — Requisitos de projeto e instalação' },
     { code: 'NBR 15704-1', org: 'ABNT', title: 'Registro — Requisitos e métodos de ensaio — Parte 1: Registros de pressão' },
+    { code: 'NBR 14799', org: 'ABNT', title: 'Reservatório com corpo em polietileno, com tampa em polietileno ou em polipropileno, para água potável, com volume nominal de até 3 000 L (inclusive) — Requisitos e métodos de ensaio' },
+    { code: 'NBR 15097-1', org: 'ABNT', title: 'Aparelhos sanitários de material cerâmico — Parte 1: Requisitos e métodos de ensaios', note: 'Confira no ABNT Catálogo a edição vigente.' },
+    { code: 'NBR 10339', org: 'ABNT', title: 'Piscina — Projeto, execução e manutenção' },
+    { code: 'NBR 9050', org: 'ABNT', title: 'Acessibilidade a edificações, mobiliário, espaços e equipamentos urbanos', note: 'Sanitários acessíveis, barras de apoio e alturas de louças e metais.' },
   ]},
   { id: 'esgoto', tipo: 'aplicacao', name: 'Esgoto, águas pluviais e tratamento', normas: [
     { code: 'NBR 8160', org: 'ABNT', title: 'Sistemas prediais de esgoto sanitário — Projeto e execução', note: 'Declividades, ventilação, caixas sifonadas e dimensionamento de ramais e tubos de queda.' },
@@ -21,6 +62,8 @@ const NORM_GROUPS = [
     { code: 'NBR 13523', org: 'ABNT', title: 'Central de gás liquefeito de petróleo — GLP' },
     { code: 'NBR 13103', org: 'ABNT', title: 'Instalação de aparelhos a gás — Requisitos', note: 'Ventilação e chaminés de aquecedores, fogões e demais aparelhos a gás.' },
     { code: 'NBR 14462-1', org: 'ABNT', title: 'Sistemas para distribuição de gás combustível para redes enterradas — Tubos e conexões de polietileno PE 80 e PE 100 — Parte 1', note: 'Substitui a NBR 14462:2000, cancelada em 2016.' },
+    { code: 'NBR 14177', org: 'ABNT', title: 'Tubo flexível metálico para instalações de gás combustível de baixa pressão' },
+    { code: 'NBR 8473', org: 'ABNT', title: 'Regulador de baixa pressão para gás liquefeito de petróleo (GLP) com capacidade até 4 kg/h' },
   ]},
   { id: 'incendio', tipo: 'aplicacao', name: 'Combate a incêndio', normas: [
     { code: 'NBR 13714', org: 'ABNT', title: 'Sistemas de hidrantes e de mangotinhos para combate a incêndio' },
@@ -101,6 +144,7 @@ const NORM_GROUPS = [
   { id: 'conexoes', tipo: 'produto', name: 'Conexões, flanges e juntas', normas: [
     { code: 'NBR 6943', org: 'ABNT', title: 'Conexões de ferro fundido com rosca ABNT NBR NM ISO 7-1 para tubulações' },
     { code: 'NBR 11720', org: 'ABNT', title: 'Conexões para união de tubos de cobre por soldagem ou brasagem capilar' },
+    { code: 'AWWA C606', org: 'AWWA', title: 'Grooved and Shouldered Joints', note: 'Acoplamentos e conexões ranhuradas (Grooved).' },
     { code: 'ASME B16.3', org: 'ASME', title: 'Malleable Iron Threaded Fittings' },
     { code: 'ASME B16.5', org: 'ASME', title: 'Pipe Flanges and Flanged Fittings' },
     { code: 'ASME B16.9', org: 'ASME', title: 'Factory-Made Wrought Buttwelding Fittings' },
@@ -205,6 +249,9 @@ const NORM_EXTRA_URLS = {
   // Resumo na Target Normas (revenda autorizada da ABNT)
   'NBR 6925': 'https://normas.com.br/visualizar/abnt-nbr-nm/6577/abnt-nbr6925-conexoes-de-ferro-fundido-de-classes-150-e-300-com-rosca-asme-b1201-tipo-npt-para-tubulacoes',
   'NBR 13786': 'https://normas.com.br/visualizar/abnt-nbr-nm/10344/abnt-nbr13786-armazenamento-de-liquidos-inflamaveis-e-combustiveis-selecao-dos-componentes-do-combustivel-sasc-e-sistema-de-armazenamento-subterraneo-de-oleo-lubrificante-usado-e-contaminado-oluc',
+  'NBR 14177': 'https://www.normas.com.br/visualizar/abnt-nbr-nm/10909/abnt-nbr14177-tubo-flexivel-metalico-para-instalacoes-de-gas-combustivel-de-baixa-pressao',
+  'NBR 15097-1': 'https://www.normas.com.br/visualizar/abnt-nbr-nm/30378/abnt-nbr15097-1-aparelhos-sanitarios-de-material-ceramico-parte-1-requisitos-e-metodos-de-ensaios',
+  'AWWA C606': 'https://store.awwa.org/AWWA-C606-22-Grooved-and-Shouldered-Joints',
   'NBR 15345': 'https://normas.com.br/visualizar/abnt-nbr-nm/25054/abnt-nbr15345-instalacao-predial-de-tubos-e-conexoes-de-cobre-e-ligas-de-cobre-procedimento',
 };
 
