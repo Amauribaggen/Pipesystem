@@ -619,6 +619,7 @@
                 <h4 id="lmOutTitle"></h4>
               </div>
               <div class="lmat__actions">
+                <button type="button" class="btn btn--sm" id="lmEsqBtn">Ver desenho esquemático</button>
                 <button type="button" class="btn btn--ghost btn--sm" id="lmCopy">Copiar</button>
                 <button type="button" class="btn btn--ghost btn--sm" id="lmCsv">Baixar planilha Excel (com preços)</button>
                 <button type="button" class="btn btn--ghost btn--sm" id="lmPrint">Imprimir / PDF</button>
@@ -626,6 +627,14 @@
               </div>
             </div>
             <div class="lmat__stats" id="lmStats"></div>
+            <div class="lmat__esq" id="lmEsq" hidden>
+              <div class="lmat__esqhead">
+                <h5>Desenho esquemático da instalação</h5>
+                <button type="button" class="btn btn--ghost btn--sm" id="lmEsqSvgDl">Baixar desenho (SVG)</button>
+              </div>
+              <div class="lmat__esqsvg" id="lmEsqSvg"></div>
+              <p class="hint">Corte esquemático simplificado, sem escala, para visualizar os sistemas escolhidos. Diâmetros e quantidades vêm da lista ao lado. Não substitui o projeto hidráulico.</p>
+            </div>
             <div id="lmWarn"></div>
             <div class="lmat__sin" id="lmSinapi" hidden>
               <div class="lmat__sinhead">
@@ -1235,6 +1244,7 @@
 <script src="sinapi-precos.js"></script>
 <script src="bom.js"></script>
 <script src="validador.js"></script>
+<script src="esquema.js"></script>
 <!-- Medição de audiência sem cookies (Vercel Web Analytics): dados agregados e anônimos -->
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>

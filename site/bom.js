@@ -1033,6 +1033,7 @@
     }).join('') + sub(g);
     $('lmQuote').dataset.question = asText(true);
     renderSinapi();
+    if (window.lmatEsquema) window.lmatEsquema();   // redesenha o esquema aberto (esquema.js)
   }
   function asText(short) {
     const lines = [$('lmOutTitle').textContent, ...last.stats.map(([k, v]) => `${k}: ${v}`), ''];
@@ -1259,6 +1260,7 @@
   window.lmatXlsx = () => last && downloadXlsx();   // usado pelo formulário de contato quando a lista não cabe no e-mail
   // usados pelo validador de listas exportadas (validador.js)
   window.lmatApi = {
+    last: () => last,
     price: (name, uf) => HAS_SINAPI ? priceOf(name, uf) : null,
     xlsx: (data, sin, title) => xlsx(sin, data, title),
     ufs: () => HAS_SINAPI ? SINAPI_PRECOS.ufs.map(u => [u, UF_NOMES[u] || u]) : [],

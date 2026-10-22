@@ -328,6 +328,11 @@ a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
 .lmat__sintab tfoot th { color: var(--accent); font: 700 1rem var(--display); border-top: 2px solid rgba(242, 160, 61, .5); padding-top: 10px; text-transform: none; letter-spacing: 0; }
 .lmat__sin .hint { margin-top: 10px; }
 #lmSinXlsx, #lmValXlsx { margin-top: 12px; }
+.lmat__esq { margin: 18px 0 8px; padding: 16px; border: 1px solid rgba(31, 182, 201, .4); border-radius: 14px; background: rgba(31, 182, 201, .05); }
+.lmat__esqhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+.lmat__esqhead h5 { color: #fff; font: 700 1.05rem var(--display); margin: 0; }
+.lmat__esqsvg { overflow-x: auto; border-radius: 10px; background: #fff; }
+.lmat__esqsvg svg { display: block; width: 100%; min-width: 640px; height: auto; }
 .lmat__val { margin-top: 32px; padding-top: 26px; border-top: 1px solid rgba(255, 255, 255, .12); }
 .lmat__val h4 { color: var(--accent); font: 700 1.25rem var(--display); margin: 0 0 .4em; }
 .lmat__val > p { color: #b3c4d8; max-width: 900px; }
@@ -358,7 +363,9 @@ a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
   html.print-lmat #lmatPrint, html.print-lmat #lmatPrint * { visibility: visible !important; color: #000 !important; background: none !important; box-shadow: none !important; }
   html.print-lmat #lmatPrint { position: absolute; left: 0; top: 0; width: 100%; }
   html.print-lmat .lmat__actions { display: none !important; }
-  html.print-lmat .lmat__uf, html.print-lmat #lmSinXlsx { display: none !important; }
+  html.print-lmat .lmat__uf, html.print-lmat #lmSinXlsx, html.print-lmat #lmEsqSvgDl { display: none !important; }
+  html.print-lmat .lmat__esqsvg { overflow: visible; }
+  html.print-lmat .lmat__esqsvg svg { min-width: 0; }
   html.print-lmat .lmat__stats div { border-color: #999 !important; }
   html.print-lmat .lmat__table td, html.print-lmat .lmat__table th { border-bottom-color: #ccc !important; }
   html.print-lmat .lmat__tablewrap { overflow: visible; }
