@@ -859,7 +859,7 @@ document.addEventListener('click', e => {
   window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 });
 
-// ===== Artigos técnicos (links conferidos em 17/10/2026) =====
+// ===== Artigos técnicos (links conferidos em 17/10 e 23/10/2026) =====
 const ARTICLES = [
   { tema: 'Perda de carga', title: 'Ajuste da equação de Hazen-Williams para determinação da perda de carga contínua em tubulações de PVC',
     autores: 'Miranda, E. P. et al.', fonte: 'Revista Irriga (UNESP)', ano: 2019, url: 'https://revistas.fca.unesp.br/index.php/irriga/article/view/3907',
@@ -876,6 +876,37 @@ const ARTICLES = [
   { tema: 'Água quente', title: 'Avaliação técnica e viabilidade econômica de um sistema de aquecimento solar em um edifício residencial',
     autores: 'Medeiros, J. M. et al.', fonte: 'Revista Principia (IFPB)', ano: 2014, url: 'https://periodicos.ifpb.edu.br/index.php/principia/article/view/145',
     resumo: 'Doze meses de medição de um sistema solar com apoio a gás: fração solar, eficiência térmica e retorno do investimento.' },
+  // Artigos internacionais (acesso aberto, licença Creative Commons ou "open access" da editora), conferidos em 23/10/2026
+  { tema: 'Dimensionamento', idioma: 'en', title: 'Determination of Fixture-Use Probability for Peak Water Demand Design Using High-Level Water End-Use Statistics and Stochastic Simulation',
+    autores: 'Josey, B. M. et al.', fonte: 'Journal of Water Resources Planning and Management (ASCE)', ano: 2023, url: 'https://doi.org/10.1061/JWRMD5.WRENG-6146',
+    resumo: 'Calcula a probabilidade de uso de cada aparelho para estimar a vazão de pico em projetos prediais por simulação, alternativa aos métodos tradicionais, como o de Hunter, que tendem a superdimensionar as tubulações.' },
+  { tema: 'Consumo de água', title: 'Water End-Uses in Low-Income Houses in Southern Brazil', idioma: 'en',
+    autores: 'Marinoski, A. K. et al.', fonte: 'Water (MDPI)', ano: 2014, url: 'https://www.mdpi.com/2073-4441/6/7/1985',
+    resumo: 'Mede os usos finais de água em casas de baixa renda no Sul do Brasil e mostra onde estão as maiores oportunidades de economia.' },
+  { tema: 'Consumo de água', idioma: 'en', title: 'Variability in Consumption and End Uses of Water for Residential Users in Logan and Providence, Utah, US',
+    autores: 'Bastidas Pacheco, C. J. et al.', fonte: 'Journal of Water Resources Planning and Management (ASCE)', ano: 2023, url: 'https://doi.org/10.1061/(ASCE)WR.1943-5452.0001633',
+    resumo: 'Medição de alta resolução em residências: o consumo interno depende mais da frequência de uso do que das características dos aparelhos. Dados e ferramentas disponíveis gratuitamente.' },
+  { tema: 'Golpe de aríete', idioma: 'en', title: 'Exploring the Sensitivity of the Transient Response following Power Failure to Air Valve and Pipeline Characteristics',
+    autores: 'Tasca, E. et al.', fonte: 'Water (MDPI)', ano: 2023, url: 'https://www.mdpi.com/2073-4441/15/19/3476',
+    resumo: 'Simula o transiente após a queda de energia das bombas numa linha de recalque com ventosa e mostra como a ventosa e a tubulação alteram as pressões máximas e mínimas.' },
+  { tema: 'Qualidade da água', idioma: 'en', title: 'Critical Review: Propensity of Premise Plumbing Pipe Materials to Enhance or Diminish Growth of Legionella and Other Opportunistic Pathogens',
+    autores: 'Cullom, A. C. et al.', fonte: 'Pathogens (MDPI)', ano: 2020, url: 'https://www.mdpi.com/2076-0817/9/11/957',
+    resumo: 'Revisão sobre como cobre, ferro, PVC e PEX favorecem ou inibem a Legionella e outros patógenos nas instalações prediais, pelo efeito sobre nutrientes, cloro residual e biofilme.' },
+  { tema: 'Corrosão', idioma: 'en', title: 'Copper Tube Pitting in Santa Fe Municipal Water Caused by Microbial Induced Corrosion',
+    autores: 'Burleigh, T. D. et al.', fonte: 'Materials (MDPI)', ano: 2014, url: 'https://www.mdpi.com/1996-1944/7/6/4321',
+    resumo: 'Investiga os furos (pinholes) em tubos de cobre de água potável em Santa Fé (EUA) e mostra que a corrosão foi causada por micro-organismos presentes nos pites.' },
+  { tema: 'Tubos plásticos', idioma: 'en', title: 'Drinking water contamination from the thermal degradation of plastics: implications for wildfire and structure fire response',
+    autores: 'Isaacson, K. P. et al.', fonte: 'Environmental Science: Water Research & Technology (RSC)', ano: 2021, url: 'https://pubs.rsc.org/en/content/articlehtml/2021/ew/d0ew00836b',
+    resumo: 'Tubos plásticos de água potável aquecidos entre 200 e 400 °C, como num incêndio, liberaram benzeno e outros compostos na água. A inspeção visual não basta para avaliar o risco: após incêndios, a rede precisa ser testada.' },
+  { tema: 'Água de chuva', idioma: 'en', title: 'Rainwater Harvesting in Buildings in Brazil: A Literature Review',
+    autores: 'Teston, A. et al.', fonte: 'Water (MDPI)', ano: 2018, url: 'https://www.mdpi.com/2073-4441/10/4/471',
+    resumo: 'Revisão dos estudos brasileiros sobre aproveitamento de água de chuva em edificações: economia média potencial de 53% da água potável, e pouca pesquisa sobre manutenção e desempenho real dos sistemas.' },
+  { tema: 'Água de chuva', idioma: 'en', title: 'Comprehensive Environmental Assessment of Rainwater Harvesting Systems: A Literature Review',
+    autores: 'Teston, A. et al.', fonte: 'Water (MDPI)', ano: 2022, url: 'https://www.mdpi.com/2073-4441/14/17/2716',
+    resumo: 'Avaliação ambiental de sistemas de água de chuva: nos estudos analisados, economia de 20% a 65% de água potável e redução de 13% a 91% do escoamento pluvial.' },
+  { tema: 'Reúso de água', idioma: 'en', title: 'Current Research Trends and Challenges Related to the Use of Greywater in Buildings',
+    autores: 'Niewitecka, K. et al.', fonte: 'Water (MDPI)', ano: 2025, url: 'https://www.mdpi.com/2073-4441/17/23/3431',
+    resumo: 'Revisão do reúso de águas cinzas em edifícios, principalmente na descarga de bacias: tecnologias de tratamento e as barreiras técnicas, normativas e de aceitação pelos usuários.' },
 ];
 (() => {
   const list = document.getElementById('artList');
@@ -887,7 +918,7 @@ const ARTICLES = [
       <div class="art__body">
         <span class="art__tema">${a.tema}</span>
         <h3 class="art__title"><a href="${a.url}" target="_blank" rel="noopener noreferrer">${a.title}</a></h3>
-        <p class="art__meta"><span class="notranslate" translate="no">${a.autores}</span> · ${a.fonte} · ${a.ano}</p>
+        <p class="art__meta"><span class="notranslate" translate="no">${a.autores}</span> · ${a.fonte} · ${a.ano}${a.idioma === 'en' ? ' · <span class="art__lang">Em inglês</span>' : ''}</p>
         <p class="art__resumo">${a.resumo}</p>
       </div>
       <a class="art__btn" href="${a.url}" target="_blank" rel="noopener noreferrer">${a.pdf ? 'Ler (PDF)' : 'Ler o artigo'} ↗<small>${host(a.url)}</small></a>

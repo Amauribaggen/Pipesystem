@@ -1196,3 +1196,5 @@ main:focus { outline: none; }
 .review b { color: #1d4a35; }
 .review a { margin-left: auto; color: #1d7a52; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 .review span { flex: 1 1 180px; min-width: 0; }
+
+.art__lang { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .04em; color: #2d5fa8; background: #e5eefb; padding: .05em .5em; border-radius: 999px; }
