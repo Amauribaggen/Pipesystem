@@ -12,9 +12,9 @@ export const BASE = 'https://www.pipesystem.com.br';
 
 // ---------- dados ----------
 export function loadData(siteDir) {
-  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js', 'bim.js'];
+  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js', 'bim.js', 'glossario.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML });';
+    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -81,7 +81,7 @@ export const SIZES = {};
 const dims = src => SIZES[src] ? ` width="${SIZES[src][0]}" height="${SIZES[src][1]}"` : '';
 const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><path d="M26 6c9 12 16 21 16 30a16 16 0 0 1-32 0c0-9 7-18 16-30z" fill="#1fb6c9"/><path d="M16 38c4 3 8 3 10 0s6-3 10 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><text x="56" y="40" textLength="230" lengthAdjust="spacingAndGlyphs" font-family="Montserrat, 'Arial Black', sans-serif" font-weight="800" font-size="28" fill="#fff">PIPESYSTEM</text><rect x="56" y="50" width="236" height="6" rx="3" fill="#1fb6c9"/><rect x="128" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><rect x="212" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><path d="M286 46l8 7-8 7" fill="none" stroke="#f2a03d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="57" y="80" textLength="235" lengthAdjust="spacing" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="14" fill="#f2a03d">conduzindo soluções</text></svg>`;
 
-function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords, reviewed }) {
+function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords, reviewed, ld: extraLd = [], glossSkip }) {
   const canonical = BASE + url;
   const ld = {
     '@context': 'https://schema.org',
@@ -94,6 +94,7 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
         breadcrumb: { '@id': canonical + '#trilha' } },
       { '@type': 'BreadcrumbList', '@id': canonical + '#trilha',
         itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, ...(c.url ? { item: BASE + c.url } : {}) })) },
+      ...extraLd,
     ],
   };
   const ogImage = image || `${BASE}/img/og-pipesystem.jpg`;
@@ -126,13 +127,13 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
   <link rel="stylesheet" href="/styles.css">
   <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>
 </head>
-<body class="pg">
+<body class="pg"${glossSkip ? ` data-gloss-skip="${glossSkip}"` : ''}>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 <header class="pg-top">
   <div class="container pg-top__inner">
     <a href="/" class="logo" aria-label="PIPESYSTEM — página inicial">${LOGO}</a>
     <nav class="pg-top__nav" aria-label="Seções do portal">
-      <a href="/#sistemas">Sistemas</a><a href="/#materiais">Materiais</a><a href="/#normas">Normas</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
+      <a href="/#sistemas">Sistemas</a><a href="/#materiais">Materiais</a><a href="/#normas">Normas</a><a href="/glossario">Glossário</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
     </nav>
   </div>
 </header>
@@ -154,6 +155,7 @@ ${body}
   </div>
 </footer>
 <script src="/lightbox.js" defer></script>
+<script src="/glossario.js" defer></script>
 <!-- Medição de audiência sem cookies (Vercel Web Analytics): dados agregados e anônimos -->
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -260,6 +262,59 @@ export function generate(D, outDir) {
       description: cut(`${plain(m.desc)} Dados técnicos, normas e ${importers ? 'importadores' : 'fabricantes'}.`, 158),
       image: capa && abs(capa.src), imageAlt: capa && capa.alt, keywords: [m.name, m.cat, ...normas].join(', '),
       crumbs: [{ name: 'Início', url: '/' }, { name: 'Catálogo de produtos e materiais', url: '/materiais' }, { name: m.name, url }],
+    }) });
+  }
+
+  // Glossário técnico: índice (/glossario) e uma página por termo (/glossario/<termo>)
+  const G = D.GLOSSARIO, gById = Object.fromEntries(G.map(x => [x.id, x]));
+  const SET_ID = BASE + '/glossario#glossario';
+  const gCrumbs = [{ name: 'Início', url: '/' }, { name: 'Guias práticos', url: '/guias-praticos' }, { name: 'Glossário técnico', url: '/glossario' }];
+  const letterOf = x => x.t.normalize('NFD').replace(/[̀-ͯ]/g, '')[0].toUpperCase();
+  const gLetters = [...new Set(G.map(letterOf))];
+  {
+    const url = '/glossario';
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Guias práticos</p><h1 id="sheetTitle" class="page__title">Glossário técnico da hidráulica</h1></div></div>
+      <p class="sheet__desc page__lead">${G.length} termos usados em projeto, obra, compra e manutenção de instalações hidráulicas e de condução de fluidos, com o termo em inglês, a fórmula quando houver, a norma de referência e links para as fichas, as calculadoras e os guias do portal.</p>
+      <nav class="glindex__letters" aria-label="Letra inicial">${gLetters.map(l => `<a href="#letra-${l}">${l}</a>`).join('')}</nav>
+      <div class="glindex">${gLetters.map(l => `
+        <h2 class="page__h" id="letra-${l}">${l}</h2>
+        <dl>${G.filter(x => letterOf(x) === l).map(x => `<div><dt><a href="/glossario/${x.id}">${esc(x.t)}</a> <span class="glterm__en" lang="en">${esc(x.en)}</span></dt><dd>${esc(x.def)}</dd></div>`).join('')}</dl>`).join('')}
+      </div>
+      <div class="sheet__actions">
+        <a href="/guias-praticos" class="btn">Ver os guias práticos</a>
+        <a href="${contato('Consulta técnica', 'Sugestão de termo para o glossário: ')}" class="btn btn--ghost">Sugerir um termo</a>
+      </div>`;
+    pages.push({ url, images: [], html: page({ url, body, glossSkip: '-',
+      title: 'Glossário técnico da hidráulica e condução de fluidos | PipeSystem',
+      description: cut(`${G.length} termos de instalações hidráulicas explicados: perda de carga, golpe de aríete, NPSH, fecho hídrico, SDR, UHC, termofusão e mais, com fórmulas e normas.`, 158),
+      crumbs: gCrumbs,
+      ld: [{ '@type': 'DefinedTermSet', '@id': SET_ID, name: 'Glossário técnico PipeSystem', url: BASE + url, inLanguage: 'pt-BR',
+        hasDefinedTerm: G.map(x => ({ '@type': 'DefinedTerm', name: x.t, url: BASE + '/glossario/' + x.id })) }],
+    }) });
+  }
+  for (const x of G) {
+    const url = '/glossario/' + x.id;
+    const ver = x.ver.filter(v => gById[v]);
+    const mesmos = G.filter(y => y.tema === x.tema && y.id !== x.id);
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Glossário técnico · ${esc(x.tema)}</p><h1 id="sheetTitle" class="page__title">${esc(x.t)}</h1></div></div>
+      <p class="glpage__en" lang="en">Em inglês: ${esc(x.en)}</p>
+      <p class="glpage__answer"><b>O que é:</b> ${x.def}</p>
+      ${x.exp ? `<h2 class="page__h">Como funciona</h2><p class="sheet__desc">${x.exp}</p>` : ''}
+      ${x.f ? `<div class="formula">${x.f[0]}<small>${x.f[1]}</small></div>` : ''}
+      ${x.norma ? `<h2 class="page__h">Norma de referência</h2><p class="tags tags--links">${normTags(x.norma.split(' · '))}</p>${normNote}` : ''}
+      ${x.links.length ? `<h2 class="page__h">No portal</h2>${links(x.links.map(([n, u]) => [u, n]))}` : ''}
+      ${ver.length ? `<h2 class="page__h">Termos relacionados</h2>${links(ver.map(v => ['/glossario/' + v, gById[v].t]))}` : ''}
+      ${mesmos.length ? `<h2 class="page__h">Outros termos de ${esc(x.tema)}</h2>${links(mesmos.map(y => ['/glossario/' + y.id, y.t]))}` : ''}
+      <div class="sheet__actions">
+        <a href="/glossario" class="btn">Ver todo o glossário</a>
+        <a href="${contato('Consulta técnica', `Dúvida sobre ${x.t}: `)}" class="btn btn--ghost">Fazer uma pergunta</a>
+      </div>`;
+    pages.push({ url, images: [], html: page({ url, body, glossSkip: x.id,
+      title: `${x.t}: o que é — Glossário técnico | PipeSystem`,
+      description: cut(`${plain(x.def)} ${plain(x.exp || '')}`, 158),
+      keywords: [x.t, x.en, x.tema, x.norma].filter(Boolean).join(', '),
+      crumbs: [...gCrumbs, { name: x.t, url }],
+      ld: [{ '@type': 'DefinedTerm', '@id': BASE + url + '#termo', name: x.t, alternateName: x.en, description: plain(x.def), url: BASE + url, inDefinedTermSet: SET_ID }],
     }) });
   }
 

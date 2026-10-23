@@ -1032,6 +1032,8 @@ const ARTICLES = [
     const pick = (list, textOf, make) => list.filter(x => matchText(textOf(x), terms))
       .map(x => ({ ...make(x), score: matchText(make(x).title, terms) ? 2 : 0 })).sort((a, b) => b.score - a.score);
 
+    add('Glossário técnico', pick(GLOSSARIO, x => [x.t, x.en, x.def, ...x.auto].join(' '), x => ({ href: '/glossario/' + x.id, title: x.t, sub: x.def })));
+
     const sysText = s => [s.name, s.desc, ...s.componentes, ...s.cuidados, ...s.normas].join(' ');
     add('Áreas de aplicação', pick(SYSTEMS, sysText, s => ({ href: '/sistemas/' + s.id.slice(4), sheet: s.id, title: s.name, sub: snippet(sysText(s), terms, s.desc) })));
 
@@ -1150,7 +1152,7 @@ const ARTICLES = [
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }]),
     bim: () => group('Fabricantes', tag('#bim .bimcard', 'bim')) + group('Plataformas', tag('#bim .bimplat', 'bim')),
     guias: () => group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo }))) +
-      group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-check', label: 'Checklist de entrega' }]),
+      group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-check', label: 'Checklist de entrega' }, { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })))).join(''),

@@ -1358,3 +1358,47 @@ ul.bimbox { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 6
   body.gp-printing #gpCheck { position: absolute; left: 0; top: 0; width: 100%; }
   body.gp-printing .gpcheck__foot button { display: none; }
 }
+
+/* ===== Glossário técnico ===== */
+.glaz { display: flex; flex-wrap: wrap; gap: 4px; }
+.glaz button { font: inherit; font-weight: 700; font-size: .8rem; width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); background: #fff; color: var(--navy); cursor: pointer; }
+.glaz button:disabled { color: #c3ccd8; cursor: default; }
+.glaz button[aria-pressed=true] { background: var(--navy); color: #fff; border-color: var(--navy); }
+.glletter { color: #7ee7f2; font-size: 1.3rem; margin: 18px 0 8px; border-bottom: 1px solid rgba(255, 255, 255, .1); padding-bottom: 4px; }
+.glterms { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px; }
+@media (max-width: 400px) { .glterms { grid-template-columns: 1fr; } }
+.glterm { background: #fff; color: var(--ink); border-radius: 12px; border: 1px solid var(--line); scroll-margin-top: 90px; }
+.glterm[open] { grid-column: 1 / -1; }
+.glterm > summary { list-style: none; cursor: pointer; padding: 12px 14px; display: grid; gap: 4px; }
+.glterm > summary::-webkit-details-marker { display: none; }
+.glterm__t { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+.glterm__t h3 { margin: 0; font-size: 1.02rem; color: var(--navy); }
+.glterm__en { font-size: .78rem; color: var(--muted); font-style: italic; }
+.glterm__def { margin: 0; font-size: .9rem; color: #33445a; }
+.glterm__tema { justify-self: start; font-size: .68rem; font-weight: 700; padding: .15em .55em; border-radius: 999px; background: #e3f6f8; color: #0b6f7d; }
+.glterm__more { margin: 0 14px; padding: 12px 0 14px; display: grid; gap: 10px; font-size: .9rem; color: #33445a; border-top: 1px solid var(--line); }
+.glterm__more p { margin: 0; }
+.glterm__page { font-size: .84rem; font-weight: 600; color: var(--teal-d); justify-self: start; }
+.formula { font-family: "Cambria Math", Cambria, Georgia, serif; background: #f3f7fb; border-left: 3px solid var(--teal); padding: 8px 12px; border-radius: 6px; color: var(--navy); font-size: 1rem; margin: 0 0 4px; }
+.formula small { display: block; font-family: var(--font); font-size: .78rem; color: var(--muted); margin-top: 4px; }
+.glrel { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.glrel > span { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-right: 2px; }
+.glrel a { font-size: .8rem; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; color: var(--teal-d); }
+.glrel a:hover { border-color: var(--teal); }
+.glrel a.glrel__see { color: var(--navy); background: #eef3f8; border-color: #eef3f8; }
+/* termo sublinhado: a definição aparece ao passar o mouse ou com o foco do teclado */
+a.gl { color: inherit; text-decoration: underline dotted var(--teal-d); text-decoration-thickness: 1.5px; text-underline-offset: 3px; position: relative; }
+a.gl:hover { color: var(--teal-d); }
+@media (hover: hover) {
+  a.gl:hover::after, a.gl:focus-visible::after { content: attr(data-def); position: absolute; left: 0; top: calc(100% + 6px); width: min(300px, 70vw); background: var(--navy); color: #fff; font-size: .8rem; font-weight: 400; font-style: normal; line-height: 1.45; text-align: left; padding: 10px 12px; border-radius: 10px; z-index: 30; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .5); white-space: normal; pointer-events: none; }
+}
+/* páginas do glossário */
+.glpage__en { color: var(--muted); font-style: italic; margin: 2px 0 14px; }
+.glpage__answer { font-size: 1.05rem; background: #f3f7fb; border-radius: 10px; padding: 12px 14px; margin: 0 0 14px; color: var(--navy); }
+.glindex__letters { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 8px; }
+.glindex__letters a { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); font-weight: 700; font-size: .85rem; text-decoration: none; color: var(--navy); }
+.glindex__letters a:hover { border-color: var(--teal); }
+.glindex h2 { color: var(--teal-d); }
+.glindex dl { margin: 0; display: grid; gap: 10px; }
+.glindex dt a { font-weight: 700; color: var(--navy); }
+.glindex dd { margin: 2px 0 0; color: #33445a; font-size: .92rem; }

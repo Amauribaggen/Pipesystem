@@ -1043,6 +1043,16 @@
         <p class="gplead">Para fechar a obra com tudo testado e documentado, como pedem a NBR 15575-6 (desempenho) e a NBR 14037 (manual de uso e manutenção). Marque e imprima.</p>
         <div class="gpcheck" id="gpCheck"></div>
       </div>
+      <div class="gppanel" id="gp-glossario" role="tabpanel" hidden>
+        <p class="gplead">Os termos usados em projeto, obra, compra e manutenção, com o termo em inglês, a fórmula quando houver, a norma e o caminho para a ficha, a calculadora ou o guia. Cada termo tem também uma <a href="/glossario">página própria</a>.</p>
+        <div class="bim__filters" role="search">
+          <input type="search" id="glSearch" placeholder="Buscar termo, sigla ou termo em inglês (ex.: NPSH, SDR, water hammer)" aria-label="Buscar no glossário">
+          <div class="glaz" id="glAz" aria-label="Letra inicial"></div>
+          <div class="bim__chips" id="glTemas" aria-label="Tema"></div>
+        </div>
+        <p class="bim__count" id="glCount" aria-live="polite"></p>
+        <div id="glList"></div>
+      </div>
 
       <div class="gpcta">
         <div>
@@ -1429,6 +1439,7 @@
       <a href="#ferramentas">Dimensionamento</a>
       <a href="#bim">BIM/CAD</a>
       <a href="#guias">Guias práticos</a>
+      <a href="/glossario">Glossário</a>
       <a href="#normas">Normas</a>
       <a href="#artigos">Artigos</a>
       <a href="#feiras">Feiras</a>
@@ -1491,6 +1502,7 @@
 <script src="img-sizes.js"></script>
 <script src="lightbox.js"></script>
 <script src="bim.js"></script>
+<script src="glossario.js"></script>
 <script src="guias.js"></script>
 <script src="script.js"></script>
 <script src="calculadoras.js"></script>

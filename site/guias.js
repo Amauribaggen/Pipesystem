@@ -204,23 +204,25 @@ const CHECK = [
   });
 
   // abas e filtro de tema
-  const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklist de entrega', '']];
+  const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklist de entrega', ''], ['glossario', 'Glossário', GLOSSARIO.length]];
   $('gpTabs').innerHTML = TABS.map(([k, n, c]) => `<button type="button" role="tab" class="gptab" data-tab="${k}" aria-selected="${k === st.tab}">${n}${c ? ` <small>${c}</small>` : ''}</button>`).join('');
   $('gpTemas').innerHTML = GP_TEMAS.map(t => `<button type="button" class="gptema" data-tema="${t}" aria-pressed="false">${t}</button>`).join('');
   const show = () => {
     TABS.forEach(([k]) => { $('gp-' + k).hidden = k !== st.tab; });
     $('gpTabs').querySelectorAll('.gptab').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === st.tab));
-    $('gpTemas').hidden = st.tab === 'check';
+    $('gpTemas').hidden = st.tab === 'check' || st.tab === 'glossario';
     const box = $('gp-' + st.tab);
     let n = 0;
     box.querySelectorAll('[data-tema]').forEach(el => { const on = !st.tema || el.dataset.tema.split('|').includes(st.tema); el.hidden = !on; n += on; });
     box.querySelector('.gpempty')?.remove();
-    if (!n && st.tab !== 'check') box.insertAdjacentHTML('beforeend', '<p class="gpempty">Ainda não há conteúdo deste tema nesta aba.</p>');
+    if (!n && st.tab !== 'check' && st.tab !== 'glossario') box.insertAdjacentHTML('beforeend', '<p class="gpempty">Ainda não há conteúdo deste tema nesta aba.</p>');
   };
   const setTema = t => { st.tema = t; $('gpTemas').querySelectorAll('.gptema').forEach(x => x.setAttribute('aria-pressed', x.dataset.tema === st.tema)); };
   $('gpTabs').addEventListener('click', e => { const b = e.target.closest('.gptab'); if (b) { st.tab = b.dataset.tab; show(); } });
   $('gpTemas').addEventListener('click', e => { const b = e.target.closest('.gptema'); if (b) { setTema(st.tema === b.dataset.tema ? null : b.dataset.tema); show(); } });
   show();
+  // termos do glossário sublinhados nos passos e nas patologias
+  document.querySelectorAll('.gpguide__body, .gppat dl').forEach(el => glossarize(el, { max: 6 }));
 
   // Links para um guia ou uma aba (submenu, "Ver o passo a passo"): mostra a aba certa e abre o guia
   // antes de o roteador das seções (script.js) rolar até ele — por isso na fase de captura
