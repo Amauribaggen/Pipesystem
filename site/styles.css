@@ -1198,3 +1198,22 @@ main:focus { outline: none; }
 .review span { flex: 1 1 180px; min-width: 0; }
 
 .art__lang { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .04em; color: #2d5fa8; background: #e5eefb; padding: .05em .5em; border-radius: 999px; }
+
+/* Calculadoras de projeto */
+.calcs__head { margin: 36px 0 16px; }
+.calcs__head h3 { color: #fff; font-size: 1.4rem; margin-bottom: .3em; }
+.calcs__head p { color: #c6d6e8; margin: 0; }
+.tools--calc { grid-template-columns: 1fr 1fr; }
+@media (max-width: 900px) { .tools--calc { grid-template-columns: 1fr; } }
+.calc__sub { margin: 0 0 8px; font-size: .8rem; color: #9fb4cc; }
+.calc__list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin-bottom: 16px; }
+.calc__list--1 { grid-template-columns: 1fr; }
+@media (max-width: 560px) { .calc__list { grid-template-columns: 1fr; } }
+.calc__row { display: flex; align-items: center; gap: 8px; font-size: .84rem; color: #dce7f2; }
+.calc__row span { flex: 1; }
+.calc__row input { width: 64px; flex: none; font: 500 .92rem var(--font); padding: .4em .5em; border-radius: 8px; border: 1px solid var(--line); background: #fff; color: var(--ink); text-align: center; }
+.calc__row--2 input + input { width: 70px; }
+.calc__cols { display: flex; gap: 8px; } .calc__cols span:first-child { flex: 1; } .calc__cols span { width: 64px; text-align: center; } .calc__cols span:last-child { width: 70px; }
+.results--4 { grid-template-columns: repeat(2, 1fr); }
+.tools--calc .results { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.tools--calc .results strong { font-size: 1.05rem; }

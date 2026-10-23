@@ -374,7 +374,7 @@
       <header class="section__head">
         <p class="eyebrow">Dimensionamento</p>
         <h2>Dimensionamento e ferramentas de cálculo</h2>
-        <p>Comece pelo Dimensionamento Inteligente: informe as características do empreendimento e receba a lista orientativa de materiais. Abaixo, calculadoras rápidas para o dia a dia. Resultados indicativos — confirme sempre com as normas aplicáveis.</p>
+        <p>Comece pelo Dimensionamento Inteligente: informe as características do empreendimento e receba a lista orientativa de materiais. Abaixo, calculadoras rápidas e as calculadoras de projeto: esgoto, calhas, gás, bombas, perdas localizadas e golpe de aríete. Resultados indicativos — confirme sempre com as normas aplicáveis.</p>
       </header>
 
       <div class="tool lmat" id="lmatTool">
@@ -792,6 +792,164 @@
             </div>
           </div>
           <p class="hint">Vazão por aparelhos: Q = 0,3 × √ΣP (pesos da NBR 5626, uso simultâneo provável). Perda de carga por Fair-Whipple-Hsiao. Resultado indicativo: confira a pressão disponível em cada ponto de utilização.</p>
+        </div>
+      </div>
+
+      <header class="calcs__head">
+        <h3>Calculadoras de projeto</h3>
+        <p>As contas do dia a dia do projetista, com as tabelas das normas. Resultados indicativos: confirme sempre com a norma completa.</p>
+      </header>
+      <div class="tools tools--calc">
+
+        <div class="tool" id="calcEsg">
+          <h3>Esgoto sanitário — unidades Hunter (NBR 8160)</h3>
+          <p class="calc__sub">Aparelhos de um pavimento (ou do conjunto ligado ao ramal)</p>
+          <div class="calc__list" id="esgAparelhos"></div>
+          <div class="form">
+            <label>Pavimentos no tubo de queda<input type="number" id="esgPav" value="4" min="1" max="60" step="1"></label>
+            <label>Declividade do coletor<select id="esgDecl"><option value="0">0,5 %</option><option value="1" selected>1 %</option><option value="2">2 %</option><option value="3">4 %</option></select></label>
+          </div>
+          <div class="results results--4">
+            <div><span>Por pavimento</span><strong id="esgUhc">—</strong></div>
+            <div><span>Ramal de esgoto</span><strong id="esgRamal">—</strong></div>
+            <div><span>Tubo de queda</span><strong id="esgQueda">—</strong></div>
+            <div><span>Coletor predial</span><strong id="esgCol">—</strong></div>
+          </div>
+          <p class="hint" id="esgHint"></p>
+        </div>
+
+        <div class="tool" id="calcCalha">
+          <h3>Calhas e condutores (NBR 10844)</h3>
+          <div class="form">
+            <label>Comprimento da água <span>m, em planta</span><input type="number" id="calA" value="8" min="0" step="0.1"></label>
+            <label>Altura da cumeeira <span>m</span><input type="number" id="calH" value="1.5" min="0" step="0.1"></label>
+            <label>Comprimento da calha <span>m</span><input type="number" id="calB" value="20" min="0" step="0.5"></label>
+            <label>Intensidade de chuva <span>mm/h</span><input type="number" id="calI" value="150" min="0" step="5"></label>
+            <label>Material da calha
+              <select id="calN">
+                <option value="0.011">Plástico, aço, fibrocimento (n 0,011)</option>
+                <option value="0.012">Ferro fundido, concreto alisado (n 0,012)</option>
+                <option value="0.013">Cerâmica, concreto não alisado (n 0,013)</option>
+              </select>
+            </label>
+            <label>Declividade da calha <span>%, mín. 0,5</span><input type="number" id="calDecl" value="0.5" min="0.5" step="0.1"></label>
+            <label>Tipo de calha
+              <select id="calTipo"><option value="semi">Semicircular</option><option value="ret">Retangular</option></select>
+            </label>
+            <label>Número de descidas<input type="number" id="calNd" value="2" min="1" step="1"></label>
+            <div class="full form" id="calRet" hidden>
+              <label>Largura da calha <span>mm</span><input type="number" id="calLarg" value="150" min="0" step="10"></label>
+              <label>Altura da calha <span>mm</span><input type="number" id="calAlt" value="100" min="0" step="10"></label>
+            </div>
+            <label class="full">Declividade dos condutores horizontais<select id="calDeclH"><option value="0">0,5 %</option><option value="1" selected>1 %</option><option value="2">2 %</option><option value="3">4 %</option></select></label>
+          </div>
+          <div class="results">
+            <div><span>Área de contribuição</span><strong id="calArea">—</strong></div>
+            <div><span>Vazão de projeto</span><strong id="calQ">—</strong></div>
+            <div><span>Calha</span><strong id="calCalha">—</strong></div>
+            <div><span>Condutores verticais</span><strong id="calCv">—</strong></div>
+            <div><span>Condutor horizontal</span><strong id="calCh">—</strong></div>
+          </div>
+          <p class="hint" id="calHint"></p>
+        </div>
+
+        <div class="tool" id="calcGas">
+          <h3>Dimensionamento de gás (NBR 15526)</h3>
+          <p class="calc__sub calc__cols"><span>Aparelho</span><span>Qtd.</span><span>kW</span></p>
+          <div class="calc__list calc__list--1" id="gasAparelhos"></div>
+          <div class="form">
+            <label>Gás
+              <select id="gasTipo"><option value="gn">Gás natural (GN)</option><option value="glp">GLP</option></select>
+            </label>
+            <label>Tubulação
+              <select id="gasMat"><option value="cobre">Cobre classe A</option><option value="aco">Aço galvanizado</option></select>
+            </label>
+            <label>Comprimento do trecho <span>m</span><input type="number" id="gasL" value="20" min="0" step="1"></label>
+            <label>Acréscimo para conexões <span>%</span><input type="number" id="gasConex" value="20" min="0" step="5"></label>
+            <label class="full">Perda de carga admitida <span>% da pressão de operação</span><input type="number" id="gasPerda" value="10" min="1" max="30" step="1"></label>
+          </div>
+          <div class="results">
+            <div><span>Potência instalada</span><strong id="gasPot">—</strong></div>
+            <div><span>Fator de simultaneidade</span><strong id="gasF">—</strong></div>
+            <div><span>Vazão de gás</span><strong id="gasQ">—</strong></div>
+            <div><span>Diâmetro mínimo</span><strong id="gasD">—</strong></div>
+            <div><span>Perda e velocidade</span><strong id="gasDp">—</strong></div>
+          </div>
+          <p class="hint" id="gasHint"></p>
+        </div>
+
+        <div class="tool" id="calcBomba">
+          <h3>Bombas — altura manométrica e NPSH</h3>
+          <div class="form">
+            <label>Vazão <span>m³/h</span><input type="number" id="bbQ" value="5" min="0" step="0.5"></label>
+            <label>Material <span>C</span>
+              <select id="bbC">
+                <option value="150">PVC / PPR (150)</option><option value="140">Cobre (140)</option><option value="130">Aço novo (130)</option>
+                <option value="120" selected>Aço galvanizado (120)</option><option value="100">Ferro fundido usado (100)</option>
+              </select>
+            </label>
+            <label>Diâmetro da sucção <span>mm interno</span><input type="number" id="bbDs" value="52" min="1" step="1"></label>
+            <label>Diâmetro do recalque <span>mm interno</span><input type="number" id="bbDr" value="41" min="1" step="1"></label>
+            <label>Altura de sucção <span>m (negativa se afogada)</span><input type="number" id="bbHs" value="2" step="0.1"></label>
+            <label>Altura de recalque <span>m</span><input type="number" id="bbHr" value="30" min="0" step="0.5"></label>
+            <label>Sucção: real + equivalente <span>m</span><input type="number" id="bbLs" value="15" min="0" step="1"></label>
+            <label>Recalque: real + equivalente <span>m</span><input type="number" id="bbLr" value="80" min="0" step="1"></label>
+            <label>Pressão na saída <span>mca</span><input type="number" id="bbPres" value="0" min="0" step="1"></label>
+            <label>Rendimento da bomba <span>%</span><input type="number" id="bbEta" value="60" min="10" max="95" step="1"></label>
+            <label>Altitude do local <span>m</span><input type="number" id="bbAlt" value="0" min="0" step="50"></label>
+            <label>Temperatura da água <span>°C</span><input type="number" id="bbT" value="25" min="0" max="90" step="1"></label>
+            <label class="full">NPSH requerido <span>m, do catálogo da bomba</span><input type="number" id="bbNpshr" value="3" min="0" step="0.1"></label>
+          </div>
+          <div class="results">
+            <div><span>Altura manométrica</span><strong id="bbHman">—</strong></div>
+            <div><span>Potência</span><strong id="bbPot">—</strong></div>
+            <div><span>NPSH</span><strong id="bbNpsh">—</strong></div>
+          </div>
+          <p class="hint" id="bbHint"></p>
+        </div>
+
+        <div class="tool" id="calcEq">
+          <h3>Comprimentos equivalentes — perdas localizadas</h3>
+          <div class="form">
+            <label>Diâmetro <select id="eqDn"></select></label>
+            <label>Comprimento real <span>m</span><input type="number" id="eqL" value="10" min="0" step="0.5"></label>
+          </div>
+          <p class="calc__sub">Quantidade de cada peça no trecho</p>
+          <div class="calc__list" id="eqPecas"></div>
+          <div class="form">
+            <label class="full">Vazão <span>L/s, opcional, para a perda de carga</span><input type="number" id="eqQ" value="0" min="0" step="0.1"></label>
+          </div>
+          <div class="results">
+            <div><span>Comprimento equivalente</span><strong id="eqLe">—</strong></div>
+            <div><span>Comprimento total</span><strong id="eqLt">—</strong></div>
+            <div><span>Perda de carga</span><strong id="eqHf">—</strong></div>
+          </div>
+          <p class="hint" id="eqHint"></p>
+        </div>
+
+        <div class="tool" id="calcGolpe">
+          <h3>Golpe de aríete</h3>
+          <div class="form">
+            <label>Material
+              <select id="gaMat">
+                <option value="aco">Aço</option><option value="dutil">Ferro fundido dúctil</option><option value="cobre">Cobre</option>
+                <option value="concreto">Concreto</option><option value="pvc" selected>PVC</option><option value="pead">PEAD</option><option value="ppr">PPR</option>
+              </select>
+            </label>
+            <label>Diâmetro interno <span>mm</span><input type="number" id="gaD" value="100" min="1" step="1"></label>
+            <label>Espessura da parede <span>mm</span><input type="number" id="gaE" value="5" min="0.1" step="0.1"></label>
+            <label>Comprimento da linha <span>m</span><input type="number" id="gaL" value="500" min="1" step="10"></label>
+            <label>Vazão <span>L/s</span><input type="number" id="gaQ" value="10" min="0" step="0.5"></label>
+            <label>Tempo de fechamento <span>s</span><input type="number" id="gaT" value="2" min="0" step="0.5"></label>
+            <label>Pressão de operação <span>mca</span><input type="number" id="gaH" value="40" min="0" step="1"></label>
+            <label>Classe da tubulação <span>mca, 0 = não verificar</span><input type="number" id="gaPN" value="75" min="0" step="5"></label>
+          </div>
+          <div class="results">
+            <div><span>Celeridade da onda</span><strong id="gaA">—</strong></div>
+            <div><span>Sobrepressão</span><strong id="gaDh">—</strong></div>
+            <div><span>Pressão máxima</span><strong id="gaPmax">—</strong></div>
+          </div>
+          <p class="hint" id="gaHint"></p>
         </div>
       </div>
 
@@ -1238,6 +1396,7 @@
 <script src="img-sizes.js"></script>
 <script src="lightbox.js"></script>
 <script src="script.js"></script>
+<script src="calculadoras.js"></script>
 <script src="fatores-conexoes.js"></script>
 <script src="normas-materiais.js"></script>
 <script src="sinapi-regras.js"></script>
