@@ -1252,12 +1252,15 @@ const ARTICLES = [
   const inner = document.querySelector('.nav__inner');
   const fits = () => inner.scrollWidth <= inner.clientWidth + 1 && root.scrollWidth <= window.innerWidth + 1;
   function fitHeader() {
-    if (matchMedia('(max-width: 1180px)').matches) { root.classList.remove('nav-tight', 'nav-collapse'); return; }
+    if (matchMedia('(max-width: 1180px)').matches) { root.classList.remove('nav-tight', 'nav-tighter', 'nav-collapse'); return; }
     const wasOpen = links.classList.contains('open');
-    root.classList.remove('nav-tight', 'nav-collapse');
+    root.classList.remove('nav-tight', 'nav-tighter', 'nav-collapse');
     if (fits()) return;
     root.classList.add('nav-tight');
     if (fits()) return;
+    root.classList.add('nav-tighter');   // sem as setinhas dos submenus (eles continuam abrindo ao passar o mouse)
+    if (fits()) return;
+    root.classList.remove('nav-tighter');
     root.classList.add('nav-collapse');
     if (!wasOpen) links.classList.remove('open');
   }
