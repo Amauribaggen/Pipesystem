@@ -210,6 +210,7 @@ function renderMaterial(m) {
       <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
     <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : fabs.some(f => f[2] === 'M') ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="#anuncie">Anuncie aqui</a>.</p>` : ''}
     ${bimBoxHTML(m.id)}
+    ${cmpLinksHTML(m.id)}
     <div class="sheet__actions">
       <a href="#contato" class="btn" data-subject="Cotação de materiais" data-question="Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) ">Solicitar cotação</a>
       <a href="#contato" class="btn btn--ghost" data-subject="Consulta técnica" data-question="Consulta sobre ${m.name}: ">Consulta técnica</a>
@@ -1032,6 +1033,7 @@ const ARTICLES = [
     const pick = (list, textOf, make) => list.filter(x => matchText(textOf(x), terms))
       .map(x => ({ ...make(x), score: matchText(make(x).title, terms) ? 2 : 0 })).sort((a, b) => b.score - a.score);
 
+    add('Comparativos', pick(CMPS, c => [c.titulo, c.tema, c.resumo, ...c.opcoes.map(o => o[0])].join(' '), c => ({ href: '/comparativos/' + c.id, title: c.titulo, sub: c.resumo })));
     add('Glossário técnico', pick(GLOSSARIO, x => [x.t, x.en, x.def, ...x.auto].join(' '), x => ({ href: '/glossario/' + x.id, title: x.t, sub: x.def })));
 
     const sysText = s => [s.name, s.desc, ...s.componentes, ...s.cuidados, ...s.normas].join(' ');
@@ -1151,7 +1153,8 @@ const ARTICLES = [
     ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc')) +
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }]),
     bim: () => group('Fabricantes', tag('#bim .bimcard', 'bim')) + group('Plataformas', tag('#bim .bimplat', 'bim')),
-    guias: () => group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo }))) +
+    guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo }))) +
+      group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo }))) +
       group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-check', label: 'Checklist de entrega' }, { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)

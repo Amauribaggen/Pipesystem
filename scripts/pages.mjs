@@ -12,9 +12,9 @@ export const BASE = 'https://www.pipesystem.com.br';
 
 // ---------- dados ----------
 export function loadData(siteDir) {
-  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js', 'bim.js', 'glossario.js'];
+  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js', 'bim.js', 'glossario.js', 'sinapi-precos.js', 'comparativos.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO });';
+    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -249,6 +249,7 @@ export function generate(D, outDir) {
         <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
       <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : misto ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="/#anuncie">Anuncie aqui</a>.</p>` : ''}
       ${D.bimBoxHTML(m.id, 'h2')}
+      ${D.cmpLinksHTML(m.id, 'h2')}
       ${mesmos.length ? `<h2 class="page__h">Outros itens de ${esc(m.cat)}</h2>${links(mesmos.map(x => [pathOf.material(x.id), x.name]))}` : ''}
       <div class="sheet__actions">
         <a href="${contato('Cotação de materiais', `Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) `)}" class="btn">Solicitar cotação</a>
@@ -316,6 +317,34 @@ export function generate(D, outDir) {
       crumbs: [...gCrumbs, { name: x.t, url }],
       ld: [{ '@type': 'DefinedTerm', '@id': BASE + url + '#termo', name: x.t, alternateName: x.en, description: plain(x.def), url: BASE + url, inDefinedTermSet: SET_ID }],
     }) });
+  }
+
+  // Comparativos: índice (/comparativos) e uma página por comparativo (/comparativos/<tema>)
+  {
+    const cCrumbs = [{ name: 'Início', url: '/' }, { name: 'Guias práticos', url: '/guias-praticos' }, { name: 'Comparativos', url: '/comparativos' }];
+    const url = '/comparativos';
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Guias práticos</p><h1 id="sheetTitle" class="page__title">Comparativos: qual material ou sistema escolher?</h1></div></div>
+      <p class="sheet__desc page__lead">Comparativos neutros, por material e sistema (sem marcas), com temperatura e pressão, vida útil, incêndio, junta, mão de obra, normas, custo de referência SINAPI e as fontes de cada dado.</p>
+      <dl class="glindex">${D.CMPS.map(c => `<div><dt><a href="/comparativos/${c.id}">${esc(c.titulo)}</a></dt><dd>${esc(c.resumo.replace(/\{\w+\}/g, ''))}</dd></div>`).join('')}</dl>
+      <div class="sheet__actions"><a href="/guias-praticos" class="btn">Ver os guias práticos</a></div>`;
+    pages.push({ url, images: [], html: page({ url, body, glossSkip: '-',
+      title: 'Comparativos de materiais e sistemas hidráulicos | PipeSystem',
+      description: cut('Qual escolher? CPVC, PPR, PEX ou cobre; PVC ou ferro fundido no esgoto; PEAD, PVC-O ou ferro dúctil; gaveta ou esfera: comparativos com fontes e custo SINAPI.', 158),
+      crumbs: cCrumbs }) });
+    for (const c of D.CMPS) {
+      const u = '/comparativos/' + c.id;
+      const outros = D.CMPS.filter(x => x.id !== c.id);
+      const body = `      <div class="sheet__head"><div><p class="eyebrow">Comparativo · ${esc(c.tema)}</p><h1 id="sheetTitle" class="page__title">${esc(c.titulo)}</h1></div></div>
+      ${D.revisaoHTML({})}
+      ${D.comparativoHTML(c, { page: true, uf: 'SC', erros: '/guias-praticos', cotacao: contato('Cotação de materiais', `Cotação (comparativo: ${c.titulo}): `) })}
+      <p class="cp-note">Custos em Santa Catarina. Na <a href="/guias-praticos">página de Guias práticos</a> você escolhe o estado.</p>
+      <h2 class="page__h">Outros comparativos</h2>${links(outros.map(x => ['/comparativos/' + x.id, x.titulo]))}`;
+      pages.push({ url: u, images: [], html: page({ url: u, body, wide: true, reviewed: D.revisaoData({}),
+        title: `${c.titulo} Comparativo | PipeSystem`,
+        description: cut(plain(c.resumo.replace(/\{\w+\}/g, '')), 158),
+        keywords: [c.tema, ...c.opcoes.map(o => o[0])].join(', '),
+        crumbs: [...cCrumbs, { name: c.titulo, url: u }] }) });
+    }
   }
 
   // Política de Privacidade e Termos de Uso

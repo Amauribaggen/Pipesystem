@@ -1016,6 +1016,24 @@
   <!-- GUIAS PRÁTICOS -->
   <section class="section" id="guias">
     <div class="container">
+      <div class="cp" id="comparativos">
+        <header class="section__head">
+          <p class="eyebrow">Guias práticos · Comparativos</p>
+          <h2>Qual material ou sistema escolher?</h2>
+          <p>Comparativos lado a lado para quem precisa decidir: temperatura e pressão, vida útil, ruído, comportamento em incêndio, resistência química, tipo de junta, mão de obra, normas e custo de referência. Cada dado traz a fonte.</p>
+        </header>
+        <div class="cp-method">
+          <div><b>Neutro</b><span>Comparamos materiais e sistemas, não marcas. Nenhum fabricante patrocina ou revisa estes textos.</span></div>
+          <div><b>Com fonte</b><span>Cada dado traz o número da referência: norma, estudo independente, ficha técnica de fabricante ou SINAPI.</span></div>
+          <div><b>Faixas, não promessas</b><span>Quando as fontes divergem, mostramos a faixa. Para projeto, vale a ficha da linha especificada e a norma em vigor.</span></div>
+          <div><b>Revisável</b><span>Fabricantes e profissionais podem enviar dado comprovado (norma, ensaio, certificação) para revisão.</span></div>
+        </div>
+        <nav class="cp-index" id="cpIndex" aria-label="Comparativos"></nav>
+        <label class="cp-ufsel">Custos de referência SINAPI no estado <select id="cpUf" aria-label="Estado dos custos de referência"></select></label>
+        <div id="cpList"></div>
+        <p class="hint">Fontes: normas técnicas (ABNT, ISO, EN, NFPA/UL), estudos independentes, fichas técnicas de fabricantes comparadas entre si e a base SINAPI da Caixa. Discorda de algum dado? <a href="#contato" class="link" data-subject="Consulta técnica" data-question="Revisão técnica de comparativo (envie a norma, o ensaio ou a certificação): ">Envie a comprovação para revisão →</a></p>
+      </div>
+
       <header class="section__head">
         <p class="eyebrow">Guias práticos</p>
         <h2>Instalação, teste e manutenção, passo a passo</h2>
@@ -1441,6 +1459,7 @@
       <a href="#bim">BIM/CAD</a>
       <a href="#guias">Guias práticos</a>
       <a href="/glossario">Glossário</a>
+      <a href="/comparativos">Comparativos</a>
       <a href="#normas">Normas</a>
       <a href="#artigos">Artigos</a>
       <a href="#feiras">Feiras</a>
@@ -1504,6 +1523,7 @@
 <script src="lightbox.js"></script>
 <script src="bim.js"></script>
 <script src="glossario.js"></script>
+<script src="comparativos.js"></script>
 <script src="guias.js"></script>
 <script src="script.js"></script>
 <script src="calculadoras.js"></script>
