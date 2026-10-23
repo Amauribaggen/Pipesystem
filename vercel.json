@@ -7,7 +7,7 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/:secao(cotacoes|sistemas|materiais|dimensionamento|normas|artigos|feiras|para-quem-e|anuncie|assinaturas|quem-somos|contato)",
+      "source": "/:secao(cotacoes|sistemas|materiais|dimensionamento|bim-cad|normas|artigos|feiras|para-quem-e|anuncie|assinaturas|quem-somos|contato)",
       "destination": "/"
     }
   ],

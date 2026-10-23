@@ -12,9 +12,9 @@ export const BASE = 'https://www.pipesystem.com.br';
 
 // ---------- dados ----------
 export function loadData(siteDir) {
-  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js'];
+  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js', 'bim.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms });';
+    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -246,6 +246,7 @@ export function generate(D, outDir) {
         : `<span class="fabs__nolink"><span class="fabs__name notranslate" translate="no">${esc(n)}</span><span class="fabs__site">site em breve</span></span>`}
         <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
       <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : misto ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="/#anuncie">Anuncie aqui</a>.</p>` : ''}
+      ${D.bimBoxHTML(m.id, 'h2')}
       ${mesmos.length ? `<h2 class="page__h">Outros itens de ${esc(m.cat)}</h2>${links(mesmos.map(x => [pathOf.material(x.id), x.name]))}` : ''}
       <div class="sheet__actions">
         <a href="${contato('Cotação de materiais', `Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) `)}" class="btn">Solicitar cotação</a>

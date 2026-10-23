@@ -108,6 +108,7 @@
       <a href="#sistemas">Sistemas</a>
       <a href="#materiais">Materiais</a>
       <a href="#ferramentas">Dimensionamento</a>
+      <a href="#bim">BIM/CAD</a>
       <a href="#normas">Normas</a>
       <a href="#artigos">Artigos</a>
       <a href="#feiras">Feiras</a>
@@ -967,6 +968,49 @@
     </div>
   </section>
 
+  <!-- BIBLIOTECA BIM/CAD -->
+  <section class="section section--alt" id="bim">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">BIM/CAD para projetistas</p>
+        <h2>Bibliotecas BIM e CAD dos fabricantes</h2>
+        <p>Onde baixar famílias Revit, objetos IFC, blocos DWG e plugins oficiais de tubos, conexões, válvulas, bombas e metais. A PipeSystem não hospeda os arquivos: indica a fonte oficial de cada fabricante, para que você use sempre a versão atualizada.</p>
+      </header>
+
+      <div class="bim__filters" role="search">
+        <input type="search" id="bimSearch" placeholder="Buscar fabricante, produto ou material (ex.: PPR, ranhurado, bomba)" aria-label="Buscar biblioteca BIM">
+        <div class="bim__chips" id="bimFmt"><span>Formato</span></div>
+        <div class="bim__chips" id="bimCat"><span>Aplicação</span></div>
+        <div class="bim__chips" id="bimOrig"><span>Origem</span></div>
+      </div>
+      <p class="bim__count" id="bimCount" aria-live="polite"></p>
+      <div class="bim__grid" id="bimGrid"></div>
+
+      <h3 class="bim__sub">Plataformas com objetos de vários fabricantes</h3>
+      <p class="bim__lead">Úteis quando o fabricante não tem biblioteca própria ou quando você precisa de um objeto genérico.</p>
+      <div class="bim__plats" id="bimPlats"></div>
+
+      <h3 class="bim__sub">Dicas para usar objetos BIM de fabricantes</h3>
+      <div class="bim__tips">
+        <p><b>Confira a versão do Revit.</b> Famílias salvas numa versão nova não abrem em versões anteriores. Alguns plugins de fabricantes só funcionam até certa versão: teste antes de começar o projeto.</p>
+        <p><b>Prefira o objeto do fabricante especificado.</b> Diâmetros, comprimentos de bolsa e perdas de carga mudam entre marcas. Se a marca ainda não foi definida, use um objeto genérico e troque depois.</p>
+        <p><b>Entregue também em IFC.</b> O IFC é o formato aberto aceito em obras públicas e lido por Revit, QiBuilder, Archicad e Navisworks, o que facilita a compatibilização com estrutura e arquitetura.</p>
+        <p><b>Siga a nomenclatura da Biblioteca Nacional BIM.</b> A Plataforma BIM BR publica uma tabela de nomenclatura de objetos. Usá-la facilita a troca de modelos com construtoras e órgãos públicos.</p>
+        <p><b>Não pese o modelo à toa.</b> Objetos muito detalhados deixam o arquivo lento. Para o projeto executivo de tubulações, a geometria simples com os parâmetros certos costuma bastar.</p>
+        <p><b>Inclua os bujões de teste.</b> No quantitativo, lembre dos bujões e tampões dos pontos de espera, usados no teste de estanqueidade (NBR 15575-6). O <a href="#lmatTool">Dimensionamento Inteligente</a> já os inclui.</p>
+      </div>
+
+      <div class="bim__cta">
+        <div>
+          <h3>Sua empresa tem biblioteca BIM?</h3>
+          <p>Fabricantes podem enviar o link da biblioteca oficial para inclusão gratuita nesta lista e nas fichas dos materiais.</p>
+        </div>
+        <a href="#contato" class="btn" data-subject="Outro assunto" data-question="Biblioteca BIM/CAD do fabricante para inclusão no portal (envie o link): ">Enviar minha biblioteca</a>
+      </div>
+      <p class="hint">Links conferidos em 23/10/2026, sem vínculo comercial com a PipeSystem. Formatos e regras de acesso podem mudar: confira na página de cada fabricante. Revit, AutoCAD e Dynamo são marcas da Autodesk.</p>
+    </div>
+  </section>
+
   <!-- NORMAS TÉCNICAS -->
   <section class="section" id="normas">
     <div class="container">
@@ -1334,6 +1378,7 @@
       <a href="#sistemas">Sistemas</a>
       <a href="#materiais">Materiais</a>
       <a href="#ferramentas">Dimensionamento</a>
+      <a href="#bim">BIM/CAD</a>
       <a href="#normas">Normas</a>
       <a href="#artigos">Artigos</a>
       <a href="#feiras">Feiras</a>
@@ -1395,6 +1440,7 @@
 <script src="catalog.js"></script>
 <script src="img-sizes.js"></script>
 <script src="lightbox.js"></script>
+<script src="bim.js"></script>
 <script src="script.js"></script>
 <script src="calculadoras.js"></script>
 <script src="fatores-conexoes.js"></script>

@@ -209,6 +209,7 @@ function renderMaterial(m) {
       : `<span class="fabs__nolink"><span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site">site em breve</span></span>`}
       <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
     <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : fabs.some(f => f[2] === 'M') ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="#anuncie">Anuncie aqui</a>.</p>` : ''}
+    ${bimBoxHTML(m.id)}
     <div class="sheet__actions">
       <a href="#contato" class="btn" data-subject="Cotação de materiais" data-question="Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) ">Solicitar cotação</a>
       <a href="#contato" class="btn btn--ghost" data-subject="Consulta técnica" data-question="Consulta sobre ${m.name}: ">Consulta técnica</a>
@@ -1147,6 +1148,7 @@ const ARTICLES = [
       group(cat, CATALOG.filter(m => m.cat === cat).map(m => ({ href: '/materiais/' + m.id.slice(4), label: m.name, attrs: ` data-sheet="${m.id}"` })))).join(''),
     ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc')) +
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }]),
+    bim: () => group('Fabricantes', tag('#bim .bimcard', 'bim')) + group('Plataformas', tag('#bim .bimplat', 'bim')),
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })))).join(''),
@@ -1324,7 +1326,7 @@ const ARTICLES = [
 // abrir /sistemas direto (link compartilhado ou F5) leva à seção, e o botão "voltar" volta à seção anterior.
 // Na Vercel, esses endereços entregam a página inicial (rewrites em vercel.json); o canonical continua "/".
 const SECTION_PATHS = {
-  servicos: 'cotacoes', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'dimensionamento',
+  servicos: 'cotacoes', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'dimensionamento', bim: 'bim-cad',
   normas: 'normas', artigos: 'artigos', feiras: 'feiras', publico: 'para-quem-e', anuncie: 'anuncie',
   assinaturas: 'assinaturas', sobre: 'quem-somos', contato: 'contato',
 };
