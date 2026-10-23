@@ -109,6 +109,7 @@
       <a href="#materiais">Materiais</a>
       <a href="#ferramentas">Dimensionamento</a>
       <a href="#bim">BIM/CAD</a>
+      <a href="#guias">Guias práticos</a>
       <a href="#normas">Normas</a>
       <a href="#artigos">Artigos</a>
       <a href="#feiras">Feiras</a>
@@ -1011,6 +1012,54 @@
     </div>
   </section>
 
+  <!-- GUIAS PRÁTICOS -->
+  <section class="section" id="guias">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">Guias práticos</p>
+        <h2>Instalação, teste e manutenção, passo a passo</h2>
+        <p>Passo a passo das tarefas que mais dão problema na obra, vídeos dos fabricantes, os erros mais comuns com causa e solução, e um checklist para entregar a instalação testada e documentada.</p>
+      </header>
+
+      <div class="gpbar">
+        <div class="gptabs" role="tablist" id="gpTabs" aria-label="Tipo de conteúdo"></div>
+        <div class="gptemas" id="gpTemas" aria-label="Filtrar por tema"></div>
+      </div>
+
+      <div class="gppanel" id="gp-guias" role="tabpanel">
+        <p class="gplead">Clique no guia para abrir. Cada um traz o que separar, as etapas, os cuidados e o vídeo do fabricante, quando houver.</p>
+        <div id="gpGuias"></div>
+      </div>
+      <div class="gppanel" id="gp-videos" role="tabpanel" hidden>
+        <p class="gplead">Selecionados dos canais oficiais dos fabricantes. O vídeo só carrega quando você clica.</p>
+        <div class="gpvgrid" id="gpVideos"></div>
+        <p class="hint">Vídeos hospedados no YouTube pelos próprios fabricantes, sem vínculo comercial com a PipeSystem. Alguns são antigos, mas o procedimento continua válido; confira sempre o manual da linha que você vai usar.</p>
+      </div>
+      <div class="gppanel" id="gp-pats" role="tabpanel" hidden>
+        <p class="gplead">O sintoma que aparece na obra ou no uso, a causa mais provável e como evitar ou corrigir. A gravidade indica o risco de dano ou de retrabalho.</p>
+        <div class="gppgrid" id="gpPats"></div>
+      </div>
+      <div class="gppanel" id="gp-check" role="tabpanel" hidden>
+        <p class="gplead">Para fechar a obra com tudo testado e documentado, como pedem a NBR 15575-6 (desempenho) e a NBR 14037 (manual de uso e manutenção). Marque e imprima.</p>
+        <div class="gpcheck" id="gpCheck"></div>
+      </div>
+
+      <div class="gpcta">
+        <div>
+          <h3>Fabricante: publique seu guia</h3>
+          <p>Guias e vídeos de instalação do fabricante podem entrar aqui com o selo "Conteúdo do fabricante", revisados pela Equipe Técnica PipeSystem.</p>
+          <a href="#anuncie" class="btn">Quero publicar</a>
+        </div>
+        <div>
+          <h3>Não achou o que precisava?</h3>
+          <p>Mande sua dúvida de instalação. As perguntas mais frequentes viram novos guias.</p>
+          <a href="#contato" class="btn btn--ghost" data-subject="Consulta técnica" data-question="Dúvida de instalação (sugestão de guia prático): ">Enviar dúvida</a>
+        </div>
+      </div>
+      <p class="hint">Conteúdo orientativo, revisado pela Equipe Técnica PipeSystem. Não substitui o projeto, as normas técnicas e o manual do fabricante. Serviços em redes de gás exigem profissional habilitado.</p>
+    </div>
+  </section>
+
   <!-- NORMAS TÉCNICAS -->
   <section class="section" id="normas">
     <div class="container">
@@ -1379,6 +1428,7 @@
       <a href="#materiais">Materiais</a>
       <a href="#ferramentas">Dimensionamento</a>
       <a href="#bim">BIM/CAD</a>
+      <a href="#guias">Guias práticos</a>
       <a href="#normas">Normas</a>
       <a href="#artigos">Artigos</a>
       <a href="#feiras">Feiras</a>
@@ -1441,6 +1491,7 @@
 <script src="img-sizes.js"></script>
 <script src="lightbox.js"></script>
 <script src="bim.js"></script>
+<script src="guias.js"></script>
 <script src="script.js"></script>
 <script src="calculadoras.js"></script>
 <script src="fatores-conexoes.js"></script>

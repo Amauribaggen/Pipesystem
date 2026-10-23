@@ -1149,6 +1149,8 @@ const ARTICLES = [
     ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc')) +
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }]),
     bim: () => group('Fabricantes', tag('#bim .bimcard', 'bim')) + group('Plataformas', tag('#bim .bimplat', 'bim')),
+    guias: () => group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo }))) +
+      group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-check', label: 'Checklist de entrega' }]),
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })))).join(''),
@@ -1326,7 +1328,7 @@ const ARTICLES = [
 // abrir /sistemas direto (link compartilhado ou F5) leva à seção, e o botão "voltar" volta à seção anterior.
 // Na Vercel, esses endereços entregam a página inicial (rewrites em vercel.json); o canonical continua "/".
 const SECTION_PATHS = {
-  servicos: 'cotacoes', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'dimensionamento', bim: 'bim-cad',
+  servicos: 'cotacoes', sistemas: 'sistemas', materiais: 'materiais', ferramentas: 'dimensionamento', bim: 'bim-cad', guias: 'guias-praticos',
   normas: 'normas', artigos: 'artigos', feiras: 'feiras', publico: 'para-quem-e', anuncie: 'anuncie',
   assinaturas: 'assinaturas', sobre: 'quem-somos', contato: 'contato',
 };
