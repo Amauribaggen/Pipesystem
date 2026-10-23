@@ -1086,19 +1086,27 @@
     setTimeout(() => { e.target.textContent = 'Copiar'; }, 2000);
   });
   // ---------- Planilha Excel (.xlsx) com preço unitário e totais ----------
-  // ZIP sem compressão + SpreadsheetML mínimo; fórmulas gravadas em inglês, válidas em qualquer idioma do Excel.
+  // ZIP com compressão deflate (como o Excel grava) + SpreadsheetML com propriedades do documento; fórmulas em inglês,
+  // válidas em qualquer idioma do Excel. Um .xlsx "fora do padrão" (sem compressão, sem data, sem docProps) era
+  // marcado como suspeito por antivírus ao ser baixado.
   const crcTable = Array.from({ length: 256 }, (_, n) => { for (let k = 0; k < 8; k++) n = n & 1 ? 0xEDB88320 ^ (n >>> 1) : n >>> 1; return n >>> 0; });
   const crc32 = b => { let c = 0xFFFFFFFF; for (const x of b) c = crcTable[(c ^ x) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
-  function zip(files) {
+  const deflate = async d => typeof CompressionStream === 'undefined' ? null
+    : new Uint8Array(await new Response(new Blob([d]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer());
+  async function zip(files) {
     const enc = new TextEncoder(), parts = [], dir = [];
+    const now = new Date();
+    const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
+    const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
     let off = 0;
     for (const [name, text] of files) {
-      const n = enc.encode(name), d = enc.encode(text), crc = crc32(d);
+      const n = enc.encode(name), raw = enc.encode(text), crc = crc32(raw);
+      const z = await deflate(raw).catch(() => null), d = z || raw, method = z ? 8 : 0;
       const h = new DataView(new ArrayBuffer(30));
-      [[0, 0x04034b50, 4], [4, 20, 2], [6, 0x0800, 2], [12, 33, 2], [14, crc, 4], [18, d.length, 4], [22, d.length, 4], [26, n.length, 2]]
+      [[0, 0x04034b50, 4], [4, 20, 2], [6, 0x0800, 2], [8, method, 2], [10, dosTime, 2], [12, dosDate, 2], [14, crc, 4], [18, d.length, 4], [22, raw.length, 4], [26, n.length, 2]]
         .forEach(([o, v, s]) => s === 4 ? h.setUint32(o, v, true) : h.setUint16(o, v, true));
       const c = new DataView(new ArrayBuffer(46));
-      [[0, 0x02014b50, 4], [4, 20, 2], [6, 20, 2], [8, 0x0800, 2], [14, 33, 2], [16, crc, 4], [20, d.length, 4], [24, d.length, 4], [28, n.length, 2], [42, off, 4]]
+      [[0, 0x02014b50, 4], [4, 20, 2], [6, 20, 2], [8, 0x0800, 2], [10, method, 2], [12, dosTime, 2], [14, dosDate, 2], [16, crc, 4], [20, d.length, 4], [24, raw.length, 4], [28, n.length, 2], [42, off, 4]]
         .forEach(([o, v, s]) => s === 4 ? c.setUint32(o, v, true) : c.setUint16(o, v, true));
       parts.push(h, n, d); dir.push(c, n); off += 30 + n.length + d.length;
     }
@@ -1153,21 +1161,27 @@
       `<xf numFmtId="164" fillId="3" borderId="1" applyNumberFormat="1" applyFill="1" applyBorder="1"><protection locked="0"/></xf>` +
       `<xf numFmtId="164" applyNumberFormat="1"/><xf fontId="2" fillId="2" applyFont="1" applyFill="1"/>` +
       `<xf numFmtId="164" fontId="2" fillId="2" applyNumberFormat="1" applyFont="1" applyFill="1"/><xf fontId="3" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+    const iso = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
     return zip([
-      ['[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`],
-      ['_rels/.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+      ['[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>`],
+      ['_rels/.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`],
+      ['docProps/core.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${xe('Lista de materiais — ' + title)}</dc:title><dc:creator>PipeSystem</dc:creator><cp:lastModifiedBy>PipeSystem</cp:lastModifiedBy><dcterms:created xsi:type="dcterms:W3CDTF">${iso}</dcterms:created><dcterms:modified xsi:type="dcterms:W3CDTF">${iso}</dcterms:modified></cp:coreProperties>`],
+      ['docProps/app.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>PipeSystem</Application><Company>PipeSystem</Company><DocSecurity>0</DocSecurity></Properties>`],
       ['xl/workbook.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Cotação" sheetId="1" r:id="rId1"/></sheets><calcPr fullCalcOnLoad="1"/></workbook>`],
       ['xl/_rels/workbook.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
       ['xl/worksheets/sheet1.xml', sheet],
       ['xl/styles.xml', styles],
     ]);
   }
-  const downloadXlsx = () => {
+  // a planilha é gerada de forma assíncrona (compressão): baixa quando fica pronta
+  async function saveFile(blob, name) {
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(xlsx());
-    a.download = 'dimensionamento-inteligente-pipesystem.xlsx';
-    a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  };
+    a.href = URL.createObjectURL(await blob);
+    a.download = name;
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+  const downloadXlsx = () => saveFile(xlsx(), 'dimensionamento-inteligente-pipesystem.xlsx');
   $('lmCsv').addEventListener('click', downloadXlsx);
 
   // ---------- Preços SINAPI por estado ----------
@@ -1252,10 +1266,7 @@
     $('lmUf').addEventListener('change', () => { try { localStorage.setItem('lmUf', $('lmUf').value); } catch {} renderSinapi(); });
     $('lmSinXlsx').addEventListener('click', () => {
       const uf = $('lmUf').value; if (!uf || !last) return;
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(xlsx({ uf, prices: priceList(uf) }));
-      a.download = `dimensionamento-inteligente-pipesystem-sinapi-${uf}.xlsx`;
-      a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      saveFile(xlsx({ uf, prices: priceList(uf) }), `dimensionamento-inteligente-pipesystem-sinapi-${uf}.xlsx`);
     });
   }
   window.lmatXlsx = () => last && downloadXlsx();   // usado pelo formulário de contato quando a lista não cabe no e-mail
@@ -1263,7 +1274,8 @@
   window.lmatApi = {
     last: () => last,
     price: (name, uf) => HAS_SINAPI ? priceOf(name, uf) : null,
-    xlsx: (data, sin, title) => xlsx(sin, data, title),
+    xlsx: (data, sin, title) => xlsx(sin, data, title),   // devolve uma Promise<Blob>
+    save: saveFile,
     ufs: () => HAS_SINAPI ? SINAPI_PRECOS.ufs.map(u => [u, UF_NOMES[u] || u]) : [],
     ref: () => HAS_SINAPI ? SINAPI_PRECOS.ref : '',
   };

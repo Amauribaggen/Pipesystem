@@ -304,10 +304,7 @@
   $('lmValXlsx').addEventListener('click', () => {
     const uf = ufSel.value; if (!uf || !res?.itens) return;
     const { data, prices } = priced(uf);
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(window.lmatApi.xlsx(data, { uf, prices }, `lista validada (${res.fileName})`));
-    a.download = `lista-validada-pipesystem-${uf}.xlsx`;
-    a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    window.lmatApi.save(window.lmatApi.xlsx(data, { uf, prices }, `lista validada (${res.fileName})`), `lista-validada-pipesystem-${uf}.xlsx`);
   });
   // modelo de planilha para quem não tem exportação pronta
   $('lmValModelo').addEventListener('click', () => {
