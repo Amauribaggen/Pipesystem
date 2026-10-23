@@ -988,6 +988,7 @@
 
     if (hasGas && gas === 'p13' && !casa) warn.push('Botijão P13 dentro de apartamentos não é aceito pela maioria dos Corpos de Bombeiros em edifícios novos: prefira gás natural ou GLP em central.');
     if (aq === 'gas' && !hasGas) warn.push('O aquecedor a gás precisa de gás: escolha gás natural, GLP ou botijão.');
+    warn.push('NBR 15575-6 (desempenho): nas edificações habitacionais, as instalações hidrossanitárias devem ter vida útil de projeto mínima de 20 anos, estanqueidade comprovada por teste, separação entre água potável e não potável, água quente em temperatura segura e acesso para manutenção. Registre os testes e entregue o manual de uso e manutenção (NBR 14037).');
     if (aq === 'central') warn.push('Aquecimento central ou solar: a lista inclui só a distribuição dentro das unidades. Boiler, coletores e recirculação devem ser dimensionados à parte.');
 
     // Consumíveis e fixação

@@ -42,6 +42,12 @@ const NORM_GROUPS = [
     { code: 'NBR 16069', org: 'ABNT', title: 'Segurança em sistemas frigoríficos', note: 'No Dimensionamento Inteligente: refrigeração com amônia.' },
   ]},
   // ---------- Por aplicação ----------
+  { id: 'desempenho', tipo: 'aplicacao', name: 'Desempenho de edificações (NBR 15575)', normas: [
+    { code: 'NBR 15575-6', org: 'ABNT', title: 'Edificações habitacionais — Desempenho — Parte 6: Requisitos para os sistemas hidrossanitários', note: 'A norma pela qual construtoras e incorporadoras respondem pelas instalações: estanqueidade das redes de água e esgoto, separação entre água potável e não potável, temperatura segura da água quente, ruído dos equipamentos, acesso para manutenção e vida útil de projeto (VUP) mínima de 20 anos para o sistema hidrossanitário.' },
+    { code: 'NBR 15575-1', org: 'ABNT', title: 'Edificações habitacionais — Desempenho — Parte 1: Requisitos gerais', note: 'Define a vida útil de projeto (VUP) de cada sistema da edificação e os prazos de garantia recomendados.' },
+    { code: 'NBR 14037', org: 'ABNT', title: 'Diretrizes para elaboração de manuais de uso, operação e manutenção das edificações — Requisitos para elaboração e apresentação dos conteúdos', note: 'Manual do proprietário e das áreas comuns, entregue com o imóvel, com as instalações hidrossanitárias, os cuidados de uso e as garantias.' },
+    { code: 'NBR 5674', org: 'ABNT', title: 'Manutenção de edificações — Requisitos para o sistema de gestão de manutenção', note: 'Plano de manutenção preventiva do prédio. Sem manutenção registrada, a construtora pode deixar de responder por defeitos causados pela falta dela.' },
+  ] },
   { id: 'agua', tipo: 'aplicacao', name: 'Água fria e quente predial', normas: [
     { code: 'NBR 5626', org: 'ABNT', title: 'Sistemas prediais de água fria e água quente — Projeto, execução, operação e manutenção', note: 'Norma-base das instalações hidráulicas prediais: pressões, vazões, dimensionamento e materiais.' },
     { code: 'NBR 15569', org: 'ABNT', title: 'Sistema de aquecimento solar de água em circuito direto — Requisitos de projeto e instalação' },
