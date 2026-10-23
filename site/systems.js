@@ -7,7 +7,7 @@ const SYSTEMS = [
     componentes: ['Reservatórios inferior e superior', 'Barrilete, colunas e ramais de distribuição', 'Registros de gaveta e de pressão', 'Aquecedor e rede de água quente com isolamento térmico', 'Válvulas redutoras de pressão em edifícios altos'],
     cuidados: ['Pressão estática de até 400 kPa (40 mca) nos pontos de utilização', 'Velocidades moderadas, para evitar ruído e golpe de aríete', 'Materiais próprios para água quente: CPVC, PPR, PEX ou cobre', 'Ensaio de estanqueidade antes de fechar paredes e forros'],
     normas: ['NBR 5626', 'NBR 15569'],
-    produtos: ['tubos-pvc', 'tubos-cpvc', 'tubos-cobre', 'conexoes-cpvc', 'registros-latao'],
+    produtos: ['tubos-pvc', 'tubos-cpvc', 'tubos-cobre', 'conexoes-cpvc', 'registros-latao', 'mat-ppr', 'mat-multicamada', 'mat-reservatorios', 'mat-pressurizadores', 'mat-isolamento'],
     svg: `<rect class="b" x="16" y="12" width="74" height="30" rx="4"/><text x="53" y="31">Reservatório</text>
       <path class="p" d="M90 27H210V150"/><path class="p" d="M210 75H288M210 130H288"/>
       <circle class="b" cx="296" cy="75" r="7"/><rect class="b" x="288" y="122" width="16" height="26" rx="3"/>
@@ -21,7 +21,7 @@ const SYSTEMS = [
     componentes: ['Coletores solares planos ou de tubos a vácuo', 'Reservatório térmico (boiler) de baixa ou alta pressão', 'Caixa d’água fria de alimentação', 'Bomba e controlador diferencial (circulação forçada)', 'Aquecimento de apoio elétrico ou a gás', 'Tubulação de cobre, CPVC ou PPR com isolamento térmico'],
     cuidados: ['Coletores voltados para o norte, com inclinação próxima à latitude do local mais 10°', 'Respiro e válvula de alívio de pressão e temperatura no reservatório', 'Materiais que suportem 80 °C ou mais nas linhas de água quente', 'Isolamento térmico contínuo nas tubulações quentes', 'Proteção contra superaquecimento e, em regiões frias, contra congelamento'],
     normas: ['NBR 15569', 'NBR 15747-1', 'NBR 5626'],
-    produtos: ['tubos-cobre', 'tubos-cpvc', 'conexoes-cpvc', 'caldeiras', 'bombas', 'valvulas'],
+    produtos: ['tubos-cobre', 'tubos-cpvc', 'conexoes-cpvc', 'caldeiras', 'bombas', 'valvulas', 'mat-solar', 'mat-ppr', 'mat-isolamento', 'mat-reservatorios'],
     svg: `<circle cx="140" cy="14" r="8" fill="#f5b700"/>
       <path class="b" d="M10 70L90 30L170 70"/><rect class="b" x="20" y="70" width="150" height="70"/>
       <rect class="b" x="40" y="34" width="44" height="14" rx="2" transform="rotate(-27 62 41)"/><text x="62" y="18">Coletores</text>
@@ -65,7 +65,7 @@ const SYSTEMS = [
     componentes: ['Reserva técnica de incêndio', 'Bomba principal, bomba jockey e, quando exigida, bomba a combustão', 'Rede em aço com conexões ranhuradas ou roscadas', 'Hidrantes, mangueiras e esguichos', 'Sprinklers, válvula de governo e alarme', 'Registro de recalque no passeio'],
     cuidados: ['Projeto aprovado pelo Corpo de Bombeiros', 'Pressão e vazão mínimas no hidrante mais desfavorável', 'Inspeções e testes periódicos de bombas e válvulas', 'Tubulação aparente identificada em vermelho'],
     normas: ['NBR 13714', 'NBR 10897', 'NFPA 13', 'NFPA 20'],
-    produtos: ['tubos-aco', 'conexoes-ranhuradas', 'sprinklers', 'bombas', 'valvulas'],
+    produtos: ['tubos-aco', 'conexoes-ranhuradas', 'sprinklers', 'bombas', 'valvulas', 'mat-hidrantes', 'mat-reservatorios'],
     svg: `<rect class="b" x="14" y="14" width="76" height="40" rx="4"/><text x="52" y="38">Reservatório</text>
       <path class="p" d="M60 54V106M74 120H120V30H300M170 30V46M220 30V46M270 30V46M120 120H232"/>
       <circle class="b" cx="60" cy="120" r="14"/><text x="60" y="152">Bomba</text>
@@ -77,7 +77,7 @@ const SYSTEMS = [
     componentes: ['Caldeira e tratamento da água de alimentação', 'Linhas de vapor em aço-carbono sem costura', 'Purgadores, filtros Y e visores', 'Válvulas redutoras de pressão e de segurança', 'Rede de retorno de condensado', 'Isolamento térmico'],
     cuidados: ['Inclinação das linhas no sentido do fluxo, com pontos de drenagem', 'Dimensionamento por velocidade e perda de pressão', 'Absorver a dilatação com liras ou juntas de expansão', 'Caldeiras e vasos sob a NR-13: inspeção e operador qualificado'],
     normas: ['NR-13', 'ASME B31.1', 'ASME B31.3'],
-    produtos: ['caldeiras', 'tubos-aco', 'conexoes-forjadas', 'flanges', 'purgadores', 'juntas-vedacao'],
+    produtos: ['caldeiras', 'tubos-aco', 'conexoes-forjadas', 'flanges', 'purgadores', 'juntas-vedacao', 'mat-isolamento'],
     svg: `<rect class="b" x="14" y="70" width="70" height="50" rx="14"/><text x="49" y="99">Caldeira</text>
       <path class="p" d="M84 80H150V40H258V70"/><path class="p" d="M190 40V60"/>
       <rect class="b" x="184" y="60" width="12" height="12" rx="2"/><text class="s" x="200" y="70">Purgador</text>
@@ -145,7 +145,7 @@ const SYSTEMS = [
     componentes: ['Adutoras em ferro fundido dúctil, PEAD, PVC DEFoFo ou aço', 'Estações elevatórias de água e de esgoto', 'Válvulas de gaveta, borboleta, retenção e ventosas', 'Reservatórios de distribuição', 'Poços de visita e redes coletoras', 'Macro e micromedição'],
     cuidados: ['Proteção contra transientes hidráulicos (golpe de aríete)', 'Controle de perdas e estanqueidade das redes', 'Declividade e profundidade mínimas nas redes de esgoto', 'Materiais aprovados para contato com água potável'],
     normas: ['NBR 12218', 'NBR 12215', 'NBR 9649'],
-    produtos: ['tubos-pvc', 'conexoes-pvc', 'valvulas', 'bombas', 'flanges', 'juntas-vedacao'],
+    produtos: ['tubos-pvc', 'conexoes-pvc', 'valvulas', 'bombas', 'flanges', 'juntas-vedacao', 'mat-ventosas'],
     svg: `<path class="p2" d="M8 124q10-6 20 0t20 0t20 0"/><text x="38" y="112">Rio</text>
       <path class="p" d="M30 120V58H60M116 58H130V48H148M206 48H240V100H306"/>
       <rect class="b" x="60" y="40" width="56" height="36" rx="4"/><text x="88" y="62">ETA</text>
@@ -160,7 +160,7 @@ const SYSTEMS = [
     componentes: ['Compressor, condensador, evaporador e dispositivo de expansão', 'Linhas de líquido e de sucção em cobre', 'Isolamento elastomérico na linha de sucção', 'Em água gelada: bombas, tubulação de aço ou PPR e válvulas de balanceamento'],
     cuidados: ['Brasagem com passagem de nitrogênio, para evitar oxidação interna', 'Teste de pressão com nitrogênio e vácuo antes da carga de refrigerante', 'Garantir o retorno de óleo (inclinação e sifões)', 'Isolamento contínuo para evitar condensação'],
     normas: ['NBR 16401', 'NBR 16069', 'ASHRAE 15'],
-    produtos: ['tubos-cobre', 'conexoes-cobre', 'bombas', 'valvulas', 'filtros'],
+    produtos: ['tubos-cobre', 'conexoes-cobre', 'bombas', 'valvulas', 'filtros', 'mat-isolamento'],
     svg: `<circle class="b" cx="60" cy="120" r="16"/><text x="60" y="154">Compressor</text>
       <rect class="b" x="40" y="20" width="80" height="30" rx="4"/><text x="80" y="39">Condensador</text>
       <path class="b" d="M240 25l10 10l-10 10l-10-10z"/><text x="240" y="62">Expansão</text>
@@ -187,7 +187,7 @@ const SYSTEMS = [
     componentes: ['Conjuntos motobomba titular e reserva', 'Sucção afogada ou com válvula de pé', 'Recalque com válvula de retenção e registro', 'Tratamento: filtros e abrandadores', 'Manômetros e medidores de vazão', 'Reservatório elevado'],
     cuidados: ['NPSH disponível suficiente; sucção curta e sem bolsas de ar', 'Velocidade econômica na linha de recalque', 'Proteção contra golpe de aríete na parada da bomba', 'Alternância periódica entre as bombas titular e reserva'],
     normas: ['NBR 12214', 'NBR 5626', 'ISO 9906'],
-    produtos: ['bombas', 'valvulas', 'manometros', 'filtros', 'tubos-aco', 'flanges'],
+    produtos: ['bombas', 'valvulas', 'manometros', 'filtros', 'tubos-aco', 'flanges', 'mat-ventosas', 'mat-reservatorios'],
     svg: `<rect class="b" x="14" y="110" width="70" height="40" rx="4"/><text x="49" y="134">Inferior</text>
       <circle class="b" cx="120" cy="130" r="14"/><text x="120" y="162">Bomba</text>
       <path class="p" d="M84 130H106M134 130H170V40H230"/>
@@ -214,7 +214,7 @@ const SYSTEMS = [
     componentes: ['Tubos de ferro fundido dúctil, aço, PEAD ou PRFV', 'Estações elevatórias e boosters de pressão', 'Válvulas de bloqueio (borboleta e gaveta), de retenção e de controle', 'Ventosas nos pontos altos e descargas nos pontos baixos', 'Blocos de ancoragem em curvas, tês, reduções e extremidades', 'Macromedidores de vazão e transmissores de pressão'],
     cuidados: ['Proteção contra golpe de aríete: tanques de alívio, válvulas antecipadoras e partida e parada suaves das bombas', 'Ventosas bem dimensionadas para expulsar e admitir ar', 'Proteção contra corrosão nos tubos metálicos: revestimentos e proteção catódica', 'Teste hidrostático por trechos antes de entrar em operação', 'Faixa de servidão e sinalização dos dutos enterrados'],
     normas: ['NBR 12215', 'NBR 12211', 'NBR 7675', 'ASME B31.4', 'ASME B31.8'],
-    produtos: ['mat-ferro', 'tubos-aco', 'mat-pe', 'valvulas', 'flanges', 'bombas', 'juntas-vedacao'],
+    produtos: ['mat-ferro', 'tubos-aco', 'mat-pe', 'valvulas', 'flanges', 'bombas', 'juntas-vedacao', 'mat-ventosas'],
     svg: `<path class="b dash" d="M8 154H60C96 154 112 112 146 110S196 132 222 116S270 76 312 74"/>
       <path class="p2" d="M8 146q8-5 16 0t16 0"/><text x="28" y="166">Captação</text>
       <circle class="b" cx="66" cy="138" r="11"/><text x="66" y="118">Elevatória</text>
@@ -231,7 +231,7 @@ const SYSTEMS = [
     componentes: ['Colar de tomada e ramal em PEAD ou PVC', 'Cavalete com registro, hidrômetro e válvula de retenção', 'Caixa de proteção do hidrômetro', 'Alimentador predial e torneira de boia', 'Ligação de esgoto com caixa de inspeção'],
     cuidados: ['Seguir o padrão de ligação da concessionária local', 'Cavalete acessível para leitura e manutenção', 'Proteção contra refluxo para a rede pública', 'Medição individualizada em condomínios'],
     normas: ['NBR 5626', 'NBR 8160', 'Padrão da concessionária'],
-    produtos: ['suportes', 'registros-latao', 'tubos-pvc', 'conexoes-pvc', 'valvulas'],
+    produtos: ['suportes', 'registros-latao', 'tubos-pvc', 'conexoes-pvc', 'valvulas', 'mat-reservatorios', 'mat-pressurizadores'],
     svg: `<path class="p" d="M10 150H120"/><text x="60" y="166">Rede pública</text>
       <path class="p" d="M90 150V110H150V80H190V110H230V33H256"/>
       <rect class="b dash" x="140" y="56" width="60" height="68" rx="4"/>
@@ -244,7 +244,7 @@ const SYSTEMS = [
     componentes: ['Ramais de descarga e de esgoto', 'Tubos de queda', 'Caixas sifonadas, ralos e caixas de gordura', 'Ventilação primária e secundária', 'Caixas de inspeção e subcoletores'],
     cuidados: ['Declividade mínima: 2% para diâmetros até 75 mm e 1% a partir de 100 mm', 'Ventilação adequada para não romper o fecho hídrico', 'Separação entre esgoto sanitário e águas pluviais', 'Acesso para inspeção e desobstrução'],
     normas: ['NBR 8160', 'NBR 10844', 'NBR 17076'],
-    produtos: ['tubos-pvc', 'conexoes-pvc', 'vedantes', 'suportes'],
+    produtos: ['tubos-pvc', 'conexoes-pvc', 'vedantes', 'suportes', 'mat-ralos', 'mat-smu'],
     svg: `<path class="p thin" d="M200 14V2"/><text class="s" x="208" y="12">Ventilação</text>
       <path class="pe" d="M200 14V140H270M294 140H310M120 56L200 64M120 106L200 114"/>
       <rect class="b" x="96" y="46" width="24" height="18" rx="6"/><rect class="b" x="96" y="96" width="24" height="18" rx="6"/>
@@ -257,7 +257,7 @@ const SYSTEMS = [
     componentes: ['Calhas e rufos', 'Condutores verticais e horizontais, em geral de PVC', 'Ralos e grelhas com proteção contra folhas', 'Filtro e dispositivo de descarte da primeira chuva', 'Cisterna, bomba e reservatório superior exclusivo para a água de reúso', 'Extravasor e caixas de inspeção'],
     cuidados: ['Calhas e condutores dimensionados pela intensidade de chuva do local', 'Águas pluviais nunca ligadas à rede de esgoto', 'Rede de água de chuva separada e identificada, sem ligação com a rede potável', 'Torneiras de uso restrito, com aviso de água não potável', 'Limpeza periódica de calhas, filtros e cisterna'],
     normas: ['NBR 10844', 'NBR 15527', 'NBR 5626'],
-    produtos: ['tubos-pvc', 'conexoes-pvc', 'filtros', 'bombas', 'suportes'],
+    produtos: ['tubos-pvc', 'conexoes-pvc', 'filtros', 'bombas', 'suportes', 'mat-ralos', 'mat-reservatorios'],
     svg: `<g class="drip"><circle cx="40" cy="10" r="2"/><circle cx="70" cy="6" r="2"/><circle cx="100" cy="12" r="2"/><circle cx="125" cy="8" r="2"/></g>
       <path class="b" d="M20 60L80 24L140 60Z"/><rect class="b" x="30" y="60" width="100" height="68"/>
       <path class="b dash" d="M8 128H312"/>

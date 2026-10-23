@@ -173,7 +173,8 @@ function renderSystem(s) {
 const materialById = Object.fromEntries(CATALOG.map(m => [m.id, m]));
 
 function renderMaterial(m) {
-  const p = productById[m.rel];        // ficha técnica completa (fotos, tipos, como escolher, tabelas)
+  // ficha técnica completa (fotos, tipos, como escolher, tabelas): do antigo guia (products.js) ou do próprio item do catálogo
+  const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [] } : null);
   const veja = materialById[m.veja];   // item principal que traz a visão geral (ex.: comparativo de válvulas)
   const normas = [...new Set([...m.normas, ...(p ? p.normas : [])])];
   const fabs = MANUFACTURERS[m.id] || [];
@@ -1002,7 +1003,7 @@ const ARTICLES = [
     const sysText = s => [s.name, s.desc, ...s.componentes, ...s.cuidados, ...s.normas].join(' ');
     add('Áreas de aplicação', pick(SYSTEMS, sysText, s => ({ href: '/sistemas/' + s.id.slice(4), sheet: s.id, title: s.name, sub: snippet(sysText(s), terms, s.desc) })));
 
-    const matText = m => { const p = productById[m.rel] || { tipos: [], escolha: [], normas: [], desc: '' };
+    const matText = m => { const p = productById[m.rel] || { tipos: m.tipos || [], escolha: m.escolha || [], normas: [], desc: '' };
       return [m.cat, m.name, m.apps, m.desc, p.desc, ...m.normas, ...p.normas, ...p.tipos, ...p.escolha, ...m.specs.flat(), ...(MANUFACTURERS[m.id] || []).map(f => f[0])].join(' '); };
     add('Produtos e materiais', pick(CATALOG, matText, m => ({ href: '/materiais/' + m.id.slice(4), sheet: m.id, title: m.name, sub: snippet(matText(m), terms, m.apps) })),
       { label: 'Ver no catálogo', run: () => { searchCatalog(q); goTo('materiais'); } });
