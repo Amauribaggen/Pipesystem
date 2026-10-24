@@ -268,10 +268,149 @@ const SYSTEMS = [
       <circle class="b" cx="294" cy="110" r="8"/>
       <path class="p2" d="M278 130H294V118M294 102V40H260"/>
       <rect class="b" x="226" y="26" width="34" height="24" rx="3"/><text x="243" y="18">Reúso</text>` },
+  // ----- Áreas acrescentadas em 24/10/2026 (revisão do menu Sistemas) -----
+  { id: 'sis-agua-gelada', name: 'Climatização por água gelada', color: '#4fc3f7',
+    desc: 'Em shoppings, hospitais, prédios comerciais e data centers, um chiller resfria a água, que circula por bombas até os fan-coils e climatizadores dos ambientes. A água volta mais quente ao chiller, e o calor retirado é rejeitado por uma torre de resfriamento (condensação a água) ou pelo ar.',
+    componentes: ['Chiller resfriado a água ou a ar', 'Bombas de água gelada (primárias e secundárias) e de condensação', 'Fan-coils e climatizadores', 'Torre de resfriamento', 'Vaso de expansão, reposição e purgadores de ar', 'Válvulas de balanceamento e de controle (2 ou 3 vias)', 'Isolamento térmico com barreira de vapor'],
+    cuidados: ['Isolamento com barreira de vapor em toda a rede fria, para não condensar', 'Tratamento químico da água da torre contra incrustação, corrosão e Legionella', 'Balanceamento hidráulico dos circuitos', 'Juntas antivibração nas bombas e no chiller', 'Filtros e purga de ar nos pontos altos'],
+    normas: ['NBR 16401', 'NBR 13971'],
+    produtos: ['mat-bombas', 'mat-borboleta', 'mat-ranhurado', 'mat-isolamento', 'mat-vasos-expansao', 'mat-juntas-expansao', 'mat-aco', 'mat-filtros'],
+    svg: `<rect class="b" x="14" y="92" width="70" height="44" rx="4"/><text x="49" y="118">Chiller</text>
+      <rect class="b" x="18" y="18" width="62" height="34" rx="4"/><text x="49" y="39">Torre</text>
+      <path class="p2" d="M60 52V92M38 92V52"/>
+      <circle class="b" cx="120" cy="114" r="10"/><text x="120" y="146">Bomba</text>
+      <path class="p" d="M84 114H110M130 114H290V40"/>
+      <path class="p thin" d="M84 126H300V40"/>
+      <rect class="b" x="180" y="30" width="44" height="26" rx="3"/><text x="202" y="47">Fan-coil</text>
+      <rect class="b" x="256" y="30" width="44" height="26" rx="3"/><text x="278" y="47">Fan-coil</text>
+      <path class="p" d="M202 56V114M278 56V114"/><text class="s" x="150" y="104">Água gelada 7 °C</text>` },
+  { id: 'sis-piscinas', name: 'Piscinas, spas e áreas aquáticas', color: '#29b6f6',
+    desc: 'A motobomba aspira a água pelo ralo de fundo, pelos skimmers e pela tomada de aspiração, passa por um pré-filtro e pelo filtro (areia ou cartucho), pelo aquecimento e pela dosagem de cloro, e devolve a água pelos retornos. O conjunto fica numa casa de máquinas próxima.',
+    componentes: ['Ralos de fundo com grelha anti-aprisionamento', 'Skimmers e tomada de aspiração', 'Motobomba com pré-filtro', 'Filtro de areia ou de cartucho com válvula seletora', 'Aquecimento solar, bomba de calor ou trocador', 'Dosagem ou geração de cloro', 'Dispositivos de retorno'],
+    cuidados: ['Proteção contra sucção: grelhas anti-aprisionamento e mais de uma tomada por bomba', 'Recirculação dimensionada pelo volume e pelo uso da piscina', 'Bomba abaixo do nível da água ou autoescorvante', 'Equipotencialização e proteção elétrica da casa de máquinas', 'Controle diário de pH e cloro'],
+    normas: ['NBR 10339', 'NBR 5410'],
+    produtos: ['mat-bombas', 'mat-filtros', 'mat-pvc', 'mat-conexoes-pvc', 'mat-esfera', 'mat-retencao', 'mat-solar'],
+    svg: `<path class="b" d="M10 40H170V120Q170 130 160 130H20Q10 130 10 120Z"/><path class="b dash" d="M18 58H162"/><text x="90" y="96">Piscina</text>
+      <rect class="b" x="80" y="124" width="20" height="8" rx="2"/><text x="90" y="150">Ralo de fundo</text>
+      <path class="p" d="M90 132V140H196V110"/><circle class="b" cx="196" cy="100" r="10"/><text x="196" y="80">Bomba</text>
+      <path class="p" d="M206 100H226"/><rect class="b" x="226" y="78" width="32" height="44" rx="12"/><text x="242" y="140">Filtro</text>
+      <path class="p2" d="M258 100H300V24H40V44"/><rect class="b" x="268" y="32" width="28" height="22" rx="3"/><text x="282" y="70">Aquec.</text><text class="s" x="120" y="18">Retorno</text>` },
+  { id: 'sis-reuso', name: 'Reúso de água e águas cinzas', color: '#66bb6a',
+    desc: 'As águas cinzas de chuveiros, lavatórios e máquinas de lavar seguem por rede separada até o tratamento (filtração, tratamento biológico ou físico-químico e desinfecção) e voltam para descargas, rega e lavagem de pisos. Água de chuva e a condensada do ar-condicionado podem se somar ao sistema.',
+    componentes: ['Rede de coleta separada das águas cinzas', 'Gradeamento e tanque de equalização', 'Tratamento: filtro, reator biológico ou membrana', 'Desinfecção (cloro ou UV)', 'Reservatório e bomba da água de reúso', 'Rede de distribuição identificada', 'Reposição de água potável com separação atmosférica'],
+    cuidados: ['Rede não potável identificada e sem ligação com a rede potável', 'Qualidade monitorada conforme o uso previsto', 'Torneiras de uso restrito, com aviso', 'Reposição potável sempre com separação atmosférica', 'Manutenção do tratamento com registro'],
+    normas: ['NBR 16783', 'NBR 13969', 'NBR 5626'],
+    produtos: ['mat-pvc-esgoto', 'mat-filtros', 'mat-bombas', 'mat-reservatorios', 'mat-agua-chuva', 'mat-fossa'],
+    svg: `<rect class="b" x="14" y="20" width="70" height="120"/><path class="b" d="M14 60H84M14 100H84"/><text x="49" y="44">Chuveiro</text><text x="49" y="84">Lavatório</text><text x="49" y="124">Descarga</text>
+      <path class="pe" d="M84 50H110V140H140"/><rect class="b" x="140" y="120" width="56" height="34" rx="3"/><text x="168" y="141">Tratamento</text>
+      <path class="p" d="M196 137H228"/><rect class="b" x="228" y="116" width="50" height="38" rx="3"/><text x="253" y="139">Reúso</text>
+      <circle class="b" cx="296" cy="104" r="8"/><path class="p" d="M278 126H296V112M296 96V20H130V120H84"/><text x="210" y="14">Água de reúso</text>` },
+  { id: 'sis-pocos', name: 'Poços tubulares e água subterrânea', color: '#8d6e63',
+    desc: 'O poço tubular profundo capta água do aquífero por um furo revestido, com filtros na altura da camada que fornece água. Uma bomba submersa eleva a água até o reservatório. Exige outorga do órgão de recursos hídricos, proteção sanitária e análise da água antes do consumo.',
+    componentes: ['Perfuração com revestimento de aço ou PVC geomecânico', 'Filtros e pré-filtro de cascalho', 'Laje e cimentação de proteção sanitária', 'Bomba submersa e tubo edutor', 'Painel de comando com proteção contra falta de água', 'Hidrômetro, válvula de retenção e torneira de amostra', 'Clorador'],
+    cuidados: ['Outorga e cadastro no órgão estadual antes de usar a água', 'Teste de vazão para dimensionar a bomba', 'Proteção sanitária contra contaminação pela superfície', 'Análise de potabilidade antes do consumo e periodicamente', 'Medição do nível e da vazão retirada'],
+    normas: ['NBR 12212', 'NBR 12244', 'Portaria GM/MS 888/2021'],
+    produtos: ['mat-bombas', 'mat-retencao', 'mat-hidrometros', 'mat-medidores', 'mat-aco', 'mat-pvc', 'mat-reservatorios'],
+    svg: `<path class="b dash" d="M8 44H312"/><text class="s" x="232" y="38">Superfície</text>
+      <rect class="b" x="60" y="44" width="24" height="118"/><path class="b dash" d="M8 120H312"/><text class="s" x="100" y="138">Aquífero</text>
+      <rect class="b" x="64" y="122" width="16" height="30" rx="3"/><text class="s" x="90" y="154">Bomba submersa</text>
+      <path class="p" d="M72 122V30H200V60"/><rect class="b" x="40" y="34" width="64" height="10"/><text x="72" y="26">Laje</text>
+      <rect class="b" x="186" y="60" width="70" height="44" rx="3"/><text x="221" y="86">Reservatório</text>
+      <circle class="b" cx="140" cy="30" r="6"/><text x="140" y="16">Hidrômetro</text>` },
+  { id: 'sis-elevatorias', name: 'Estações elevatórias de esgoto e drenagem', color: '#8a6d3b',
+    desc: 'Quando o esgoto ou a água de drenagem fica abaixo da rede pública, um poço de sucção recebe o efluente e bombas, em geral submersíveis e com uma de reserva, o recalcam até uma caixa de quebra de pressão ou a rede por gravidade. É comum em subsolos de prédios e nas redes das cidades.',
+    componentes: ['Poço de sucção com tampa e ventilação', 'Bombas submersíveis (operação e reserva)', 'Boias ou sensores de nível', 'Válvulas de retenção e de bloqueio no recalque', 'Linha de recalque e caixa de quebra de pressão', 'Painel com alternância das bombas e alarme'],
+    cuidados: ['Bomba reserva com alternância automática', 'Alarme de nível alto', 'Gradeamento ou bomba trituradora para sólidos', 'Ventilação do poço para os gases', 'Válvula de retenção contra o retorno', 'Acesso para içar e manter as bombas'],
+    normas: ['NBR 12208', 'NBR 8160'],
+    produtos: ['mat-bombas', 'mat-retencao', 'mat-gaveta', 'mat-pvc-esgoto', 'mat-caixas-inspecao', 'mat-pe'],
+    svg: `<path class="b dash" d="M8 50H312"/><text class="s" x="10" y="44">Térreo</text>
+      <rect class="b" x="20" y="64" width="70" height="40"/><text x="55" y="88">Subsolo</text>
+      <path class="pe" d="M90 96H130V110"/><rect class="b" x="120" y="106" width="70" height="56"/><text class="s" x="196" y="132">Poço de sucção</text>
+      <rect class="b" x="134" y="134" width="16" height="22" rx="3"/><rect class="b" x="160" y="134" width="16" height="22" rx="3"/><text x="155" y="170">Bombas</text>
+      <path class="pe" d="M142 134V30H240V50"/><rect class="b" x="226" y="50" width="28" height="18" rx="3"/><text x="240" y="84">Quebra de pressão</text>
+      <path class="pe" d="M254 60H300"/><text x="290" y="76">Rede</text>` },
+  { id: 'sis-efluentes', name: 'Tratamento de efluentes', color: '#7cb342',
+    desc: 'Antes de chegar à rede pública ou a um rio, o esgoto sanitário e os efluentes industriais passam por tratamento preliminar (gradeamento, desarenação e separação de óleo), tratamento biológico (reator anaeróbio, lodo ativado ou filtro) e, quando a licença exige, por tratamento físico-químico e desinfecção.',
+    componentes: ['Gradeamento e caixa de areia', 'Separador de água e óleo', 'Tanque de equalização', 'Reator anaeróbio, lodo ativado ou filtro biológico', 'Decantador e tratamento do lodo', 'Dosagem química (pH, coagulante, desinfetante)', 'Medição de vazão e ponto de amostragem'],
+    cuidados: ['Atender aos padrões de lançamento da licença ambiental', 'Materiais resistentes aos produtos químicos: PP, PVC, PEAD ou inox', 'Destino licenciado para o lodo', 'Monitoramento periódico com laudo', 'Operação por equipe treinada'],
+    normas: ['Resolução CONAMA 430', 'NBR 12209', 'NBR 13969'],
+    produtos: ['mat-fossa', 'mat-separador', 'mat-bombas', 'mat-pe', 'mat-pvc', 'mat-medidores', 'mat-valvulas'],
+    svg: `<path class="pe" d="M8 90H30"/><rect class="b" x="30" y="72" width="44" height="36" rx="3"/><text x="52" y="64">Grade</text>
+      <path class="pe" d="M74 90H92"/><rect class="b" x="92" y="72" width="50" height="36" rx="3"/><text x="117" y="64">Equalização</text>
+      <path class="pe" d="M142 90H160"/><rect class="b" x="160" y="60" width="60" height="60" rx="3"/><text x="190" y="52">Reator</text>
+      <path class="p" d="M220 90H238"/><path class="b" d="M238 70H286L274 120H250Z"/><text x="262" y="52">Decantador</text>
+      <path class="p" d="M286 90H312"/><path class="pe" d="M262 120V150H190"/><text x="210" y="164">Lodo</text>` },
+  { id: 'sis-piso-radiante', name: 'Aquecimento hidrônico e piso radiante', color: '#ef6c00',
+    desc: 'Água quente de uma caldeira, bomba de calor ou sistema solar circula em circuito fechado por tubos embutidos no piso ou por radiadores e aquece os ambientes por radiação. Coletores distribuem a água em vários circuitos, cada um com sua regulagem.',
+    componentes: ['Gerador de calor: caldeira, bomba de calor ou solar', 'Bomba de circulação', 'Coletor (manifold) com registros e medidores de vazão', 'Tubos PEX ou multicamada no contrapiso, sobre isolante', 'Vaso de expansão e válvula de segurança', 'Termostatos e válvula misturadora'],
+    cuidados: ['Isolamento térmico sob os tubos', 'Teste de pressão antes de concretar o contrapiso', 'Temperatura da água limitada para o piso ficar confortável', 'Purga do ar do circuito', 'Balanceamento dos circuitos no coletor'],
+    normas: ['EN 1264', 'ISO 21003', 'NBR 15939'],
+    produtos: ['mat-pex', 'mat-multicamada', 'mat-caldeiras', 'mat-solar', 'mat-vasos-expansao', 'mat-seguranca', 'mat-bombas', 'mat-isolamento'],
+    svg: `<rect class="b" x="14" y="40" width="50" height="60" rx="4"/><text x="39" y="74">Caldeira</text>
+      <path class="p" d="M64 56H100"/><circle class="b" cx="110" cy="56" r="10"/><path class="p" d="M120 56H150"/>
+      <rect class="b" x="150" y="40" width="20" height="60" rx="3"/><text x="160" y="32">Coletor</text>
+      <path class="p" d="M170 50H300V64H186V78H300V92H170"/><path class="p2" d="M150 92H64"/>
+      <path class="b dash" d="M178 104H306"/><text x="242" y="124">Piso radiante</text>` },
+  { id: 'sis-agua-purificada', name: 'Água purificada e hemodiálise', color: '#26c6da',
+    desc: 'Clínicas de hemodiálise, hospitais, laboratórios e indústria farmacêutica tratam a água potável por pré-filtração, abrandamento, carvão ativado e osmose reversa, e a distribuem em circuito fechado (loop) sem trechos mortos, com desinfecção periódica e monitoramento contínuo da qualidade.',
+    componentes: ['Pré-filtros, abrandador e filtro de carvão ativado', 'Osmose reversa (uma ou duas passagens)', 'Reservatório de água tratada', 'Loop de distribuição com retorno', 'Desinfecção química, térmica ou por UV', 'Tubulação sanitária (PVC-U, PVDF, PEX ou inox)', 'Medição de condutividade'],
+    cuidados: ['Loop sem trechos mortos e com velocidade mínima', 'Desinfecção e análises microbiológicas periódicas', 'Monitoramento de condutividade e endotoxinas', 'Materiais que não liberam contaminantes na água', 'Registros de operação para a vigilância sanitária'],
+    normas: ['RDC Anvisa 11/2014', 'ISO 23500'],
+    produtos: ['mat-filtros', 'mat-inox', 'mat-conexoes-inox', 'mat-pvc', 'mat-bombas', 'mat-medidores'],
+    svg: `<path class="p" d="M8 60H30"/><rect class="b" x="30" y="44" width="24" height="34" rx="8"/><rect class="b" x="60" y="44" width="24" height="34" rx="8"/><text x="57" y="36">Pré-tratamento</text>
+      <path class="p" d="M84 60H104"/><rect class="b" x="104" y="48" width="70" height="24" rx="12"/><text x="139" y="40">Osmose reversa</text>
+      <path class="p" d="M174 60H196"/><rect class="b" x="196" y="40" width="40" height="44" rx="4"/><text x="216" y="100">Tanque</text>
+      <path class="p" d="M236 70H300V140H140V110"/><path class="p2" d="M140 110V96"/><text x="220" y="156">Loop sem trecho morto</text>
+      <rect class="b" x="120" y="110" width="40" height="18" rx="3"/><text x="140" y="123">Uso</text>` },
+  { id: 'sis-polpas', name: 'Mineração e transporte de polpas', color: '#a1887f',
+    desc: 'Na mineração, o minério moído misturado com água (polpa) e os rejeitos são bombeados por longas distâncias. A abrasão define os materiais: bombas de polpa com peças de desgaste, tubos de PEAD ou de aço com revestimento de borracha ou poliuretano, e válvulas próprias para sólidos.',
+    componentes: ['Bombas de polpa com revestimento antidesgaste', 'Tubos de PEAD, aço revestido de borracha ou poliuretano', 'Válvulas de mangote (pinch) e de faca', 'Curvas de raio longo e peças de desgaste', 'Hidrociclones e espessadores', 'Sistemas de drenagem e lavagem da linha'],
+    cuidados: ['Velocidade acima da de deposição dos sólidos, mas sem exagero (desgaste)', 'Girar periodicamente os tubos de PEAD para distribuir o desgaste', 'Curvas de raio longo', 'Drenar ou lavar a linha nas paradas', 'Medir a espessura nas regiões críticas'],
+    normas: ['ISO 4427', 'ASME B31.4'],
+    produtos: ['mat-bombas', 'mat-pe', 'mat-aco', 'mat-conexoes-pe', 'mat-valvulas', 'mat-flanges'],
+    svg: `<rect class="b" x="14" y="40" width="54" height="50" rx="4"/><text x="41" y="68">Moinho</text>
+      <path class="pe" d="M68 80H96"/><circle class="b" cx="108" cy="80" r="12"/><text x="108" y="110">Bomba de polpa</text>
+      <path class="pe" d="M120 80H190Q206 80 206 64V44H300"/><text x="250" y="36">Linha de PEAD</text>
+      <path class="b" d="M280 54L300 54L296 110L284 110Z"/><text x="290" y="126">Ciclone</text>` },
 ];
 
 // Fotos de instalações reais (Wikimedia Commons, licenças livres; manter os créditos).
 const SYSTEM_PHOTOS = {
+  // Áreas acrescentadas em 24/10/2026
+  'sis-agua-gelada': [
+    { src: 'img/sistemas/sis-agua-gelada-1.webp', alt: 'Central de água gelada com chillers e tubulações isoladas', legenda: 'Central de água gelada', autor: 'Mbrickn', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Chiller_Plant_Interior.jpg' },
+    { src: 'img/sistemas/sis-agua-gelada-2.webp', alt: 'Chiller resfriado a água com bombas e tubulações de água gelada', legenda: 'Chiller resfriado a água', autor: 'Kgbo', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Chiller_in_a_large_commercial_building,_Brisbane.jpg' },
+  ],
+  'sis-piscinas': [
+    { src: 'img/sistemas/sis-piscinas-1.webp', alt: 'Piscina externa com borda e área de deck', legenda: 'Piscina', autor: 'Caterpillar84', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Adamson_pool_2.jpg' },
+  ],
+  'sis-reuso': [
+    { src: 'img/sistemas/sis-reuso-1.webp', alt: 'Estação compacta de tratamento de águas cinzas com tanques e painel', legenda: 'Estação de águas cinzas', autor: 'SuSanA Secretariat', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Greywater_treatment_plant_(5729648031).jpg' },
+    { src: 'img/sistemas/sis-reuso-2.webp', alt: 'Tratamento de águas cinzas em escala domiciliar, com tanques enterrados', legenda: 'Tratamento domiciliar de águas cinzas', autor: 'SuSanA Secretariat', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Greywater_treatment_system_(4666056058).jpg' },
+  ],
+  'sis-pocos': [
+    { src: 'img/sistemas/sis-pocos-1.webp', alt: 'Caminhão-sonda para perfuração de poços de água', legenda: 'Sonda de perfuração', autor: 'Mcfly05', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Water_well_drilling_rig.jpg' },
+    { src: 'img/sistemas/sis-pocos-2.webp', alt: 'Bomba submersa para poço tubular com cabo elétrico', legenda: 'Bomba submersa', autor: 'Mar11', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Submersible_pump_0.75HP.jpg' },
+  ],
+  'sis-elevatorias': [
+    { src: 'img/sistemas/sis-elevatorias-1.webp', alt: 'Edifício histórico de estação elevatória de esgoto com chaminé', legenda: 'Estação elevatória de esgoto', autor: 'Collywolly', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Sewage_Pumping_Station_271,_Carrington_Road,_Marrickville,_New_South_Wales.jpg' },
+    { src: 'img/sistemas/sis-elevatorias-2.webp', alt: 'Inspeção do poço de sucção com grades de piso em estação de esgoto', legenda: 'Inspeção do poço de sucção', autor: 'U.S. Navy NAVFACEUR', licenca: 'Domínio público', licUrl: 'https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia', fonte: 'https://commons.wikimedia.org/wiki/File:PWD_Souda_Bay_Sewage_Treatment_Plant_(6207251).jpg' },
+  ],
+  'sis-efluentes': [
+    { src: 'img/sistemas/sis-efluentes-1.webp', alt: 'Decantadores secundários de estação de tratamento de esgoto', legenda: 'Decantadores secundários', autor: 'PortlandAppraisalBlog', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Gresham_Wastewater_Treatment_Plant_secondary_clarifiers_2025.jpg' },
+    { src: 'img/sistemas/sis-efluentes-2.webp', alt: 'Decantador circular com ponte raspadora em estação de tratamento', legenda: 'Decantador circular', autor: 'Czeva', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:%C4%8CBu,_wastewater_treatment_plant_05.jpg' },
+  ],
+  'sis-piso-radiante': [
+    { src: 'img/sistemas/sis-piso-radiante-1.webp', alt: 'Tubos de piso radiante fixados sobre tela e isolamento antes do contrapiso', legenda: 'Tubos de piso radiante', autor: 'Viii23dawari', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Underfloor_heating_pipes_1.jpg' },
+    { src: 'img/sistemas/sis-piso-radiante-2.webp', alt: 'Circuitos de piso radiante sobre isolante, prontos para o contrapiso', legenda: 'Circuitos de piso radiante', autor: 'Ralph Oesker', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Floorheating_pipes.jpg' },
+  ],
+  'sis-agua-purificada': [
+    { src: 'img/sistemas/sis-agua-purificada-1.webp', alt: 'Sistema de osmose reversa em aço inox com bomba e tanque', legenda: 'Sistema de osmose reversa', autor: 'Mas mufti', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Reverse_Osmosis_System.jpg' },
+    { src: 'img/sistemas/sis-agua-purificada-2.webp', alt: 'Bancada de membranas de osmose reversa em estação de água de reúso', legenda: 'Membranas de osmose reversa', autor: 'Z22', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Reverse_osmosis_system_at_Bedok_NEWater_Factory.jpg' },
+  ],
+  'sis-polpas': [
+    { src: 'img/sistemas/sis-polpas-1.webp', alt: 'Tubulações de PEAD para rejeitos de mineração com juntas soldadas', legenda: 'Linhas de rejeito em PEAD', autor: 'James St. John', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Waste_rock_slurry_pipelines_(Yankee_Doodle_Tailings_Pond,_Continental_Mine,_Butte,_Montana,_USA)_6.jpg' },
+  ],
   'sis-pluviais': [
     { src: 'img/sistemas/sis-pluviais-1.webp', alt: 'Condutores verticais de águas pluviais', legenda: 'Condutores', autor: 'Stilfehler', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Downspouts.jpg' },
     { src: 'img/sistemas/sis-pluviais-2.webp', alt: 'Fachada com condutor de água de chuva descendo da calha', legenda: 'Calha e condutor', autor: 'Ivangiesen', licenca: 'CC0', licUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en', fonte: 'https://commons.wikimedia.org/wiki/File:External_Gutter.jpg' },
