@@ -190,7 +190,7 @@ const CATALOG = [
     normas: ['NBR 13714', 'NBR 11861', 'NBR 12779', 'NBR 16021'],
     tipos: ['Válvula angular de hidrante 1 1/2" e 2 1/2"', 'Abrigo para mangueira (sobrepor ou embutir)', 'Mangueiras de incêndio tipos 1 a 5', 'Esguicho regulável ou agulheta', 'Mangotinho com carretel', 'Hidrante de recalque e hidrante de coluna urbano'],
     escolha: ['Tipo do sistema e diâmetro pela Instrução Técnica do Corpo de Bombeiros do estado', 'Mangueira certificada e do tipo adequado ao risco', 'Abrigo sinalizado, desobstruído e com acesso livre', 'Plano de inspeção e manutenção (NBR 12779)'] },
-  { id: 'mat-medidores', cat: 'Acessórios', name: 'Medidores e manômetros', apps: 'Vazão, pressão e consumo', art: 'gauge', tone: '#d7dde3', rel: 'manometros',
+  { id: 'mat-medidores', cat: 'Acessórios', name: 'Medidores e manômetros', apps: 'Vazão, pressão e consumo', art: 'gauge', tone: '#d7dde3', rel: 'manometros', veja: 'mat-hidrometros',
     desc: 'Instrumentos para medir pressão, vazão e consumo em redes de água, gás, vapor, ar comprimido e combustíveis.',
     specs: [['Manômetros', 'Mostrador de 50, 63, 100 ou 150 mm; com ou sem glicerina'], ['Escalas', 'Do vácuo a alta pressão, em bar, kgf/cm², psi ou kPa'], ['Hidrômetros', 'Velocimétricos e volumétricos'], ['Vazão industrial', 'Eletromagnéticos, ultrassônicos e tipo turbina'], ['Conexão', 'Rosca 1/4" ou 1/2" BSP ou NPT']],
     normas: ['NBR 14105-1', 'EN 837'] },
@@ -337,6 +337,12 @@ const CATALOG = [
     normas: ['ISO 10639', 'AWWA C950'],
     tipos: ['Adutoras sob pressão', 'Coletores e interceptores por gravidade', 'Emissários', 'Linhas industriais químicas'],
     escolha: ['Rigidez conforme o aterro e as cargas de tráfego', 'Resina adequada ao fluido em uso químico', 'Assentamento conforme o fabricante (sensível a impactos)', 'Comparar o custo de ciclo de vida com aço e ferro dúctil'] },
+  { id: 'mat-hidrometros', cat: 'Acessórios', name: 'Hidrômetros', apps: 'Ligações de água, medição individualizada em condomínios e macromedição', art: 'gauge', tone: '#2d7fd3',
+    desc: 'Medidores de consumo de água. Ficam no cavalete da ligação predial, em cada apartamento (medição individualizada) ou nas redes e adutoras (macromedição), e podem ter leitura a distância.',
+    specs: [['Tipos', 'Velocimétricos (unijato e multijato), volumétricos, Woltmann (grandes vazões), ultrassônicos e eletromagnéticos'], ['Vazões residenciais', 'Vazão nominal até 15 m³/h, regulamentada pelo Inmetro (Portaria 246/2000)'], ['Classe metrológica', 'Indica a precisão em vazões baixas; classes mais altas registram melhor os pequenos vazamentos'], ['Leitura remota', 'Saída pulsada, rádio ou telemetria para leitura sem acesso ao imóvel'], ['Instalação', 'Trechos retos antes e depois, posição indicada pelo fabricante e proteção contra sol e impacto']],
+    normas: ['Portaria Inmetro 246/2000', 'ISO 4064', 'Lei 13.312/2016', 'NBR 5626'],
+    tipos: ['Unijato', 'Multijato', 'Volumétrico', 'Woltmann (macromedição)', 'Ultrassônico', 'Com leitura remota'],
+    escolha: ['Na ligação predial, seguir o padrão da concessionária', 'Em condomínios novos, prever a medição individualizada (Lei 13.312/2016)', 'Volumétrico ou classe metrológica alta onde o consumo é baixo e contínuo', 'Woltmann ou ultrassônico em grandes vazões e macromedição'] },
 ];
 
 // Ilustrações dos produtos (viewBox 0 0 200 120). var(--m) = cor do material.
@@ -419,6 +425,7 @@ const MATERIAL_ART = (() => {
 // Sites conferidos em 17/10/2026. Lista indicativa, sem vínculo comercial.
 // Tipo: 'N' = fabricante nacional, 'I' = internacional, 'M' = importador.
 const MANUFACTURERS = {
+  'mat-hidrometros': [['HidroReader', 'https://hidroreader.com.br', 'N'], ['Renova Medição', 'https://www.renovamedicao.com.br', 'N'], ['Itron', 'https://www.itron.com', 'I'], ['Zenner', 'https://zenner.com', 'I'], ['Sensus (Xylem)', 'https://www.xylem.com/en-us/brand/sensus/', 'I']],
   'mat-metais': [['Docol', 'https://www.docol.com.br', 'N'], ['Deca', 'https://www.deca.com.br', 'N'], ['Fabrimar', 'https://www.fabrimar.com.br', 'N'], ['Lorenzetti', 'https://www.lorenzetti.com.br', 'N'], ['Grohe', 'https://www.grohe.com', 'I'], ['Hansgrohe', 'https://www.hansgrohe.com', 'I']],
   'mat-pvc-esgoto': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['Krona', 'https://www.krona.com.br', 'N'], ['Fortlev', 'https://www.fortlev.com.br', 'N']],
   'mat-caixas-inspecao': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['Fortlev', 'https://www.fortlev.com.br', 'N'], ['Acqualimp', 'https://www.acqualimp.com.br', 'N']],
