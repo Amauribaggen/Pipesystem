@@ -29,10 +29,11 @@ const countObs = new IntersectionObserver(entries => {
     if (!isIntersecting) return;
     countObs.unobserve(target);
     const end = +target.dataset.count, t0 = performance.now(), dur = 1400;
-    const pre = target.dataset.prefix ?? '+', suf = target.dataset.suffix ?? '';
+    const pre = target.dataset.prefix ?? '+', suf = target.dataset.suffix ?? '', dec = +(target.dataset.dec || 0);
+    const show = v => dec ? v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec }) : fmt(Math.round(v));
     const step = t => {
       const p = Math.min((t - t0) / dur, 1);
-      target.textContent = (p === 1 ? pre : pre.replace('+', '')) + fmt(Math.round(end * (1 - Math.pow(1 - p, 3)))) + suf;
+      target.textContent = (p === 1 ? pre : pre.replace('+', '')) + show(end * (1 - Math.pow(1 - p, 3))) + suf;
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);

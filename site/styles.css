@@ -127,7 +127,9 @@ p { margin: 0 0 1em; }
 .stats div { background: rgba(7, 26, 49, .75); padding: 22px 24px; backdrop-filter: blur(6px); }
 .stats strong { display: block; font-family: var(--display); font-size: 2rem; color: #fff; }
 .stats span { color: #9fb4cc; font-size: .9rem; }
-.stats__note { position: relative; margin-top: 10px; margin-bottom: 0; font-size: .82rem; color: #9fb4cc; }
+.stats__note { position: relative; margin-top: 10px; margin-bottom: 0; font-size: .78rem; line-height: 1.5; color: #9fb4cc; }
+.stats__note a { color: #7ee7f2; }
+.stats sup, .stats__note sup { font-size: .7em; color: #7ee7f2; }
 
 /* Sections */
 .section { padding: 96px 0; }
@@ -967,8 +969,8 @@ font[style] { background: transparent !important; box-shadow: none !important; }
   .logo .logo__svg { height: 44px; }
 }
 
-/* Números da abertura: 6 indicadores (3 × 2; no celular 2 × 3) */
-.stats { grid-template-columns: repeat(3, 1fr); }
+/* Números da abertura: 4 indicadores com fonte (4 × 1; no celular 2 × 2) */
+.stats { grid-template-columns: repeat(4, 1fr); }
 .stats__market strong { color: #f2a03d; }
 @media (max-width: 860px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
