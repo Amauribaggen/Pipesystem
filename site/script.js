@@ -175,7 +175,7 @@ const materialById = Object.fromEntries(CATALOG.map(m => [m.id, m]));
 
 function renderMaterial(m) {
   // ficha técnica completa (fotos, tipos, como escolher, tabelas): do antigo guia (products.js) ou do próprio item do catálogo
-  const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [] } : null);
+  const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [], fotos: m.fotos } : null);
   const veja = materialById[m.veja];   // item principal que traz a visão geral (ex.: comparativo de válvulas)
   const normas = [...new Set([...m.normas, ...(p ? p.normas : [])])];
   const fabs = MANUFACTURERS[m.id] || [];

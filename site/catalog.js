@@ -341,6 +341,11 @@ const CATALOG = [
     desc: 'Medidores de consumo de água. Ficam no cavalete da ligação predial, em cada apartamento (medição individualizada) ou nas redes e adutoras (macromedição), e podem ter leitura a distância.',
     specs: [['Tipos', 'Velocimétricos (unijato e multijato), volumétricos, Woltmann (grandes vazões), ultrassônicos e eletromagnéticos'], ['Vazões residenciais', 'Vazão nominal até 15 m³/h, regulamentada pelo Inmetro (Portaria 246/2000)'], ['Classe metrológica', 'Indica a precisão em vazões baixas; classes mais altas registram melhor os pequenos vazamentos'], ['Leitura remota', 'Saída pulsada, rádio ou telemetria para leitura sem acesso ao imóvel'], ['Instalação', 'Trechos retos antes e depois, posição indicada pelo fabricante e proteção contra sol e impacto']],
     normas: ['Portaria Inmetro 246/2000', 'ISO 4064', 'Lei 13.312/2016', 'NBR 5626'],
+    fotos: [
+      { src: 'img/materiais/mat-hidrometros-1.webp', alt: 'Hidrômetro instalado no cavalete de uma ligação predial de água', legenda: 'Hidrômetro no cavalete', autor: 'Andrevruas', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hidr%C3%B4metro.JPG' },
+      { src: 'img/materiais/mat-hidrometros-2.webp', alt: 'Hidrômetro unijato com sensor de leitura remota acoplado ao mostrador', legenda: 'Hidrômetro com leitura remota', autor: 'JULIANISME', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:A_Water_Meter_Type_LXSC-15E.jpg' },
+      { src: 'img/materiais/mat-hidrometros-3.webp', alt: 'Hidrômetro residencial DN 15 com conexões de latão', legenda: 'Hidrômetro residencial DN 15', autor: 'Луносвет', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:%D0%A1%D1%87%D1%91%D1%82%D1%87%D0%B8%D0%BA_%D0%B2%D0%BE%D0%B4%D1%8B_%D0%A1%D0%93%D0%92_15.JPG' },
+    ],
     tipos: ['Unijato', 'Multijato', 'Volumétrico', 'Woltmann (macromedição)', 'Ultrassônico', 'Com leitura remota'],
     escolha: ['Na ligação predial, seguir o padrão da concessionária', 'Em condomínios novos, prever a medição individualizada (Lei 13.312/2016)', 'Volumétrico ou classe metrológica alta onde o consumo é baixo e contínuo', 'Woltmann ou ultrassônico em grandes vazões e macromedição'] },
 ];
@@ -497,6 +502,7 @@ const MANUFACTURERS = {
 // [produto, n] reaproveita a n-ésima foto (0 = primeira) da ficha do guia técnico.
 const MATERIAL_PHOTOS = {
   // Itens acrescentados em 24/10/2026
+  'mat-hidrometros': { src: 'img/materiais/mat-hidrometros-1.webp', alt: 'Hidrômetro instalado no cavalete de uma ligação predial de água', legenda: 'Hidrômetro no cavalete', autor: 'Andrevruas', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hidr%C3%B4metro.JPG' },
   'mat-metais': { src: 'img/materiais/mat-metais-1.webp', alt: 'Torneira de cozinha de bica alta em aço inox', legenda: 'Torneira de cozinha', autor: 'Stilfehler', licenca: 'CC0', licUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en', fonte: 'https://commons.wikimedia.org/wiki/File:Kitchen_Faucet_1.jpg' },
   'mat-pvc-esgoto': { src: 'img/materiais/mat-pvc-esgoto-1.webp', alt: 'Tubos de PVC para esgoto com bolsa e anel, empilhados', legenda: 'Tubos de PVC para esgoto', autor: 'Стрелец Игорь', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:PVC_nonpressure.jpg' },
   'mat-caixas-inspecao': { src: 'img/materiais/mat-caixas-inspecao-1.webp', alt: 'Caixa de gordura aberta no piso de uma cozinha', legenda: 'Caixa de gordura', autor: 'Hannah Clover', licenca: 'CC BY 4.0', licUrl: 'https://creativecommons.org/licenses/by/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:In_ground_greasetrap.jpg' },

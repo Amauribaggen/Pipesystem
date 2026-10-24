@@ -214,7 +214,7 @@ export function generate(D, outDir) {
   // Catálogo de materiais
   for (const m of D.CATALOG) {
     const url = pathOf.material(m.id); const foto = materialPhoto(D, m);
-    const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [] } : null); const veja = materialById[m.veja]; const fabs = D.MANUFACTURERS[m.id] || [];
+    const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [], fotos: m.fotos } : null); const veja = materialById[m.veja]; const fabs = D.MANUFACTURERS[m.id] || [];
     const normas = [...new Set([...m.normas, ...(p ? p.normas : [])])]; const sist = systemsUsing(m);
     const fotos = p && p.fotos && p.fotos.length ? p.fotos : null;
     const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); const misto = fabs.some(f => f[2] === 'M');
