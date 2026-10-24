@@ -284,7 +284,7 @@ const PRODUCTS = [
   // Fixação e vedação
   { id: 'suportes', g: 'vedacao', name: 'Suportes',
     desc: 'Sustentam, guiam e ancoram a tubulação, absorvendo peso, dilatação térmica e vibração.',
-    tipos: ['Abraçadeiras e braçadeiras', 'Pendurais e tirantes', 'Suportes deslizantes e guias', 'Ancoragens', 'Suportes de mola', 'Cavaletes de entrada'],
+    tipos: ['Abraçadeiras e braçadeiras', 'Pendurais e tirantes', 'Suportes deslizantes e guias', 'Ancoragens', 'Suportes de mola'],
     escolha: ['Espaçamento conforme material, diâmetro e fluido', 'Prever dilatação em água quente e vapor', 'Isolar metais diferentes contra corrosão galvânica', 'Considerar tubo cheio, isolamento e válvulas'],
     normas: ['MSS SP-58', 'NBR 5626', 'NBR 8160'],
     fotos: [

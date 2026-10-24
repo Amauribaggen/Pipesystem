@@ -218,9 +218,9 @@ const CATALOG = [
     normas: ['ASTM C534', 'NBR 16401', 'NBR 5626'],
     tipos: ['Tubo de espuma elastomérica', 'Tubo de polietileno expandido', 'Calha de lã de rocha ou lã de vidro', 'Isolamento de poliuretano', 'Jaquetas e fitas de acabamento'],
     escolha: ['Material pela temperatura máxima e mínima do fluido', 'Espessura que evite condensação na água gelada e na refrigeração', 'Proteção UV e mecânica nos trechos externos', 'Colar as emendas com o adesivo indicado pelo fabricante'] },
-  { id: 'mat-suportes', cat: 'Acessórios', name: 'Suportes e cavaletes', apps: 'Fixação de tubulações e cavaletes de entrada', art: 'clamp', tone: '#b9c3cc', rel: 'suportes',
-    desc: 'Abraçadeiras, perfis e pendurais para fixar tubulações, e cavaletes padronizados para a entrada de água nos imóveis.',
-    specs: [['Abraçadeiras', 'Tipo U, D, copo e com borracha antivibração'], ['Perfis', 'Perfilados e trilhos galvanizados com acessórios'], ['Pendurais', 'Tirantes roscados, com ou sem mola'], ['Cavaletes', 'De 1/2" e 3/4", conforme o padrão da concessionária'], ['Acabamento', 'Galvanizado eletrolítico ou a fogo, inox']],
+  { id: 'mat-suportes', cat: 'Acessórios', name: 'Suportes e abraçadeiras', apps: 'Fixação, guia e ancoragem de tubulações', art: 'clamp', tone: '#b9c3cc', rel: 'suportes', veja: 'mat-cavaletes',
+    desc: 'Abraçadeiras, perfis, pendurais e guias para fixar, guiar e ancorar tubulações, absorvendo peso, dilatação e vibração.',
+    specs: [['Abraçadeiras', 'Tipo U, D, copo e com borracha antivibração'], ['Perfis', 'Perfilados e trilhos galvanizados com acessórios'], ['Pendurais', 'Tirantes roscados, com ou sem mola'], ['Acabamento', 'Galvanizado eletrolítico ou a fogo, inox']],
     normas: ['MSS SP-58', 'NBR 5626'] },
   { id: 'mat-filtros', cat: 'Acessórios', name: 'Filtros', apps: 'Água, ar comprimido e combustível', art: 'filtery', tone: '#6b7682', rel: 'filtros',
     desc: 'Filtros para reter partículas e contaminantes, protegendo bombas, válvulas, instrumentos e equipamentos.',
@@ -337,7 +337,7 @@ const CATALOG = [
     normas: ['ISO 10639', 'AWWA C950'],
     tipos: ['Adutoras sob pressão', 'Coletores e interceptores por gravidade', 'Emissários', 'Linhas industriais químicas'],
     escolha: ['Rigidez conforme o aterro e as cargas de tráfego', 'Resina adequada ao fluido em uso químico', 'Assentamento conforme o fabricante (sensível a impactos)', 'Comparar o custo de ciclo de vida com aço e ferro dúctil'] },
-  { id: 'mat-hidrometros', cat: 'Acessórios', name: 'Hidrômetros', apps: 'Ligações de água, medição individualizada em condomínios e macromedição', art: 'gauge', tone: '#2d7fd3',
+  { id: 'mat-hidrometros', cat: 'Acessórios', name: 'Hidrômetros', apps: 'Ligações de água, medição individualizada em condomínios e macromedição', art: 'gauge', tone: '#2d7fd3', veja: 'mat-cavaletes',
     desc: 'Medidores de consumo de água. Ficam no cavalete da ligação predial, em cada apartamento (medição individualizada) ou nas redes e adutoras (macromedição), e podem ter leitura a distância.',
     specs: [['Tipos', 'Velocimétricos (unijato e multijato), volumétricos, Woltmann (grandes vazões), ultrassônicos e eletromagnéticos'], ['Vazões residenciais', 'Vazão nominal até 15 m³/h, regulamentada pelo Inmetro (Portaria 246/2000)'], ['Classe metrológica', 'Indica a precisão em vazões baixas; classes mais altas registram melhor os pequenos vazamentos'], ['Leitura remota', 'Saída pulsada, rádio ou telemetria para leitura sem acesso ao imóvel'], ['Instalação', 'Trechos retos antes e depois, posição indicada pelo fabricante e proteção contra sol e impacto']],
     normas: ['Portaria Inmetro 246/2000', 'ISO 4064', 'Lei 13.312/2016', 'NBR 5626'],
@@ -348,6 +348,12 @@ const CATALOG = [
     ],
     tipos: ['Unijato', 'Multijato', 'Volumétrico', 'Woltmann (macromedição)', 'Ultrassônico', 'Com leitura remota'],
     escolha: ['Na ligação predial, seguir o padrão da concessionária', 'Em condomínios novos, prever a medição individualizada (Lei 13.312/2016)', 'Volumétrico ou classe metrológica alta onde o consumo é baixo e contínuo', 'Woltmann ou ultrassônico em grandes vazões e macromedição'] },
+  { id: 'mat-cavaletes', cat: 'Acessórios', name: 'Cavaletes e kits de ligação de água', apps: 'Entrada de água dos imóveis e medição individualizada', art: 'fittings', tone: '#2d7fd3', veja: 'mat-hidrometros',
+    desc: 'Conjunto de tubos, conexões e registro que recebe o hidrômetro na entrada de água do imóvel, montado conforme o padrão de ligação da concessionária. Em condomínios, cavaletes múltiplos reúnem os hidrômetros individuais.',
+    specs: [['Componentes', 'Tubos de entrada e saída, registro (esfera ou gaveta), conexões do hidrômetro, joelhos e, em alguns padrões, válvula de retenção'], ['Materiais', 'PVC (kits pré-montados) ou aço galvanizado'], ['Diâmetros', '1/2" e 3/4" nas ligações residenciais; maiores nas comerciais'], ['Local', 'Muro ou mureta na divisa, caixa no passeio ou abrigo, conforme o padrão local'], ['Padrão', 'Altura, abrigo, lacre e materiais definidos pela concessionária (ex.: kit cavalete de PVC de 3/4" sobre base de concreto)']],
+    normas: ['NBR 5626', 'Lei 13.312/2016', 'Norma Técnica Sabesp 303'],
+    tipos: ['Kit cavalete de PVC', 'Cavalete de aço galvanizado', 'Cavalete em caixa de proteção no passeio', 'Cavalete embutido no muro', 'Cavalete múltiplo (medição individualizada)'],
+    escolha: ['Consultar o padrão de ligação da concessionária antes de comprar', 'Kit compatível com o diâmetro e as conexões do hidrômetro', 'Abrigo com acesso livre para leitura e manutenção', 'Registro antes do hidrômetro para manutenção'] },
 ];
 
 // Ilustrações dos produtos (viewBox 0 0 200 120). var(--m) = cor do material.
@@ -430,6 +436,7 @@ const MATERIAL_ART = (() => {
 // Sites conferidos em 17/10/2026. Lista indicativa, sem vínculo comercial.
 // Tipo: 'N' = fabricante nacional, 'I' = internacional, 'M' = importador.
 const MANUFACTURERS = {
+  'mat-cavaletes': [['Krona', 'https://www.krona.com.br', 'N']],
   'mat-hidrometros': [['HidroReader', 'https://hidroreader.com.br', 'N'], ['Renova Medição', 'https://www.renovamedicao.com.br', 'N'], ['Itron', 'https://www.itron.com', 'I'], ['Zenner', 'https://zenner.com', 'I'], ['Sensus (Xylem)', 'https://www.xylem.com/en-us/brand/sensus/', 'I']],
   'mat-metais': [['Docol', 'https://www.docol.com.br', 'N'], ['Deca', 'https://www.deca.com.br', 'N'], ['Fabrimar', 'https://www.fabrimar.com.br', 'N'], ['Lorenzetti', 'https://www.lorenzetti.com.br', 'N'], ['Grohe', 'https://www.grohe.com', 'I'], ['Hansgrohe', 'https://www.hansgrohe.com', 'I']],
   'mat-pvc-esgoto': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['Krona', 'https://www.krona.com.br', 'N'], ['Fortlev', 'https://www.fortlev.com.br', 'N']],
