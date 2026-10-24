@@ -93,7 +93,7 @@ const CMPS = [
 
   { id: 'esgoto', tema: 'Esgoto predial', titulo: 'Esgoto: PVC série normal, PVC reforçado/acústico ou ferro fundido?',
     resumo: 'PVC série normal para casas e ramais; série reforçada ou PVC acústico em prumadas de prédios; ferro fundido onde ruído e comportamento em incêndio pesam mais (hotéis, hospitais, prédios altos).',
-    opcoes: [['PVC série normal', 'pvc'], ['PVC série reforçada / acústico', 'pvc'], ['Ferro fundido (SMU)', 'smu']],
+    opcoes: [['PVC série normal', 'pvc-esgoto'], ['PVC série reforçada / acústico', 'pvc-esgoto'], ['Ferro fundido (SMU)', 'smu']],
     linhas: [
       ['Uso típico', ['Ramais e casas', 'Prumadas, áreas sob tráfego, prédios', 'Prumadas de prédios altos, hotéis, hospitais']],
       ['Ruído', ['O mais ruidoso dos três', 'Linhas acústicas com valores autodeclarados baixos {acust}', 'Baixo pela massa do tubo']],
@@ -113,7 +113,7 @@ const CMPS = [
 
   { id: 'adutoras', tema: 'Saneamento e adutoras', titulo: 'Adutoras e redes de água: PEAD, PVC-O ou ferro dúctil?',
     resumo: 'Ferro dúctil quando há cargas externas altas, travessias e pressões elevadas; PVC-O e PEAD reduzem peso, custo e golpe de aríete. O PVC-O é alternativa ao ferro dúctil, não substituto automático.',
-    opcoes: [['PEAD', 'pe'], ['PVC-O (orientado)', 'pvc'], ['Ferro dúctil', 'ferro']],
+    opcoes: [['PEAD', 'pe'], ['PVC-O (orientado)', 'pvc-agua'], ['Ferro dúctil', 'ferro']],
     linhas: [
       ['Celeridade (golpe de aríete)', ['≈ 320 m/s (PN 16, DN 500) {celer}', '≈ 318 m/s {celer}', '≈ 1.095 m/s: sobrepressão maior {celer}{ufpe}']],
       ['Pressão', ['PN conforme SDR {iso4427}', 'PN 12,5 a 25 típicos {iso16422}', 'Alta; classes K7/K9 {iso2531}']],
