@@ -1,4 +1,4 @@
-// ===== Biblioteca BIM/CAD: onde baixar os arquivos oficiais de cada fabricante (links conferidos em 23/10/2026) =====
+// ===== Biblioteca BIM/CAD: onde baixar os arquivos oficiais de cada fabricante (links conferidos em 23 e 24/10/2026) =====
 // O PipeSystem não hospeda os arquivos: indica a fonte oficial. mats = ids do CATALOG (a ficha do material mostra o quadro "Arquivos BIM/CAD").
 const BIM_LIBS = [
   { nome: 'Tigre', orig: 'N', cat: ['Água fria e quente', 'Esgoto e pluvial', 'Drenagem'],
@@ -11,6 +11,16 @@ const BIM_LIBS = [
     fmts: ['Revit', 'Plugin', 'Dynamo'], acesso: 'Gratuito, com cadastro',
     mats: ['mat-pvc', 'mat-conexoes-pvc', 'mat-cpvc', 'mat-conexoes-cpvc', 'mat-ppr', 'mat-pe', 'mat-reservatorios'],
     links: [['Portal BIM Amanco Wavin', 'https://bim.amanco.com.br/', 'site oficial'], ['Amanco Wavin', 'https://www.bimobject.com/pt-br/amanco-wavin', 'BIMobject']] },
+  { nome: 'Krona', orig: 'N', cat: ['Água fria e quente', 'Esgoto e pluvial'],
+    desc: 'Krona BIM: plugin para Revit e AutoCAD e catálogo com download de arquivos em DWG 2D, DWG 3D e Revit, com busca por produto e categoria (água fria, água quente, esgoto e acessórios).',
+    fmts: ['Revit', 'DWG', 'Plugin'], acesso: 'Gratuito',
+    mats: ['mat-pvc', 'mat-conexoes-pvc', 'mat-cpvc', 'mat-conexoes-cpvc', 'mat-pvc-esgoto', 'mat-pvc-agua', 'mat-cavaletes'],
+    links: [['Krona BIM', 'https://www.krona.com.br/bim/', 'site oficial']] },
+  { nome: 'Tupy', orig: 'N', cat: ['Água fria e quente', 'Gás', 'Incêndio', 'Industrial'],
+    desc: 'Plugin TupyCAD para AutoCAD com o portfólio de conexões de ferro maleável e perfis, desenhos 2D e 3D e dados técnicos, e Biblioteca Técnica com arquivos BIM/CAD, catálogos, manuais e tabelas.',
+    fmts: ['DWG', 'Plugin'], acesso: 'Gratuito',
+    mats: ['mat-galv'],
+    links: [['TupyCAD (plugin AutoCAD)', 'https://conexoes.tupy.com.br/pt/tupycad', 'site oficial'], ['Biblioteca Técnica (BIM/CAD)', 'https://conexoes.tupy.com.br/pt/biblioteca', 'site oficial']] },
   { nome: 'Docol', orig: 'N', cat: ['Metais e louças'],
     desc: 'Plugin com toda a biblioteca de produtos e arquivos para uso offline em Revit, AutoCAD e SketchUp: torneiras, registros, chuveiros e válvulas de descarga.',
     fmts: ['Revit', 'DWG', 'SketchUp', 'Plugin'], acesso: 'Gratuito',
