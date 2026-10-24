@@ -352,6 +352,10 @@ const CATALOG = [
     desc: 'Conjunto de tubos, conexões e registro que recebe o hidrômetro na entrada de água do imóvel, montado conforme o padrão de ligação da concessionária. Em condomínios, cavaletes múltiplos reúnem os hidrômetros individuais.',
     specs: [['Componentes', 'Tubos de entrada e saída, registro (esfera ou gaveta), conexões do hidrômetro, joelhos e, em alguns padrões, válvula de retenção'], ['Materiais', 'PVC (kits pré-montados) ou aço galvanizado'], ['Diâmetros', '1/2" e 3/4" nas ligações residenciais; maiores nas comerciais'], ['Local', 'Muro ou mureta na divisa, caixa no passeio ou abrigo, conforme o padrão local'], ['Padrão', 'Altura, abrigo, lacre e materiais definidos pela concessionária (ex.: kit cavalete de PVC de 3/4" sobre base de concreto)']],
     normas: ['NBR 5626', 'Lei 13.312/2016', 'Norma Técnica Sabesp 303'],
+    fotos: [
+      { src: 'img/materiais/mat-hidrometros-1.webp', alt: 'Cavalete de entrada de água com registros e hidrômetro instalado', legenda: 'Cavalete com hidrômetro', autor: 'Andrevruas', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hidr%C3%B4metro.JPG' },
+      { src: 'img/materiais/mat-cavaletes-2.webp', alt: 'Hidrômetros individuais de água fria e quente em shaft de apartamento, com registros e filtros', legenda: 'Medição individualizada em shaft', autor: 'Vyacheslav Argenberg', licenca: 'CC BY 4.0', licUrl: 'https://creativecommons.org/licenses/by/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Water_supply,_Piping,_Plastic_pipes_in_bathroom,_Water_meters,_Rostov-on-Don,_Russia.jpg' },
+    ],
     tipos: ['Kit cavalete de PVC', 'Cavalete de aço galvanizado', 'Cavalete em caixa de proteção no passeio', 'Cavalete embutido no muro', 'Cavalete múltiplo (medição individualizada)'],
     escolha: ['Consultar o padrão de ligação da concessionária antes de comprar', 'Kit compatível com o diâmetro e as conexões do hidrômetro', 'Abrigo com acesso livre para leitura e manutenção', 'Registro antes do hidrômetro para manutenção'] },
 ];
@@ -509,6 +513,7 @@ const MANUFACTURERS = {
 // [produto, n] reaproveita a n-ésima foto (0 = primeira) da ficha do guia técnico.
 const MATERIAL_PHOTOS = {
   // Itens acrescentados em 24/10/2026
+  'mat-cavaletes': { src: 'img/materiais/mat-hidrometros-1.webp', alt: 'Cavalete de entrada de água com registros e hidrômetro instalado', legenda: 'Cavalete com hidrômetro', autor: 'Andrevruas', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hidr%C3%B4metro.JPG' },
   'mat-hidrometros': { src: 'img/materiais/mat-hidrometros-1.webp', alt: 'Hidrômetro instalado no cavalete de uma ligação predial de água', legenda: 'Hidrômetro no cavalete', autor: 'Andrevruas', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hidr%C3%B4metro.JPG' },
   'mat-metais': { src: 'img/materiais/mat-metais-1.webp', alt: 'Torneira de cozinha de bica alta em aço inox', legenda: 'Torneira de cozinha', autor: 'Stilfehler', licenca: 'CC0', licUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en', fonte: 'https://commons.wikimedia.org/wiki/File:Kitchen_Faucet_1.jpg' },
   'mat-pvc-esgoto': { src: 'img/materiais/mat-pvc-esgoto-1.webp', alt: 'Tubos de PVC para esgoto com bolsa e anel, empilhados', legenda: 'Tubos de PVC para esgoto', autor: 'Стрелец Игорь', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:PVC_nonpressure.jpg' },
