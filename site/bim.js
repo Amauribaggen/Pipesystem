@@ -21,6 +21,11 @@ const BIM_LIBS = [
     fmts: ['DWG', 'Plugin'], acesso: 'Gratuito',
     mats: ['mat-galv'],
     links: [['TupyCAD (plugin AutoCAD)', 'https://conexoes.tupy.com.br/pt/tupycad', 'site oficial'], ['Biblioteca Técnica (BIM/CAD)', 'https://conexoes.tupy.com.br/pt/biblioteca', 'site oficial']] },
+  { nome: 'MGA', orig: 'N', cat: ['Industrial', 'Gás', 'Água fria e quente'],
+    desc: 'Metalúrgica Golden Art\'s: modelos 3D em Parasolid (.x_t) de cada válvula, por modelo e diâmetro, na aba "Modelos 3D" da página do produto: esfera (bipartida, tripartida, monobloco, direcional e wafer), borboleta, gaveta, globo e juntas de expansão, com folha de dados e manual em PDF.',
+    fmts: ['Parasolid'], acesso: 'Gratuito',
+    mats: ['mat-esfera', 'mat-borboleta', 'mat-gaveta', 'mat-globo', 'mat-juntas-expansao', 'mat-solenoides'],
+    links: [['Produtos MGA (aba Modelos 3D)', 'https://www.mga.com.br/produtos', 'site oficial']] },
   { nome: 'Lorenzetti', orig: 'N', cat: ['Metais e louças', 'Aquecimento'],
     desc: 'LorenCAD: arquivos CAD de duchas e chuveiros elétricos, louças e metais sanitários, com busca por linha e modelo.',
     fmts: ['DWG'], acesso: 'Gratuito',
@@ -193,7 +198,7 @@ function bimBoxHTML(matId, h = 'h4') {
   const nome = id => (typeof CATALOG !== 'undefined' && CATALOG.find(m => m.id === id) || {}).name || id;
   const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const slug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const FMTS = ['Revit', 'IFC', 'DWG', 'SketchUp', 'Plugin'];
+  const FMTS = ['Revit', 'IFC', 'DWG', 'SketchUp', 'Parasolid', 'Plugin'];
   const CATS = [...new Set(BIM_LIBS.flatMap(b => b.cat))];
   const st = { q: '', fmt: null, cat: null, orig: null };
 
