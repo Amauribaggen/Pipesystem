@@ -920,6 +920,11 @@ font[style] { background: transparent !important; box-shadow: none !important; }
 
 /* ===== Artigos técnicos ===== */
 .arts { display: grid; gap: 12px; }
+.mags { margin-top: 40px; }
+.mags__title { font: 700 1.35rem var(--display); margin: 0 0 .3em; }
+.mags__intro { color: var(--muted); margin: 0 0 16px; max-width: 760px; }
+.art--mag .art__num { font-size: 1.6rem; }
+.art--mag .art__meta a { color: var(--teal-d); font-weight: 600; }
 .art { display: grid; grid-template-columns: 48px 1fr auto; gap: 18px; align-items: center; padding: 18px 22px; border-radius: 16px; background: #fff; color: var(--ink); border: 2px solid transparent; transition: border-color .2s; }
 .art:hover { border-color: var(--teal); }
 .art__num { font-family: var(--display); font-size: 1.6rem; font-weight: 700; color: var(--teal-d); opacity: .55; font-variant-numeric: tabular-nums; }

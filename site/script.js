@@ -911,6 +911,13 @@ const ARTICLES = [
     autores: 'Niewitecka, K. et al.', fonte: 'Water (MDPI)', ano: 2025, url: 'https://www.mdpi.com/2073-4441/17/23/3431',
     resumo: 'Revisão do reúso de águas cinzas em edifícios, principalmente na descarga de bacias: tecnologias de tratamento e as barreiras técnicas, normativas e de aceitação pelos usuários.' },
 ];
+// ===== Revistas especializadas (conferidas em 24/10/2026) =====
+// edicao/edicaoUrl: edição em destaque; url: página com todas as edições
+const MAGAZINES = [
+  { nome: 'Plumbing & HVAC', pais: 'Canadá', idioma: 'en', url: 'https://plumbingandhvac.ca/digital-issues/',
+    edicao: 'Outubro de 2026', edicaoUrl: 'https://plumbingandhvac.ca/october-2026/',
+    resumo: 'Revista canadense para instaladores, projetistas e distribuidores de hidráulica, aquecimento hidrônico, refrigeração e climatização. A edição de outubro traz treinamento técnico em refrigeração, tubulação com circuito primário-secundário e a água depois do hidrômetro. Edição digital para ler on-line.' },
+];
 (() => {
   const list = document.getElementById('artList');
   if (!list) return;
@@ -927,6 +934,18 @@ const ARTICLES = [
       <a class="art__btn" href="${a.url}" target="_blank" rel="noopener noreferrer">${a.pdf ? 'Ler (PDF)' : 'Ler o artigo'} ↗<small>${host(a.url)}</small></a>
     </article>`).join('') +
     `<a class="art art--add" href="#artigo-envio"><span class="art__plus">+</span><div class="art__body"><h3 class="art__title">Adicione seu Artigo Técnico Aqui</h3><p class="art__resumo">Anexe o arquivo ou indique o link do seu trabalho para publicarmos nesta seção.</p></div></a>`;
+  const mags = document.getElementById('magList');
+  if (mags) mags.innerHTML = MAGAZINES.map(m => `
+    <article class="art art--mag">
+      <span class="art__num" aria-hidden="true">📰</span>
+      <div class="art__body">
+        <span class="art__tema">Revista · ${m.pais}</span>
+        <h3 class="art__title"><a href="${m.edicaoUrl || m.url}" target="_blank" rel="noopener noreferrer"><span class="notranslate" translate="no">${m.nome}</span>${m.edicao ? ` — ${m.edicao}` : ''}</a></h3>
+        <p class="art__meta">Edição digital${m.idioma === 'en' ? ' · <span class="art__lang">Em inglês</span>' : ''} · <a href="${m.url}" target="_blank" rel="noopener noreferrer">todas as edições ↗</a></p>
+        <p class="art__resumo">${m.resumo}</p>
+      </div>
+      <a class="art__btn" href="${m.edicaoUrl || m.url}" target="_blank" rel="noopener noreferrer">Ler a edição ↗<small>${host(m.url)}</small></a>
+    </article>`).join('');
 })();
 
 // Envio de artigo: arquivo ou link
@@ -1056,6 +1075,8 @@ const ARTICLES = [
 
     add('Artigos técnicos', pick(ARTICLES, a => [a.tema, a.title, a.autores, a.fonte, a.resumo].join(' '),
       a => ({ href: a.url, ext: true, title: a.title, sub: `${a.fonte} · ${a.ano}` })));
+    add('Revistas especializadas', pick(MAGAZINES, m => [m.nome, m.pais, m.edicao, m.resumo, 'revista'].join(' '),
+      m => ({ href: m.edicaoUrl || m.url, ext: true, title: `${m.nome} — ${m.edicao}`, sub: `Revista · ${m.pais}` })));
 
     // Demais conteúdos da página
     const found = new Set();
@@ -1161,6 +1182,7 @@ const ARTICLES = [
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })))).join(''),
     artigos: () => group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema }))) +
+      group('Revistas especializadas', MAGAZINES.map(m => ({ href: m.edicaoUrl || m.url, ext: true, label: m.nome }))) +
       group('', [{ href: '#artigo-envio', label: 'Adicione seu artigo técnico aqui' }]),
     feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira')) + group('No exterior', tag('#feiras .fair--intl', 'feira')) +
       group('', [{ href: '#links-uteis', label: 'Links úteis: entidades e normas do setor' }]),
