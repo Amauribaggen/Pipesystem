@@ -10,6 +10,7 @@ const VIDEOS = {
   ppr: { id: 'bh_zk-3C3io', t: 'PPR: termofusão', canal: 'Amanco Wavin', dur: '4:17', tema: 'Água fria e quente', d: 'Uso do termofusor, tempos de aquecimento e encaixe das conexões de PPR.' },
   pex: { id: '9JESMcBrw5g', t: 'Instalação do ClicPEX', canal: 'Tigre', dur: '2:04', tema: 'Água fria e quente', d: 'Corte e montagem das conexões de engate do sistema PEX.' },
   flextemp: { id: 'L7hoZOf8Dbo', t: 'Como instalar o Flextemp', canal: 'Amanco Wavin', dur: '4:10', tema: 'Água fria e quente', d: 'Passo a passo do sistema PEX com conexões de anel.' },
+  pexCorte: { id: 'jBnp3LHf8PU', t: 'PEX: comprimento mínimo entre conexões (inglês)', canal: 'Uponor', dur: '2:53', tema: 'Água fria e quente', d: 'Distância mínima de tubo entre duas conexões, conforme o diâmetro, e alternativas como tês múltiplos e curvas com guia.' },
   viega: { id: 'FyG5_0ccx2Q', t: 'ProPress: guia de instalação (inglês)', canal: 'Viega', dur: '1:47', tema: 'Água fria e quente', d: 'Conexões de cobre por prensagem: corte, rebarba, marcação e prensagem.' },
   banheiro: { id: 'FM9qw5bqXoc', t: 'Instalação hidráulica de banheiro', canal: 'Tigre', dur: '5:07', tema: 'Água fria e quente', d: 'Distribuição de água e esgoto de um banheiro completo.' },
   esgoto: { id: '3Hy-1vnJtsc', t: 'Tigre Ensina: instalação de esgoto na prática', canal: 'Tigre', dur: '26:45', tema: 'Esgoto', d: 'Aula completa: declividade, juntas, ventilação e caixas.' },
