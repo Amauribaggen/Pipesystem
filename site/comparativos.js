@@ -43,6 +43,12 @@ const CMP_FONTES = {
   ftMulti: ['Ficha técnica de tubo PE-X/Al/PE-X: 60 °C por 49 anos, 80 °C por 1 ano, 95 °C por 100 h (água quente sanitária)', 'https://dam.giacomini.com/es.giacomini.com/product_documentations/datasheets/R999I.pdf', 'fab'],
   ftCpvc: ['Literatura de CPVC para sprinklers: 175 psi a 150 °F (≈ 12 bar a 65 °C), listagem UL', 'https://vikinggroupinc.com/sites/default/files/databook/related/cpvc%20pipe%20and%20fittings/cpvc.pdf', 'fab'],
   acust: ['Ficha técnica de esgoto em PVC acústico (valores de ruído autodeclarados segundo VDI 4100 / DIN 4109)', 'https://mediahub.wavin.com/m/36bfd4f2b82d83de/original/FT-Esgoto-Silentium.pdf', 'fab'],
+  asmeB313: ['ASME B31.3 — Process Piping: projeto, materiais, fabricação, soldagem, inspeção e ensaios de tubulações industriais (limites de uso de juntas roscadas)', 'https://www.asme.org/codes-standards/find-codes-standards/b31-3-process-piping', 'norma'],
+  asmeB169: ['ASME B16.9 — Conexões de aço para solda de topo (butt weld)', 'https://www.asme.org/codes-standards/find-codes-standards/b16-9-factory-made-wrought-buttwelding-fittings', 'norma'],
+  asmeB165: ['ASME B16.5 — Flanges e conexões flangeadas NPS 1/2 a 24: classes de pressão e tabelas pressão × temperatura', 'https://www.asme.org/codes-standards/find-codes-standards/b16-5-pipe-flanges-flanged-fittings-nps-1-2-nps-24-metric-inch-standard', 'norma'],
+  asmeB1611: ['ASME B16.11 — Conexões forjadas de encaixe para solda (socket weld) e roscadas', 'https://www.asme.org/codes-standards/find-codes-standards/b16-11-forged-fittings-socket-welding-threaded', 'norma'],
+  asmePcc1: ['ASME PCC-1 — Montagem de juntas flangeadas aparafusadas: alinhamento, lubrificação, sequência e controle do aperto', 'https://www.asme.org/codes-standards', 'norma'],
+  asmeB1201: ['ASME B1.20.1 — Roscas de tubo de uso geral (NPT); no Brasil também se usa a rosca BSP (ABNT NBR NM ISO 7-1)', 'https://www.asme.org/codes-standards', 'norma'],
   sinapi: ['Caixa Econômica Federal — SINAPI 09/2026, preços de insumos sem desoneração, Santa Catarina (base usada pelo Dimensionamento Inteligente do portal)', 'https://www.caixa.gov.br/site/Paginas/downloads.aspx#categoria_888', 'preco'],
 };
 const CMP_KIND = { norma: 'norma', estudo: 'estudo', fab: 'ficha de fabricante', preco: 'preço' };
@@ -240,6 +246,29 @@ const CMPS = [
     erros: ['Galvanizado em água quente', 'Ligar galvanizado direto ao cobre'],
     apps: { casa: '—', predio: 'Galvanizado em incêndio.', hospital: 'Inox em cozinhas e áreas técnicas especiais.', industria: 'Conforme o fluido, a temperatura e a higiene exigida.' },
     fontes: ['galv1', 'galv2', 'sinapi'] },
+
+  { id: 'soldar-flangear-rosquear', tema: 'Indústria', titulo: 'Soldar, flangear ou rosquear? A escolha da conexão na tubulação industrial',
+    resumo: 'Não existe conexão universalmente melhor. A solda dá integridade e estanqueidade em condições severas; o flange dá acesso para desmontar válvulas, bombas e filtros; a rosca simplifica a montagem em pequenos diâmetros e utilidades, dentro dos limites do código {asmeB313}.',
+    intro: 'No projeto de tubulações industriais, o tipo de conexão é uma decisão técnica: define a integridade mecânica, a estanqueidade, a confiabilidade operacional e a facilidade de manutenção do sistema. Pressão, temperatura, fluido, diâmetro nominal, corrosividade, vibração e necessidade de desmontagem devem orientar a escolha.',
+    opcoes: [['Soldada', 'conexoes-solda'], ['Flangeada', 'flanges'], ['Roscada', 'conexoes-forjadas']],
+    linhas: [
+      ['Ponto forte', ['Integridade mecânica e estanqueidade', 'Acesso e manutenção', 'Simplicidade de montagem, sem solda']],
+      ['Pressão e temperatura', ['Condições severas, desde que projeto, materiais, procedimento de soldagem e inspeção estejam especificados {asmeB313}', 'Limitadas pela classe do flange (tabela pressão × temperatura) e pela junta de vedação {asmeB165}', 'Serviços moderados; o código do sistema limita pressão, temperatura e fluido {asmeB313}']],
+      ['Diâmetros usuais', ['Todos: solda de topo nos maiores {asmeB169}, solda de encaixe nos pequenos {asmeB1611}', 'Médios e grandes; ligação de equipamentos', 'Pequenos diâmetros {asmeB1611}']],
+      ['Desmontagem', ['Não: só cortando o tubo', 'Sim, periódica, sem cortar', 'Possível, mas a rosca se desgasta a cada remontagem']],
+      ['Pontos de vazamento', ['Poucos: reduz o número de juntas desmontáveis', 'Cada flange é um ponto potencial (junta, alinhamento, aperto)', 'Cada rosca é um ponto potencial']],
+      ['Vibração e corrosão', ['Boa resistência, se bem executada e inspecionada', 'Pode exigir reaperto; parafusos sensíveis à corrosão', 'Ponto fraco: tende a afrouxar e a trincar; a rosca reduz a espessura da parede']],
+      ['Exige atenção a', ['Procedimento e soldador qualificados, inspeção visual e ensaios não destrutivos', 'Seleção da junta, compatibilidade dos materiais, alinhamento, sequência de aperto e torque dos parafusos {asmePcc1}', 'Vedante compatível com o fluido, engajamento correto da rosca e risco de corrosão']],
+      ['Normas', ['ASME B31.3, B16.9, B16.11 {asmeB313}{asmeB169}{asmeB1611}', 'ASME B16.5, PCC-1 {asmeB165}{asmePcc1}', 'ASME B1.20.1 (NPT), B16.11 {asmeB1201}{asmeB1611}']],
+    ],
+    pros: [[['Alta resistência mecânica', 'Menos juntas desmontáveis, menos pontos de vazamento', 'Adequada a pressões e temperaturas severas'], ['Não desmonta sem corte', 'Exige soldador qualificado, procedimento e inspeção']],
+      [['Instala e remove válvulas, bombas, filtros e outros equipamentos', 'Facilita a manutenção periódica'], ['Montagem inadequada compromete a vedação e provoca vazamentos', 'Mais peso, espaço e custo de peças']],
+      [['Montagem prática e rápida', 'Dispensa soldagem (sem trabalho a quente)'], ['Não serve para todas as condições operacionais', 'Sensível a vibração e a corrosão']]],
+    criterios: ['Condições de projeto e operação (pressão, temperatura, vibração)', 'Material da tubulação e compatibilidade química com o fluido', 'Requisitos de estanqueidade e integridade mecânica', 'Inspeção, manutenção e vida útil esperada', 'Normas técnicas aplicáveis e consequências de uma falha'],
+    fecho: 'Na engenharia de tubulações, não existe conexão universalmente melhor: existe a solução mais adequada aos requisitos do projeto e às condições de operação. A decisão não deve se basear só no custo inicial ou na facilidade de instalação.',
+    erros: ['Escolher a conexão só pelo custo inicial ou pela facilidade de instalação', 'Apertar flanges sem sequência cruzada e sem controle de torque', 'Reaproveitar a junta de vedação de um flange já desmontado', 'Usar rosca em linhas com vibração ou fluido perigoso sem verificar o código', 'Soldar sem procedimento qualificado e sem inspeção'],
+    apps: { casa: 'Rosca nos metais e pequenos diâmetros; flange só em bombas e equipamentos.', predio: 'Flange em bombas, válvulas e medidores da casa de máquinas; rosca em utilidades de pequeno diâmetro; solda ou ranhura nas linhas de aço maiores.', hospital: 'Gases medicinais em cobre com brasagem {nbr12188}; flange nos equipamentos que exigem manutenção.', industria: 'Solda como regra nas linhas de processo; flange nos equipamentos e pontos de manutenção; rosca em pequenos diâmetros de utilidades, quando o código permitir {asmeB313}.' },
+    fontes: ['asmeB313', 'asmeB169', 'asmeB1611', 'asmeB165', 'asmePcc1', 'asmeB1201', 'nbr12188'] },
 ];
 
 // Insumo SINAPI do custo de referência: { ins, div } → preço por metro, unidade ou litro no estado escolhido
@@ -267,7 +296,8 @@ function comparativoHTML(c, o = {}) {
   const temCusto = c.linhas.some(([k]) => /^Custo de referência/.test(k));
   const apps = { casa: 'Casa', predio: 'Prédio alto', hospital: 'Hospital', industria: 'Indústria' };
   const fichas = [...new Map(c.opcoes.map(([n, m]) => [m, n])).entries()];
-  return `
+  return `${c.intro ? `
+      <p class="cp-intro">${refs(c.intro)}</p>` : ''}
       <p class="cp-oneline"><b>Quando usar cada um:</b> ${refs(c.resumo)}</p>
       <${h} class="cp-h">Lado a lado</${h}>
       <div class="cp-tablewrap"><table class="cp-table">
@@ -278,7 +308,10 @@ function comparativoHTML(c, o = {}) {
       <${h} class="cp-h">Prós e contras</${h}>
       <div class="cp-opts">${c.opcoes.map(([n], i) => `<div class="cp-opt"><b>${n}</b><ul class="cp-pro">${c.pros[i][0].map(x => `<li>${refs(x)}</li>`).join('')}</ul><ul class="cp-con">${c.pros[i][1].map(x => `<li>${refs(x)}</li>`).join('')}</ul></div>`).join('')}</div>
       <${h} class="cp-h">Escolha por aplicação</${h}>
-      <div class="cp-apps">${Object.entries(c.apps).map(([k, v]) => `<div class="cp-app"><b>${apps[k]}</b>${refs(v)}</div>`).join('')}</div>
+      <div class="cp-apps">${Object.entries(c.apps).map(([k, v]) => `<div class="cp-app"><b>${apps[k]}</b>${refs(v)}</div>`).join('')}</div>${c.criterios ? `
+      <${h} class="cp-h">Como definir a melhor alternativa?</${h}>
+      <ul class="cp-crit">${c.criterios.map(x => `<li>${refs(x)}</li>`).join('')}</ul>` : ''}${c.fecho ? `
+      <p class="cp-fecho">${refs(c.fecho)}</p>` : ''}
       <${h} class="cp-h">Erros comuns</${h}>
       <ul class="cp-errs">${c.erros.map(e => `<li>${e}</li>`).join('')}</ul>
       <p class="cp-note"><a href="${o.erros || '/guias-praticos'}">Veja causas e soluções em Erros e patologias →</a></p>
