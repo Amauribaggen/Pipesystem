@@ -738,6 +738,9 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
     const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); monta(); } }, { rootMargin: '800px 0px' });
     io.observe(sec);
   } else monta();
+  // busca vinda da página inicial (/normas?norma=NBR 5626)
+  const q0 = new URLSearchParams(location.search).get('norma');
+  if (q0) { search.value = q0; monta(); renderList(); }
 })();
 
 // ===== Espaços publicitários ("Seu banner aqui!") =====
@@ -1141,11 +1144,16 @@ const MAGAZINES = [
 
     // Demais conteúdos da página
     const found = new Set();
-    // calculadoras ficam na página de Dimensionamento: busca na lista gerada no build
-    if (!document.querySelector('#ferramentas') && window.SECOES_ITENS?.ferramentas)
-      add('Calculadoras on-line', SECOES_ITENS.ferramentas.filter(x => matchText(x.texto, terms))
-        .map(x => ({ href: '/dimensionamento#' + x.id, title: x.label, sub: snippet(x.texto, terms, '') })));
     DOM_ITEMS.forEach(([sel, name]) => {
+      // seção em outra página: busca na lista de cartões gerada no build (SECOES_ITENS) e leva à página certa
+      const chave = sel.match(/^#(\w+)/)[1];
+      if (!document.getElementById(chave) && window.SECOES_ITENS?.[chave]) {
+        if (found.has(chave)) return;   // a mesma seção listada duas vezes (ex.: assinaturas)
+        found.add(chave);
+        add(name, SECOES_ITENS[chave].filter(x => matchText(x.texto, terms))
+          .map(x => ({ href: ((window.ID_PAGINA || {})[x.id] || '/') + '#' + x.id, title: x.label, sub: snippet(x.texto, terms, '') })));
+        return;
+      }
       const els = [...document.querySelectorAll(sel)].filter(el => matchText(el.textContent, terms));
       els.forEach(el => found.add(el.closest('section')));
       add(name, els.map(el => ({ run: () => flash(el), title: titleOf(el), sub: snippet(el.textContent, terms, '') })));
@@ -1171,6 +1179,7 @@ const MAGAZINES = [
   }
   function showNorm(q) {
     const s = document.getElementById('normSearch');
+    if (!s) { location.href = '/normas?norma=' + encodeURIComponent(q); return; }   // Normas tem página própria
     s.value = q; s.dispatchEvent(new Event('input'));
     goTo('normas');
   }

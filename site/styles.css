@@ -155,18 +155,30 @@ p { margin: 0 0 1em; }
 /* Páginas próprias: a seção ocupa ao menos a tela toda, para o formulário de contato não aparecer
    no alto e depois ser empurrado quando o conteúdo (catálogo, bibliotecas…) é montado */
 body[data-pagina] main > section:first-child { min-height: 100vh; }
+/* Normas: enquanto a lista não é montada, a área reserva a tela (o bloco "onde comprar" não sobe e depois desce) */
+.nrm:has(#normList:empty) { min-height: 100vh; }
 /* BIM/CAD: filtros montados por bim.js reservam a altura que vão ocupar (medida em cada largura de tela) */
 #bimFmt:not(:has(button)), #bimOrig:not(:has(button)) { min-height: 33px; }
 #bimCat:not(:has(button)) { min-height: 72px; }
 @media (max-width: 900px) { #bimCat:not(:has(button)) { min-height: 111px; } }
 @media (max-width: 600px) { #bimFmt:not(:has(button)) { min-height: 72px; } #bimCat:not(:has(button)) { min-height: 228px; } }
-/* Página inicial: resumo das seções que têm página própria, com o botão para abri-la */
-.secao-resumo { padding: 56px 0; }
-.secao-resumo__box { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; }
-.secao-resumo__txt { flex: 1 1 420px; max-width: 720px; }
-.secao-resumo__txt h2 { margin-bottom: .35em; }
-.secao-resumo__txt p:last-child { margin-bottom: 0; }
-.secao-resumo__btn { flex: none; }
+/* Página inicial vitrine: um cartão por área (scripts/secoes.mjs), com número de destaque e atalhos */
+.vitrine { padding-top: 64px; }
+.vitrine .section__head { margin-bottom: 28px; }
+.vitrine__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.vcard { display: flex; flex-direction: column; background: #fff; color: var(--ink); border-radius: 14px; border: 2px solid transparent; overflow: hidden; transition: border-color .15s, transform .15s; }
+.vcard:hover { border-color: var(--teal); transform: translateY(-2px); }
+.vcard__main { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 12px; text-decoration: none; color: inherit; }
+.vcard__tag { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--teal-d); }
+.vcard h3 { margin: 0; color: var(--navy); font-size: 1.15rem; }
+.vcard__main p { margin: 0; color: #33445a; font-size: .9rem; line-height: 1.5; }
+.vcard__num { margin-top: auto; padding-top: 6px; font-size: .84rem; color: #5b6b80; }
+.vcard__num b { font-family: var(--display); font-size: 1.35rem; color: var(--navy); margin-right: 2px; }
+.vcard__go { font-size: .85rem; font-weight: 700; color: var(--teal-d); }
+.vcard__links { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 10px 18px 14px; border-top: 1px solid var(--line); background: #f6f9fc; }
+.vcard__links a { font-size: .8rem; font-weight: 600; padding: .25em .7em; border-radius: 999px; border: 1px solid #cfd9e6; color: var(--navy); text-decoration: none; background: #fff; }
+.vcard__links a:hover { border-color: var(--teal); color: var(--teal-d); }
+@media (prefers-reduced-motion: reduce) { .vcard { transition: none; } .vcard:hover { transform: none; } }
 .section__head p:last-child { color: var(--muted); font-size: 1.05rem; }
 .section--dark .section__head p:last-child { color: #b3c4d8; }
 

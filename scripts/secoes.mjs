@@ -1,20 +1,64 @@
-// Seções grandes da página inicial que viram páginas próprias: /materiais, /dimensionamento, /bim-cad e /guias-praticos.
-// Roda no build, sobre dist/index.html: cada página leva a sua seção + o formulário de contato + a janela das fichas;
-// a página inicial fica com um resumo de cada uma, com o botão para abri-la.
+// Página inicial vitrine + seções em páginas próprias. Roda no build, sobre dist/index.html:
+// cada seção grande vira uma página (a seção + o formulário de contato + a janela das fichas) e a página inicial
+// fica com a abertura (busca e números do mercado), a vitrine com um cartão por área, "Para quem é" e o contato.
 // Links antigos (#materiais, #cmp-..., /#lmatTool...) continuam valendo: o mapa ID_PAGINA leva cada id à página certa.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BASE } from './pages.mjs';
 
+// Ordem = ordem dos cartões na vitrine. n(D, x) = número de destaque do cartão; links = atalhos para os subtemas.
 export const PAGINAS = [
-  { id: 'materiais', path: '/materiais', botao: 'Abrir o catálogo', titulo: 'Catálogo de produtos e materiais hidráulicos | PipeSystem' },
-  { id: 'ferramentas', path: '/dimensionamento', botao: 'Abrir Dimensionamento', titulo: 'Dimensionamento e calculadoras de hidráulica | PipeSystem' },
-  { id: 'bim', path: '/bim-cad', botao: 'Abrir BIM/CAD', titulo: 'Bibliotecas BIM/CAD de fabricantes de hidráulica | PipeSystem' },
-  { id: 'guias', path: '/guias-praticos', botao: 'Abrir Guias práticos', titulo: 'Guias práticos de instalações hidráulicas | PipeSystem',
+  { id: 'servicos', path: '/cotacoes', nome: 'Cotações e negócios', tag: 'Serviços', titulo: 'Cotações, consultoria e negócios em hidráulica | PipeSystem',
+    resumo: 'Peça cotações de materiais, tire dúvidas com o consultor on-line e encontre parceiros, leilões e oportunidades do setor.',
+    n: (D, x) => [x.itens.servicos?.length, 'serviços'],
+    links: [['Cotações', '/cotacoes#servico-cotacoes'], ['Consultor on-line', '/cotacoes#servico-consultor-on-line'], ['Negócios e leilões', '/cotacoes#servico-negocios-leiloes']] },
+  { id: 'sistemas', path: '/sistemas', nome: 'Sistemas hidráulicos', tag: 'Áreas de aplicação', titulo: 'Sistemas hidráulicos e de condução de fluidos | PipeSystem',
+    resumo: 'Como funcionam água fria e quente, esgoto, incêndio, gás, vapor, ar-condicionado e outras áreas: esquema, componentes, cuidados e normas.',
+    n: D => [D.SYSTEMS.length, 'sistemas explicados'],
+    links: D => ['sis-incendio', 'sis-agua-quente', 'sis-split-vrf'].map(id => D.SYSTEMS.find(s => s.id === id)).filter(Boolean).map(s => [s.name, '/sistemas/' + s.id.slice(4), s.id]) },
+  { id: 'materiais', path: '/materiais', nome: 'Catálogo de materiais', tag: 'Materiais', titulo: 'Catálogo de produtos e materiais hidráulicos | PipeSystem',
+    resumo: 'Tubos, conexões, válvulas, bombas e acessórios com fotos, dados técnicos, como escolher, normas e fabricantes.',
+    n: D => [D.CATALOG.length, 'fichas técnicas'],
+    links: [['Tubos', '/materiais?busca=tubos'], ['Conexões', '/materiais?busca=conexoes'], ['Válvulas', '/materiais?busca=valvulas']] },
+  { id: 'ferramentas', path: '/dimensionamento', nome: 'Dimensionamento', tag: 'Ferramentas de cálculo', titulo: 'Dimensionamento e calculadoras de hidráulica | PipeSystem',
+    resumo: 'Informe o empreendimento e receba a lista orientativa de materiais com preços SINAPI, além de calculadoras de projeto.',
+    n: (D, x) => [x.itens.ferramentas?.length, 'ferramentas de cálculo'],
+    links: [['Dimensionamento Inteligente', '/dimensionamento#lmatTool'], ['Perda de carga', '/dimensionamento#hwTool'], ['Ferramentas on-line', '/dimensionamento#webtools']] },
+  { id: 'bim', path: '/bim-cad', nome: 'Bibliotecas BIM/CAD', tag: 'Para projetistas', titulo: 'Bibliotecas BIM/CAD de fabricantes de hidráulica | PipeSystem',
+    resumo: 'Onde baixar famílias Revit, objetos IFC, blocos DWG e plugins oficiais dos fabricantes de tubos, conexões e equipamentos.',
+    n: D => [D.BIM_LIBS.length, 'bibliotecas de fabricantes'],
+    links: [['Fabricantes', '/bim-cad#bimGrid'], ['Plataformas BIM', '/bim-cad#bimPlats']] },
+  { id: 'guias', path: '/guias-praticos', nome: 'Guias práticos', tag: 'Como fazer', titulo: 'Guias práticos de instalações hidráulicas | PipeSystem',
+    resumo: 'Comparativos entre materiais, passo a passo de instalação e teste, vídeos, erros comuns, checklist de entrega e glossário.',
+    n: D => [D.CMPS.length, 'comparativos com fontes'],
+    links: [['Comparativos', '/guias-praticos#comparativos'], ['Passo a passo', '/guias-praticos#gp-guias'], ['Glossário', '/guias-praticos#gp-glossario']],
     // a seção começa pelo bloco de comparativos: a página ganha um título geral antes dele
     head: `<p class="eyebrow">Guias práticos</p>
         <h2>Guias práticos de instalações hidráulicas</h2>
         <p>Comparativos entre materiais e sistemas, passo a passo de instalação, teste e manutenção, vídeos dos fabricantes, erros comuns com causa e solução, checklist de entrega e glossário técnico.</p>` },
+  { id: 'normas', path: '/normas', nome: 'Normas técnicas', tag: 'Consulta', titulo: 'Normas técnicas de hidráulica: ABNT, NR, NFPA e ASME | PipeSystem',
+    resumo: 'As normas mais usadas em projeto, instalação e especificação, por aplicação e por produto, com link para o resumo ou a compra.',
+    n: D => [new Set(D.NORM_GROUPS.flatMap(g => g.normas.map(x => x.code))).size, 'normas organizadas'],
+    links: [['Por aplicação', '/normas'], ['Por produto', '/normas']] },
+  { id: 'artigos', path: '/artigos', nome: 'Artigos e revistas', tag: 'Leituras técnicas', titulo: 'Artigos técnicos e revistas de hidráulica | PipeSystem',
+    resumo: 'Artigos de revistas técnicas e científicas, com acesso gratuito, e as edições digitais das revistas especializadas.',
+    n: (D, x) => [x.artigos, 'artigos selecionados'],
+    links: [['Artigos', '/artigos#artList'], ['Revistas', '/artigos#magList'], ['Envie seu artigo', '/artigos#artigo-envio']] },
+  { id: 'feiras', path: '/feiras', nome: 'Feiras e eventos', tag: 'Agenda do setor', titulo: 'Feiras e eventos de hidráulica no Brasil e no exterior | PipeSystem',
+    resumo: 'As próximas feiras do setor no Brasil e no exterior, com datas, e links úteis de entidades e normalização.',
+    n: (D, x) => [x.itens.feiras?.length, 'feiras na agenda'],
+    links: [['Agenda', '/feiras'], ['Links úteis', '/feiras#links-uteis']] },
+  { id: 'assinaturas', path: '/assinaturas', nome: 'Receba cotações', tag: 'Para distribuidores', titulo: 'Receba cotações de materiais hidráulicos | PipeSystem',
+    resumo: 'Distribuidores e revendedores recebem os pedidos de cotação publicados no portal e respondem direto ao comprador.',
+    n: (D, x) => [x.itens.assinaturas?.length, 'planos de assinatura'],
+    links: [['Planos', '/assinaturas']] },
+  { id: 'anuncie', path: '/anuncie', nome: 'Anuncie', tag: 'Para fabricantes', titulo: 'Anuncie no PipeSystem: banners para o público técnico | PipeSystem',
+    resumo: 'Banners nas páginas do portal e nos boletins técnicos, diante de projetistas, instaladores e compradores.',
+    n: (D, x) => [x.itens.anuncie?.length, 'planos de banner'],
+    links: [['Planos', '/anuncie'], ['Onde aparecem', '/anuncie#adMap']] },
+  { id: 'sobre', path: '/quem-somos', nome: 'Quem somos', tag: 'PipeSystem', titulo: 'Quem somos — PipeSystem, o portal da hidráulica',
+    resumo: 'O primeiro portal brasileiro dedicado à hidráulica e à condução de fluidos: quem faz, por que existe e como trabalhamos.',
+    n: () => null, links: [['Diretoria', '/quem-somos'], ['Política editorial', '/politica-editorial']] },
 ];
 
 // Cartões que o submenu e a busca da página inicial listam (mesmos prefixos do submenu em script.js)
@@ -27,7 +71,7 @@ const ITENS = [
 const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const slug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const texto = s => s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
-const attr = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const attr = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 // Blocos de primeiro nível dentro de <main>: seções (com ou sem id), a janela das fichas e o resto
 function blocos(main) {
@@ -59,7 +103,14 @@ function blocos(main) {
   return out;
 }
 
-export function separar(out) {
+// Quantos artigos e revistas há em script.js (as listas ficam lá)
+function contaArtigos(src) {
+  const js = readFileSync(join(src, 'script.js'), 'utf8');
+  const bloco = (js.match(/const ARTICLES = \[([\s\S]*?)\n\];/) || [])[1] || '';
+  return (bloco.match(/\{ tema:/g) || []).length;
+}
+
+export function separar(out, D, src) {
   const file = join(out, 'index.html');
   let html = readFileSync(file, 'utf8');
 
@@ -96,8 +147,7 @@ export function separar(out) {
   // ids de cada página (para os links antigos) e espaços publicitários por página
   const idPagina = {}, adAll = [];
   for (const p of PAGINAS) {
-    const h = porId[p.id].html;
-    for (const m of h.matchAll(/\sid="([^"]+)"/g)) idPagina[m[1]] = p.path;
+    for (const m of porId[p.id].html.matchAll(/\sid="([^"]+)"/g)) idPagina[m[1]] = p.path;
   }
   for (const b of bs) {
     const pg = PAGINAS.find(p => p.id === b.id);
@@ -111,21 +161,42 @@ export function separar(out) {
   const dados = `<script>window.ID_PAGINA=${JSON.stringify(idPagina)};window.SECOES_ITENS=${JSON.stringify(itens)};window.AD_ALL=${JSON.stringify(adAll)};</script>\n`;
   const comDados = s => s.replace(/(<script[^>]*src="webtools\.js")/, dados + '$1');
 
-  // 4. Página inicial: no lugar de cada seção separada, um resumo com o botão para a página
-  const resumo = p => {
-    const h = porId[p.id].html;
-    const cls = (h.match(/<section\b[^>]*class="([^"]+)"/) || [])[1] || 'section';
-    const head = p.head || (h.match(/<header class="section__head">([\s\S]*?)<\/header>/) || [])[1] || '';
-    return `<!-- ${p.id.toUpperCase()} (página própria: ${p.path}) -->
-  <section class="${cls} secao-resumo" aria-labelledby="resumo-${p.id}">
-    <div class="container secao-resumo__box">
-      <div class="secao-resumo__txt">${head.replace(/<h2\b/, `<h2 id="resumo-${p.id}"`)}</div>
-      <a class="btn secao-resumo__btn" href="${p.path}">${p.botao} <span aria-hidden="true">→</span></a>
+  // 4. Página inicial vitrine: abertura, um cartão por área, "Para quem é" e o contato
+  const x = { itens, artigos: contaArtigos(src) };
+  const cartao = p => {
+    const num = p.n(D, x), links = typeof p.links === 'function' ? p.links(D) : p.links;
+    return `
+        <article class="vcard">
+          <a class="vcard__main" href="${p.path}">
+            <span class="vcard__tag">${p.tag}</span>
+            <h3>${p.nome}</h3>
+            <p>${p.resumo}</p>
+            ${num && num[0] ? `<span class="vcard__num"><b>${num[0]}</b> ${num[1]}</span>` : ''}
+            <span class="vcard__go">Abrir <span aria-hidden="true">→</span></span>
+          </a>
+          <p class="vcard__links">${links.map(([t, u, sheet]) => `<a href="${u}"${sheet ? ` data-sheet="${sheet}"` : ''}>${t}</a>`).join('')}</p>
+        </article>`;
+  };
+  const vitrine = `<!-- VITRINE: uma área por cartão (scripts/secoes.mjs) -->
+  <section class="section vitrine" id="areas" aria-labelledby="areas-titulo">
+    <div class="container">
+      <header class="section__head">
+        <p class="eyebrow">O portal</p>
+        <h2 id="areas-titulo">Escolha a área</h2>
+        <p>Cada área tem a sua página, com o conteúdo completo. Os atalhos levam direto ao assunto.</p>
+      </header>
+      <div class="vitrine__grid">${PAGINAS.map(cartao).join('')}
+      </div>
     </div>
   </section>`;
-  };
-  const home = bs.map(b => { const p = PAGINAS.find(x => x.id === b.id); return p ? resumo(p) : b.html; }).join('\n  ');
-  writeFileSync(file, comDados(antes + '\n  ' + home + '\n' + depois));
+  const fica = id => !PAGINAS.some(p => p.id === id);
+  const home = [];
+  for (const b of bs) {
+    if (b.id && !fica(b.id)) continue;
+    home.push(b.html);
+    if (/<section class="hero/.test(b.html)) home.push(vitrine);   // a vitrine vem logo depois da abertura
+  }
+  writeFileSync(file, comDados(antes + '\n  ' + home.join('\n  ') + '\n' + depois));
 
   // 5. Uma página para cada seção
   const urls = [];
@@ -133,11 +204,10 @@ export function separar(out) {
     // o título da seção vira o h1 da página (ou o título geral, quando a página tem um)
     const sec = p.head
       ? porId[p.id].html.replace(/(<div class="container">)/, `$1\n      <header class="section__head">${p.head.replace(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/, '<h1$1>$2</h1>')}</header>`)
-      : porId[p.id].html.replace(/(<header class="section__head">[\s\S]*?)<h2\b([^>]*)>([\s\S]*?)<\/h2>/, '$1<h1$2>$3</h1>');
-    const head = (sec.match(/<header class="section__head">([\s\S]*?)<\/header>/) || [])[1] || '';
-    const ps = [...head.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)].map(m => texto(m[1]));
-    const desc = (ps[ps.length - 1] || '').replace(/"/g, '');
-    const d = desc.length > 158 ? desc.slice(0, 155).replace(/\s+\S*$/, '') + '…' : desc;
+      : porId[p.id].html.replace(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/, '<h1$1>$2</h1>');
+    const apos = sec.slice(sec.indexOf('</h1>'));
+    const desc0 = texto((apos.match(/<p\b(?![^>]*eyebrow)[^>]*>([\s\S]*?)<\/p>/) || [])[1] || p.resumo).replace(/"/g, '');
+    const d = desc0.length > 158 ? desc0.slice(0, 155).replace(/\s+\S*$/, '') + '…' : desc0;
     const url = BASE + p.path;
     let pg = antes
       .replace(/<title>[^<]*<\/title>/, `<title>${attr(p.titulo)}</title>`)

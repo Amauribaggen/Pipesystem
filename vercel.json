@@ -7,7 +7,7 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/:secao(cotacoes|sistemas|normas|artigos|feiras|para-quem-e|anuncie|assinaturas|quem-somos|contato)",
+      "source": "/:secao(para-quem-e|contato)",
       "destination": "/"
     }
   ],

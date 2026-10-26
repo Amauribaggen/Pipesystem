@@ -14,7 +14,7 @@ export const BASE = 'https://www.pipesystem.com.br';
 export function loadData(siteDir) {
   const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js', 'bim.js', 'glossario.js', 'sinapi-precos.js', 'comparativos.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML });';
+    '\n;({ PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML, NORM_GROUPS, BIM_LIBS, WEB_TOOLS });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -131,7 +131,7 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
   <div class="container pg-top__inner">
     <a href="/" class="logo" aria-label="PIPESYSTEM — página inicial">${LOGO}</a>
     <nav class="pg-top__nav" aria-label="Seções do portal">
-      <a href="/#sistemas">Sistemas</a><a href="/materiais">Materiais</a><a href="/#normas">Normas</a><a href="/glossario">Glossário</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
+      <a href="/sistemas">Sistemas</a><a href="/materiais">Materiais</a><a href="/normas">Normas</a><a href="/glossario">Glossário</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
     </nav>
   </div>
 </header>
@@ -148,7 +148,7 @@ ${body}
 <footer class="pg-foot">
   <div class="container pg-foot__inner">
     <p><strong>PipeSystem</strong> — o portal da hidráulica e dos sistemas de condução de fluidos.</p>
-    <p><a href="/">Página inicial</a> · <a href="/materiais">Catálogo de produtos e materiais</a> · <a href="/#normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+    <p><a href="/">Página inicial</a> · <a href="/materiais">Catálogo de produtos e materiais</a> · <a href="/normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
     <p class="pg-foot__copy">© ${new Date().getFullYear()} ${[EMPRESA.razao, EMPRESA.cnpj && 'CNPJ ' + EMPRESA.cnpj, EMPRESA.endereco].filter(Boolean).join(' · ')} · <a href="/politica-editorial">Política Editorial</a> · <a href="/privacidade">Política de Privacidade</a> · <a href="/termos">Termos de Uso</a></p>
   </div>
 </footer>
@@ -205,7 +205,7 @@ export function generate(D, outDir) {
       title: `${s.name} — sistema hidráulico: componentes e normas | PipeSystem`,
       description: cut(`${plain(s.desc)}`, 158),
       image: fotos[0] && abs(fotos[0].src), imageAlt: fotos[0] && fotos[0].alt, keywords: [s.name, ...s.normas].join(', '),
-      crumbs: [{ name: 'Início', url: '/' }, { name: 'Sistemas hidráulicos', url: '/#sistemas' }, { name: s.name, url }],
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Sistemas hidráulicos', url: '/sistemas' }, { name: s.name, url }],
     }) });
   }
 
@@ -245,7 +245,7 @@ export function generate(D, outDir) {
         <span class="fabs__name notranslate" translate="no">${esc(n)}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span></a>`
         : `<span class="fabs__nolink"><span class="fabs__name notranslate" translate="no">${esc(n)}</span><span class="fabs__site">site em breve</span></span>`}
         <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
-      <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : misto ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="/#anuncie">Anuncie aqui</a>.</p>` : ''}
+      <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : misto ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="/anuncie">Anuncie aqui</a>.</p>` : ''}
       ${D.cmpTiposHTML(m.id, 'h2')}
       ${D.bimBoxHTML(m.id, 'h2')}
       ${D.cmpLinksHTML(m.id, 'h2')}

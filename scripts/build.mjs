@@ -26,7 +26,7 @@ Object.assign(SIZES, imageSizes(src));
 writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SIZES) + ';\n');
 const pages = generate(D, out);
 // Seções grandes da página inicial em páginas próprias (/materiais, /dimensionamento, /bim-cad, /guias-praticos)
-for (const url of separar(out)) pages.push({ url, images: [] });
+for (const url of separar(out, D, src)) pages.push({ url, images: [] });
 const fotos = [...new Set([
   ...D.PRODUCTS.flatMap(p => (p.fotos || []).map(f => f.src)),
   ...Object.values(D.SYSTEM_PHOTOS).flatMap(a => a.map(f => f.src)),
