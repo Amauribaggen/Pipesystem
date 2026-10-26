@@ -192,7 +192,7 @@ export function separar(out, D, src) {
   // vídeo de apresentação (YouTube): só a capa até o clique, para não pesar a página
   const YT = 'cONu1i6vurU';
   const video = `<!-- VÍDEO: passeio pelo portal (scripts/secoes.mjs) -->
-  <section class="section apres" id="video" aria-labelledby="video-titulo">
+  <section class="section section--dark apres" id="video" aria-labelledby="video-titulo">
     <div class="container apres__grid">
       <div class="apres__txt">
         <p class="eyebrow">Vídeo · 1 min 17 s</p>
@@ -237,7 +237,8 @@ export function separar(out, D, src) {
       .replace(/(<meta property="og:description" content=")[^"]*"/, `$1${attr(d)}"`)
       .replace(/(<meta name="twitter:description" content=")[^"]*"/, `$1${attr(d)}"`)
       .replace('<body>', `<body data-pagina="${p.id}">`);
-    pg += '\n  ' + sec + '\n  ' + fichas + '\n  ' + contato + '\n' + depois;
+    const comVideo = ['sobre', 'anuncie'].includes(p.id) ? '\n  ' + video : '';   // o vídeo de apresentação também em Quem somos e Anuncie
+    pg += '\n  ' + sec + comVideo + '\n  ' + fichas + '\n  ' + contato + '\n' + depois;
     writeFileSync(join(out, p.path.slice(1) + '.html'), comDados(pg));
     urls.push(p.path);
   }

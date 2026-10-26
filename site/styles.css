@@ -164,6 +164,7 @@ body[data-pagina] main > section:first-child { min-height: 100vh; }
 @media (max-width: 600px) { #bimFmt:not(:has(button)) { min-height: 72px; } #bimCat:not(:has(button)) { min-height: 228px; } }
 /* Vídeo de apresentação na página inicial (scripts/secoes.mjs): capa com botão; o YouTube só carrega no clique */
 .apres { padding: 56px 0 8px; }
+body[data-pagina] .apres { padding: 64px 0; }
 .apres__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: center; }
 .apres__txt h2 { margin-bottom: .4em; }
 .apres__txt p:not(.eyebrow) { color: #b8c7d9; margin: 0 0 14px; }
