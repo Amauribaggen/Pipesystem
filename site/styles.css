@@ -1,3 +1,11 @@
+/* Fontes hospedadas no próprio site (SIL Open Font License; ver fonts/LICENCAS.txt), só com os caracteres latinos.
+   Inter e Montserrat são variáveis: um arquivo atende todos os pesos. Pré-carregadas no <head> das páginas. */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("/fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/space-grotesk-700-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 500 800; font-display: swap; src: url("/fonts/montserrat-logo.woff2") format("woff2");
+  unicode-range: U+20, U+45, U+49, U+4d, U+50, U+53-54, U+59, U+63-65, U+69, U+6c, U+6e-6f, U+73, U+75, U+7a, U+e7, U+f5; }
 /* Fontes de reserva com a largura das fontes do Google (medida contra o Arial): enquanto Inter e Space Grotesk
    carregam, o texto já ocupa o mesmo espaço, e a troca não desloca o layout (CLS). */
 @font-face { font-family: "Inter Fallback"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo"); font-weight: 400 500; size-adjust: 106%; ascent-override: 91.4%; descent-override: 22.8%; line-gap-override: 0%; }

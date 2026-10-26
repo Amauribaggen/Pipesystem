@@ -1,0 +1,6 @@
+Fontes hospedadas no site PipeSystem (cópias dos arquivos do Google Fonts, subconjunto latino).
+Todas são licenciadas pela SIL Open Font License, versão 1.1: https://openfontlicense.org
+
+- Inter (inter-latin.woff2) — Copyright The Inter Project Authors (https://github.com/rsms/inter)
+- Space Grotesk (space-grotesk-700-latin.woff2) — Copyright The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk)
+- Montserrat (montserrat-logo.woff2, só as letras da logomarca) — Copyright The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)

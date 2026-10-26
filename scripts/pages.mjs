@@ -69,12 +69,10 @@ function materialPhoto(D, m) {
 }
 
 // ---------- página ----------
-const FONT_LINKS = `<link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Fontes sem bloquear a exibição: Inter (texto), Space Grotesk 700 (títulos) e Montserrat só com as letras da logomarca -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&display=swap&text=PIPESYSTEMconduzindo%20solu%C3%A7%C3%B5es" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@700&family=Montserrat:wght@500;800&display=swap" rel="stylesheet"></noscript>`;
+const FONT_LINKS = `<!-- Fontes do próprio site (styles.css): Inter (texto), Space Grotesk 700 (títulos) e Montserrat só com as letras da logomarca -->
+  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/space-grotesk-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/montserrat-logo.woff2" as="font" type="font/woff2" crossorigin>`;
 
 // Largura e altura reais das fotos (preenchido pelo build), para a página não "pular" enquanto elas carregam
 export const SIZES = {};
