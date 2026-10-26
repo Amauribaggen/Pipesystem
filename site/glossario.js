@@ -292,7 +292,12 @@ function glossarize(root, opts = {}) {
   az.addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.disabled) return; st.letra = st.letra === b.dataset.l ? null : b.dataset.l; press(az, 'l', st.letra); render(); });
   temas.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.tema = st.tema === b.dataset.t ? null : b.dataset.t; press(temas, 't', st.tema); render(); });
   q.addEventListener('input', () => { st.q = norm(q.value.trim()); render(); });
-  render();
+  // a lista (75 termos, ~1.400 elementos) só é montada quando o visitante chega perto de Guias práticos
+  const perto = document.getElementById('guias');
+  if (perto && 'IntersectionObserver' in window && !location.hash.startsWith('#gl-')) {
+    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); if (!list.childElementCount) render(); } }, { rootMargin: '1000px 0px' });
+    io.observe(perto);
+  } else render();
   // "Veja também" e links do submenu para um termo: limpa os filtros e abre o termo antes do roteador rolar até ele
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#gl-"]'); if (!a) return;

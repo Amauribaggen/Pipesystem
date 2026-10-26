@@ -443,21 +443,18 @@ function cmpLinksHTML(matId, h = 'h4') {
     <p class="relprod">${cs.map(c => `<a href="/comparativos/${c.id}">${c.titulo}</a>`).join('')}</p>`;
 }
 
-// Bloco "Comparativos" no início de Guias práticos (página inicial). Montado ao fim do carregamento da página,
-// porque os preços (sinapi-precos.js) carregam depois deste arquivo.
+// Bloco "Comparativos" no início de Guias práticos (página inicial). Os preços (sinapi-precos.js) chegam sob demanda,
+// com as ferramentas de dimensionamento (script.js): o bloco é montado já e refeito quando eles chegam.
 typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded', () => {
   const box = document.getElementById('cpList');
   if (!box) return;
-  // custos de referência no estado já escolhido na lista de materiais (padrão SC)
-  let uf = 'SC';
-  try { const s = localStorage.getItem('lmUf'); if (s && SINAPI_PRECOS.ufs.includes(s)) uf = s; } catch {}
   // Lista única em cartões lado a lado; o comparativo escolhido abre logo abaixo dos cartões
   const idx = document.getElementById('cpIndex');
   const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   idx.innerHTML = CMPS.map(c => `<a href="#cmp-${c.id}" data-q="${norm([c.tema, c.titulo, c.resumo.replace(/\{\w+\}/g, ''), ...c.opcoes.map(o => o[0])].join(' ')).replace(/"/g, '')}"><span>${c.tema}</span><b>${c.titulo}</b><small>${c.opcoes.length} opções lado a lado</small></a>`).join('');
   const cards = [...idx.querySelectorAll('a')];
   const marca = id => cards.forEach(a => a.classList.toggle('is-on', a.getAttribute('href') === '#' + id));
-  const abre = id => { box.querySelectorAll('.cp-cmp').forEach(d => { d.open = d.id === id; }); marca(id); };
+  const abre = id => { box.querySelectorAll('.cp-cmp').forEach(d => { if (d.id === id) corpo(d); d.open = d.id === id; }); marca(id); };
   // busca: todas as palavras digitadas precisam aparecer no cartão
   const busca = document.getElementById('cpBusca'), nBusca = document.getElementById('cpBuscaN'), vazio = document.getElementById('cpVazio');
   busca.addEventListener('input', () => {
@@ -471,14 +468,27 @@ typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded',
     if (e.key !== 'Enter') return;
     const first = cards.find(a => !a.hidden); if (first) { e.preventDefault(); first.click(); }
   });
+  // Só o título de cada comparativo entra na página; o conteúdo (tabelas, fontes...) é montado ao abrir,
+  // o que tira cerca de 2.000 elementos da carga inicial.
   box.innerHTML = CMPS.map(c => `
     <details class="cp-cmp" id="cmp-${c.id}">
       <summary><span class="cp-tag">${c.tema}</span><h3>${c.titulo}</h3><span class="gpguide__chev" aria-hidden="true">▾</span></summary>
-      <div class="cp-body">${comparativoHTML(c, { uf, erros: '#gp-pats' })}
-        <p class="cp-note"><a href="/comparativos/${c.id}">Página própria deste comparativo →</a></p>
-      </div>
+      <div class="cp-body"></div>
     </details>`).join('');
-  if (typeof glossarize === 'function') box.querySelectorAll('.cp-oneline, .cp-opts, .cp-apps, .cp-errs').forEach(el => glossarize(el, { max: 4 }));
+  const byId = Object.fromEntries(CMPS.map(c => [c.id, c]));
+  const corpo = (d, refaz = false) => {
+    const b = d.querySelector('.cp-body'); if (b.childElementCount && !refaz) return;
+    // custos de referência no estado já escolhido na lista de materiais (padrão SC)
+    let uf = 'SC';
+    try { const s = localStorage.getItem('lmUf'); if (s && SINAPI_PRECOS.ufs.includes(s)) uf = s; } catch {}
+    const c = byId[d.id.slice(4)];
+    b.innerHTML = `${comparativoHTML(c, { uf, erros: '#gp-pats' })}
+        <p class="cp-note"><a href="/comparativos/${c.id}">Página própria deste comparativo →</a></p>`;
+    if (typeof glossarize === 'function') b.querySelectorAll('.cp-oneline, .cp-opts, .cp-apps, .cp-errs').forEach(el => glossarize(el, { max: 4 }));
+  };
+  box.addEventListener('toggle', e => { if (e.target.open) corpo(e.target); }, true);
+  // os preços SINAPI chegam com as ferramentas de dimensionamento: refaz os comparativos já montados
+  document.addEventListener('ferramentas-prontas', () => box.querySelectorAll('.cp-cmp').forEach(d => { if (d.querySelector('.cp-body').childElementCount) corpo(d, true); }));
   // cartões e submenu: abre o comparativo (e fecha o anterior) antes de o roteador rolar até ele
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#cmp-"]'); if (!a) return;

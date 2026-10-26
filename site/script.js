@@ -1355,6 +1355,24 @@ const MAGAZINES = [
   if (!seen && !location.hash && !location.search && location.pathname === '/') open();
 })();
 
+// ===== Ferramentas de dimensionamento sob demanda =====
+// Lista de materiais, preços SINAPI, calculadoras, esquema e validador (~175 KB) só carregam quando o visitante chega
+// perto de Dimensionamento ou de Guias práticos (os comparativos usam os preços SINAPI), ou vai a uma seção abaixo delas.
+const TOOLS_JS = ['calculadoras.js', 'fatores-conexoes.js', 'normas-materiais.js', 'sinapi-regras.js', 'sinapi-precos.js', 'bom.js', 'validador.js', 'esquema.js'];
+let toolsP = null;
+function loadTools() {
+  return toolsP || (toolsP = TOOLS_JS.reduce((p, src) => p.then(() => new Promise(ok => {
+    const s = document.createElement('script'); s.src = '/' + src; s.onload = s.onerror = ok; document.body.append(s);
+  })), Promise.resolve()).then(() => document.dispatchEvent(new Event('ferramentas-prontas'))));
+}
+const toolsSection = document.getElementById('ferramentas');
+// a seção (ou item) fica em Dimensionamento ou abaixo dela?
+const needsTools = el => !!el && !!toolsSection && (el === toolsSection || !!(toolsSection.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING));
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); loadTools(); } }, { rootMargin: '1000px 0px' });
+  ['ferramentas', 'guias'].forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+} else loadTools();
+
 // ===== Endereços das seções =====
 // Cada seção da página inicial tem um endereço próprio: clicar em "Sistemas" mostra /sistemas na barra,
 // abrir /sistemas direto (link compartilhado ou F5) leva à seção, e o botão "voltar" volta à seção anterior.
@@ -1371,6 +1389,7 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   const sectionOf = id => SECTION_PATHS[id] ? id : document.getElementById(id)?.closest('section[id]')?.id;
   const go = (id, how = 'push', smooth = true) => {
     const el = document.getElementById(id), sec = sectionOf(id); if (!el || !SECTION_PATHS[sec]) return;
+    if (needsTools(el)) loadTools();
     el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
     if (sec !== id && !el.matches('dialog')) { el.classList.remove('search-flash'); void el.offsetWidth; el.classList.add('search-flash'); }   // destaca o cartão escolhido no submenu
     const url = '/' + SECTION_PATHS[sec];
@@ -1390,7 +1409,9 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   history.scrollRestoration = 'manual';
   window.addEventListener('popstate', () => {
     const id = SECTION_OF_PATH[location.pathname.slice(1)];
-    if (id) document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const el = id && document.getElementById(id);
+    if (needsTools(el)) loadTools();
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     else if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' });
   });
   // ao abrir o site por um endereço de seção (/sistemas) ou por um link antigo com "#" (/#sistemas)

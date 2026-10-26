@@ -1,3 +1,8 @@
+/* Fontes de reserva com a largura das fontes do Google (medida contra o Arial): enquanto Inter e Space Grotesk
+   carregam, o texto já ocupa o mesmo espaço, e a troca não desloca o layout (CLS). */
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo"); font-weight: 400 500; size-adjust: 106%; ascent-override: 91.4%; descent-override: 22.8%; line-gap-override: 0%; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold"); font-weight: 600 800; size-adjust: 101.5%; ascent-override: 95.4%; descent-override: 23.8%; line-gap-override: 0%; }
+@font-face { font-family: "Space Grotesk Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("Arimo Bold"); font-weight: 500 800; size-adjust: 100%; }
 :root {
   --navy: #0a2240;
   --navy-2: #0f2f55;
@@ -11,8 +16,8 @@
   --accent: #f2a03d;
   --radius: 16px;
   --shadow: 0 10px 30px -12px rgba(10, 34, 64, .18);
-  --font: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --display: "Space Grotesk", var(--font);
+  --font: "Inter", "Inter Fallback", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --display: "Space Grotesk", "Space Grotesk Fallback", var(--font);
 }
 
 * { box-sizing: border-box; }
