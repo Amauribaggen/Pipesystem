@@ -1440,7 +1440,7 @@ const MAGAZINES = [
 // ===== Ferramentas de dimensionamento sob demanda =====
 // Lista de materiais, preços SINAPI, calculadoras, esquema e validador (~175 KB) só carregam quando o visitante chega
 // perto de Dimensionamento ou de Guias práticos (os comparativos usam os preços SINAPI), ou vai a uma seção abaixo delas.
-const TOOLS_JS = ['calculadoras.js', 'fatores-conexoes.js', 'normas-materiais.js', 'sinapi-regras.js', 'sinapi-precos.js', 'bom.js', 'validador.js', 'esquema.js'];
+const TOOLS_JS = ['calculadoras.js', 'fatores-conexoes.js', 'normas-materiais.js', 'sinapi-regras.js', 'sinapi-precos.js', 'bom.js', 'validador.js', 'esquema.js', 'esquema-iso.js'];
 let toolsP = null;
 function loadTools() {
   // fora da página de Dimensionamento só os preços SINAPI interessam (custos dos comparativos)
