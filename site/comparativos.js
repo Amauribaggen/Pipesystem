@@ -200,6 +200,7 @@ const CMPS = [
   { id: 'valvulas-borboleta', tema: 'Válvulas', titulo: 'Válvula borboleta: assento resiliente, dupla excêntrica, tripla excêntrica ou criogênica?',
     resumo: 'Assento resiliente (concêntrica) para água, ar-condicionado e serviços gerais; dupla excêntrica quando sobem pressão, temperatura ou o número de manobras; tripla excêntrica, com vedação metálica, em vapor, alta temperatura e serviços severos; criogênica para gases liquefeitos {dirac}{api609}.',
     intro: 'Por fora, muitas válvulas borboleta parecem iguais, mas o desenho do disco e da vedação muda tudo. São duas escolhas independentes: o tipo de corpo, que define a montagem na linha (wafer, compacta e leve, entre flanges; lug, com orelhas roscadas, que permite desmontar um lado da linha conforme o projeto e a classe; ou flangeada, mais robusta, quando crescem diâmetro, pressão e esforço mecânico), e a geometria do disco e da vedação, comparada abaixo {dirac}{api609}{iso5752}.',
+    tipos: true,
     opcoes: [['Concêntrica, assento resiliente', 'borboleta'], ['Dupla excêntrica (alta performance)', 'borboleta'], ['Tripla excêntrica', 'borboleta'], ['Criogênica', 'borboleta']],
     linhas: [
       ['Desenho', ['Eixo no centro do disco; o disco desliza sobre o assento de elastômero em todo o curso', 'Eixo deslocado do centro e do plano de vedação: o disco se afasta do assento logo no início da abertura {dirac}', 'Dupla excentricidade mais um assento cônico: o contato só acontece no fim do fechamento, sem atrito {dirac}', 'Haste alongada (castelo estendido) que afasta o atuador e a gaxeta do frio {dirac}{bs6364}']],
@@ -329,7 +330,7 @@ function comparativoHTML(c, o = {}) {
   const fichas = [...new Map(c.opcoes.map(([n, m]) => [m, n])).entries()];
   return `${c.intro ? `
       <p class="cp-intro">${refs(c.intro)}</p>` : ''}
-      <p class="cp-oneline"><b>Quando usar cada um:</b> ${refs(c.resumo)}</p>
+      <p class="cp-oneline"><b>Quando usar cada um:</b> ${refs(c.resumo)}</p>${c.tipos ? borbTiposHTML(h) : ''}
       <${h} class="cp-h">Lado a lado</${h}>
       <div class="cp-tablewrap"><table class="cp-table">
         <thead><tr><th scope="col">Critério</th>${c.opcoes.map(([n, m]) => `<th scope="col">${n}<a href="/materiais/${m}" data-sheet="mat-${m}">ver ficha</a></th>`).join('')}</tr></thead>
@@ -354,6 +355,57 @@ function comparativoHTML(c, o = {}) {
       </div>`;
 }
 const cmpR$ = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Os 8 tipos de válvula borboleta mais citados, com ilustração esquemática própria (vista de frente).
+// [id, nome, o que define (corpo, desenho ou serviço), descrição, acionamento do desenho]
+const BORB_TIPOS = [
+  ['wafer', 'Wafer', 'Corpo', 'Fica prensada entre dois flanges da linha, presa pelos próprios parafusos dos flanges. Compacta, leve e de menor custo: uso geral.', 'alavanca'],
+  ['lug', 'Lug', 'Corpo', 'Orelhas roscadas em volta do corpo recebem os parafusos de cada flange separadamente. Conforme o projeto e a classe, permite desmontar um lado da linha ou usar a válvula em fim de linha.', 'alavanca'],
+  ['flangeada', 'Flangeada', 'Corpo', 'Flanges integrados ao corpo (duplo flange). Mais robusta, para diâmetros grandes, pressões maiores e esforços da tubulação.', 'alavanca'],
+  ['dupla', 'Dupla excêntrica', 'Desenho', 'Eixo deslocado do centro do disco e do plano de vedação: o disco sai do assento logo no início da abertura. Menos atrito e desgaste; pressões e temperaturas maiores que a concêntrica.', 'redutor'],
+  ['tripla', 'Tripla excêntrica', 'Desenho', 'Soma um assento cônico às duas excentricidades: a vedação é metálica e só há contato no fim do fechamento. Vapor, alta temperatura e serviços severos.', 'redutor'],
+  ['alto', 'De alto desempenho', 'Desenho', 'Nome comercial das borboletas de alta performance, em geral dupla excêntrica com assento de PTFE ou metálico, para classes de pressão maiores e automação. É comum vir com atuador pneumático.', 'pneumatico'],
+  ['resiliente', 'Com assento resiliente', 'Desenho', 'Concêntrica, com revestimento de elastômero (EPDM, NBR) que veda contra o disco. Baixo torque e baixo custo: água, ar-condicionado e saneamento, dentro do limite de temperatura e química do elastômero.', 'alavanca'],
+  ['criogenica', 'Criogênica', 'Serviço', 'Castelo estendido que afasta a gaxeta e o acionamento do frio, com materiais qualificados para baixa temperatura: GNL, oxigênio e nitrogênio líquidos.', 'redutor'],
+];
+function borbSVG(k, acion) {
+  const cry = k === 'criogenica', R = cry ? 36 : 42, cy = cry ? 116 : 104, top = cry ? 44 : 54;
+  const pol = (r, a) => [80 + r * Math.cos(a), cy + r * Math.sin(a)].map(n => n.toFixed(1));
+  let s = '';
+  if (k === 'flangeada' || k === 'tripla') {
+    s += `<circle class="bv-bd" cx="80" cy="${cy}" r="${R + 13}"/>`;
+    for (let i = 0; i < 8; i++) { const [x, y] = pol(R + 6, Math.PI / 8 + i * Math.PI / 4); s += `<circle class="bv-hole" cx="${x}" cy="${y}" r="2.6"/>`; }
+  }
+  if (k === 'lug') for (let i = 0; i < 8; i++) {
+    const [x, y] = pol(R + 3, Math.PI / 8 + i * Math.PI / 4), [hx, hy] = pol(R + 5, Math.PI / 8 + i * Math.PI / 4);
+    s += `<circle class="bv-bd" cx="${x}" cy="${y}" r="8"/><circle class="bv-hole" cx="${hx}" cy="${hy}" r="2.6"/>`;
+  }
+  s += `<rect class="bv-bd" x="72" y="${top}" width="16" height="${cy - R - top + 4}"/>`;
+  s += `<circle class="bv-bd" cx="80" cy="${cy}" r="${R}"/><circle class="bv-bore" cx="80" cy="${cy}" r="${R - 10}"/>`;
+  if (k === 'resiliente' || k === 'wafer' || k === 'lug' || k === 'flangeada') s += `<circle class="bv-liner${k === 'resiliente' ? ' bv-liner--on' : ''}" cx="80" cy="${cy}" r="${R - 12}"/>`;
+  if (k === 'tripla') s += `<circle class="bv-seat" cx="80" cy="${cy}" r="${R - 12}"/>`;
+  const off = k === 'dupla' || k === 'tripla' || k === 'alto' ? 5 : 0;
+  s += `<ellipse class="bv-disc" cx="${80 + off}" cy="${cy}" rx="11" ry="${R - 15}"/><line class="bv-stem" x1="80" y1="${cy - R + 12}" x2="80" y2="${cy + R - 12}"/>`;
+  if (off) s += `<circle class="bv-mark" cx="80" cy="${cy}" r="2.4"/>`;
+  s += `<rect class="bv-bd" x="66" y="${top - 6}" width="28" height="7" rx="2"/>`;
+  if (acion === 'alavanca') s += `<rect class="bv-act" x="72" y="${top - 16}" width="16" height="11" rx="2"/><rect class="bv-lever" x="76" y="${top - 21}" width="70" height="8" rx="4"/>`;
+  if (acion === 'redutor') s += `<rect class="bv-act" x="56" y="${top - 30}" width="48" height="24" rx="4"/><line class="bv-stem" x1="104" y1="${top - 18}" x2="112" y2="${top - 18}"/><circle class="bv-wheel" cx="128" cy="${top - 18}" r="16"/><path class="bv-spoke" d="M112 ${top - 18}h32M128 ${top - 34}v32"/>`;
+  if (acion === 'pneumatico') s += `<rect class="bv-act" x="34" y="${top - 34}" width="92" height="28" rx="8"/><path class="bv-spoke" d="M46 ${top - 34}v28M114 ${top - 34}v28"/><rect class="bv-act" x="70" y="${top - 44}" width="20" height="10" rx="2"/>`;
+  return `<svg viewBox="0 0 160 166" role="img" aria-label="Ilustração esquemática: válvula borboleta ${k}">${s}</svg>`;
+}
+function borbTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Os 8 tipos mais citados</${h}>
+      <p class="bvt__lead">Corpo (wafer, lug, flangeada) e desenho do disco (concêntrico ou excêntrico) são escolhas independentes: uma tripla excêntrica, por exemplo, pode ter corpo lug ou flangeado.</p>
+      <ol class="bvt">${BORB_TIPOS.map(([id, nome, def, txt, ac], i) => `
+        <li class="bvt__item"><figure>${borbSVG(id, ac)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Ilustrações esquemáticas PipeSystem, fora de escala; o acionamento (alavanca, redutor ou atuador) varia em todos os tipos.</p>`;
+}
+// Bloco dos tipos na ficha do material (só válvulas borboleta)
+function cmpTiposHTML(matId, h = 'h4') {
+  return matId === 'mat-borboleta' ? `<${h}${h === 'h4' ? '' : ' class="page__h"'}>Tipos de válvula borboleta</${h}>` + borbTiposHTML('h4').replace(/\n\s*<h4 class="cp-h">[^<]*<\/h4>/, '') + `<p class="relprod"><a href="/comparativos/valvulas-borboleta">Comparativo completo dos tipos, com normas e fontes</a></p>` : '';
+}
 // Comparativos em que um material aparece (ficha do material)
 function cmpLinksHTML(matId, h = 'h4') {
   const slug = matId.replace(/^mat-/, '');

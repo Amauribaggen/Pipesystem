@@ -210,6 +210,7 @@ function renderMaterial(m) {
       : `<span class="fabs__nolink"><span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site">site em breve</span></span>`}
       <span class="fabs__tag fabs__tag--${o}">${{ N: 'Nacional', I: 'Internacional', M: 'Importador' }[o]}</span></li>`).join('')}</ul>
     <p class="fabs__note">Lista indicativa, sem vínculo comercial com a PipeSystem. Sua empresa ${importers ? 'importa ou distribui' : fabs.some(f => f[2] === 'M') ? 'fabrica ou importa' : 'fabrica'} este produto? <a href="#anuncie">Anuncie aqui</a>.</p>` : ''}
+    ${cmpTiposHTML(m.id)}
     ${bimBoxHTML(m.id)}
     ${cmpLinksHTML(m.id)}
     <div class="sheet__actions">
