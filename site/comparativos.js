@@ -368,7 +368,14 @@ const BORB_TIPOS = [
   ['resiliente', 'Com assento resiliente', 'Desenho', 'Concêntrica, com revestimento de elastômero (EPDM, NBR) que veda contra o disco. Baixo torque e baixo custo: água, ar-condicionado e saneamento, dentro do limite de temperatura e química do elastômero.', 'alavanca'],
   ['criogenica', 'Criogênica', 'Serviço', 'Castelo estendido que afasta a gaxeta e o acionamento do frio, com materiais qualificados para baixa temperatura: GNL, oxigênio e nitrogênio líquidos.', 'redutor'],
 ];
-function borbSVG(k, acion) {
+// Endereço da ficha de cada tipo no catálogo (/materiais/borboleta-<slug>)
+const BORB_SLUG = { wafer: 'wafer', lug: 'lug', flangeada: 'flangeada', dupla: 'dupla-excentrica', tripla: 'tripla-excentrica', alto: 'alto-desempenho', resiliente: 'assento-resiliente', criogenica: 'criogenica' };
+function borbSVG(k) {
+  return `<svg viewBox="0 0 160 166" role="img" aria-label="Ilustração esquemática: válvula borboleta ${k}">${borbInner(k)}</svg>`;
+}
+// Desenho de frente (160 × 166); também usado como ilustração das fichas de cada tipo no catálogo (MATERIAL_ART.borb)
+function borbInner(k) {
+  const acion = (BORB_TIPOS.find(t => t[0] === k) || [])[4];
   const cry = k === 'criogenica', R = cry ? 36 : 42, cy = cry ? 116 : 104, top = cry ? 44 : 54;
   const pol = (r, a) => [80 + r * Math.cos(a), cy + r * Math.sin(a)].map(n => n.toFixed(1));
   let s = '';
@@ -391,14 +398,14 @@ function borbSVG(k, acion) {
   if (acion === 'alavanca') s += `<rect class="bv-act" x="72" y="${top - 16}" width="16" height="11" rx="2"/><rect class="bv-lever" x="76" y="${top - 21}" width="70" height="8" rx="4"/>`;
   if (acion === 'redutor') s += `<rect class="bv-act" x="56" y="${top - 30}" width="48" height="24" rx="4"/><line class="bv-stem" x1="104" y1="${top - 18}" x2="112" y2="${top - 18}"/><circle class="bv-wheel" cx="128" cy="${top - 18}" r="16"/><path class="bv-spoke" d="M112 ${top - 18}h32M128 ${top - 34}v32"/>`;
   if (acion === 'pneumatico') s += `<rect class="bv-act" x="34" y="${top - 34}" width="92" height="28" rx="8"/><path class="bv-spoke" d="M46 ${top - 34}v28M114 ${top - 34}v28"/><rect class="bv-act" x="70" y="${top - 44}" width="20" height="10" rx="2"/>`;
-  return `<svg viewBox="0 0 160 166" role="img" aria-label="Ilustração esquemática: válvula borboleta ${k}">${s}</svg>`;
+  return s;
 }
 function borbTiposHTML(h = 'h4') {
   return `
       <${h} class="cp-h">Os 8 tipos mais citados</${h}>
       <p class="bvt__lead">Corpo (wafer, lug, flangeada) e desenho do disco (concêntrico ou excêntrico) são escolhas independentes: uma tripla excêntrica, por exemplo, pode ter corpo lug ou flangeado.</p>
       <ol class="bvt">${BORB_TIPOS.map(([id, nome, def, txt, ac], i) => `
-        <li class="bvt__item"><figure>${borbSVG(id, ac)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+        <li class="bvt__item"><figure>${borbSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p><a class="bvt__ficha" href="/materiais/borboleta-${BORB_SLUG[id]}" data-sheet="mat-borboleta-${BORB_SLUG[id]}">Ficha técnica →</a></li>`).join('')}
       </ol>
       <p class="bvt__note">Ilustrações esquemáticas PipeSystem, fora de escala; o acionamento (alavanca, redutor ou atuador) varia em todos os tipos.</p>`;
 }
