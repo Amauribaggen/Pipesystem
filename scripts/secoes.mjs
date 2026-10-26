@@ -190,13 +190,13 @@ export function separar(out, D, src) {
     </div>
   </section>`;
   // vídeo de apresentação (YouTube): só a capa até o clique, para não pesar a página
-  const YT = 'cONu1i6vurU';
+  const YT = '6Dh329t7LuA';
   const video = `<!-- VÍDEO: passeio pelo portal (scripts/secoes.mjs) -->
   <section class="section section--dark apres" id="video" aria-labelledby="video-titulo">
     <div class="container apres__grid">
       <div class="apres__txt">
-        <p class="eyebrow">Vídeo · 1 min 17 s</p>
-        <h2 id="video-titulo">Conheça o portal em 1 minuto</h2>
+        <p class="eyebrow">Vídeo narrado · 2 min</p>
+        <h2 id="video-titulo">Conheça o portal em 2 minutos</h2>
         <p>Um passeio pelas áreas do PipeSystem: cotações, sistemas, catálogo de materiais, Dimensionamento Inteligente com o desenho em corte e em 3D, bibliotecas BIM, guias práticos, normas e muito mais.</p>
         <a class="link" href="https://www.youtube.com/watch?v=${YT}" target="_blank" rel="noopener">Assistir no YouTube ↗</a>
       </div>
@@ -205,7 +205,7 @@ export function separar(out, D, src) {
         <span class="apres__btn" aria-hidden="true"></span>
       </button>
     </div>
-    <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'VideoObject', name: 'PipeSystem — um passeio pelo portal', description: 'Apresentação do PipeSystem, o 1º portal da hidráulica e condução de fluidos: cotações, sistemas, materiais, Dimensionamento Inteligente, BIM/CAD, guias práticos, normas, artigos e feiras.', thumbnailUrl: 'https://www.pipesystem.com.br/img/video-apresentacao.jpg', uploadDate: '2026-10-26', duration: 'PT1M17S', embedUrl: `https://www.youtube-nocookie.com/embed/${YT}`, contentUrl: `https://www.youtube.com/watch?v=${YT}` })}</script>
+    <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'VideoObject', name: 'PipeSystem — um passeio pelo portal', description: 'Apresentação do PipeSystem, o 1º portal da hidráulica e condução de fluidos: cotações, sistemas, materiais, Dimensionamento Inteligente, BIM/CAD, guias práticos, normas, artigos e feiras.', thumbnailUrl: 'https://www.pipesystem.com.br/img/video-apresentacao.jpg', uploadDate: '2026-10-26', duration: 'PT2M1S', embedUrl: `https://www.youtube-nocookie.com/embed/${YT}`, contentUrl: `https://www.youtube.com/watch?v=${YT}` })}</script>
   </section>`;
   const fica = id => !PAGINAS.some(p => p.id === id);
   const home = [];
