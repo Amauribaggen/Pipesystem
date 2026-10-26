@@ -1540,6 +1540,15 @@ a.gl:hover { color: var(--teal-d); }
 .bv-lever { fill: #5b6570; stroke: #343c45; stroke-width: 1.5; }
 .bv-wheel { fill: none; stroke: #4a5563; stroke-width: 5; }
 .bv-spoke { fill: none; stroke: #4a5563; stroke-width: 2.5; }
+/* desenho dos tipos de bomba (comparativo "qual bomba para cada fluido" e ficha Bombas) */
+.pm-gear { fill: #c3ccd6; stroke: #4a5563; stroke-width: 1.5; stroke-linejoin: round; }
+.pm-fin { stroke: #163a63; stroke-width: 1.5; opacity: .45; }
+.pm-vane { fill: none; stroke: #5b6b80; stroke-width: 3; stroke-linecap: round; }
+.pm-arrow { fill: none; stroke: #e8590c; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 5 4; }
+.pm-diaf { fill: none; stroke: #1b2027; stroke-width: 4; stroke-linecap: round; }
+.pm-pipe { fill: none; stroke: #3a7bc8; stroke-width: 9; stroke-linejoin: round; }
+.pm-hose { fill: none; stroke: #1b2027; stroke-width: 8; stroke-linecap: round; }
+.pm-roll { fill: #9aa6b2; stroke: #4a5563; stroke-width: 2; }
 .cp-kind { font-size: .66rem; font-weight: 700; padding: .05em .45em; border-radius: 999px; white-space: nowrap; }
 .cp-kind--norma { background: #e3f6f8; color: #0b6f7d; } .cp-kind--estudo { background: #e5eefb; color: #2d5fa8; } .cp-kind--fab { background: #fff1de; color: #8a4b00; } .cp-kind--preco { background: #e3f6ec; color: #1d7a52; } .cp-kind--artigo { background: #f1e9fb; color: #6a3fa0; }
 .cp-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line); }

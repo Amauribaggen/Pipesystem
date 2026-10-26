@@ -57,6 +57,14 @@ const CMP_FONTES = {
   api598: ['API 598 — Inspeção e ensaio de válvulas (ensaios de corpo e de vedação)', 'https://www.api.org/products-and-services/standards', 'norma'],
   api607: ['API 607 / ISO 10497 — Ensaio de fogo para válvulas de 1/4 de volta (fire safe)', 'https://www.api.org/products-and-services/standards', 'norma'],
   bs6364: ['BS 6364 — Válvulas para serviço criogênico (projeto e ensaio a baixa temperatura)', 'https://knowledge.bsigroup.com/', 'norma'],
+  hiRoto: ['Hydraulic Institute — ANSI/HI 1.1–1.2: bombas rotodinâmicas (centrífugas), nomenclatura, definições e aplicação', 'https://www.pumps.org/', 'norma'],
+  hiRot: ['Hydraulic Institute — ANSI/HI 3.1–3.5: bombas rotativas de deslocamento positivo (engrenagens, lóbulos, parafusos)', 'https://www.pumps.org/', 'norma'],
+  hiAodd: ['Hydraulic Institute — ANSI/HI 10.1–10.5: bombas de diafragma acionadas a ar (AODD)', 'https://www.pumps.org/', 'norma'],
+  hiNpsh: ['Hydraulic Institute — ANSI/HI 9.6.1: margem de NPSH para bombas rotodinâmicas (cavitação)', 'https://www.pumps.org/', 'norma'],
+  iso2858: ['ISO 2858 / ISO 5199 — Bombas centrífugas de sucção axial: dimensões e especificações técnicas', 'https://www.iso.org/', 'norma'],
+  api610: ['API 610 / ISO 13709 — Bombas centrífugas para petróleo, petroquímica e gás natural', 'https://www.api.org/products-and-services/standards', 'norma'],
+  api676: ['API 676 — Bombas rotativas de deslocamento positivo', 'https://www.api.org/products-and-services/standards', 'norma'],
+  api675: ['API 675 — Bombas dosadoras de deslocamento positivo (controle de vazão)', 'https://www.api.org/products-and-services/standards', 'norma'],
   sinapi: ['Caixa Econômica Federal — SINAPI 09/2026, preços de insumos sem desoneração, Santa Catarina (base usada pelo Dimensionamento Inteligente do portal)', 'https://www.caixa.gov.br/site/Paginas/downloads.aspx#categoria_888', 'preco'],
 };
 const CMP_KIND = { norma: 'norma', estudo: 'estudo', fab: 'ficha de fabricante', preco: 'preço', artigo: 'artigo técnico' };
@@ -200,7 +208,7 @@ const CMPS = [
   { id: 'valvulas-borboleta', tema: 'Válvulas', titulo: 'Válvula borboleta: qual dos 8 tipos? Corpo (wafer, lug, flangeada) e desenho da vedação',
     resumo: 'Corpo: wafer para uso geral, lug quando é preciso desmontar um lado da linha, flangeada em diâmetros grandes e pressões maiores. Desenho: assento resiliente (concêntrica) para água, ar-condicionado e serviços gerais; dupla excêntrica ou de alto desempenho quando sobem pressão, temperatura ou o número de manobras; tripla excêntrica, com vedação metálica, em vapor, alta temperatura e serviços severos; criogênica para gases liquefeitos {dirac}{api609}.',
     intro: 'Por fora, muitas válvulas borboleta parecem iguais, mas o desenho do disco e da vedação muda tudo. Os 8 tipos respondem a duas escolhas independentes, por isso a comparação vem em duas tabelas: o corpo, que define a montagem na linha (wafer, lug ou flangeada), e o desenho do disco e da vedação (resiliente, dupla excêntrica, tripla excêntrica, de alto desempenho ou criogênica). Toda válvula tem um corpo e um desenho: uma tripla excêntrica, por exemplo, pode ter corpo lug ou flangeado {dirac}{api609}{iso5752}.',
-    tipos: true,
+    tipos: 'borboleta',
     opcoes: [['Wafer', 'borboleta-wafer'], ['Lug', 'borboleta-lug'], ['Flangeada', 'borboleta-flangeada'],
       ['Assento resiliente (concêntrica)', 'borboleta-assento-resiliente'], ['Dupla excêntrica', 'borboleta-dupla-excentrica'], ['Tripla excêntrica', 'borboleta-tripla-excentrica'], ['De alto desempenho', 'borboleta-alto-desempenho'], ['Criogênica', 'borboleta-criogenica']],
     // duas tabelas: cols = posições em opcoes
@@ -238,6 +246,31 @@ const CMPS = [
     erros: ['Usar assento de EPDM em linha com óleo ou hidrocarboneto (o NBR ou o FKM é que servem)', 'Instalar wafer em fim de linha esperando desmontar o lado de jusante com pressão (para isso existe o lug, se a classe permitir)', 'Abrir o disco contra a junta ou o tubo vizinho: confira se o disco gira livre antes de apertar os flanges', 'Dimensionar o atuador de uma tripla excêntrica sem o torque de vedação do fabricante', 'Instalar tripla excêntrica unidirecional no sentido contrário ao indicado no corpo'],
     apps: { casa: '—', predio: 'Concêntrica de assento resiliente (wafer ou lug) em água gelada, recalque e incêndio, com redutor de volante nos DN maiores.', hospital: 'Concêntrica nas utilidades de água e HVAC; dupla ou tripla excêntrica no vapor da central térmica.', industria: 'Resiliente em água e utilidades; dupla excêntrica em processos e modulação; tripla excêntrica em vapor, óleo térmico e hidrocarbonetos; criogênica em GNL, oxigênio e nitrogênio líquidos.' },
     fontes: ['dirac', 'api609', 'mssSp67', 'awwaC504', 'iso5752', 'api598', 'api607', 'bs6364'] },
+
+  { id: 'bombas-fluidos', tema: 'Bombas', titulo: 'Qual bomba para cada fluido? Centrífuga, engrenagens, diafragma ou peristáltica',
+    tipos: 'bombas',
+    resumo: 'Centrífuga para água e líquidos limpos; de engrenagens para óleos e fluidos viscosos; de diafragma para químicos corrosivos e fluidos que não podem vazar; peristáltica para polpas, lamas com sólidos abrasivos e dosagem {hiRoto}{hiRot}{hiAodd}.',
+    intro: 'O fluido decide a bomba. Viscosidade, sólidos, abrasividade, corrosividade e a necessidade de dosar com precisão pesam mais que a vazão. A regra rápida é a do resumo abaixo; ela simplifica: em mineração e saneamento, grandes vazões de polpa costumam usar centrífugas próprias para polpa (rotor aberto e revestimento resistente à abrasão), e a peristáltica fica com vazões menores, polpas muito abrasivas e dosagem.',
+    opcoes: [['Centrífuga', 'bombas'], ['De engrenagens', 'bombas'], ['De diafragma (pneumática)', 'bombas'], ['Peristáltica', 'bombas']],
+    linhas: [
+      ['Fluido indicado', ['Água e líquidos limpos, de baixa viscosidade', 'Óleos, lubrificantes, combustíveis, resinas e outros viscosos sem abrasivos', 'Químicos corrosivos, tintas, solventes, lodos e líquidos com sólidos moderados', 'Polpas, lamas e líquidos com sólidos abrasivos; fluidos sensíveis ao cisalhamento']],
+      ['Princípio', ['Rotodinâmica: o rotor acelera o líquido e a voluta converte velocidade em pressão {hiRoto}', 'Deslocamento positivo rotativo: volumes fixos entre os dentes e a carcaça {hiRot}', 'Deslocamento positivo alternativo: duas membranas movidas a ar comprimido, com válvulas de esfera {hiAodd}', 'Deslocamento positivo: rolos ou sapatas comprimem uma mangueira; o fluido só toca a mangueira']],
+      ['Viscosidade', ['Baixa; com fluido viscoso a vazão, a altura e o rendimento caem {hiRoto}', 'Média a muito alta; a viscosidade até melhora a vedação interna {hiRot}', 'Baixa a alta', 'Baixa a alta']],
+      ['Sólidos e abrasivos', ['Pouca tolerância (exceto centrífugas de polpa, de rotor aberto)', 'Não tolera abrasivos: desgastam engrenagens e folgas', 'Tolera sólidos até a passagem das esferas', 'Tolera bem; o abrasivo só desgasta a mangueira']],
+      ['Vazão e pressão', ['Vazão alta e contínua, que varia com a pressão do sistema (curva da bomba)', 'Vazão proporcional à rotação, quase independente da pressão; exige válvula de alívio', 'Vazão pulsante, ajustada pelo ar; não passa da pressão do ar de acionamento', 'Vazão proporcional à rotação, boa para dosagem; pulsante']],
+      ['Escorvamento e operação a seco', ['Em geral não é autoescorvante; precisa de NPSH disponível acima do requerido {hiNpsh}', 'Autoescorvante; não deve rodar a seco por muito tempo', 'Autoescorvante; pode rodar a seco e contra o registro fechado', 'Autoescorvante; pode rodar a seco e inverter o sentido']],
+      ['Manutenção', ['Selo mecânico e rolamentos', 'Desgaste de engrenagens, buchas e folgas; vedação do eixo', 'Membranas, esferas e sedes', 'Troca da mangueira; sem selos nem válvulas']],
+      ['Normas', ['ISO 2858 · ISO 5199 · API 610 · ANSI/HI 1.1–1.2 {iso2858}{api610}{hiRoto}', 'API 676 · ANSI/HI 3.1–3.5 {api676}{hiRot}', 'ANSI/HI 10.1–10.5 {hiAodd}', 'Ficha do fabricante; para dosagem, API 675 {api675}']],
+    ],
+    pros: [[['Simples, barata e de grande vazão', 'Fluxo contínuo, sem pulsação', 'Muitos fabricantes e peças no mercado'], ['Perde desempenho com fluido viscoso', 'Cavita se o NPSH disponível for baixo', 'Não deve rodar a seco']],
+      [['Bom rendimento com viscosos', 'Vazão estável e previsível', 'Compacta'], ['Não aceita abrasivos nem sólidos', 'Precisa de válvula de alívio: com a descarga fechada, a pressão sobe sem limite']],
+      [['Sem selo nem motor elétrico: boa para áreas classificadas', 'Trabalha a seco e com sólidos moderados', 'Materiais para quase todo químico'], ['Consome ar comprimido', 'Fluxo pulsante (pode pedir amortecedor)', 'Membranas exigem troca periódica']],
+      [['Fluido isolado na mangueira: sem contaminação e sem vazamento por selo', 'Lida com abrasivos e sólidos', 'Dosagem precisa e reversível'], ['Vazão e pressão limitadas pelo tamanho da mangueira', 'Mangueira é item de troca frequente', 'Fluxo pulsante']]],
+    criterios: ['Viscosidade do fluido na temperatura de operação', 'Teor, tamanho e dureza dos sólidos (abrasividade)', 'Compatibilidade química dos materiais (carcaça, membrana, mangueira, selo)', 'Vazão e altura manométrica no ponto de operação (curva da bomba × curva do sistema)', 'NPSH disponível na sucção e risco de rodar a seco', 'Precisão de dosagem, energia disponível (elétrica ou ar comprimido) e manutenção'],
+    fecho: 'A melhor bomba é a que atende o fluido e o ponto de operação com folga, não a mais barata nem a mais potente.',
+    erros: ['Usar centrífuga em óleo muito viscoso sem corrigir a curva para a viscosidade', 'Instalar bomba de engrenagens sem válvula de alívio na descarga', 'Deixar a centrífuga cavitar por NPSH disponível insuficiente (sucção longa, quente ou estrangulada)', 'Bomba de diafragma sem filtro, regulador e lubrificação adequada do ar', 'Escolher membrana ou mangueira sem conferir a compatibilidade química com o fluido'],
+    apps: { casa: 'Centrífuga: pressurizador, piscina, poço e recalque para a caixa d’água.', predio: 'Centrífuga no recalque, na pressurização e no incêndio; dosagem de cloro com bomba dosadora de diafragma.', hospital: 'Centrífugas nas utilidades; dosadoras de diafragma ou peristálticas no tratamento de água e na dosagem de produtos.', industria: 'Engrenagens para óleos e resinas; diafragma para químicos e transferência de tambores; peristáltica para polpas, lodos e dosagem; centrífuga de polpa para grandes vazões de mineração.' },
+    fontes: ['hiRoto', 'hiRot', 'hiAodd', 'hiNpsh', 'iso2858', 'api610', 'api676', 'api675'] },
 
   { id: 'aquecimento', tema: 'Aquecimento de água', titulo: 'Aquecimento de água: solar, gás, bomba de calor ou elétrico?',
     resumo: 'Solar reduz o custo de operação e precisa de apoio; gás entrega vazão alta; bomba de calor gasta menos energia que a resistência elétrica; o elétrico tem o menor custo de instalação e o maior de operação.',
@@ -347,10 +380,13 @@ function comparativoHTML(c, o = {}) {
   const tabelas = c.tabelas || [{ cols: c.opcoes.map((_, i) => i), linhas: c.linhas }];
   const temCusto = tabelas.some(t => t.linhas.some(([k]) => /^Custo de referência/.test(k)));
   const apps = { casa: 'Casa', predio: 'Prédio alto', hospital: 'Hospital', industria: 'Indústria' };
-  const fichas = [...new Map(c.opcoes.map(([n, m]) => [m, n])).entries()];
+  // uma ficha por material; quando várias opções levam à mesma ficha, o botão usa o nome da ficha
+  const repet = m => c.opcoes.filter(o => o[1] === m).length > 1;
+  const nomeFicha = (m, n) => repet(m) && typeof CATALOG !== 'undefined' ? (CATALOG.find(x => x.id === 'mat-' + m) || {}).name || n : n;
+  const fichas = [...new Map(c.opcoes.map(([n, m]) => [m, nomeFicha(m, n)])).entries()];
   return `${c.intro ? `
       <p class="cp-intro">${refs(c.intro)}</p>` : ''}
-      <p class="cp-oneline"><b>Quando usar cada um:</b> ${refs(c.resumo)}</p>${c.tipos ? borbTiposHTML(h) : ''}
+      <p class="cp-oneline"><b>Quando usar cada um:</b> ${refs(c.resumo)}</p>${c.tipos ? TIPOS_HTML[c.tipos](h) : ''}
       <${h} class="cp-h">Lado a lado</${h}>${tabelas.map(t => `${t.titulo ? `
       <p class="cp-tabtit">${t.titulo}</p>` : ''}
       <div class="cp-tablewrap"><table class="cp-table">
@@ -430,9 +466,70 @@ function borbTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Ilustrações esquemáticas PipeSystem, fora de escala; o acionamento (alavanca, redutor ou atuador) varia em todos os tipos.</p>`;
 }
-// Bloco dos tipos na ficha do material (só válvulas borboleta)
+// Os 4 tipos de bomba do comparativo "qual bomba para cada fluido", com desenho esquemático próprio (vista lateral)
+// [id, nome, fluido típico, descrição]
+const BOMBA_TIPOS = [
+  ['centrifuga', 'Centrífuga', 'Água e líquidos limpos', 'O rotor gira e acelera o líquido, que ganha pressão na voluta. Vazão alta e contínua, construção simples e barata: recalque, pressurização, incêndio, irrigação e circulação.'],
+  ['engrenagens', 'De engrenagens', 'Óleos e fluidos viscosos', 'Duas engrenagens levam volumes fixos de fluido entre os dentes e a carcaça (deslocamento positivo). A vazão acompanha a rotação e o rendimento melhora com a viscosidade.'],
+  ['diafragma', 'De diafragma', 'Químicos corrosivos', 'Duas membranas movidas a ar comprimido alternam sucção e recalque, com válvulas de esfera. O fluido só toca a carcaça e as membranas (PP, PVDF, PTFE, inox); trabalha a seco.'],
+  ['peristaltica', 'Peristáltica', 'Polpas e lamas com sólidos', 'Rolos ou sapatas comprimem uma mangueira e empurram o fluido. Sem válvulas nem selos: só a mangueira se desgasta. Boa para abrasivos, sólidos e dosagem.'],
+];
+function bombaInner(k) {
+  // engrenagem de dentes trapezoidais (10 dentes); fase desloca meio dente para a outra engrenar
+  const gear = (cx, cy, r, fase = 0) => {
+    const n = 10, s = 2 * Math.PI / n, pt = (a, rr) => (cx + rr * Math.cos(a)).toFixed(1) + ' ' + (cy + rr * Math.sin(a)).toFixed(1);
+    let d = '';
+    for (let i = 0; i < n; i++) { const a = i * s + fase; d += `${i ? 'L' : 'M'}${pt(a, r)}L${pt(a + s * .15, r + 6)}L${pt(a + s * .45, r + 6)}L${pt(a + s * .6, r)}`; }
+    return `<path class="pm-gear" d="${d}Z"/><circle class="bv-act" cx="${cx}" cy="${cy}" r="5"/>`;
+  };
+  const motor = (x, y, w, h) => `<rect class="bv-bd" x="${x}" y="${y}" width="${w}" height="${h}" rx="6"/>` +
+    Array.from({ length: 5 }, (_, i) => `<line class="pm-fin" x1="${x + 10 + i * (w - 20) / 4}" y1="${y + 6}" x2="${x + 10 + i * (w - 20) / 4}" y2="${y + h - 6}"/>`).join('') +
+    `<rect class="bv-act" x="${x + w - 2}" y="${y + 6}" width="8" height="${h - 12}" rx="3"/>`;
+  const base = '<rect class="bv-act" x="10" y="132" width="180" height="9" rx="2"/>';
+  if (k === 'centrifuga') return base +
+    '<rect class="bv-bd" x="8" y="74" width="12" height="26" rx="2"/><rect class="bv-bd" x="18" y="79" width="12" height="16"/>' +
+    '<circle class="bv-bd" cx="58" cy="87" r="33"/><circle class="bv-bore" cx="58" cy="87" r="13"/>' +
+    '<path class="pm-vane" d="M58 87q10-10 22-6M58 87q-2 14 8 22M58 87q-14-2-20 8"/>' +
+    '<rect class="bv-bd" x="47" y="40" width="22" height="18"/><rect class="bv-bd" x="41" y="33" width="34" height="8" rx="2"/>' +
+    '<rect class="bv-act" x="90" y="78" width="16" height="18"/>' + motor(104, 64, 74, 46) +
+    '<rect class="bv-bd" x="42" y="118" width="32" height="14"/><rect class="bv-bd" x="118" y="110" width="44" height="22"/>';
+  if (k === 'engrenagens') return base +
+    '<rect class="bv-bd" x="34" y="44" width="96" height="84" rx="18"/><rect class="bv-bore" x="44" y="56" width="76" height="60" rx="26"/>' +
+    gear(67, 86, 18) + gear(99, 86, 18, Math.PI / 10) +
+    '<rect class="bv-bd" x="72" y="22" width="22" height="24"/><rect class="bv-bd" x="66" y="16" width="34" height="8" rx="2"/>' +
+    '<rect class="bv-act" x="130" y="82" width="56" height="9" rx="2"/><rect class="bv-bd" x="72" y="126" width="22" height="6"/>' +
+    '<path class="pm-arrow" d="M48 70q-6 18 10 36M118 106q8-18-8-38"/>';
+  if (k === 'diafragma') {
+    const cam = cx => `<circle class="bv-bd" cx="${cx}" cy="86" r="28"/><path class="pm-diaf" d="M${cx + (cx < 100 ? 10 : -10)} 62q${cx < 100 ? 8 : -8} 24 0 48"/>` +
+      Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4; return `<circle class="bv-hole" cx="${(cx + 23 * Math.cos(a)).toFixed(1)}" cy="${(86 + 23 * Math.sin(a)).toFixed(1)}" r="2"/>`; }).join('');
+    return base + cam(64) + cam(136) +
+      '<rect class="bv-act" x="88" y="66" width="24" height="40" rx="4"/><rect class="bv-act" x="94" y="58" width="12" height="9"/>' +
+      '<path class="pm-pipe" d="M64 58V36H136V58M100 36V22"/><rect class="bv-bd" x="90" y="14" width="20" height="9" rx="2"/>' +
+      '<path class="pm-pipe" d="M64 114V124H136V114"/><rect class="bv-bd" x="92" y="120" width="16" height="12" rx="2"/>';
+  }
+  return base +   // peristáltica
+    '<circle class="bv-bd" cx="72" cy="84" r="46"/><circle class="bv-bore" cx="72" cy="84" r="37"/>' +
+    '<path class="pm-hose" d="M34 134V88a38 38 0 1 1 76 0V134"/>' +
+    '<g transform="rotate(-30 72 84)"><rect class="bv-act" x="40" y="80" width="64" height="8" rx="4"/><circle class="pm-roll" cx="42" cy="84" r="9"/><circle class="pm-roll" cx="102" cy="84" r="9"/></g>' +
+    '<circle class="bv-act" cx="72" cy="84" r="6"/>' + motor(122, 64, 62, 42) + '<rect class="bv-bd" x="132" y="106" width="40" height="26"/>';
+}
+const bombaSVG = k => `<svg viewBox="0 0 200 150" role="img" aria-label="Desenho esquemático: bomba ${k}">${bombaInner(k)}</svg>`;
+function bombaTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Os 4 tipos, em desenho</${h}>
+      <ol class="bvt bvt--bombas">${BOMBA_TIPOS.map(([id, nome, fluido, txt], i) => `
+        <li class="bvt__item"><figure>${bombaSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${fluido}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
+}
+const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML };
+
+// Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
 function cmpTiposHTML(matId, h = 'h4') {
-  return matId === 'mat-borboleta' ? `<${h}${h === 'h4' ? '' : ' class="page__h"'}>Tipos de válvula borboleta</${h}>` + borbTiposHTML('h4').replace(/\n\s*<h4 class="cp-h">[^<]*<\/h4>/, '') + `<p class="relprod"><a href="/comparativos/valvulas-borboleta">Comparativo completo dos tipos, com normas e fontes</a></p>` : '';
+  const H = t => `<${h}${h === 'h4' ? '' : ' class="page__h"'}>${t}</${h}>`, semH = s => s.replace(/\n\s*<h4 class="cp-h">[^<]*<\/h4>/, '');
+  if (matId === 'mat-borboleta') return H('Tipos de válvula borboleta') + semH(borbTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/valvulas-borboleta">Comparativo completo dos tipos, com normas e fontes</a></p>`;
+  if (matId === 'mat-bombas') return H('Qual bomba para cada fluido') + semH(bombaTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/bombas-fluidos">Comparativo completo, com normas e fontes</a></p>`;
+  return '';
 }
 // Comparativos em que um material aparece (ficha do material)
 function cmpLinksHTML(matId, h = 'h4') {
