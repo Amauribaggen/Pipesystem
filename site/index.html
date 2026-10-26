@@ -1026,7 +1026,13 @@
           <div><b>Faixas, não promessas</b><span>Quando as fontes divergem, mostramos a faixa. Para projeto, vale a ficha da linha especificada e a norma em vigor.</span></div>
           <div><b>Revisável</b><span>Fabricantes e profissionais podem enviar dado comprovado (norma, ensaio, certificação) para revisão.</span></div>
         </div>
+        <div class="cp-search" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input type="search" id="cpBusca" placeholder="Buscar comparativo: material, sistema ou aplicação" aria-label="Buscar comparativo" autocomplete="off">
+          <span class="cp-search__n" id="cpBuscaN" aria-live="polite"></span>
+        </div>
         <nav class="cp-index" id="cpIndex" aria-label="Comparativos"></nav>
+        <p class="cp-empty" id="cpVazio" hidden>Nenhum comparativo encontrado. <a href="#contato" class="link" data-subject="Consulta técnica" data-question="Sugestão de comparativo: ">Sugira um comparativo →</a></p>
         <div id="cpList"></div>
         <p class="hint">Fontes: normas técnicas (ABNT, ISO, EN, NFPA/UL), estudos independentes, fichas técnicas de fabricantes comparadas entre si e a base SINAPI da Caixa. Discorda de algum dado? <a href="#contato" class="link" data-subject="Consulta técnica" data-question="Revisão técnica de comparativo (envie a norma, o ensaio ou a certificação): ">Envie a comprovação para revisão →</a></p>
       </div>

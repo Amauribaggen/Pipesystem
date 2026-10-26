@@ -49,9 +49,17 @@ const CMP_FONTES = {
   asmeB1611: ['ASME B16.11 — Conexões forjadas de encaixe para solda (socket weld) e roscadas', 'https://www.asme.org/codes-standards/find-codes-standards/b16-11-forged-fittings-socket-welding-threaded', 'norma'],
   asmePcc1: ['ASME PCC-1 — Montagem de juntas flangeadas aparafusadas: alinhamento, lubrificação, sequência e controle do aperto', 'https://www.asme.org/codes-standards', 'norma'],
   asmeB1201: ['ASME B1.20.1 — Roscas de tubo de uso geral (NPT); no Brasil também se usa a rosca BSP (ABNT NBR NM ISO 7-1)', 'https://www.asme.org/codes-standards', 'norma'],
+  dirac: ['Portal Dirac — "Borboleta não é tudo igual por fora": tipos de válvula borboleta e critérios de escolha (LinkedIn, out/2026)', 'https://www.linkedin.com/posts/portal-dirac-836833257_borboleta-n%C3%A3o-%C3%A9-tudo-igual-por-fora-muitas-share-7519781581704753153-2Kk3/', 'artigo'],
+  api609: ['API 609 — Butterfly Valves: double-flanged, lug- and wafer-type (categoria A: concêntrica; categoria B: excêntricas de alta performance)', 'https://www.api.org/products-and-services/standards', 'norma'],
+  mssSp67: ['MSS SP-67 — Butterfly Valves (válvulas borboleta de uso geral)', 'https://msshq.org/', 'norma'],
+  awwaC504: ['AWWA C504 — Rubber-Seated Butterfly Valves (assento de borracha para água e saneamento)', 'https://store.awwa.org/', 'norma'],
+  iso5752: ['ISO 5752 — Válvulas metálicas para tubulações flangeadas: dimensões face a face e centro a face', 'https://www.iso.org/', 'norma'],
+  api598: ['API 598 — Inspeção e ensaio de válvulas (ensaios de corpo e de vedação)', 'https://www.api.org/products-and-services/standards', 'norma'],
+  api607: ['API 607 / ISO 10497 — Ensaio de fogo para válvulas de 1/4 de volta (fire safe)', 'https://www.api.org/products-and-services/standards', 'norma'],
+  bs6364: ['BS 6364 — Válvulas para serviço criogênico (projeto e ensaio a baixa temperatura)', 'https://knowledge.bsigroup.com/', 'norma'],
   sinapi: ['Caixa Econômica Federal — SINAPI 09/2026, preços de insumos sem desoneração, Santa Catarina (base usada pelo Dimensionamento Inteligente do portal)', 'https://www.caixa.gov.br/site/Paginas/downloads.aspx#categoria_888', 'preco'],
 };
-const CMP_KIND = { norma: 'norma', estudo: 'estudo', fab: 'ficha de fabricante', preco: 'preço' };
+const CMP_KIND = { norma: 'norma', estudo: 'estudo', fab: 'ficha de fabricante', preco: 'preço', artigo: 'artigo técnico' };
 
 const CMPS = [
   { id: 'agua-quente', tema: 'Água quente predial', titulo: 'Água quente: CPVC, PPR, PEX, multicamada ou cobre?',
@@ -188,6 +196,29 @@ const CMPS = [
     erros: ['Usar gaveta parcialmente aberta para regular vazão', 'Fechar esfera de uma vez em linhas longas (golpe de aríete)'],
     apps: { casa: 'Esfera ou gaveta nos ramais; registro de pressão nos chuveiros.', predio: 'Gaveta ou esfera no barrilete; borboleta em DN grandes.', hospital: 'Esfera de fechamento rápido em setores; conforme projeto.', industria: 'Conforme a função: bloqueio, regulagem e diâmetro.' },
     fontes: ['nbr5626', 'sinapi'] },
+
+  { id: 'valvulas-borboleta', tema: 'Válvulas', titulo: 'Válvula borboleta: assento resiliente, dupla excêntrica, tripla excêntrica ou criogênica?',
+    resumo: 'Assento resiliente (concêntrica) para água, ar-condicionado e serviços gerais; dupla excêntrica quando sobem pressão, temperatura ou o número de manobras; tripla excêntrica, com vedação metálica, em vapor, alta temperatura e serviços severos; criogênica para gases liquefeitos {dirac}{api609}.',
+    intro: 'Por fora, muitas válvulas borboleta parecem iguais, mas o desenho do disco e da vedação muda tudo. São duas escolhas independentes: o tipo de corpo, que define a montagem na linha (wafer, compacta e leve, entre flanges; lug, com orelhas roscadas, que permite desmontar um lado da linha conforme o projeto e a classe; ou flangeada, mais robusta, quando crescem diâmetro, pressão e esforço mecânico), e a geometria do disco e da vedação, comparada abaixo {dirac}{api609}{iso5752}.',
+    opcoes: [['Concêntrica, assento resiliente', 'borboleta'], ['Dupla excêntrica (alta performance)', 'borboleta'], ['Tripla excêntrica', 'borboleta'], ['Criogênica', 'borboleta']],
+    linhas: [
+      ['Desenho', ['Eixo no centro do disco; o disco desliza sobre o assento de elastômero em todo o curso', 'Eixo deslocado do centro e do plano de vedação: o disco se afasta do assento logo no início da abertura {dirac}', 'Dupla excentricidade mais um assento cônico: o contato só acontece no fim do fechamento, sem atrito {dirac}', 'Haste alongada (castelo estendido) que afasta o atuador e a gaxeta do frio {dirac}{bs6364}']],
+      ['Vedação', ['Elastômero (EPDM, NBR, FKM) ou PTFE {dirac}', 'Assento macio (PTFE reforçado) ou metálico', 'Metal contra metal ou laminada (metal e grafite) {dirac}', 'Materiais e assentos qualificados para baixa temperatura {bs6364}']],
+      ['Pressão e temperatura', ['Limitadas pelo elastômero e pela classe do corpo (PN 10/16 é o comum); confira a ficha', 'Classes 150 a 600; temperatura limitada pelo material do assento {api609}', 'Classes altas e temperaturas elevadas, conforme a ficha {dirac}{api609}', 'Temperaturas muito baixas (gases liquefeitos) {bs6364}']],
+      ['Torque e desgaste', ['Baixo torque; o assento se desgasta com o atrito e com sólidos', 'Torque e desgaste menores que os da concêntrica em manobras frequentes {dirac}', 'Sem atrito no curso; o torque de vedação é alto e define o atuador', 'Conforme o desenho (em geral de alta performance)']],
+      ['Estanqueidade', ['Estanque enquanto o elastômero está em bom estado', 'Alta, conforme o ensaio do fabricante {api598}', 'Alta; existe versão bidirecional e com ensaio de fogo {api598}{api607}', 'Ensaio a frio conforme a norma de válvulas criogênicas {bs6364}']],
+      ['Corpos usuais', ['Wafer, lug e flangeada', 'Wafer, lug e flangeada', 'Lug, flangeada ou solda', 'Flangeada ou solda']],
+      ['Normas', ['AWWA C504 · MSS SP-67 · ISO 5752 {awwaC504}{mssSp67}{iso5752}', 'API 609 (categoria B) · API 598 {api609}{api598}', 'API 609 · API 598 · API 607 {api609}{api598}{api607}', 'BS 6364 {bs6364}']],
+    ],
+    pros: [[['Menor custo e peso', 'Baixo torque: alavanca ou atuador pequeno', 'Ideal para água e HVAC'], ['Limite de temperatura e de compatibilidade química do elastômero {dirac}', 'Desgaste do assento com sólidos e abrasivos']],
+      [['Menos atrito: maior vida do assento', 'Boa para modulação e manobras frequentes'], ['Custo maior que a concêntrica', 'Assento macio limita a temperatura']],
+      [['Vedação metálica para vapor e alta temperatura', 'Sem atrito no curso: longa vida', 'Versões testadas ao fogo'], ['Custo alto', 'Torque de vedação alto; atuador maior']],
+      [['Opera com gases liquefeitos sem congelar o acionamento'], ['Custo alto', 'Exige montagem com a haste na posição indicada pelo fabricante']]],
+    criterios: ['Pressão e temperatura de operação (e de projeto)', 'Tipo de fluido: compatibilidade química, sólidos e abrasivos', 'Torque de operação e dimensionamento do atuador', 'Classe de estanqueidade exigida e sentido do fluxo (uni ou bidirecional)', 'Frequência de operação e se a válvula vai bloquear ou modular'],
+    fecho: 'Escolher só pela aparência ou pelo preço é um dos erros mais comuns: válvulas borboleta de mesmo diâmetro e corpo podem ter desempenhos muito diferentes {dirac}.',
+    erros: ['Usar assento de EPDM em linha com óleo ou hidrocarboneto (o NBR ou o FKM é que servem)', 'Instalar wafer em fim de linha esperando desmontar o lado de jusante com pressão (para isso existe o lug, se a classe permitir)', 'Abrir o disco contra a junta ou o tubo vizinho: confira se o disco gira livre antes de apertar os flanges', 'Dimensionar o atuador de uma tripla excêntrica sem o torque de vedação do fabricante', 'Instalar tripla excêntrica unidirecional no sentido contrário ao indicado no corpo'],
+    apps: { casa: '—', predio: 'Concêntrica de assento resiliente (wafer ou lug) em água gelada, recalque e incêndio, com redutor de volante nos DN maiores.', hospital: 'Concêntrica nas utilidades de água e HVAC; dupla ou tripla excêntrica no vapor da central térmica.', industria: 'Resiliente em água e utilidades; dupla excêntrica em processos e modulação; tripla excêntrica em vapor, óleo térmico e hidrocarbonetos; criogênica em GNL, oxigênio e nitrogênio líquidos.' },
+    fontes: ['dirac', 'api609', 'mssSp67', 'awwaC504', 'iso5752', 'api598', 'api607', 'bs6364'] },
 
   { id: 'aquecimento', tema: 'Aquecimento de água', titulo: 'Aquecimento de água: solar, gás, bomba de calor ou elétrico?',
     resumo: 'Solar reduz o custo de operação e precisa de apoio; gás entrega vazão alta; bomba de calor gasta menos energia que a resistência elétrica; o elétrico tem o menor custo de instalação e o maior de operação.',
@@ -340,7 +371,26 @@ typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded',
   // custos de referência no estado já escolhido na lista de materiais (padrão SC)
   let uf = 'SC';
   try { const s = localStorage.getItem('lmUf'); if (s && SINAPI_PRECOS.ufs.includes(s)) uf = s; } catch {}
-  document.getElementById('cpIndex').innerHTML = CMPS.map(c => `<a href="#cmp-${c.id}"><span>${c.tema}</span><b>${c.titulo}</b></a>`).join('');
+  // Lista única em cartões lado a lado; o comparativo escolhido abre logo abaixo dos cartões
+  const idx = document.getElementById('cpIndex');
+  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  idx.innerHTML = CMPS.map(c => `<a href="#cmp-${c.id}" data-q="${norm([c.tema, c.titulo, c.resumo.replace(/\{\w+\}/g, ''), ...c.opcoes.map(o => o[0])].join(' ')).replace(/"/g, '')}"><span>${c.tema}</span><b>${c.titulo}</b><small>${c.opcoes.length} opções lado a lado</small></a>`).join('');
+  const cards = [...idx.querySelectorAll('a')];
+  const marca = id => cards.forEach(a => a.classList.toggle('is-on', a.getAttribute('href') === '#' + id));
+  const abre = id => { box.querySelectorAll('.cp-cmp').forEach(d => { d.open = d.id === id; }); marca(id); };
+  // busca: todas as palavras digitadas precisam aparecer no cartão
+  const busca = document.getElementById('cpBusca'), nBusca = document.getElementById('cpBuscaN'), vazio = document.getElementById('cpVazio');
+  busca.addEventListener('input', () => {
+    const ws = norm(busca.value).split(/\s+/).filter(Boolean);
+    let n = 0;
+    cards.forEach(a => { const ok = ws.every(w => a.dataset.q.includes(w)); a.hidden = !ok; n += ok; });
+    nBusca.textContent = ws.length ? `${n} de ${cards.length}` : '';
+    vazio.hidden = n > 0;
+  });
+  busca.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const first = cards.find(a => !a.hidden); if (first) { e.preventDefault(); first.click(); }
+  });
   box.innerHTML = CMPS.map(c => `
     <details class="cp-cmp" id="cmp-${c.id}">
       <summary><span class="cp-tag">${c.tema}</span><h3>${c.titulo}</h3><span class="gpguide__chev" aria-hidden="true">▾</span></summary>
@@ -349,10 +399,16 @@ typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded',
       </div>
     </details>`).join('');
   if (typeof glossarize === 'function') box.querySelectorAll('.cp-oneline, .cp-opts, .cp-apps, .cp-errs').forEach(el => glossarize(el, { max: 4 }));
-  // índice e submenu: abre o comparativo antes de o roteador rolar até ele
+  // cartões e submenu: abre o comparativo (e fecha o anterior) antes de o roteador rolar até ele
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#cmp-"]'); if (!a) return;
-    const d = document.getElementById(a.getAttribute('href').slice(1)); if (d) d.open = true;
+    const id = a.getAttribute('href').slice(1); if (document.getElementById(id)) abre(id);
   }, true);
-  if (location.hash.startsWith('#cmp-')) { const d = document.getElementById(location.hash.slice(1)); if (d) d.open = true; }
+  // fechar pelo título do comparativo aberto: volta aos cartões
+  box.addEventListener('click', e => {
+    const s = e.target.closest('.cp-cmp > summary'); if (!s) return;
+    e.preventDefault(); s.parentElement.open = false; marca('');
+    idx.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  if (location.hash.startsWith('#cmp-') && document.getElementById(location.hash.slice(1))) abre(location.hash.slice(1));
 });
