@@ -901,14 +901,22 @@ document.querySelectorAll('[data-ad]').forEach((el, i) => {
   if (lang === 'en') loadTranslator();
 })();
 
-// ===== Voltar ao início (logo, "Início" e "Voltar ao topo") =====
-// O menu superior é fixo, então "#top" não rolaria a página: levamos à abertura do site.
+// ===== Voltar ao início (logo e "Início") e "Voltar ao topo" =====
+// O menu superior é fixo, então "#top" não rolaria a página: o logo e "Início" levam à abertura do site;
+// "Voltar ao topo" (data-topo) sobe ao começo do que o visitante está vendo: a página própria (ex.: /materiais)
+// ou, na página inicial, a seção escolhida no menu (ex.: /normas).
 document.addEventListener('click', e => {
   const a = e.target.closest('a[href="#top"]');
   if (!a) return;
   e.preventDefault();
   const sheet = document.getElementById('prodSheet');
   if (sheet && sheet.open) sheet.close();
+  const suave = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  if (a.hasAttribute('data-topo')) {
+    const sec = !document.body.dataset.pagina && document.getElementById(SECTION_OF_PATH[location.pathname.slice(1)] || '');
+    if (sec) sec.scrollIntoView({ behavior: suave, block: 'start' }); else window.scrollTo({ top: 0, behavior: suave });
+    return;
+  }
   if (document.body.dataset.pagina) { location.href = '/'; return; }   // páginas próprias (ex.: /materiais): volta à página inicial
   if (location.pathname !== '/' || location.hash) history.pushState(null, '', '/');   // topo = página inicial
   window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
