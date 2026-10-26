@@ -904,6 +904,18 @@ document.querySelectorAll('[data-ad]').forEach((el, i) => {
   if (lang === 'en') loadTranslator();
 })();
 
+// ===== Vídeo de apresentação (página inicial): troca a capa pelo player do YouTube só quando o visitante clica =====
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-yt]');
+  if (!b || b.querySelector('iframe')) return;
+  const f = document.createElement('iframe');
+  f.src = 'https://www.youtube-nocookie.com/embed/' + b.dataset.yt + '?autoplay=1&rel=0';
+  f.title = 'Vídeo de apresentação do PipeSystem';
+  f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  f.allowFullscreen = true;
+  b.replaceChildren(f);
+});
+
 // ===== Voltar ao início (logo e "Início") e "Voltar ao topo" =====
 // O menu superior é fixo, então "#top" não rolaria a página: o logo e "Início" levam à abertura do site;
 // "Voltar ao topo" (data-topo) sobe ao começo do que o visitante está vendo: a página própria (ex.: /materiais)
