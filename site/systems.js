@@ -284,6 +284,20 @@ const SYSTEMS = [
       <rect class="b" x="180" y="30" width="44" height="26" rx="3"/><text x="202" y="47">Fan-coil</text>
       <rect class="b" x="256" y="30" width="44" height="26" rx="3"/><text x="278" y="47">Fan-coil</text>
       <path class="p" d="M202 56V114M278 56V114"/><text class="s" x="150" y="104">Água gelada 7 °C</text>` },
+  { id: 'sis-split-vrf', name: 'Ar-condicionado split e VRF', color: '#26c6da',
+    desc: 'No split, a unidade externa (condensadora, com o compressor) se liga à unidade interna (evaporadora) por duas linhas de cobre de fluido refrigerante: a de líquido, mais fina, e a de sucção, mais grossa. No VRF (ou VRV), uma condensadora com compressor de rotação variável atende muitas evaporadoras pela mesma rede, com derivações (refnets) e controle individual por ambiente. Toda evaporadora gera água de condensação, que precisa de um dreno com caimento até um ponto de descarte adequado.',
+    componentes: ['Unidade condensadora (externa) e evaporadoras (internas): hi-wall, cassete, piso-teto ou dutada', 'Linha de líquido e linha de sucção em tubo de cobre, com conexões soldadas ou flangeadas', 'Derivações (refnets) e coletores de distribuição no VRF', 'Isolamento térmico elastomérico em cada linha', 'Dreno de condensado em tubo de PVC, com sifão, e bomba de dreno quando não há caimento', 'Suportes, abraçadeiras e eletrocalhas ou canaletas para as linhas', 'Cabos de alimentação elétrica e de comunicação entre as unidades', 'Infraestrutura deixada na obra: linhas, dreno e ponto elétrico de espera'],
+    cuidados: ['Brasagem com passagem de nitrogênio e flanges feitos com ferramenta própria, para não contaminar o circuito', 'Teste de estanqueidade com nitrogênio e vácuo antes de liberar ou completar o refrigerante, conforme a NBR 16655-2 e o fabricante', 'Respeitar o comprimento máximo das linhas e o desnível entre as unidades indicados pelo fabricante; acima do comprimento padrão, completar a carga de refrigerante', 'Isolar as duas linhas separadamente, sem emendas abertas, para não condensar nem perder rendimento', 'Dreno com caimento contínuo, sifão e descarte em ponto adequado, sem ligação direta ao esgoto sem fecho hídrico', 'Prever pontos de espera de linhas, dreno e elétrica antes do acabamento, e acesso para manutenção das unidades'],
+    normas: ['NBR 16655-1', 'NBR 16655-2', 'NBR 16401', 'NBR 13206', 'ASHRAE 15'],
+    produtos: ['mat-cobre', 'mat-conexoes-cobre', 'mat-isolamento', 'mat-pvc', 'mat-conexoes-pvc', 'mat-suportes', 'mat-ferramentas'],
+    svg: `<rect class="b" x="12" y="96" width="74" height="50" rx="4"/><circle class="b" cx="49" cy="121" r="13"/><text x="49" y="160">Condensadora</text>
+      <path class="p" d="M86 108H150V34H190M150 70H190"/>
+      <path class="p thin" d="M86 124H162V46H190M162 82H190"/>
+      <circle class="b" cx="150" cy="70" r="5"/><text class="s" x="132" y="24">Refnet</text>
+      <rect class="b" x="190" y="24" width="96" height="28" rx="6"/><text x="238" y="42">Evaporadora</text>
+      <rect class="b" x="190" y="62" width="96" height="28" rx="6"/><text x="238" y="80">Evaporadora</text>
+      <path class="pe" d="M294 40V130H304M294 78H300"/><text class="s" x="268" y="146">Dreno com caimento</text>
+      <text class="s" x="118" y="100">Sucção</text><text class="s" x="118" y="140">Líquido</text>` },
   { id: 'sis-piscinas', name: 'Piscinas, spas e áreas aquáticas', color: '#29b6f6',
     desc: 'A motobomba aspira a água pelo ralo de fundo, pelos skimmers e pela tomada de aspiração, passa por um pré-filtro e pelo filtro (areia ou cartucho), pelo aquecimento e pela dosagem de cloro, e devolve a água pelos retornos. O conjunto fica numa casa de máquinas próxima.',
     componentes: ['Ralos de fundo com grelha anti-aprisionamento', 'Skimmers e tomada de aspiração', 'Motobomba com pré-filtro', 'Filtro de areia ou de cartucho com válvula seletora', 'Aquecimento solar, bomba de calor ou trocador', 'Dosagem ou geração de cloro', 'Dispositivos de retorno'],

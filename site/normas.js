@@ -99,6 +99,8 @@ const NORM_GROUPS = [
   ]},
   { id: 'refrigeracao', tipo: 'aplicacao', name: 'Refrigeração e ar-condicionado', normas: [
     { code: 'NBR 16401-1', org: 'ABNT', title: 'Instalações de condicionamento de ar — Sistemas centrais e unitários — Parte 1: Projetos das instalações' },
+    { code: 'NBR 16655-1', org: 'ABNT', title: 'Instalação de sistemas residenciais de ar-condicionado — Split e compacto — Parte 1: Projeto e instalação' },
+    { code: 'NBR 16655-2', org: 'ABNT', title: 'Instalação de sistemas residenciais de ar-condicionado — Split e compacto — Parte 2: Procedimento para ensaio de estanqueidade, desidratação e carga de fluido frigorífico' },
     { code: 'NBR 16069', org: 'ABNT', title: 'Segurança em sistemas frigoríficos' },
     { code: 'ASHRAE 15', org: 'ASHRAE', title: 'Safety Standard for Refrigeration Systems' },
   ]},
@@ -258,6 +260,8 @@ const NORM_EXTRA_URLS = {
   'NBR 14177': 'https://www.normas.com.br/visualizar/abnt-nbr-nm/10909/abnt-nbr14177-tubo-flexivel-metalico-para-instalacoes-de-gas-combustivel-de-baixa-pressao',
   'NBR 15097-1': 'https://www.normas.com.br/visualizar/abnt-nbr-nm/30378/abnt-nbr15097-1-aparelhos-sanitarios-de-material-ceramico-parte-1-requisitos-e-metodos-de-ensaios',
   'AWWA C606': 'https://store.awwa.org/AWWA-C606-22-Grooved-and-Shouldered-Joints',
+  'NBR 16655-1': 'https://www.normas.com.br/visualizar/abnt-nbr-nm/11384/abnt-nbr16655-1-instalacao-de-sistemas-residenciais-de-ar-condicionado-split-e-compacto-parte-1-projeto-e-instalacao',
+  'NBR 16655-2': 'https://www.normas.com.br/visualizar/abnt-nbr-nm/12167/abnt-nbr16655-2-instalacao-de-sistemas-residenciais-de-ar-condicionado-split-e-compacto-parte-2-procedimento-para-ensaio-de-estanqueidade-desidratacao-e-carga-de-fluido-frigorifico',
   'NBR 15345': 'https://normas.com.br/visualizar/abnt-nbr-nm/25054/abnt-nbr15345-instalacao-predial-de-tubos-e-conexoes-de-cobre-e-ligas-de-cobre-procedimento',
 };
 
