@@ -1441,6 +1441,8 @@ a.gl:hover { color: var(--teal-d); }
 .cp-body { padding: 0 18px 18px; }
 .cp-oneline { background: #f3f7fb; border-left: 4px solid var(--teal); border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; color: var(--navy); }
 .cp-h { color: var(--navy); font-size: 1.02rem; margin: 18px 0 8px; }
+.cp-tabtit { margin: 14px 0 6px; font-weight: 700; color: var(--teal-d); font-size: .92rem; }
+.cp-tablewrap + .cp-tabtit { margin-top: 18px; }
 .cp-tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
 .cp-table { border-collapse: collapse; width: 100%; font-size: .86rem; min-width: 720px; color: var(--ink); }
 .cp-table th, .cp-table td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }

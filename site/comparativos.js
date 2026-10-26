@@ -197,23 +197,41 @@ const CMPS = [
     apps: { casa: 'Esfera ou gaveta nos ramais; registro de pressão nos chuveiros.', predio: 'Gaveta ou esfera no barrilete; borboleta em DN grandes.', hospital: 'Esfera de fechamento rápido em setores; conforme projeto.', industria: 'Conforme a função: bloqueio, regulagem e diâmetro.' },
     fontes: ['nbr5626', 'sinapi'] },
 
-  { id: 'valvulas-borboleta', tema: 'Válvulas', titulo: 'Válvula borboleta: assento resiliente, dupla excêntrica, tripla excêntrica ou criogênica?',
-    resumo: 'Assento resiliente (concêntrica) para água, ar-condicionado e serviços gerais; dupla excêntrica quando sobem pressão, temperatura ou o número de manobras; tripla excêntrica, com vedação metálica, em vapor, alta temperatura e serviços severos; criogênica para gases liquefeitos {dirac}{api609}.',
-    intro: 'Por fora, muitas válvulas borboleta parecem iguais, mas o desenho do disco e da vedação muda tudo. São duas escolhas independentes: o tipo de corpo, que define a montagem na linha (wafer, compacta e leve, entre flanges; lug, com orelhas roscadas, que permite desmontar um lado da linha conforme o projeto e a classe; ou flangeada, mais robusta, quando crescem diâmetro, pressão e esforço mecânico), e a geometria do disco e da vedação, comparada abaixo {dirac}{api609}{iso5752}.',
+  { id: 'valvulas-borboleta', tema: 'Válvulas', titulo: 'Válvula borboleta: qual dos 8 tipos? Corpo (wafer, lug, flangeada) e desenho da vedação',
+    resumo: 'Corpo: wafer para uso geral, lug quando é preciso desmontar um lado da linha, flangeada em diâmetros grandes e pressões maiores. Desenho: assento resiliente (concêntrica) para água, ar-condicionado e serviços gerais; dupla excêntrica ou de alto desempenho quando sobem pressão, temperatura ou o número de manobras; tripla excêntrica, com vedação metálica, em vapor, alta temperatura e serviços severos; criogênica para gases liquefeitos {dirac}{api609}.',
+    intro: 'Por fora, muitas válvulas borboleta parecem iguais, mas o desenho do disco e da vedação muda tudo. Os 8 tipos respondem a duas escolhas independentes, por isso a comparação vem em duas tabelas: o corpo, que define a montagem na linha (wafer, lug ou flangeada), e o desenho do disco e da vedação (resiliente, dupla excêntrica, tripla excêntrica, de alto desempenho ou criogênica). Toda válvula tem um corpo e um desenho: uma tripla excêntrica, por exemplo, pode ter corpo lug ou flangeado {dirac}{api609}{iso5752}.',
     tipos: true,
-    opcoes: [['Concêntrica, assento resiliente', 'borboleta'], ['Dupla excêntrica (alta performance)', 'borboleta'], ['Tripla excêntrica', 'borboleta'], ['Criogênica', 'borboleta']],
-    linhas: [
-      ['Desenho', ['Eixo no centro do disco; o disco desliza sobre o assento de elastômero em todo o curso', 'Eixo deslocado do centro e do plano de vedação: o disco se afasta do assento logo no início da abertura {dirac}', 'Dupla excentricidade mais um assento cônico: o contato só acontece no fim do fechamento, sem atrito {dirac}', 'Haste alongada (castelo estendido) que afasta o atuador e a gaxeta do frio {dirac}{bs6364}']],
-      ['Vedação', ['Elastômero (EPDM, NBR, FKM) ou PTFE {dirac}', 'Assento macio (PTFE reforçado) ou metálico', 'Metal contra metal ou laminada (metal e grafite) {dirac}', 'Materiais e assentos qualificados para baixa temperatura {bs6364}']],
-      ['Pressão e temperatura', ['Limitadas pelo elastômero e pela classe do corpo (PN 10/16 é o comum); confira a ficha', 'Classes 150 a 600; temperatura limitada pelo material do assento {api609}', 'Classes altas e temperaturas elevadas, conforme a ficha {dirac}{api609}', 'Temperaturas muito baixas (gases liquefeitos) {bs6364}']],
-      ['Torque e desgaste', ['Baixo torque; o assento se desgasta com o atrito e com sólidos', 'Torque e desgaste menores que os da concêntrica em manobras frequentes {dirac}', 'Sem atrito no curso; o torque de vedação é alto e define o atuador', 'Conforme o desenho (em geral de alta performance)']],
-      ['Estanqueidade', ['Estanque enquanto o elastômero está em bom estado', 'Alta, conforme o ensaio do fabricante {api598}', 'Alta; existe versão bidirecional e com ensaio de fogo {api598}{api607}', 'Ensaio a frio conforme a norma de válvulas criogênicas {bs6364}']],
-      ['Corpos usuais', ['Wafer, lug e flangeada', 'Wafer, lug e flangeada', 'Lug, flangeada ou solda', 'Flangeada ou solda']],
-      ['Normas', ['AWWA C504 · MSS SP-67 · ISO 5752 {awwaC504}{mssSp67}{iso5752}', 'API 609 (categoria B) · API 598 {api609}{api598}', 'API 609 · API 598 · API 607 {api609}{api598}{api607}', 'BS 6364 {bs6364}']],
+    opcoes: [['Wafer', 'borboleta-wafer'], ['Lug', 'borboleta-lug'], ['Flangeada', 'borboleta-flangeada'],
+      ['Assento resiliente (concêntrica)', 'borboleta-assento-resiliente'], ['Dupla excêntrica', 'borboleta-dupla-excentrica'], ['Tripla excêntrica', 'borboleta-tripla-excentrica'], ['De alto desempenho', 'borboleta-alto-desempenho'], ['Criogênica', 'borboleta-criogenica']],
+    // duas tabelas: cols = posições em opcoes
+    tabelas: [
+      { titulo: 'Corpo: como a válvula é montada na linha', cols: [0, 1, 2], linhas: [
+        ['Montagem', ['Entre dois flanges, com parafusos passantes que unem os flanges da linha', 'Entre flanges, com os parafusos de cada lado rosqueados nas orelhas (lugs) do corpo', 'Duplo flange integrado, aparafusado à linha como um carretel']],
+        ['Fim de linha e desmontagem de um lado', ['Não: ao soltar um flange, a válvula fica solta', 'Sim, conforme o projeto e a classe (em geral com pressão reduzida) {dirac}', 'Sim']],
+        ['Peso e espaço', ['O menor: corpo curto e leve {dirac}', 'Intermediário', 'O maior {dirac}']],
+        ['Diâmetros e pressões usuais', ['Pequenos a grandes; PN 10/16 e classe 150', 'Pequenos a médios; PN 10/16 e classes 150 a 300', 'Médios a muito grandes; pressões e esforços maiores {dirac}']],
+        ['Custo relativo', ['Menor', 'Intermediário', 'Maior']],
+        ['Face a face e normas', ['API 609 · MSS SP-67 · ISO 5752 {api609}{mssSp67}{iso5752}', 'API 609 · MSS SP-67 · ISO 5752 {api609}{mssSp67}{iso5752}', 'ISO 5752 · AWWA C504 · API 609 {iso5752}{awwaC504}{api609}']],
+      ] },
+      { titulo: 'Desenho: como o disco veda', cols: [3, 4, 5, 6, 7], linhas: [
+        ['Desenho', ['Eixo no centro do disco; o disco desliza sobre o assento de elastômero em todo o curso', 'Eixo deslocado do centro e do plano de vedação: o disco se afasta do assento logo no início da abertura {dirac}', 'Dupla excentricidade mais um assento cônico: o contato só acontece no fim do fechamento, sem atrito {dirac}', 'Nome comercial das borboletas de alta performance: em geral dupla excêntrica de corpo de aço {api609}', 'Haste alongada (castelo estendido) que afasta o atuador e a gaxeta do frio {dirac}{bs6364}']],
+        ['Vedação', ['Elastômero (EPDM, NBR, FKM) ou PTFE {dirac}', 'Assento macio (PTFE reforçado) ou metálico', 'Metal contra metal ou laminada (metal e grafite) {dirac}', 'PTFE, PTFE reforçado ou metálica', 'Materiais e assentos qualificados para baixa temperatura {bs6364}']],
+        ['Pressão e temperatura', ['Limitadas pelo elastômero e pela classe do corpo (PN 10/16 é o comum); confira a ficha', 'Classes 150 a 600; temperatura limitada pelo material do assento {api609}', 'Classes altas e temperaturas elevadas, conforme a ficha {dirac}{api609}', 'Classes 150 a 600, conforme o assento {api609}', 'Temperaturas muito baixas (gases liquefeitos) {bs6364}']],
+        ['Torque e desgaste', ['Baixo torque; o assento se desgasta com o atrito e com sólidos', 'Torque e desgaste menores que os da concêntrica em manobras frequentes {dirac}', 'Sem atrito no curso; o torque de vedação é alto e define o atuador', 'Como a dupla excêntrica; boa para modulação', 'Conforme o desenho (em geral de alta performance)']],
+        ['Estanqueidade', ['Estanque enquanto o elastômero está em bom estado', 'Alta, conforme o ensaio do fabricante {api598}', 'Alta; existe versão bidirecional e com ensaio de fogo {api598}{api607}', 'Alta, conforme o ensaio do fabricante; versões fire safe {api598}{api607}', 'Ensaio a frio conforme a norma de válvulas criogênicas {bs6364}']],
+        ['Acionamento típico', ['Alavanca ou redutor com volante', 'Redutor ou atuador', 'Redutor ou atuador dimensionado pelo torque de vedação', 'Atuador pneumático ou elétrico, com posicionador', 'Redutor ou atuador, acima do castelo estendido']],
+        ['Corpos usuais', ['Wafer, lug e flangeada', 'Wafer, lug e flangeada', 'Lug, flangeada ou solda', 'Wafer e lug, mais comuns', 'Flangeada ou solda']],
+        ['Normas', ['AWWA C504 · MSS SP-67 · ISO 5752 {awwaC504}{mssSp67}{iso5752}', 'API 609 (categoria B) · API 598 {api609}{api598}', 'API 609 · API 598 · API 607 {api609}{api598}{api607}', 'API 609 · API 598 {api609}{api598}', 'BS 6364 {bs6364}']],
+      ] },
     ],
-    pros: [[['Menor custo e peso', 'Baixo torque: alavanca ou atuador pequeno', 'Ideal para água e HVAC'], ['Limite de temperatura e de compatibilidade química do elastômero {dirac}', 'Desgaste do assento com sólidos e abrasivos']],
+    linhas: [],
+    pros: [[['Menor custo, peso e espaço', 'Montagem simples entre flanges'], ['Não serve para fim de linha', 'Para desmontar, é preciso soltar os dois lados']],
+      [['Permite desmontar um lado da linha', 'Pode ficar em fim de linha, conforme a classe'], ['Mais pesada e cara que a wafer', 'Pressão admitida em fim de linha costuma ser menor']],
+      [['A mais robusta: suporta os esforços da linha', 'Para diâmetros grandes e pressões maiores'], ['A mais pesada, cara e volumosa']],
+      [['Menor custo e peso', 'Baixo torque: alavanca ou atuador pequeno', 'Ideal para água e HVAC'], ['Limite de temperatura e de compatibilidade química do elastômero {dirac}', 'Desgaste do assento com sólidos e abrasivos']],
       [['Menos atrito: maior vida do assento', 'Boa para modulação e manobras frequentes'], ['Custo maior que a concêntrica', 'Assento macio limita a temperatura']],
       [['Vedação metálica para vapor e alta temperatura', 'Sem atrito no curso: longa vida', 'Versões testadas ao fogo'], ['Custo alto', 'Torque de vedação alto; atuador maior']],
+      [['Classes de pressão maiores', 'Pronta para automação'], ['"Alto desempenho" é nome comercial: confira desenho, assento e classe na ficha', 'Custo maior que a concêntrica']],
       [['Opera com gases liquefeitos sem congelar o acionamento'], ['Custo alto', 'Exige montagem com a haste na posição indicada pelo fabricante']]],
     criterios: ['Pressão e temperatura de operação (e de projeto)', 'Tipo de fluido: compatibilidade química, sólidos e abrasivos', 'Torque de operação e dimensionamento do atuador', 'Classe de estanqueidade exigida e sentido do fluxo (uni ou bidirecional)', 'Frequência de operação e se a válvula vai bloquear ou modular'],
     fecho: 'Escolher só pela aparência ou pelo preço é um dos erros mais comuns: válvulas borboleta de mesmo diâmetro e corpo podem ter desempenhos muito diferentes {dirac}.',
@@ -325,17 +343,20 @@ function comparativoHTML(c, o = {}) {
     return v == null ? `<span class="cp-na">${x.d}: sem preço SINAPI em ${uf}</span>`
       : `<span class="cp-cost" data-ins="${x.ins}" data-div="${x.div || 1}">${cmpR$(v)}</span><br><small>${x.d}</small> ${refs('{sinapi}')}`;
   };
-  const temCusto = c.linhas.some(([k]) => /^Custo de referência/.test(k));
+  // uma tabela com todas as opções, ou várias (c.tabelas: { titulo, cols: posições em c.opcoes, linhas })
+  const tabelas = c.tabelas || [{ cols: c.opcoes.map((_, i) => i), linhas: c.linhas }];
+  const temCusto = tabelas.some(t => t.linhas.some(([k]) => /^Custo de referência/.test(k)));
   const apps = { casa: 'Casa', predio: 'Prédio alto', hospital: 'Hospital', industria: 'Indústria' };
   const fichas = [...new Map(c.opcoes.map(([n, m]) => [m, n])).entries()];
   return `${c.intro ? `
       <p class="cp-intro">${refs(c.intro)}</p>` : ''}
       <p class="cp-oneline"><b>Quando usar cada um:</b> ${refs(c.resumo)}</p>${c.tipos ? borbTiposHTML(h) : ''}
-      <${h} class="cp-h">Lado a lado</${h}>
+      <${h} class="cp-h">Lado a lado</${h}>${tabelas.map(t => `${t.titulo ? `
+      <p class="cp-tabtit">${t.titulo}</p>` : ''}
       <div class="cp-tablewrap"><table class="cp-table">
-        <thead><tr><th scope="col">Critério</th>${c.opcoes.map(([n, m]) => `<th scope="col">${n}<a href="/materiais/${m}" data-sheet="mat-${m}">ver ficha</a></th>`).join('')}</tr></thead>
-        <tbody>${c.linhas.map(([k, vals]) => `<tr><th scope="row">${k}${/^Custo de referência/.test(k) ? ` <span class="cp-uf">${uf}</span>` : ''}</th>${vals.map(v => `<td>${/^Custo de referência/.test(k) ? custo(v) : refs(v)}</td>`).join('')}</tr>`).join('')}</tbody>
-      </table></div>
+        <thead><tr><th scope="col">Critério</th>${t.cols.map(i => c.opcoes[i]).map(([n, m]) => `<th scope="col">${n}<a href="/materiais/${m}" data-sheet="mat-${m}">ver ficha</a></th>`).join('')}</tr></thead>
+        <tbody>${t.linhas.map(([k, vals]) => `<tr><th scope="row">${k}${/^Custo de referência/.test(k) ? ` <span class="cp-uf">${uf}</span>` : ''}</th>${vals.map(v => `<td>${/^Custo de referência/.test(k) ? custo(v) : refs(v)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>`).join('')}
       ${temCusto ? `<p class="cp-note">Custo: só o material, SINAPI ${typeof SINAPI_PRECOS !== 'undefined' ? SINAPI_PRECOS.ref : ''}, ${uf}, sem desoneração. Não inclui conexões, mão de obra, BDI e frete.</p>` : ''}
       <${h} class="cp-h">Prós e contras</${h}>
       <div class="cp-opts">${c.opcoes.map(([n], i) => `<div class="cp-opt"><b>${n}</b><ul class="cp-pro">${c.pros[i][0].map(x => `<li>${refs(x)}</li>`).join('')}</ul><ul class="cp-con">${c.pros[i][1].map(x => `<li>${refs(x)}</li>`).join('')}</ul></div>`).join('')}</div>
