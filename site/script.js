@@ -19,6 +19,32 @@ toggle.addEventListener('click', () => {
 });
 // (Os submenus de todos os itens são montados no fim deste arquivo — "Submenus do menu superior")
 
+// ===== Páginas próprias (Materiais, Dimensionamento, BIM/CAD e Guias práticos) =====
+// Essas seções saíram da página inicial (scripts/secoes.mjs). Um link "#id" para algo que não está nesta página
+// leva à página que tem o id (mapa ID_PAGINA gerado no build); ids montados pelos scripts seguem o prefixo.
+const PAGINA = document.body.dataset.pagina || '';
+const ehFicha = id => [PRODUCTS, SYSTEMS, CATALOG].some(l => l.some(x => x.id === id));   // fichas abrem em qualquer página
+function paginaDe(id) {
+  if (ehFicha(id)) return null;
+  const p = (window.ID_PAGINA || {})[id] || (/^(cmp|gl|gp|cp)-/.test(id) ? '/guias-praticos' : /^bim-/.test(id) ? '/bim-cad' : '/');
+  return p && p !== location.pathname && !(p === '/' && !PAGINA) ? p : null;
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || e.defaultPrevented || e.button || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+  const id = a.getAttribute('href').slice(1);
+  if (!id || document.getElementById(id)) return;
+  const p = paginaDe(id);
+  if (!p) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  location.href = p + '#' + id;
+}, true);
+// endereço antigo (/#materiais, /#cmp-..., /#lmatTool) aberto direto: vai para a página nova
+if (location.hash.length > 1 && !document.getElementById(location.hash.slice(1))) {
+  const p = paginaDe(location.hash.slice(1));
+  if (p) location.replace(p + location.hash);
+}
+
 document.getElementById('year').textContent = new Date().getFullYear();
 
 // Contadores
@@ -64,7 +90,7 @@ function matchText(text, terms) {
   return terms.every(w => t.includes(w) || compact.includes(w.replace(/[.\-]/g, '')));
 }
 
-searchEl.addEventListener('input', renderCatalog);
+searchEl?.addEventListener('input', renderCatalog);
 
 // Foto real do item do catálogo (própria ou reaproveitada da ficha técnica em products.js)
 function materialPhoto(m) {
@@ -74,6 +100,7 @@ function materialPhoto(m) {
 }
 
 function renderCatalog() {
+  if (!catEl) return;   // catálogo só na página de Materiais
   const terms = queryTerms(searchEl.value);
   const items = CATALOG.filter(m => (activeCat === 'Todos' || m.cat === activeCat) &&
     matchText([m.cat, m.name, m.apps, m.desc, ...m.normas, ...m.specs.flat()].join(' '), terms));
@@ -91,11 +118,13 @@ function renderCatalog() {
 renderCatalog();
 
 function searchCatalog(q) {
+  if (!catEl) { location.href = '/materiais?busca=' + encodeURIComponent(q); return; }   // outra página: abre Materiais já filtrado
   activeCat = 'Todos';
   searchEl.value = q;
   renderCatalog();
 }
-document.querySelectorAll('[data-q]').forEach(a => a.addEventListener('click', () => searchCatalog(a.dataset.q)));
+document.querySelectorAll('[data-q]').forEach(a => a.addEventListener('click', e => { if (!catEl) e.preventDefault(); searchCatalog(a.dataset.q); }));
+{ const b = new URLSearchParams(location.search).get('busca'); if (b && catEl) searchCatalog(b); }
 
 // Fichas técnicas (products.js): o antigo guia de produtos agora aparece dentro dos itens do catálogo
 const productById = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
@@ -107,7 +136,8 @@ const list = items => items.map(i => `<li>${linkNorms(i)}</li>`).join('');
 
 // Sistemas de aplicação
 const systemById = Object.fromEntries(SYSTEMS.map(s => [s.id, s]));
-document.getElementById('systems').innerHTML = SYSTEMS.map(s =>
+const systemsEl = document.getElementById('systems');
+if (systemsEl) systemsEl.innerHTML = SYSTEMS.map(s =>
   `<a class="sys" href="/sistemas/${s.id.slice(4)}" data-sheet="${s.id}"><span class="sys__dot" style="--c:${s.color}"></span>${s.name}<span class="sys__more" aria-hidden="true">→</span></a>`).join('');
 
 // Galeria de fotos reais com créditos (licenças livres exigem a atribuição)
@@ -274,9 +304,12 @@ document.addEventListener('click', e => {
 window.addEventListener('hashchange', () => openProduct(location.hash.slice(1)));
 openProduct(location.hash.slice(1));
 
-// Hazen-Williams
-const hw = ['hwQ', 'hwD', 'hwL', 'hwC'].map(id => document.getElementById(id));
 const num = (n, d = 2) => n.toLocaleString('pt-BR', { maximumFractionDigits: d, minimumFractionDigits: d });
+// Calculadoras rápidas: só na página de Dimensionamento (as tabelas dimPipes e dimJ ficam globais: bom.js usa)
+const temCalcs = !!document.getElementById('hwQ');
+// Hazen-Williams
+if (temCalcs) {
+const hw = ['hwQ', 'hwD', 'hwL', 'hwC'].map(id => document.getElementById(id));
 function calcHW() {
   const [Q, D, L, C] = hw.map(el => parseFloat(el.value));
   const out = { hf: '—', j: '—', v: '—' };
@@ -299,8 +332,10 @@ function calcHW() {
 }
 hw.forEach(el => el.addEventListener('input', calcHW));
 calcHW();
+}
 
 // Conversão de unidades (fator para unidade base)
+if (temCalcs) {
 const units = {
   pressao: { bar: 1, psi: 0.0689476, kPa: 0.01, 'mca': 0.0980665, 'kgf/cm²': 0.980665, atm: 1.01325 },
   vazao: { 'L/s': 1, 'm³/h': 1 / 3.6, 'L/min': 1 / 60, 'gpm (US)': 0.0630902 },
@@ -330,6 +365,7 @@ document.getElementById('convTabs').addEventListener('click', e => {
 convFrom.addEventListener('change', calcConv);
 convVal.addEventListener('input', calcConv);
 fillUnits();
+}
 
 // Dimensionamento de água fria (NBR 5626): diâmetro pela velocidade máxima, perda por Fair-Whipple-Hsiao
 const dimPipes = {
@@ -341,6 +377,7 @@ const dimPipes = {
 };
 // J em kPa/m com Q em L/s e D em mm: tubos lisos (PVC, cobre) e aço galvanizado
 const dimJ = (mat, Q, D) => mat === 'aco' ? 20.2e6 * Math.pow(Q, 1.88) * Math.pow(D, -4.88) : 8.69e6 * Math.pow(Q, 1.75) * Math.pow(D, -4.75);
+if (temCalcs) {
 const dimApps = [
   ['Bacia c/ caixa acoplada', 0.3, 2], ['Bacia c/ válvula de descarga', 32, 0], ['Chuveiro / ducha', 0.4, 2], ['Lavatório', 0.3, 2],
   ['Pia de cozinha', 0.7, 1], ['Tanque', 0.7, 1], ['Máquina de lavar roupa', 1, 1], ['Máquina de lavar louça', 1, 0],
@@ -388,6 +425,7 @@ document.getElementById('dimTabs').addEventListener('click', e => {
 dimEls.forEach(el => el.addEventListener('input', calcDim));
 dimAppsEl.addEventListener('input', calcDim);
 calcDim();
+}
 
 // Planos -> assunto do formulário
 const assunto = document.getElementById('assunto');
@@ -607,7 +645,8 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
 (() => {
   const grid = document.getElementById('webtoolGrid');
   const chips = document.getElementById('webtoolChips');
-  const cats = ['Todas', ...new Set(WEB_TOOLS.map(t => t.cat))];
+  if (!grid) return;   // só na página de Dimensionamento
+  const cats =['Todas', ...new Set(WEB_TOOLS.map(t => t.cat))];
   let active = 'Todas';
   chips.innerHTML = cats.map(c => {
     const n = c === 'Todas' ? WEB_TOOLS.length : WEB_TOOLS.filter(t => t.cat === c).length;
@@ -637,6 +676,7 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
   const groupsEl = document.getElementById('normGroups');
   const listEl = document.getElementById('normList');
   const search = document.getElementById('normSearch');
+  if (!groupsEl) return;
   let mode = 'aplicacao';
   let active = NORM_GROUPS.find(g => g.tipo === mode).id;
   const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -689,8 +729,15 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
     renderList();
     if (window.innerWidth < 860) listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
-  search.addEventListener('input', renderList);
-  renderGroups(); renderList();
+  search.addEventListener('input', () => { monta(); renderList(); });
+  // A lista só é montada quando o visitante chega perto de Normas (ou usa o submenu/a busca): a página inicial abre mais rápido
+  let feito = false;
+  const monta = window.montaNormas = () => { if (feito) return; feito = true; renderGroups(); renderList(); };
+  const sec = document.getElementById('normas');
+  if (sec && 'IntersectionObserver' in window && !/normas/.test(location.pathname + location.hash)) {
+    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); monta(); } }, { rootMargin: '800px 0px' });
+    io.observe(sec);
+  } else monta();
 })();
 
 // ===== Espaços publicitários ("Seu banner aqui!") =====
@@ -720,7 +767,7 @@ function adHTML(kind, place, id) {
 const AD_SPOTS = [];
 document.querySelectorAll('[data-ad]').forEach((el, i) => {
   const kind = el.dataset.variant === 'vertical' ? 'vertical' : el.dataset.ad;
-  const id = `ad-${i + 1}`;
+  const id = el.dataset.adId || `ad-${i + 1}`;   // data-ad-id: número fixo dado no build (o mesmo em todas as páginas)
   el.innerHTML = adHTML(kind, el.dataset.place, id);
   AD_SPOTS.push({ id, kind, place: el.dataset.place });
 });
@@ -763,9 +810,12 @@ document.querySelectorAll('[data-ad]').forEach((el, i) => {
 (() => {
   const map = document.getElementById('adMap');
   if (!map) return;
-  map.innerHTML = AD_SPOTS.map(s => {
+  // espaços das outras páginas (lista gerada no build): "Ver o local" leva à página certa
+  const aqui = new Set(AD_SPOTS.map(s => s.id));
+  const todos = [...AD_SPOTS, ...(window.AD_ALL || []).filter(s => !aqui.has(s.id))];
+  map.innerHTML = todos.map(s => {
     const f = AD_FORMATS[s.kind];
-    const href = s.sample || `#${s.id}`;
+    const href = s.sample || `${s.page && s.page !== location.pathname ? s.page : ''}#${s.id}`;
     return `<div class="admap__item">
       <span class="admap__plan admap__plan--${s.kind}">${f.plan}</span>
       <b>${s.place}</b>
@@ -859,6 +909,7 @@ document.addEventListener('click', e => {
   e.preventDefault();
   const sheet = document.getElementById('prodSheet');
   if (sheet && sheet.open) sheet.close();
+  if (document.body.dataset.pagina) { location.href = '/'; return; }   // páginas próprias (ex.: /materiais): volta à página inicial
   if (location.pathname !== '/' || location.hash) history.pushState(null, '', '/');   // topo = página inicial
   window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 });
@@ -1008,6 +1059,7 @@ const MAGAZINES = [
   const form = document.getElementById('heroSearch');
   const input = document.getElementById('heroSearchInput');
   const box = document.getElementById('heroResults');
+  if (!form) return;   // a busca geral fica só na página inicial
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const plain = s => String(s).replace(/<[^>]+>/g, '');
   const clean = s => plain(s).replace(/\s+/g, ' ').trim();
@@ -1081,6 +1133,10 @@ const MAGAZINES = [
 
     // Demais conteúdos da página
     const found = new Set();
+    // calculadoras ficam na página de Dimensionamento: busca na lista gerada no build
+    if (!document.querySelector('#ferramentas') && window.SECOES_ITENS?.ferramentas)
+      add('Calculadoras on-line', SECOES_ITENS.ferramentas.filter(x => matchText(x.texto, terms))
+        .map(x => ({ href: '/dimensionamento#' + x.id, title: x.label, sub: snippet(x.texto, terms, '') })));
     DOM_ITEMS.forEach(([sel, name]) => {
       const els = [...document.querySelectorAll(sel)].filter(el => matchText(el.textContent, terms));
       els.forEach(el => found.add(el.closest('section')));
@@ -1097,7 +1153,8 @@ const MAGAZINES = [
 
   function goTo(id) {
     hide();
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function flash(el) {
     hide();
@@ -1157,25 +1214,32 @@ const MAGAZINES = [
 (() => {
   const caret = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
   const slug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  // Dá um id aos cartões da página para que o submenu leve direto a eles
-  const tag = (sel, prefix) => [...document.querySelectorAll(sel)].map(el => {
-    const head = el.querySelector('h3, h4, strong') || el, date = head.querySelector('time');
-    const title = date ? head.firstChild.textContent.trim() + ' · ' + date.textContent.trim() : head.textContent.trim();
-    if (!el.id) el.id = prefix + '-' + slug(title);
-    return { href: '#' + el.id, label: title };
-  });
+  // Dá um id aos cartões da página para que o submenu leve direto a eles. Seção em outra página:
+  // usa a lista gerada no build (SECOES_ITENS), com os mesmos ids; o clique leva à página certa.
+  const tag = (sel, prefix, chave, filtro = () => true) => {
+    const els = [...document.querySelectorAll(sel)];
+    if (!els.length && chave && window.SECOES_ITENS?.[chave]) return SECOES_ITENS[chave].filter(filtro).map(x => ({ href: '#' + x.id, label: x.label }));
+    return els.map(el => {
+      const head = el.querySelector('h3, h4, strong') || el, date = head.querySelector('time');
+      const title = date ? head.firstChild.textContent.trim() + ' · ' + date.textContent.trim() : head.textContent.trim();
+      if (!el.id) el.id = prefix + '-' + slug(title);
+      return { href: '#' + el.id, label: title };
+    });
+  };
+  // bibliotecas BIM: montadas por bim.js só na página BIM/CAD; nas outras, saem dos dados (mesmos ids de bim.js)
+  const bimItens = (sel, lista) => document.querySelector(sel) ? tag(sel, 'bim') : lista.map(b => ({ href: '#bim-' + slug(b.nome), label: b.nome }));
   const link = l => `<a href="${l.href}"${l.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}${l.attrs || ''}>${l.label}${l.ext ? ' <span aria-hidden="true">↗</span>' : ''}</a>`;
   const group = (title, items) => `<div class="dd__group">${title ? `<p>${title}</p>` : ''}${items.map(link).join('')}</div>`;
 
   const MENUS = {
-    servicos: () => group('Serviços', tag('#servicos .svc', 'servico')) +
-      group('Receber cotações', [{ href: '#assinaturas', label: 'Assinaturas para distribuidores' }, ...tag('#assinaturas .qplan', 'assinatura')]),
+    servicos: () => group('Serviços', tag('#servicos .svc', 'servico', 'servicos')) +
+      group('Receber cotações', [{ href: '#assinaturas', label: 'Assinaturas para distribuidores' }, ...tag('#assinaturas .qplan', 'assinatura', 'assinaturas')]),
     sistemas: () => group('Áreas de aplicação', SYSTEMS.map(s => ({ href: '/sistemas/' + s.id.slice(4), label: s.name, attrs: ` data-sheet="${s.id}"` }))),
     materiais: () => [...new Set(CATALOG.map(m => m.cat))].map(cat =>
       group(cat, CATALOG.filter(m => m.cat === cat).map(m => ({ href: '/materiais/' + m.id.slice(4), label: m.name, attrs: ` data-sheet="${m.id}"` })))).join(''),
-    ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc')) +
+    ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc', 'ferramentas')) +
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }]),
-    bim: () => group('Fabricantes', tag('#bim .bimcard', 'bim')) + group('Plataformas', tag('#bim .bimplat', 'bim')),
+    bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS)) + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS)),
     guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo }))) +
       group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo }))) +
       group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-check', label: 'Checklist de entrega' }, { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
@@ -1185,11 +1249,11 @@ const MAGAZINES = [
     artigos: () => group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema }))) +
       group('Revistas especializadas', MAGAZINES.map(m => ({ href: m.edicaoUrl || m.url, ext: true, label: m.nome }))) +
       group('', [{ href: '#artigo-envio', label: 'Adicione seu artigo técnico aqui' }]),
-    feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira')) + group('No exterior', tag('#feiras .fair--intl', 'feira')) +
+    feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira', 'feiras', x => !x.intl)) + group('No exterior', tag('#feiras .fair--intl', 'feira', 'feiras', x => x.intl)) +
       group('', [{ href: '#links-uteis', label: 'Links úteis: entidades e normas do setor' }]),
-    anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano')) +
+    anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano', 'anuncie')) +
       group('', [{ href: '#adMap', label: 'Onde os banners aparecem' }]),
-    sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor')) +
+    sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor', 'sobre')) +
       group('', [{ href: '#contato', label: 'Consultoria técnica & comercial', attrs: ' data-subject="Consultoria técnica & comercial e pesquisa de mercado"' },
         { href: '#contato', label: 'Fale conosco' }]),
   };
@@ -1262,6 +1326,7 @@ const MAGAZINES = [
     a.blur();
     // Normas: abre o grupo escolhido
     if (a.dataset.normGroup) {
+      window.montaNormas?.();
       const mode = document.querySelector(`.nrm__mode button[data-mode="${a.dataset.normMode}"]`);
       if (mode && mode.getAttribute('aria-selected') !== 'true') mode.click();
       document.querySelector(`#normGroups button[data-id="${a.dataset.normGroup}"]`)?.click();
@@ -1361,7 +1426,9 @@ const MAGAZINES = [
 const TOOLS_JS = ['calculadoras.js', 'fatores-conexoes.js', 'normas-materiais.js', 'sinapi-regras.js', 'sinapi-precos.js', 'bom.js', 'validador.js', 'esquema.js'];
 let toolsP = null;
 function loadTools() {
-  return toolsP || (toolsP = TOOLS_JS.reduce((p, src) => p.then(() => new Promise(ok => {
+  // fora da página de Dimensionamento só os preços SINAPI interessam (custos dos comparativos)
+  const lista = document.getElementById('ferramentas') ? TOOLS_JS : ['sinapi-precos.js'];
+  return toolsP || (toolsP = lista.reduce((p, src) => p.then(() => new Promise(ok => {
     const s = document.createElement('script'); s.src = '/' + src; s.onload = s.onerror = ok; document.body.append(s);
   })), Promise.resolve()).then(() => document.dispatchEvent(new Event('ferramentas-prontas'))));
 }
@@ -1392,7 +1459,8 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
     if (needsTools(el)) loadTools();
     el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
     if (sec !== id && !el.matches('dialog')) { el.classList.remove('search-flash'); void el.offsetWidth; el.classList.add('search-flash'); }   // destaca o cartão escolhido no submenu
-    const url = '/' + SECTION_PATHS[sec];
+    // nas páginas próprias o endereço continua o da página (/materiais, ou /materiais#contato para o formulário)
+    const url = PAGINA ? location.pathname + (sec === PAGINA ? '' : '#' + sec) : '/' + SECTION_PATHS[sec];
     if (location.pathname + location.search + location.hash !== url) history[how === 'push' ? 'pushState' : 'replaceState']({ secao: sec }, '', url);
   };
   // cliques em qualquer link para uma seção ou item de seção (menu, rodapé, botões "Fale conosco"...)
@@ -1419,7 +1487,7 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
     const byPath = SECTION_OF_PATH[location.pathname.slice(1)];
     const h = location.hash.slice(1), byHash = h && SECTION_PATHS[sectionOf(h)] ? h : null;
     const id = byHash || byPath;   // /contato#lmatTool (link antigo) vai ao item e corrige para /dimensionamento
-    if (!id || sheet.open) return;
+    if (!id || sheet.open || (PAGINA && !byHash)) return;   // página própria aberta sem "#": fica no topo
     const qs = new URLSearchParams(location.search);
     const onlyForm = [...qs.keys()].every(k => k === 'assunto' || k === 'msg');   // ?assunto=&msg= já preencheram o formulário
     go(id, 'replace', false);

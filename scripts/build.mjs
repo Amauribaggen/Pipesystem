@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { BASE, SIZES, loadData, generate, sitemap } from './pages.mjs';
 import { imageSizes, minify } from './optimize.mjs';
+import { separar } from './secoes.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const src = join(root, 'site');
@@ -24,6 +25,8 @@ const D = loadData(src);
 Object.assign(SIZES, imageSizes(src));
 writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SIZES) + ';\n');
 const pages = generate(D, out);
+// Seções grandes da página inicial em páginas próprias (/materiais, /dimensionamento, /bim-cad, /guias-praticos)
+for (const url of separar(out)) pages.push({ url, images: [] });
 const fotos = [...new Set([
   ...D.PRODUCTS.flatMap(p => (p.fotos || []).map(f => f.src)),
   ...Object.values(D.SYSTEM_PHOTOS).flatMap(a => a.map(f => f.src)),

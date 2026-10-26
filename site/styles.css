@@ -151,6 +151,22 @@ p { margin: 0 0 1em; }
 .section--dark .eyebrow { color: #7ee7f2; }
 .section--dark p { color: #b3c4d8; }
 .section__head { max-width: 680px; margin-bottom: 48px; }
+.section__head h1 { font-size: clamp(1.7rem, 3vw, 2.4rem); }   /* páginas próprias: o título da seção é o h1 */
+/* Páginas próprias: a seção ocupa ao menos a tela toda, para o formulário de contato não aparecer
+   no alto e depois ser empurrado quando o conteúdo (catálogo, bibliotecas…) é montado */
+body[data-pagina] main > section:first-child { min-height: 100vh; }
+/* BIM/CAD: filtros montados por bim.js reservam a altura que vão ocupar (medida em cada largura de tela) */
+#bimFmt:not(:has(button)), #bimOrig:not(:has(button)) { min-height: 33px; }
+#bimCat:not(:has(button)) { min-height: 72px; }
+@media (max-width: 900px) { #bimCat:not(:has(button)) { min-height: 111px; } }
+@media (max-width: 600px) { #bimFmt:not(:has(button)) { min-height: 72px; } #bimCat:not(:has(button)) { min-height: 228px; } }
+/* Página inicial: resumo das seções que têm página própria, com o botão para abri-la */
+.secao-resumo { padding: 56px 0; }
+.secao-resumo__box { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; }
+.secao-resumo__txt { flex: 1 1 420px; max-width: 720px; }
+.secao-resumo__txt h2 { margin-bottom: .35em; }
+.secao-resumo__txt p:last-child { margin-bottom: 0; }
+.secao-resumo__btn { flex: none; }
 .section__head p:last-child { color: var(--muted); font-size: 1.05rem; }
 .section--dark .section__head p:last-child { color: #b3c4d8; }
 

@@ -131,7 +131,7 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
   <div class="container pg-top__inner">
     <a href="/" class="logo" aria-label="PIPESYSTEM — página inicial">${LOGO}</a>
     <nav class="pg-top__nav" aria-label="Seções do portal">
-      <a href="/#sistemas">Sistemas</a><a href="/#materiais">Materiais</a><a href="/#normas">Normas</a><a href="/glossario">Glossário</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
+      <a href="/#sistemas">Sistemas</a><a href="/materiais">Materiais</a><a href="/#normas">Normas</a><a href="/glossario">Glossário</a><a href="/#contato" class="btn btn--sm">Fale conosco</a>
     </nav>
   </div>
 </header>
@@ -148,7 +148,7 @@ ${body}
 <footer class="pg-foot">
   <div class="container pg-foot__inner">
     <p><strong>PipeSystem</strong> — o portal da hidráulica e dos sistemas de condução de fluidos.</p>
-    <p><a href="/">Página inicial</a> · <a href="/#materiais">Catálogo de produtos e materiais</a> · <a href="/#normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+    <p><a href="/">Página inicial</a> · <a href="/materiais">Catálogo de produtos e materiais</a> · <a href="/#normas">Normas</a> · <a href="mailto:info@pipesystem.com.br">info@pipesystem.com.br</a> · <a href="https://wa.me/5547988027372" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
     <p class="pg-foot__copy">© ${new Date().getFullYear()} ${[EMPRESA.razao, EMPRESA.cnpj && 'CNPJ ' + EMPRESA.cnpj, EMPRESA.endereco].filter(Boolean).join(' · ')} · <a href="/politica-editorial">Política Editorial</a> · <a href="/privacidade">Política de Privacidade</a> · <a href="/termos">Termos de Uso</a></p>
   </div>
 </footer>
