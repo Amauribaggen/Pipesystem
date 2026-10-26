@@ -337,12 +337,9 @@ function cmpLinksHTML(matId, h = 'h4') {
 typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded', () => {
   const box = document.getElementById('cpList');
   if (!box) return;
-  const ufSel = document.getElementById('cpUf');
+  // custos de referência no estado já escolhido na lista de materiais (padrão SC)
   let uf = 'SC';
   try { const s = localStorage.getItem('lmUf'); if (s && SINAPI_PRECOS.ufs.includes(s)) uf = s; } catch {}
-  if (typeof SINAPI_PRECOS !== 'undefined') {
-    ufSel.innerHTML = SINAPI_PRECOS.ufs.map(u => `<option value="${u}"${u === uf ? ' selected' : ''}>${u}</option>`).join('');
-  } else ufSel.closest('label').hidden = true;
   document.getElementById('cpIndex').innerHTML = CMPS.map(c => `<a href="#cmp-${c.id}"><span>${c.tema}</span><b>${c.titulo}</b></a>`).join('');
   box.innerHTML = CMPS.map(c => `
     <details class="cp-cmp" id="cmp-${c.id}">
@@ -352,14 +349,6 @@ typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded',
       </div>
     </details>`).join('');
   if (typeof glossarize === 'function') box.querySelectorAll('.cp-oneline, .cp-opts, .cp-apps, .cp-errs').forEach(el => glossarize(el, { max: 4 }));
-  // troca do estado: atualiza só os preços
-  ufSel.addEventListener('change', () => {
-    uf = ufSel.value;
-    try { localStorage.setItem('lmUf', uf); } catch {}
-    box.querySelectorAll('.cp-cost').forEach(el => { const v = cmpCusto({ ins: el.dataset.ins, div: +el.dataset.div }, uf); el.textContent = v == null ? '—' : cmpR$(v); });
-    box.querySelectorAll('.cp-uf').forEach(el => { el.textContent = uf; });
-    box.querySelectorAll('.cp-note').forEach(el => { el.innerHTML = el.innerHTML.replace(/, [A-Z]{2}, sem desoneração/, `, ${uf}, sem desoneração`); });
-  });
   // índice e submenu: abre o comparativo antes de o roteador rolar até ele
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#cmp-"]'); if (!a) return;

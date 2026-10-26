@@ -1421,8 +1421,6 @@ a.gl:hover { color: var(--teal-d); }
 .cp-index a:hover { border-color: var(--teal); }
 .cp-index span { font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--teal-d); }
 .cp-index b { color: var(--navy); font-family: var(--display); font-size: .98rem; line-height: 1.25; }
-.cp-ufsel { display: inline-flex; align-items: center; gap: 8px; color: #b3c4d8; font-size: .86rem; margin-bottom: 12px; }
-.cp-ufsel select { font: inherit; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line); }
 .cp-cmp { background: #fff; color: var(--ink); border-radius: var(--radius); margin-bottom: 12px; scroll-margin-top: 90px; }
 .cp-cmp > summary { list-style: none; cursor: pointer; padding: 14px 18px; display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center; }
 .cp-cmp > summary::-webkit-details-marker { display: none; }
