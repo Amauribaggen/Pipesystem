@@ -30,7 +30,7 @@ const CATALOG = [
     desc: 'Polipropileno copolímero random (PP-R), unido por termofusão: tubo e conexão se fundem numa só peça, sem adesivo nem rosca. Resiste à água quente, não sofre corrosão nem incrustação e é muito usado em prédios residenciais, hotéis e hospitais.',
     specs: [['Material', 'Polipropileno copolímero random (PP-R) ou PP-RCT'], ['Diâmetros', '20 a 110 mm no predial; até 160 mm em linhas industriais'], ['Classes', 'PN 12 (água fria), PN 20 e PN 25 (água quente)'], ['Temperatura', 'Até 70 °C em uso contínuo, com picos de 95 °C, conforme a classe'], ['União', 'Termofusão com termofusor e matrizes; transições com inserto metálico roscado'], ['Instalação', 'Prever a dilatação térmica (liras e pontos fixos) nos trechos aparentes de água quente']],
     normas: ['NBR 15813', 'ISO 15874', 'NBR 5626', 'NBR 15575-6'],
-    tipos: ['Tubo PN 12 para água fria', 'Tubo PN 20 e PN 25 para água quente', 'Tubo com fibra ou PP-RCT (menor dilatação)', 'Conexões de termofusão: joelhos, tês, luvas e reduções', 'Conexões de transição com rosca metálica', 'Registros de PPR (gaveta e esfera)'],
+    tipos: ['Tubo PN 12 para água fria', 'Tubo PN 20 e PN 25 para água quente', 'Tubo com fibra ou PP-RCT (menor dilatação)', 'Conexões de termofusão: joelhos, tês, luvas e reduções', 'Conexões de transição com rosca metálica', 'Registros de PPR (gaveta e esfera)', 'Linhas por cor de uso (NBR 6493): azul para ar comprimido, vermelha para rede de incêndio enterrada e cinza para vácuo'],
     escolha: ['Classe de pressão compatível com a temperatura de trabalho', 'Tubo com fibra ou PP-RCT na água quente aparente, por dilatar menos', 'Termofusor com as matrizes do diâmetro e o tempo de aquecimento do fabricante', 'Não misturar marcas de tubo e conexão na mesma junta'] },
   { id: 'mat-multicamada', cat: 'Tubos', name: 'Tubos multicamada (PEX-AL-PEX)', apps: 'Água quente e fria, aquecimento e gás (linhas certificadas)', art: 'pipe', tone: '#dfe6ee',
     desc: 'Tubo com uma camada interna de PEX (ou PE-RT), uma camada intermediária de alumínio soldado e uma camada externa de polietileno. O alumínio deixa o tubo moldável à mão, sem memória de forma, com baixa dilatação e barreira ao oxigênio.',
@@ -624,8 +624,8 @@ const MANUFACTURERS = {
   'mat-vasos-expansao': [['Zilmet', 'https://zilmet.it', 'I'], ['Reflex', 'https://reflex-winkelmann.com', 'I'], ['Varem', 'https://www.varem.com', 'I']],
   'mat-separador': [['Zeppini', 'https://zeppini.com.br', 'N']],
   'mat-prfv': [['Amiantit (Flowtite)', 'https://amiantit.com', 'I'], ['Hobas', 'https://www.hobas.com', 'I']],
-  'mat-ppr': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['Aquatherm', 'https://www.aquatherm.de', 'I']],
-  'mat-multicamada': [['Uponor', 'https://www.uponor.com', 'I'], ['Henco', 'https://www.henco.be', 'I']],
+  'mat-ppr': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['Topfusion', 'https://topfusion.com.br', 'N'], ['Aquatherm', 'https://www.aquatherm.de', 'I']],
+  'mat-multicamada': [['Topfusion', 'https://topfusion.com.br', 'N'], ['Uponor', 'https://www.uponor.com', 'I'], ['Henco', 'https://www.henco.be', 'I']],
   'mat-smu': [['Saint-Gobain Canalização (PAM)', 'https://www.saint-gobain-canalizacao.com.br', 'N']],
   'mat-ventosas': [['Saint-Gobain Canalização (PAM)', 'https://www.saint-gobain-canalizacao.com.br', 'N'], ['Bermad', 'https://www.bermad.com', 'I'], ['A.R.I.', 'https://www.arivalves.com', 'I']],
   'mat-pressurizadores': [['Schneider Motobombas', 'https://www.schneidermotobombas.com.br', 'N'], ['Ebara (Thebe)', 'https://www.ebara.com.br', 'N'], ['Rowa', 'https://www.rowa.com.br', 'N'], ['Grundfos', 'https://www.grundfos.com', 'I']],
@@ -644,7 +644,7 @@ const MANUFACTURERS = {
   'mat-pex': [['Astra', 'https://www.astra-sa.com', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['Uponor', 'https://www.uponor.com', 'I'], ['Rehau', 'https://www.rehau.com', 'I']],
   'mat-cobre': [['Termomecanica', 'https://www.termomecanica.com.br', 'N'], ['Paranapanema (Eluma)', 'https://www.paranapanema.com.br', 'N'], ['Mueller Industries', 'https://www.muellerindustries.com', 'I'], ['KME', 'https://www.kme.com', 'I'], ['Wieland', 'https://www.wieland.com', 'I']],
   'mat-aco': [['Tenaris', 'https://www.tenaris.com', 'I'], ['Vallourec', 'https://www.vallourec.com', 'I'], ['ArcelorMittal', 'https://brasil.arcelormittal.com', 'I']],
-  'mat-pe': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Kanaflex', 'https://www.kanaflex.com.br', 'N'], ['Polierg', 'https://www.polierg.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['GF Piping Systems', 'https://www.gfps.com', 'I']],
+  'mat-pe': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Kanaflex', 'https://www.kanaflex.com.br', 'N'], ['Polierg', 'https://www.polierg.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N'], ['Topfusion', 'https://topfusion.com.br', 'N'], ['GF Piping Systems', 'https://www.gfps.com', 'I']],
   'mat-ferro': [['Saint-Gobain Canalização (PAM)', 'https://www.saint-gobain-canalizacao.com.br', 'N'], ['Electrosteel Castings', 'https://www.electrosteel.com', 'I']],
   'mat-inox': [['Aperam', 'https://www.aperam.com', 'I'], ['Outokumpu', 'https://www.outokumpu.com', 'I'], ['Alleima', 'https://www.alleima.com', 'I']],
   'mat-galv': [['Tupy', 'https://www.tupy.com.br', 'N'], ['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M'], ['ASC Engineered Solutions (Anvil)', 'https://www.asc-es.com', 'I']],
@@ -671,7 +671,7 @@ const MANUFACTURERS = {
   'mat-vedantes': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Teadit', 'https://www.teadit.com', 'N'], ['MGA', 'https://www.mga.com.br', 'N'], ['Loctite (Henkel)', 'https://www.loctite.com.br', 'I'], ['Klinger', 'https://www.klinger-international.com', 'I']],
   'mat-suportes': [['Hilti', 'https://www.hilti.com.br', 'I'], ['Walraven', 'https://www.walraven.com', 'I'], ['ASC Engineered Solutions (Anvil)', 'https://www.asc-es.com', 'I']],
   'mat-filtros': [['Parker', 'https://www.parker.com', 'I'], ['Spirax Sarco', 'https://www.spiraxsarco.com', 'I'], ['Netafim', 'https://www.netafim.com', 'I'], ['Amiad', 'https://www.amiad.com', 'I']],
-  'mat-ferramentas': [['Tramontina', 'https://www.tramontina.com.br', 'N'], ['Ridgid', 'https://www.ridgid.com', 'I'], ['Rothenberger', 'https://www.rothenberger.com', 'I'], ['REMS', 'https://www.rems.de', 'I']],
+  'mat-ferramentas': [['Tramontina', 'https://www.tramontina.com.br', 'N'], ['Topfusion', 'https://topfusion.com.br', 'N'], ['Ridgid', 'https://www.ridgid.com', 'I'], ['Rothenberger', 'https://www.rothenberger.com', 'I'], ['REMS', 'https://www.rems.de', 'I']],
 };
 
 // Foto real de cada item do catálogo (Wikimedia Commons, licenças livres; manter os créditos).
