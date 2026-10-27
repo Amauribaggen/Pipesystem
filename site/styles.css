@@ -1390,6 +1390,15 @@ ul.bimbox { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 6
 .gpsteps li::before { content: counter(gps); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--teal); color: #04202a; font-weight: 700; display: grid; place-items: center; font-size: .85rem; }
 .gpsteps b { color: var(--navy); }
 .gpguide__side { display: grid; gap: 12px; align-content: start; }
+/* Tabela de cores dos guias (ex.: identificação de tubulações) */
+.gpcores { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.gpcores h4 { font-family: var(--font); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; margin: 0 0 8px; color: var(--navy); }
+.gpcores ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px 16px; }
+.gpcores li { display: grid; grid-template-columns: 44px 1fr; gap: 0 10px; align-items: center; font-size: .86rem; }
+.gpcores li b { color: var(--ink); }
+.gpcores li span:last-child { grid-column: 2; color: #33445a; line-height: 1.35; }
+.gpcor { grid-row: span 2; width: 44px; height: 30px; border-radius: 6px; background: var(--c); border: 1px solid #9aa6b2; box-shadow: inset 0 6px 0 rgba(255, 255, 255, .25); }
+.gpcores__nota { grid-column: 1 / -1; margin: -8px 0 0; font-size: .78rem; color: #5b6b80; }
 .gpbox { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: .88rem; }
 .gpbox h4 { font-family: var(--font); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; margin: 0 0 6px; color: var(--navy); }
 .gpbox ul { margin: 0; padding-left: 18px; }

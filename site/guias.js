@@ -1,6 +1,6 @@
 // ===== Guias práticos: passo a passo, vídeos dos fabricantes, erros e patologias e checklist de entrega =====
 // Vídeos de canais oficiais, conferidos em 23/10/2026 (oEmbed do YouTube). Conteúdo revisado pela Equipe Técnica PipeSystem.
-const GP_TEMAS = ['Água fria e quente', 'Esgoto', 'Gás', 'Reservatórios', 'Metais sanitários', 'Testes e entrega'];
+const GP_TEMAS = ['Água fria e quente', 'Esgoto', 'Gás', 'Reservatórios', 'Metais sanitários', 'Testes e entrega', 'Identificação'];
 
 const VIDEOS = {
   pvc: { id: 'p_fwj2fG9_Y', t: 'Como instalar PVC soldável', canal: 'Tigre', dur: '2:10', tema: 'Água fria e quente', d: 'Corte, lixamento, limpeza e solda de tubos e conexões de PVC marrom.' },
@@ -127,6 +127,44 @@ const GUIAS = [
       '<b>Confira vazamentos</b>: água escorrendo na louça sem acionar indica reparo mal assentado.'],
     atencao: ['Sujeira da obra é a principal causa de válvula que não fecha: lave a rede antes de instalar o reparo.', 'Bacias de 6 litros exigem válvula ou caixa compatível.'],
     videos: ['valvula', 'valvulaMan', 'descargaTigre'], mats: [['Registros', 'registros']] },
+  // tabelas: amostras de cor (as cores na tela são aproximadas; o padrão Munsell está na norma) · refs: fontes do guia
+  { id: 'cores-tubulacoes', tema: 'Identificação', tema2: ['Gás'], titulo: 'Identificação de tubulações por cores (NBR 6493)', resumo: 'Qual cor usar em cada fluido, como pintar ou aplicar faixas, setas de sentido e rótulos.',
+    tempo: 'Consulta', nivel: 'Projetista e instalador', norma: 'NBR 6493',
+    tabelas: [
+      { titulo: 'Cores básicas da ABNT NBR 6493 (tubulações industriais)', linhas: [
+        ['#2e6b3f', 'Verde-emblema', 'Água, exceto a de combate a incêndio'],
+        ['#c62828', 'Vermelho-segurança', 'Água e outras substâncias de combate a incêndio (hidrantes e sprinklers)'],
+        ['#1e5aa8', 'Azul-segurança', 'Ar comprimido'],
+        ['#ffffff', 'Branco', 'Vapor'],
+        ['#f2c200', 'Amarelo-segurança', 'Gases não liquefeitos'],
+        ['#b8bec4', 'Cor-de-alumínio', 'Gases liquefeitos, inflamáveis e combustíveis de baixa viscosidade (diesel, gasolina, querosene, óleo lubrificante, solventes)'],
+        ['#1b1f24', 'Preto', 'Inflamáveis e combustíveis de alta viscosidade (óleo combustível, asfalto, alcatrão, piche)'],
+        ['#f07f1c', 'Alaranjado-segurança', 'Produtos químicos não gasosos'],
+        ['#6b3f23', 'Marrom-canalização', 'Materiais fragmentados (minérios) e petróleo bruto'],
+        ['#c7ccd1', 'Cinza-claro', 'Vácuo'],
+        ['#5b6168', 'Cinza-escuro', 'Eletrodutos'],
+      ] },
+      { titulo: 'Para comparar: ASME A13.1 (Estados Unidos), cor de fundo e letra', linhas: [
+        ['#2e7d32', 'Verde, letra branca', 'Água'],
+        ['#c62828', 'Vermelho, letra branca', 'Combate a incêndio'],
+        ['#1e5aa8', 'Azul, letra branca', 'Ar comprimido'],
+        ['#f2c200', 'Amarelo, letra preta', 'Inflamáveis e oxidantes'],
+        ['#6b3f23', 'Marrom, letra branca', 'Combustíveis'],
+        ['#f07f1c', 'Laranja, letra preta', 'Tóxicos e corrosivos'],
+      ] },
+    ],
+    separar: ['Projeto ou lista dos fluidos de cada linha, com pressão e temperatura', 'Tinta de fundo compatível com o tubo (para galvanizado, fundo de aderência próprio)', 'Tinta de acabamento nas cores da norma', 'Fita adesiva para faixas, gabarito de setas e etiquetas ou estêncil para os rótulos', 'Material de limpeza: desengraxante e lixa'],
+    passos: ['<b>Identifique o fluido e a norma.</b> Tubulações industriais seguem a NBR 6493; gás combustível em prédios, a NBR 15526; gases industriais e medicinais têm normas próprias (NBR 13193 e NBR 12188), com cores diferentes — no gás medicinal, por exemplo, o oxigênio é verde.',
+      '<b>Prepare a superfície.</b> Limpe e desengraxe; lixe a ferrugem solta e aplique fundo anticorrosivo no aço preto. Em tubo galvanizado, use fundo de aderência próprio para zinco, ou a tinta descasca.',
+      '<b>Pinte o tubo inteiro ou aplique faixas.</b> A cor pode cobrir toda a extensão da tubulação ou ficar em faixas de identificação de 40 cm de largura, quando o tubo tem outra cor ou acabamento (isolamento térmico, inox, tubo plástico colorido de fábrica).',
+      '<b>Distribua as faixas onde se lê.</b> Junto a válvulas, derivações, mudanças de direção, passagens por paredes e pisos e em trechos retos longos, para que a identificação apareça de qualquer ponto de acesso.',
+      '<b>Indique o sentido do fluxo.</b> Pinte ou cole setas junto às faixas, apontando para onde o fluido corre; em linhas que mudam de sentido, use seta dupla.',
+      '<b>Escreva o nome do fluido.</b> Rótulos com o nome (ex.: "ÁGUA GELADA", "AR COMPRIMIDO 7 bar", "VAPOR") em letra que contraste com a cor de fundo; em fluidos perigosos, inclua o pictograma de risco.',
+      '<b>Gás em prédios.</b> A tubulação de gás aparente é pintada de amarelo (Munsell 5Y 8/12); na fachada, pode seguir a cor do prédio, com a palavra "GÁS" a cada 2 m ou em cada trecho aparente.',
+      '<b>Registre e mantenha.</b> Inclua a legenda de cores no projeto e na sala de máquinas, e refaça a pintura e as faixas quando desbotarem ou depois de reformas.'],
+    atencao: ['A cor não substitui o rótulo: em plantas com muitas linhas da mesma cor, só o nome do fluido evita a manobra errada.', 'Não pinte sobre válvulas de alívio, placas de identificação, visores, roscas de união e elementos de sprinkler.', 'Tubos plásticos coloridos de fábrica (ex.: PPR azul para ar comprimido, vermelho para incêndio, cinza para vácuo) já atendem à norma: aplique só setas e rótulos.', 'A NR-26 manda usar as cores das normas técnicas e no menor número possível, para não confundir.'],
+    refs: [['ABNT NBR 6493 — Emprego de cores para identificação de tubulações industriais (3ª edição, 2019)', 'https://www.abntcatalogo.com.br/'], ['Resumo da NBR 6493: cores, fluidos e faixas de 40 cm', 'https://segurancadotrabalhoacz.com.br/nbr-6493/'], ['NR-26 — Sinalização e identificação de segurança (Portaria MTP 2.770/2022)', 'https://engenharia360.com/o-que-significam-as-cores-das-tubulacoes-nos-processos-industriais/'], ['CBMGO — Orientação Técnica 03/2020: gás aparente em amarelo 5Y 8/12 e palavra "GÁS" a cada 2 m (NBR 15526, item 7.9)', 'https://www.bombeiros.go.gov.br/wp-content/uploads/2014/11/Orientacao_Tecnica_03_2020_-_Tubos_Multicamada.pdf'], ['ASME A13.1 — Esquema de cores para identificação de tubulações (resumo)', 'https://jjkellercompliancenetwork.com/institute/pipe-marking-elements-format-color-schemes-and-location']],
+    videos: [], mats: [['Tubos de aço-carbono e galvanizado', 'aco'], ['Tubos e conexões de PPR', 'ppr'], ['Isolamento térmico de tubulações', 'isolamento']] },
 ];
 
 // ---------- erros comuns e patologias ----------
@@ -172,12 +210,15 @@ const CHECK = [
         <p>${g.resumo}</p>
         <span class="gpguide__meta"><span class="gppill gppill--tema">${g.tema}</span><span class="gppill">⏱ ${g.tempo}</span><span class="gppill">${g.nivel}</span><span class="gppill">${g.norma}</span></span>
       </summary>
-      <div class="gpguide__body">
+      <div class="gpguide__body">${(g.tabelas || []).map(t => `
+        <div class="gpcores"><h4>${t.titulo}</h4><ul>${t.linhas.map(([hex, cor, uso]) => `<li><span class="gpcor" style="--c:${hex}" aria-hidden="true"></span><b>${cor}</b><span>${uso}</span></li>`).join('')}</ul></div>`).join('')}${g.tabelas ? `
+        <p class="gpcores__nota">Cores na tela aproximadas; o padrão de cada cor (código Munsell) está na norma.</p>` : ''}
         <ol class="gpsteps">${g.passos.map(p => `<li>${p}</li>`).join('')}</ol>
         <div class="gpguide__side">
           <div class="gpbox"><h4>Separe antes</h4><ul>${g.separar.map(x => `<li>${x}</li>`).join('')}</ul></div>
           <div class="gpbox gpbox--warn"><h4>Atenção</h4><ul>${g.atencao.map(x => `<li>${x}</li>`).join('')}</ul></div>
           ${g.videos.length ? `<div class="gpbox"><h4>Vídeo do fabricante</h4><ul>${g.videos.map(k => `<li><a href="https://www.youtube.com/watch?v=${VIDEOS[k].id}" target="_blank" rel="noopener noreferrer">${VIDEOS[k].t}</a> · <span class="notranslate" translate="no">${VIDEOS[k].canal}</span></li>`).join('')}</ul></div>` : ''}
+          ${g.refs ? `<div class="gpbox"><h4>Referências</h4><ul>${g.refs.map(([t, u]) => `<li><a href="${u}" target="_blank" rel="noopener noreferrer">${t}</a></li>`).join('')}</ul></div>` : ''}
           <div class="gpbox"><h4>Materiais</h4><ul>${g.mats.map(m => `<li>${mat(m)}</li>`).join('')}</ul></div>
         </div>
         <p class="gpguide__foot">Revisado pela Equipe Técnica PipeSystem · Fabricante, quer apresentar este guia? <a href="#anuncie">Anuncie aqui</a></p>
