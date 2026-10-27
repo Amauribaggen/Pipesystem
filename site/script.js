@@ -988,7 +988,35 @@ const ARTICLES = [
 ];
 // ===== Revistas especializadas (conferidas em 24/10/2026) =====
 // edicao/edicaoUrl: edição em destaque; url: página com todas as edições
+// Revistas brasileiras primeiro; "assinatura" marca as edições que só assinantes leem por inteiro
 const MAGAZINES = [
+  { nome: 'Revista TAE', pais: 'Brasil', idioma: 'pt', url: 'https://www.revistatae.com.br/Edicoes',
+    edicao: 'Edição 93, outubro/novembro de 2026', edicaoUrl: 'https://www.revistatae.com.br/Edicao/93/outubronovembro-de-2026',
+    resumo: 'Revista bimestral de tratamento de água e efluentes: ETA, ETE, reúso, saneamento e tecnologias de tratamento. A edição 93 trata do saneamento rumo à eficiência energética e à adaptação climática, do custo do atraso no saneamento, dos riscos hídricos da indústria e de controle de enchentes com modelagem digital.' },
+  { nome: 'Revista ABRAVA Refrigeração & Climatização', pais: 'Brasil', idioma: 'pt', url: 'https://abrava.com.br/category/revista/',
+    edicao: 'Maio de 2026', edicaoUrl: 'https://abrava.com.br/revista-abrava-refrigeracao-climatizacao-edicao-maio-de-2026/',
+    resumo: 'Revista oficial da ABRAVA (Associação Brasileira de Refrigeração, Ar-Condicionado, Ventilação e Aquecimento), mensal, sobre sistemas de climatização, refrigeração, água gelada, aquecimento e qualidade do ar. Edições para baixar no site da entidade.' },
+  { nome: 'Engenharia Sanitária e Ambiental', pais: 'Brasil', idioma: 'pt', url: 'https://www.scielo.br/j/esa/grid',
+    edicao: 'Volume 31, 2026', edicaoUrl: 'https://www.scielo.br/j/esa/i/2026.v31/',
+    resumo: 'Revista técnico-científica da ABES (Associação Brasileira de Engenharia Sanitária e Ambiental), com revisão por pares e acesso aberto no SciELO: abastecimento de água, esgotamento sanitário, drenagem, resíduos e tecnologias ambientais.' },
+  { nome: 'Revista Emergência', pais: 'Brasil', idioma: 'pt', assinatura: true, url: 'https://revistaemergencia.com.br/',
+    edicao: 'Edição 161, agosto/outubro de 2026', edicaoUrl: 'https://revistaemergencia.com.br/geral/acesse-a-edicao-digital-da-revista-emergencia/',
+    resumo: 'Revista brasileira de prevenção e combate a incêndio, resgate e atendimento a emergências, com artigos sobre sprinklers, hidrantes, detecção e alarme e normas do Corpo de Bombeiros. A edição 161 traz reportagem sobre emergências com veículos pesados e entrevista sobre segurança contra incêndio.' },
+  { nome: 'Plumbing & Mechanical', pais: 'Estados Unidos', idioma: 'en', url: 'https://www.pmmag.com/publications',
+    edicao: 'Agosto de 2026', edicaoUrl: 'https://www.pmmag.com/publications/3/editions/1441',
+    resumo: 'Principal revista norte-americana para instaladores de hidráulica predial, tubulações, aquecimento hidrônico e proteção contra incêndio, com o conteúdo da antiga PM Engineer para projetistas. A edição de agosto trata de hidráulica conectada (sensores e automação), aquecimento de água comercial e riscos de refluxo.' },
+  { nome: 'Supply House Times', pais: 'Estados Unidos', idioma: 'en', url: 'https://www.supplyht.com/publications',
+    edicao: 'Julho de 2026', edicaoUrl: 'https://www.supplyht.com/publications/3/editions/1413',
+    resumo: 'Revista oficial da American Supply Association, para distribuidores e revendedores de materiais hidráulicos, aquecimento, tubos, válvulas e conexões. A edição de julho traz o Showroom do Ano, a escolha de válvulas para edifícios comerciais e os reajustes de preços dos fabricantes.' },
+  { nome: 'Pumps & Systems', pais: 'Estados Unidos', idioma: 'en', url: 'https://www.pumpsandsystems.com/magazine/',
+    edicao: 'Outubro de 2026', edicaoUrl: 'https://www.pumpsandsystems.com/magazine/october-2026/',
+    resumo: 'Revista mensal para engenheiros e equipes de manutenção que especificam e operam bombas. A edição de outubro trata de bombas na indústria química: selos mecânicos, cavitação, juntas de expansão, monitoramento de condição com inteligência artificial e controle de Legionella em torres de resfriamento.' },
+  { nome: 'VALVE Magazine', pais: 'Estados Unidos', idioma: 'en', url: 'https://valvemagazine.com/magazine/',
+    edicao: 'Verão de 2026', edicaoUrl: 'https://valvemagazine.com/magazine/summer-2026/',
+    resumo: 'Revista trimestral da Valve Manufacturers Association (VMA) sobre válvulas, atuadores e controles: seleção, manutenção e aplicações em água, óleo e gás, energia e indústria. A edição de verão tem como tema as paradas programadas de plantas industriais.' },
+  { nome: 'PHAM News', pais: 'Reino Unido', idioma: 'en', url: 'https://phamnews.co.uk/digital-issues/',
+    edicao: 'Outubro de 2026', edicaoUrl: 'https://content.yudu.com/web/69r/0A44ouj/PHAMNewsOctober2026/html/index.html?origin=reader',
+    resumo: 'Revista britânica mensal, publicada desde 1963, para instaladores, distribuidores e fabricantes de hidráulica, aquecimento e climatização. Edição digital para ler on-line.' },
   { nome: 'Plumbing & HVAC', pais: 'Canadá', idioma: 'en', url: 'https://plumbingandhvac.ca/digital-issues/',
     edicao: 'Outubro de 2026', edicaoUrl: 'https://plumbingandhvac.ca/october-2026/',
     resumo: 'Revista canadense para instaladores, projetistas e distribuidores de hidráulica, aquecimento hidrônico, refrigeração e climatização. A edição de outubro traz treinamento técnico em refrigeração, tubulação com circuito primário-secundário e a água depois do hidrômetro. Edição digital para ler on-line.' },
@@ -1016,7 +1044,7 @@ const MAGAZINES = [
       <div class="art__body">
         <span class="art__tema">Revista · ${m.pais}</span>
         <h3 class="art__title"><a href="${m.edicaoUrl || m.url}" target="_blank" rel="noopener noreferrer"><span class="notranslate" translate="no">${m.nome}</span>${m.edicao ? ` — ${m.edicao}` : ''}</a></h3>
-        <p class="art__meta">Edição digital${m.idioma === 'en' ? ' · <span class="art__lang">Em inglês</span>' : ''} · <a href="${m.url}" target="_blank" rel="noopener noreferrer">todas as edições ↗</a></p>
+        <p class="art__meta">Edição digital${m.assinatura ? ' para assinantes' : ''}${m.idioma === 'en' ? ' · <span class="art__lang">Em inglês</span>' : ''} · <a href="${m.url}" target="_blank" rel="noopener noreferrer">todas as edições ↗</a></p>
         <p class="art__resumo">${m.resumo}</p>
       </div>
       <a class="art__btn" href="${m.edicaoUrl || m.url}" target="_blank" rel="noopener noreferrer">Ler a edição ↗<small>${host(m.url)}</small></a>
