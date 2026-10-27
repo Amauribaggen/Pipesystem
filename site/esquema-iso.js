@@ -39,7 +39,7 @@
       resSup: find(/^Reservatório superior/), resInf: find(/^Reservatório inferior|cisterna \(reservatório inferior\)/), caixa: find(/^Caixa d'água de polietileno (?!.*cisterna)/),
       recalque: find(/— recalque/), coluna: find(/colunas de distribuição/), nCol: Math.max(1, sum(/topo das colunas/)),
       hotDist: rows.find(r => r.group === 'Água quente' && /— distribuição/.test(r.item)), aquec: find(/^Aquecedor de passagem/),
-      prumGas: find(/prumadas de gás/), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/),
+      prumGas: find(/prumadas de gás/), gas: v('lmGas'), gasCasa: rows.some(r => r.group === 'Gás'), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/),
       prumHid: find(/prumada de hidrantes|^Tubo de aço.*\(DN 65\)/), nHid: sum(/^Válvula angular/), bicos: sum(/^Bico de sprinkler/),
       condut: sum(/^Ralo hemisférico|^Bocal de calha/), chuva: find(/^Cisterna de água de chuva/),
       lgArea: n('lgArea'),
@@ -198,7 +198,15 @@
     txt(10.5, D + 4, -.5, 'Rede de esgoto', { s: 11, c: 'esg', b: true });
     g1();
     g0('pluv'); tuboIso('pluv', [[W, D, topo], [W, D, .1], [W, D + 4.8, .1]], 3); g1();
-    if (d.p13 || d.glp || d.prumGas) { g0('gas'); caixa(W + 2, 2, 0, 1.4, 1.4, 1.6, GLP); tuboIso('gas', [[W + 2, 2.7, .5], [W - 2, 2.7, .5], [W - 2, 2.7, 2]], 2.4); txt(W + 2.7, 2, 2.2, d.p13 ? 'P13' : 'Gás', { s: 10, c: 'gas', b: true, a: 'middle' }); g1(); }
+    // gás da casa (gás natural, GLP ou P13): abrigo ao lado da casa e tubo até a cozinha do térreo
+    if (d.gasCasa) {
+      g0('gas');
+      if (d.gas === 'gn') tuboIso('gas', [[W + 2.7, D + 4.5, .2], [W + 2.7, 3.4, .2]], 2.4);   // ramal da rede da rua
+      caixa(W + 2, 2, 0, 1.4, 1.4, 1.6, GLP);
+      tuboIso('gas', [[W + 2, 2.7, .5], [W - 2, 2.7, .5], [W - 2, 2.7, 1.2]], 2.4);
+      txt(W + 2.7, 2, 3.4, { gn: 'Gás natural · medidor', glp: 'GLP · regulador', p13: 'Botijão P13' }[d.gas] || 'Gás', { s: 10, c: 'gas', b: true, a: 'middle' });
+      g1();
+    }
     return 160 + topo * S + 22 * S;
   }
 

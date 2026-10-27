@@ -26,7 +26,7 @@
       coluna: find(/colunas de distribuição/), barrilete: find(/— barrilete$/), nCol: Math.max(1, sum(/topo das colunas/)),
       dist: find(/— distribuição interna/), coletor: find(/^Coletor predial/), esg100: find(/esgoto série normal 100/),
       condut: sum(/^Ralo hemisférico|^Bocal de calha/), calha: find(/^Calha/),
-      prumGas: find(/prumadas de gás/), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/), aquec: find(/^Aquecedor de passagem/), hotDist: rows.find(r => r.group === 'Água quente' && /— distribuição/.test(r.item)),
+      prumGas: find(/prumadas de gás/), gasCasa: rows.some(r => r.group === 'Gás'), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/), aquec: find(/^Aquecedor de passagem/), hotDist: rows.find(r => r.group === 'Água quente' && /— distribuição/.test(r.item)),
       prumHid: find(/prumada de hidrantes|^Tubo de aço.*\(DN 65\)/), nHid: sum(/^Válvula angular/), bombaInc: find(/^Bomba (de reforço|principal)/), recInc: find(/^Registro de recalque/),
       prumSpk: find(/prumada de sprinklers/), bicosG: sum(/sprinkler.*garagem/), bicosA: sum(/sprinkler residencial/), esfr: sum(/ESFR/), bicos: sum(/^Bico de sprinkler/),
       piscina: find(/^Filtro de areia/), chuva: find(/^Cisterna de água de chuva/), gordura: find(/^Caixa de gordura/),
@@ -173,7 +173,14 @@
     path(`M722 ${G + 30} H740 M762 ${G + 30} H960`, 'esg', 4);
     label(960, G + 52, ['Rede de esgoto', 'caixas de inspeção e gordura'], { c: 'esg', a: 'end', b: true });
     line(x1 + 20, top, x1 + 20, G + 12, 'pluv', 3); path(`M${x1 + 20} ${G + 12} H960`, 'pluv', 3); label(960, G - 24, ['Calha e condutores', 'para a sarjeta ou rede pluvial'], { c: 'pluv', a: 'end', b: true });
-    if (d.p13 || d.glp || d.prumGas) { rect(x0 - 70, G - 40, 34, 40, '#fff8db', C.gas, 2); text(x0 - 53, G - 16, d.p13 ? 'P13' : 'gás', { s: 10, c: 'gas', a: 'middle', b: true }); path(`M${x0 - 36} ${G - 22} H${x0 + 40} V${G - fh + 30}`, 'gas', 2.5); }
+    // gás da casa (gás natural, GLP ou P13): abrigo na frente do lote e tubo até o fogão do térreo
+    if (d.gasCasa) {
+      if (d.gas === 'gn') path(`M40 ${G + 8} H${x0 - 53} V${G}`, 'gas', 2.5);   // ramal da rede da rua até o abrigo do medidor
+      rect(x0 - 70, G - 40, 34, 40, '#fff8db', C.gas, 2); text(x0 - 53, G - 16, { gn: 'GN', glp: 'GLP', p13: 'P13' }[d.gas] || 'gás', { s: 10, c: 'gas', a: 'middle', b: true });
+      path(`M${x0 - 36} ${G - 22} H${x0 + 40} V${G - fh + 34} H${x0 + 66}`, 'gas', 2.5);
+      rect(x0 + 66, G - fh + 27, 24, 14, '#fff8db', C.gas, 2); text(x0 + 96, G - fh + 38, 'fogão', { s: 10, c: 'gas' });
+      label(x0 - 74, G - 50, [{ gn: 'Gás natural · medidor', glp: 'GLP · regulador', p13: 'Botijão P13' }[d.gas] || 'Gás'], { s: 10, c: 'gas', b: true, a: 'end' });
+    }
     if (d.piscina) { rect(760, G - 2, 140, 24, '#cfe8ff', C.af, 2); text(830, G + 15, 'Piscina', { s: 11, c: 'af', a: 'middle', b: true }); }
     if (d.chuva) { tanque(780, G + 96, 90, 36, 'Água de chuva', '', 'chuva'); path(`M${x1 + 20} ${G + 12} V${G + 114} H780`, 'chuva', 2.5); }
     return G + (d.chuva ? 150 : 120);
