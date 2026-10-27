@@ -1641,6 +1641,9 @@ a.gl:hover { color: var(--teal-d); }
 .vh-storz { fill: #c3ccd6; stroke: #4a5563; stroke-width: 1.5; }
 .vh-volante { fill: #e53935; stroke: #8e1b1b; stroke-width: 1.5; }
 .vh-raio { stroke: #8e1b1b; stroke-width: 1.5; }
+.vh-caixa { fill: #f7f9fb; stroke: #9aa6b2; stroke-width: 1.5; }
+.vh-passeio { stroke: #4a5563; stroke-width: 3; }
+.vh-tampa { stroke: #4a5563; stroke-width: 3; stroke-dasharray: 6 4; }
 .vh-corrente { fill: none; stroke: #6b7682; stroke-width: 2.5; stroke-dasharray: 4 2; }
 .vh-chave { stroke: #4a5563; stroke-width: 10; stroke-linecap: round; }
 .ta-revest { fill: #1f2933; stroke: #0b1016; stroke-width: 1.2; stroke-dasharray: 4 3; }

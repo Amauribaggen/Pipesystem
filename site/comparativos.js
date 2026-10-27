@@ -761,7 +761,7 @@ function taTiposHTML(h = 'h4') {
 // [id, nome, uso, descrição]
 const VH_TIPOS = [
   ['predial', 'Angular 45° predial', 'Abrigo de hidrante', 'DN 65 (2 1/2"), saída a 45° para baixo e adaptador storz. A mais comum: fica dentro do abrigo, com a mangueira ligada e o esguicho pronto.'],
-  ['recalque', 'Angular 45° para recalque', 'Hidrante de recalque', 'Instalada no passeio ou na fachada, com tampão storz e corrente. Por ela o caminhão dos bombeiros bombeia água para dentro da rede do prédio.'],
+  ['recalque', 'Angular 45° para recalque', 'Hidrante de recalque', 'Fica numa caixa no passeio, abaixo do nível do piso, sob tampa identificada (INCÊNDIO), ou na fachada. A saída fica voltada 45° para cima, com tampão storz e corrente: por ela o caminhão dos bombeiros bombeia água para dentro da rede do prédio.'],
   ['industrial', 'Angular 90° industrial', 'Indústrias e galpões', 'Saída horizontal, corpo mais robusto (latão, bronze ou ferro fundido), para redes industriais e hidrantes externos.'],
   ['mangotinho', 'Angular 1 1/2" para mangotinho', 'Mangotinho e risco leve', 'Versão DN 40 (1 1/2"), para mangueiras de 40 mm. Também usada como tomada dos bombeiros junto a sistemas de mangotinho.'],
   ['adaptador', 'Adaptador storz', 'Acessório', 'Rosca de 5 fios de um lado e engate rápido storz do outro, de 2 1/2" ou com redução 2 1/2" × 1 1/2" para mangueira de 40 mm.'],
@@ -782,7 +782,10 @@ function vhInner(k) {
       `<rect class="spk-corpo" x="-7" y="-34" width="14" height="22" rx="2"/><ellipse class="vh-volante" cx="0" cy="-38" rx="26" ry="7"/><path class="vh-raio" d="M-24 -38h48M0 -44v12"/></g>`;
   };
   if (k === 'predial') return valvula({}) + txt(80, 136, '2 1/2" · saída a 45°');
-  if (k === 'recalque') return '<rect class="spk-teto" x="0" y="118" width="160" height="22"/>' + valvula({ y: 70, ponta: 'tampao', tubo: 70 }) + txt(72, 134, 'no passeio', 'start');
+  // recalque: caixa enterrada no passeio, válvula abaixo do piso e saída voltada 45° para cima
+  if (k === 'recalque') return '<rect class="spk-teto" x="0" y="38" width="160" height="102"/><rect class="vh-caixa" x="22" y="38" width="116" height="92"/>' +
+    '<path class="vh-passeio" d="M0 38H22M138 38H160"/><path class="vh-tampa" d="M22 38H138"/>' + txt(2, 31, 'passeio', 'start') + txt(98, 31, 'tampa INCÊNDIO') +
+    valvula({ x: 60, y: 98, e: .8, rot: -45, ponta: 'tampao', tubo: 54 }) + txt(128, 84, '45°', 'end');
   if (k === 'industrial') return valvula({ x: 52, rot: 0 }) + txt(80, 136, 'saída a 90°');
   if (k === 'mangotinho') return valvula({ x: 66, y: 82, e: .78 }) + txt(80, 136, '1 1/2" · saída a 45°');
   if (k === 'adaptador') return `<rect class="spk-corpo" x="34" y="56" width="40" height="28" rx="3"/>` + [0, 1, 2, 3, 4, 5].map(i => `<path class="ta-fio" d="M${38 + i * 6} 56v28"/>`).join('') +
