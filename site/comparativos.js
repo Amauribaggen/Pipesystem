@@ -91,6 +91,7 @@ const CMP_FONTES = {
   pm23: ['Project Materials — Válvula esfera bipartida × tripartida: construção e manutenção na linha', 'https://blog.projectmaterials.com/quick-answers/valves/2-piece-vs-3-piece-ball-valve/', 'artigo'],
   wikiEsfera: ['Wikipédia (inglês) — Ball valve: corpos monobloco, bipartido e tripartido, passagem plena e reduzida', 'https://en.wikipedia.org/wiki/Ball_valve', 'artigo'],
   valmicroLinhas: ['Valmicro (Lupatech) — Linhas de válvulas esfera: monobloco, bipartida, tripartida, forjada, wafer, trunnion e diversora, com diâmetros e classes', 'https://valmicro.com.br/', 'fab'],
+  micromazzaLinhas: ['Micromazza — Válvulas industriais: esfera monobloco, bipartida, tripartida, wafer, top entry, dupla esfera, três vias e diversora, flutuante e trunnion, classes 150 a 2500', 'https://micromazza.com.br/produtos/valvulas-industriais', 'fab'],
   mssSp110: ['MSS SP-110 — Válvulas esfera roscadas, de encaixe para solda, solda e flangeadas, de 1/4" a 4" (passagem plena, regular e reduzida)', 'https://webstore.ansi.org/standards/mss/msssp1102010', 'norma'],
   api6d: ['API 6D — Válvulas para dutos (pipeline valves), incluindo esfera trunnion', 'https://www.api.org/products-and-services/standards', 'norma'],
   api608: ['API 608 — Válvulas esfera metálicas flangeadas, roscadas e de solda', 'https://www.api.org/products-and-services/standards', 'norma'],
@@ -317,11 +318,11 @@ const CMPS = [
     apps: { casa: '—', predio: 'Concêntrica de assento resiliente (wafer ou lug) em água gelada, recalque e incêndio, com redutor de volante nos DN maiores.', hospital: 'Concêntrica nas utilidades de água e HVAC; dupla ou tripla excêntrica no vapor da central térmica.', industria: 'Resiliente em água e utilidades; dupla excêntrica em processos e modulação; tripla excêntrica em vapor, óleo térmico e hidrocarbonetos; criogênica em GNL, oxigênio e nitrogênio líquidos.' },
     fontes: ['dirac', 'api609', 'mssSp67', 'awwaC504', 'iso5752', 'api598', 'api607', 'bs6364'] },
 
-  { id: 'valvulas-esfera', tema: 'Válvulas', titulo: 'Válvula esfera: qual tipo? Corpo (monobloco, bipartida, tripartida, wafer, forjada) e esfera (flutuante, trunnion, três vias)',
+  { id: 'valvulas-esfera', tema: 'Válvulas', titulo: 'Válvula esfera: qual tipo? Corpo (monobloco, bipartida, tripartida, wafer, forjada) e esfera (flutuante, trunnion, três vias, top entry, dupla esfera)',
     tipos: 'esfera',
-    resumo: 'Monobloco para utilidades e pequenos diâmetros, quando é mais barato trocar que consertar; bipartida para uso geral, em diâmetros maiores e flangeada; tripartida quando é preciso trocar sedes sem tirar a válvula da linha; wafer onde falta espaço; forjada para pressões altas. Esfera flutuante até diâmetros médios; trunnion em grandes diâmetros, altas pressões e dutos; três vias para desviar ou misturar o fluxo {wikiEsfera}{pmFlutTrun}.',
+    resumo: 'Monobloco para utilidades e pequenos diâmetros, quando é mais barato trocar que consertar; bipartida para uso geral, em diâmetros maiores e flangeada; tripartida quando é preciso trocar sedes sem tirar a válvula da linha; wafer onde falta espaço; forjada para pressões altas. Esfera flutuante até diâmetros médios; trunnion em grandes diâmetros, altas pressões e dutos; três vias para desviar ou misturar o fluxo; entrada por cima (top entry) em dutos soldados; dupla esfera para bloqueio duplo com dreno num só corpo {wikiEsfera}{pmFlutTrun}{micromazzaLinhas}.',
     intro: 'Toda válvula esfera abre e fecha com 1/4 de volta: uma esfera furada gira entre duas sedes. O que muda de um tipo para outro são duas escolhas independentes, por isso a comparação vem em duas tabelas: o corpo, que define como a válvula é feita, montada e consertada, e a forma de apoio da esfera, que define até que diâmetro e pressão ela trabalha bem. Uma tripartida, por exemplo, quase sempre tem esfera flutuante; uma trunnion costuma ter corpo bipartido ou soldado {wikiEsfera}{pmFlutTrun}.',
-    opcoes: [['Monobloco', 'esfera'], ['Bipartida', 'esfera'], ['Tripartida', 'esfera'], ['Wafer', 'esfera'], ['Forjada (alta pressão)', 'esfera'], ['Esfera flutuante', 'esfera'], ['Esfera trunnion', 'esfera'], ['Três vias (diversora)', 'esfera']],
+    opcoes: [['Monobloco', 'esfera'], ['Bipartida', 'esfera'], ['Tripartida', 'esfera'], ['Wafer', 'esfera'], ['Forjada (alta pressão)', 'esfera'], ['Esfera flutuante', 'esfera'], ['Esfera trunnion', 'esfera'], ['Três vias (diversora)', 'esfera'], ['Entrada por cima (top entry)', 'esfera'], ['Dupla esfera (bloqueio duplo)', 'duplo-bloqueio']],
     tabelas: [
       { titulo: 'Corpo: como a válvula é feita e montada', cols: [0, 1, 2, 3, 4], linhas: [
         ['Construção', ['Corpo de uma peça; a esfera entra pela ponta e fica presa por um anel roscado {wikiEsfera}', 'Corpo em duas partes, unidas por rosca ou parafusos; cabe uma esfera maior {wikiEsfera}', 'Corpo central (esfera e sedes) preso entre duas pontas por parafusos {wikiEsfera}{pm23}', 'Corpo curto, montado entre dois flanges da linha e preso pelos parafusos deles', 'Corpo de aço forjado, de parede grossa, para pressões altas']],
@@ -332,13 +333,13 @@ const CMPS = [
         ['Custo relativo', ['O menor', 'Baixo a médio', 'Médio', 'Baixo (corpo curto)', 'Alto']],
         ['Normas', ['MSS SP-110 · ASME B16.34 {mssSp110}{asmeB1634}', 'API 608 · ASME B16.34 {api608}{asmeB1634}', 'MSS SP-110 · ASME B16.34 {mssSp110}{asmeB1634}', 'API 608 · ASME B16.34 {api608}{asmeB1634}', 'ASME B16.34 · API 608 {asmeB1634}{api608}']],
       ] },
-      { titulo: 'Esfera: como ela é apoiada e onde trabalha', cols: [5, 6, 7], linhas: [
-        ['Apoio da esfera', ['Solta entre as sedes: a pressão da linha empurra a esfera contra a sede de jusante, e é isso que veda {pmFlutTrun}', 'Presa em cima e embaixo por mancais; as sedes, com molas, é que vão contra a esfera {pmFlutTrun}', 'Esfera com furo em L ou em T e corpo com três bocas']],
-        ['Diâmetros e pressões', ['Pequenos e médios diâmetros (em geral até 6" a 10"), classes 150 a 600 {pmFlutTrun}', 'Grandes diâmetros e altas pressões, classes 150 a 2500 {pmFlutTrun}', 'Pequenos e médios diâmetros, classes 150 e 300 e PN 40 {valmicroLinhas}']],
-        ['Torque de manobra', ['Cresce com a pressão e com o diâmetro {pmFlutTrun}', 'Menor e mais estável: a esfera não é empurrada contra a sede {pmFlutTrun}', 'Conforme a construção e o furo da esfera']],
-        ['Bloqueio duplo e dreno', ['Não: veda só do lado de jusante {pmFlutTrun}', 'Sim (double block and bleed), com alívio de pressão da cavidade {pmFlutTrun}', 'Não se aplica']],
-        ['Aplicações', ['Utilidades, água, ar, gás e linhas de processo de pequeno diâmetro', 'Dutos de óleo e gás, grandes adutoras e linhas de alta pressão {pmFlutTrun}', 'Desvio de fluxo, alternância entre filtros ou bombas e mistura']],
-        ['Normas', ['API 608 · MSS SP-110 {api608}{mssSp110}', 'API 6D · API 608 {api6d}{api608}', 'ASME B16.34 {asmeB1634}']],
+      { titulo: 'Esfera: como ela é apoiada e onde trabalha', cols: [5, 6, 7, 8, 9], linhas: [
+        ['Apoio da esfera', ['Solta entre as sedes: a pressão da linha empurra a esfera contra a sede de jusante, e é isso que veda {pmFlutTrun}', 'Presa em cima e embaixo por mancais; as sedes, com molas, é que vão contra a esfera {pmFlutTrun}', 'Esfera com furo em L ou em T e corpo com três bocas', 'Em geral trunnion; corpo inteiriço, e a esfera entra por cima, pela tampa {micromazzaLinhas}', 'Duas esferas em série no mesmo corpo, flutuantes ou trunnion, com dreno entre elas {micromazzaLinhas}']],
+        ['Diâmetros e pressões', ['Pequenos e médios diâmetros (em geral até 6" a 10"), classes 150 a 600 {pmFlutTrun}', 'Grandes diâmetros e altas pressões, classes 150 a 2500 {pmFlutTrun}', 'Pequenos e médios diâmetros, classes 150 e 300 e PN 40 {valmicroLinhas}', 'Classes 150 a 1500 em linhas nacionais {micromazzaLinhas}', 'Pequenos a grandes diâmetros, classes 150 a 2500 {micromazzaLinhas}']],
+        ['Torque de manobra', ['Cresce com a pressão e com o diâmetro {pmFlutTrun}', 'Menor e mais estável: a esfera não é empurrada contra a sede {pmFlutTrun}', 'Conforme a construção e o furo da esfera', 'Como a trunnion: menor e mais estável', 'Duas manobras, uma para cada esfera']],
+        ['Bloqueio duplo e dreno', ['Não: veda só do lado de jusante {pmFlutTrun}', 'Sim (double block and bleed), com alívio de pressão da cavidade {pmFlutTrun}', 'Não se aplica', 'Sim, quando trunnion com sedes de mola {api6d}', 'Sim: duas vedações independentes e dreno entre elas {api6d}']],
+        ['Aplicações', ['Utilidades, água, ar, gás e linhas de processo de pequeno diâmetro', 'Dutos de óleo e gás, grandes adutoras e linhas de alta pressão {pmFlutTrun}', 'Desvio de fluxo, alternância entre filtros ou bombas e mistura', 'Dutos soldados, onde tirar a válvula da linha é caro: a manutenção é feita por cima', 'Isolamento para manutenção, tomadas de instrumentos, gás e hidrocarbonetos']],
+        ['Normas', ['API 608 · MSS SP-110 {api608}{mssSp110}', 'API 6D · API 608 {api6d}{api608}', 'ASME B16.34 {asmeB1634}', 'API 6D {api6d}', 'API 6D · API 607 {api6d}{api607}']],
       ] },
     ],
     linhas: [],
@@ -349,12 +350,14 @@ const CMPS = [
       [['Aguenta pressões altas (classes 800 a 1500)', 'Corpo resistente a esforços'], ['Custo alto', 'Diâmetros pequenos']],
       [['Simples e barata', 'Boa vedação com pressão alta empurrando a esfera'], ['Torque alto em diâmetros grandes', 'Veda só a jusante']],
       [['Torque baixo e estável', 'Grandes diâmetros e pressões', 'Bloqueio duplo com dreno'], ['Mais cara e complexa', 'Manutenção mais trabalhosa']],
-      [['Uma válvula faz o papel de duas ou três', 'Troca de fluxo sem parar a linha'], ['Exige atenção ao furo (L ou T) e à posição da alavanca', 'Não substitui bloqueio estanque em todas as posições']]],
+      [['Uma válvula faz o papel de duas ou três', 'Troca de fluxo sem parar a linha'], ['Exige atenção ao furo (L ou T) e à posição da alavanca', 'Não substitui bloqueio estanque em todas as posições']],
+      [['Manutenção sem tirar a válvula da linha', 'Corpo inteiriço: menos juntas expostas aos esforços da tubulação'], ['Cara e pesada', 'Exige espaço livre acima para a manutenção']],
+      [['Bloqueio duplo com dreno num só corpo', 'Menos peso, espaço e pontos de vazamento que duas válvulas'], ['Custo alto', 'Duas manobras para abrir ou fechar']]],
     criterios: ['Diâmetro, pressão e temperatura de operação (classe da válvula)', 'Fluido: água, gás, vapor, óleo ou produto químico (material do corpo e das sedes)', 'Frequência de manutenção e se é preciso consertar sem tirar a válvula da linha', 'Tipo de extremidade da linha: rosca, solda, flange ou clamp', 'Exigência de bloqueio duplo, ensaio de fogo (API 607) ou automação com atuador'],
     fecho: 'Para trocar uma válvula esfera, não basta o diâmetro: confira classe de pressão, tipo de passagem, material das sedes e extremidades na ficha do fabricante {valmicroLinhas}.',
     erros: ['Usar esfera monobloco de passagem reduzida onde a perda de carga importa', 'Deixar a válvula esfera meio aberta para regular vazão: a sede se desgasta (para isso existe a válvula de controle)', 'Fechar rápido demais em linhas longas de água e provocar golpe de aríete', 'Usar sedes de PTFE em temperatura acima do limite do fabricante', 'Instalar válvula de três vias sem conferir o furo (L ou T) e a posição da alavanca', 'Usar esfera flutuante de grande diâmetro sem conferir o torque do atuador'],
-    apps: { casa: 'Registro de esfera de latão no cavalete, no gás e na entrada de aparelhos.', predio: 'Bipartida ou tripartida de latão ou bronze no barrilete, nas prumadas e no gás; flangeada nos diâmetros maiores.', hospital: 'Tripartida de inox nas utilidades e nos gases; monobloco nos pontos de manutenção.', industria: 'Tripartida e forjada em processo e alta pressão; trunnion nos dutos e grandes diâmetros; três vias em desvio de filtros e bombas.' },
-    fontes: ['wikiEsfera', 'pm23', 'pmFlutTrun', 'valmicroLinhas', 'mssSp110', 'api608', 'api6d', 'asmeB1634'] },
+    apps: { casa: 'Registro de esfera de latão no cavalete, no gás e na entrada de aparelhos.', predio: 'Bipartida ou tripartida de latão ou bronze no barrilete, nas prumadas e no gás; flangeada nos diâmetros maiores.', hospital: 'Tripartida de inox nas utilidades e nos gases; monobloco nos pontos de manutenção.', industria: 'Tripartida e forjada em processo e alta pressão; trunnion e top entry nos dutos e grandes diâmetros; dupla esfera no isolamento para manutenção e nos instrumentos; três vias em desvio de filtros e bombas.' },
+    fontes: ['wikiEsfera', 'pm23', 'pmFlutTrun', 'valmicroLinhas', 'micromazzaLinhas', 'mssSp110', 'api608', 'api6d', 'api607', 'asmeB1634'] },
 
   { id: 'bombas-fluidos', tema: 'Bombas', titulo: 'Qual bomba para cada fluido? Centrífuga, engrenagens, diafragma ou peristáltica',
     tipos: 'bombas',
@@ -808,6 +811,8 @@ const ESF_TIPOS = [
   ['flutuante', 'Esfera flutuante', 'Esfera', 'A esfera fica solta entre as sedes, presa só pela haste. A pressão da linha empurra a esfera contra a sede de jusante, e é isso que veda. Pequenos e médios diâmetros.'],
   ['trunnion', 'Esfera trunnion', 'Esfera', 'A esfera é presa em cima pela haste e embaixo por um munhão (trunnion), em mancais; as sedes, com molas, é que vão contra ela. Grandes diâmetros, altas pressões e bloqueio duplo.'],
   ['tresvias', 'Três vias (diversora)', 'Esfera', 'Corpo com três bocas e esfera com furo em L ou em T: desvia o fluxo de uma saída para outra, alterna filtros ou bombas, ou mistura dois fluxos.'],
+  ['topentry', 'Entrada por cima (top entry)', 'Esfera', 'Corpo inteiriço com uma tampa aparafusada em cima: esfera, sedes e haste saem por ali, sem cortar nem desmontar a tubulação. Usada em dutos soldados, em geral com esfera trunnion.'],
+  ['duplaesfera', 'Dupla esfera', 'Esfera', 'Duas esferas em série num corpo único, com um dreno entre elas: o duplo bloqueio e dreno (DBB) numa só válvula, para isolar com segurança um trecho em manutenção ou uma tomada de instrumento.'],
 ];
 function esfInner(k) {
   const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
@@ -841,6 +846,13 @@ function esfInner(k) {
     '<rect class="esf-haste" x="95" y="88" width="10" height="14"/><rect class="esf-mancal" x="91" y="84" width="18" height="8"/><rect class="esf-mancal" x="91" y="24" width="18" height="8"/>' +
     [63, 130].map(x => `<path class="esf-mola" d="M${x} 38l3 3-3 3 3 3-3 3M${x} 66l3 3-3 3 3 3-3 3"/>`).join('') + haste(28) +
     txt(100, 114, 'fixa em cima e embaixo · sedes com mola');
+  if (k === 'topentry') return flange(16) + flange(174) + '<rect class="esf-corpo" x="24" y="34" width="152" height="62" rx="8"/>' + furo(24) + sedes(28, 24) + esfera(28, 24) +
+    '<rect class="esf-corpo2" x="62" y="24" width="76" height="12" rx="2"/>' + [68, 84, 116, 132].map(x => `<rect class="esf-porca" x="${x - 2}" y="20" width="5" height="6"/>`).join('') + haste(24) +
+    '<path class="esf-seta" d="M150 30V12M144 18l6-7 6 7"/>' + txt(100, 114, 'manutenção por cima, sem tirar da linha');
+  if (k === 'duplaesfera') return flange(10) + flange(180) + '<rect class="esf-corpo" x="18" y="30" width="164" height="56" rx="8"/>' + furo(18, 10, 190) +
+    [64, 136].map(cx => sedes(20, 18, cx) + esfera(20, 18, cx, 90) + `<rect class="esf-haste" x="${cx - 4}" y="16" width="8" height="18"/><rect class="esf-alavanca" x="${cx - 7}" y="8" width="14" height="10" rx="3"/>`).join('') +
+    '<rect class="ta-furo" x="96" y="58" width="8" height="40"/><rect class="esf-corpo2" x="90" y="92" width="20" height="10" rx="2"/><path class="esf-seta" d="M100 104v8M95 108l5 5 5-5"/>' +
+    txt(92, 114, 'dreno entre as esferas', 'end');
   // três vias: bocas à esquerda, à direita e embaixo; furo em L
   return '<rect class="esf-corpo" x="24" y="28" width="152" height="58" rx="8"/><rect class="esf-corpo" x="74" y="80" width="52" height="24" rx="2"/>' + furo(22) +
     '<rect class="ta-furo" x="89" y="58" width="22" height="48"/><circle class="esf-esfera" cx="100" cy="58" r="24"/><path class="ta-furo" d="M76 47h35v35H89V69H76z"/>' +
