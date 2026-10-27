@@ -39,7 +39,7 @@
       resSup: find(/^Reservatório superior/), resInf: find(/^Reservatório inferior|cisterna \(reservatório inferior\)/), caixa: find(/^Caixa d'água de polietileno (?!.*cisterna)/),
       recalque: find(/— recalque/), coluna: find(/colunas de distribuição/), nCol: Math.max(1, sum(/topo das colunas/)),
       hotDist: rows.find(r => r.group === 'Água quente' && /— distribuição/.test(r.item)), aquec: find(/^Aquecedor de passagem/),
-      prumGas: find(/prumadas de gás/), gas: v('lmGas'), gasCasa: rows.some(r => r.group === 'Gás'), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/),
+      prumGas: find(/prumadas de gás/), gas: v('lmGas'), temGas: rows.some(r => r.group === 'Gás'), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/),
       prumHid: find(/prumada de hidrantes|^Tubo de aço.*\(DN 65\)/), nHid: sum(/^Válvula angular/), bicos: sum(/^Bico de sprinkler/),
       condut: sum(/^Ralo hemisférico|^Bocal de calha/), chuva: find(/^Cisterna de água de chuva/),
       lgArea: n('lgArea'),
@@ -79,6 +79,9 @@
   };
   const AGUA = { topo: '#bfd7ff', frente: '#93b8f5', lado: '#7aa4ea', borda: C.af };
   const GLP = { topo: '#fff3c4', frente: '#f7df86', lado: '#eccd5e', borda: C.gas };
+  const CHUVA = { topo: '#bbf7d0', frente: '#86efac', lado: '#4ade80', borda: C.chuva };
+  // cisterna de água de chuva enterrada, ligada ao condutor pluvial que desce em (x, y)
+  const cisternaChuva = (x, y, cx, cy) => { g0('chuva'); tuboIso('chuva', [[x, y, .1], [cx + 1.5, y, .1], [cx + 1.5, y > cy + 3 ? cy + 3 : cy, -.2]], 2.4); caixa(cx, cy, -1.8, 3, 3, 1.8, CHUVA); txt(cx + 3.6, cy + 3.2, -.4, 'Água de chuva', { s: 10, c: 'chuva', b: true }); g1(); };
   const txt = (x, y, z, t, o = {}) => { const [a, b] = P(x, y, z); out.push(`<text x="${a.toFixed(1)}" y="${b.toFixed(1)}" font-size="${o.s || 12}" fill="${C[o.c] || o.c || C.txt}" text-anchor="${o.a || 'start'}"${o.b ? ' font-weight="700"' : ''}>${esc(t)}</text>`); };
   const ponto = (x, y, z, sys, r = 4) => { const [a, b] = P(x, y, z); out.push(`<circle cx="${a.toFixed(1)}" cy="${b.toFixed(1)}" r="${r}" fill="#fff" stroke="${C[sys]}" stroke-width="2"/>`); };
 
@@ -147,6 +150,7 @@
 
     // pluviais
     if (d.condut) { g0('pluv'); tuboIso('pluv', [[W, D, topo], [W, D, 0.1], [W, D + 8.5, 0.1]], 3); txt(W + .6, D, topo - 1, `${d.condut} condutores pluviais`, { s: 10, c: 'pluv' }); g1(); }
+    if (d.chuva) cisternaChuva(W, D + 1.5, W + 4, D - 4);   // ao lado do prédio, fora da rua
 
     // gás
     if (d.prumGas || d.glp) {
@@ -156,6 +160,12 @@
       for (let i = 1; i <= nShow; i++) tuboIso('gas', [[xg, yg, i * fh + .8], [xg + 4, yg, i * fh + .8]], 2);
       if (d.glp) { caixa(W + 2, D - 3, 0, 2.5, 2.5, 2, GLP); tuboIso('gas', [[W + 2, D - 2, .3], [xg, D - 2, .3], [xg, yg, .3]], 3); txt(W + 3.2, D - 3, 2.6, 'GLP', { s: 11, c: 'gas', b: true, a: 'middle' }); }
       txt(xg + .4, yg, nShow * fh + 1.4, d.glp ? 'Gás GLP · prumada' : 'Gás natural · prumada', { s: 10, c: 'gas', b: true });
+      g1();
+    } else if (d.p13) {   // botijão P13 em abrigo de cada unidade, ligado ao fogão
+      g0('gas');
+      const xg = 5, yg = D - 1;
+      for (let i = 1; i <= nShow; i++) { caixa(xg - .5, yg - .5, i * fh + .1, 1, 1, 1.2, GLP); tuboIso('gas', [[xg + .5, yg, i * fh + .8], [xg + 4, yg, i * fh + .8]], 2); }
+      txt(xg + .4, yg, nShow * fh + 1.6, 'Botijão P13 por unidade', { s: 10, c: 'gas', b: true });
       g1();
     }
 
@@ -198,8 +208,9 @@
     txt(10.5, D + 4, -.5, 'Rede de esgoto', { s: 11, c: 'esg', b: true });
     g1();
     g0('pluv'); tuboIso('pluv', [[W, D, topo], [W, D, .1], [W, D + 4.8, .1]], 3); g1();
+    if (d.chuva) cisternaChuva(W, D + 1, W + 4, D - 3);   // ao lado da casa, além do ramal de gás
     // gás da casa (gás natural, GLP ou P13): abrigo ao lado da casa e tubo até a cozinha do térreo
-    if (d.gasCasa) {
+    if (d.temGas) {
       g0('gas');
       if (d.gas === 'gn') tuboIso('gas', [[W + 2.7, D + 4.5, .2], [W + 2.7, 3.4, .2]], 2.4);   // ramal da rede da rua
       caixa(W + 2, 2, 0, 1.4, 1.4, 1.6, GLP);
@@ -236,6 +247,16 @@
     g1();
     g0('esg'); tuboIso('esg', [[8, 21, .5], [8, D + 5, -.4], [W + 4, D + 5, -.4]], 4); txt(W + 3, D + 4, -.4, 'Rede de esgoto', { s: 11, c: 'esg', b: true, a: 'end' }); g1();
     g0('pluv'); tuboIso('pluv', [[W, D, h], [W, D, .1], [W + 5, D, .1]], 3); g1();
+    if (d.chuva) cisternaChuva(W + 2.5, D, W + 1.5, D - 5);
+    // gás da cozinha do refeitório: central (GLP) ou entrada (gás natural) do lado de fora
+    if (d.temGas) {
+      g0('gas');
+      caixa(W + 1.5, 6, 0, 2.5, 2.5, 2, GLP);
+      tuboIso('gas', [[W + 1.5, 7.2, .5], [W - 6, 7.2, .5], [W - 6, 7.2, 1.2]], 2.4);
+      txt(W + 2.7, 6, 3.2, d.gas === 'gn' ? 'Gás natural' : 'Central de GLP', { s: 10, c: 'gas', b: true, a: 'middle' });
+      txt(W - 6, 7.2, 2.2, 'cozinha', { s: 10, c: 'gas', a: 'middle' });
+      g1();
+    }
     return 110 + h * S + 44 * S;
   }
 

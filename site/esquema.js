@@ -26,7 +26,7 @@
       coluna: find(/colunas de distribuição/), barrilete: find(/— barrilete$/), nCol: Math.max(1, sum(/topo das colunas/)),
       dist: find(/— distribuição interna/), coletor: find(/^Coletor predial/), esg100: find(/esgoto série normal 100/),
       condut: sum(/^Ralo hemisférico|^Bocal de calha/), calha: find(/^Calha/),
-      prumGas: find(/prumadas de gás/), gasCasa: rows.some(r => r.group === 'Gás'), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/), aquec: find(/^Aquecedor de passagem/), hotDist: rows.find(r => r.group === 'Água quente' && /— distribuição/.test(r.item)),
+      prumGas: find(/prumadas de gás/), temGas: rows.some(r => r.group === 'Gás'), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/), aquec: find(/^Aquecedor de passagem/), hotDist: rows.find(r => r.group === 'Água quente' && /— distribuição/.test(r.item)),
       prumHid: find(/prumada de hidrantes|^Tubo de aço.*\(DN 65\)/), nHid: sum(/^Válvula angular/), bombaInc: find(/^Bomba (de reforço|principal)/), recInc: find(/^Registro de recalque/),
       prumSpk: find(/prumada de sprinklers/), bicosG: sum(/sprinkler.*garagem/), bicosA: sum(/sprinkler residencial/), esfr: sum(/ESFR/), bicos: sum(/^Bico de sprinkler/),
       piscina: find(/^Filtro de areia/), chuva: find(/^Cisterna de água de chuva/), gordura: find(/^Caixa de gordura/),
@@ -124,7 +124,11 @@
       if (d.glp) { rect(x1 + 20, G - 34, 46, 30, '#fff8db', C.gas, 2); text(x1 + 43, G - 15, 'GLP', { s: 11, c: 'gas', a: 'middle', b: true }); path(`M${x1 + 20} ${G - 20} H${xg}`, 'gas', 3); }
       else path(`M${xg} ${G - 6} V${G + 8} H${x1 + 40}`, 'gas', 3);
       label(xg + 8, G - 26, [d.glp ? 'Gás GLP (central) · medidor por andar' : 'Gás natural · medidor por andar'], { s: 10, c: 'gas', b: true });
-    } else if (d.p13) label(x0 + 8, floorY(nShow) + 30, ['Gás: botijão P13 por unidade'], { s: 10, c: 'gas' });
+    } else if (d.p13) {   // botijão P13 em abrigo ventilado de cada unidade, ligado ao fogão
+      const xg = 560;
+      for (let i = 1; i <= nShow; i++) { const y = floorY(i) + fh - 26; rect(xg - 9, y - 9, 18, 16, '#fff8db', C.gas, 2); line(xg + 9, y - 1, 595, y - 1, 'gas', 2); }
+      label(480, G - 40, ['Gás: botijão P13 por unidade'], { s: 10, c: 'gas', b: true });
+    }
 
     // incêndio: hidrantes e sprinklers
     if (d.prumHid) {
@@ -174,7 +178,7 @@
     label(960, G + 52, ['Rede de esgoto', 'caixas de inspeção e gordura'], { c: 'esg', a: 'end', b: true });
     line(x1 + 20, top, x1 + 20, G + 12, 'pluv', 3); path(`M${x1 + 20} ${G + 12} H960`, 'pluv', 3); label(960, G - 24, ['Calha e condutores', 'para a sarjeta ou rede pluvial'], { c: 'pluv', a: 'end', b: true });
     // gás da casa (gás natural, GLP ou P13): abrigo na frente do lote e tubo até o fogão do térreo
-    if (d.gasCasa) {
+    if (d.temGas) {
       if (d.gas === 'gn') path(`M40 ${G + 8} H${x0 - 53} V${G}`, 'gas', 2.5);   // ramal da rede da rua até o abrigo do medidor
       rect(x0 - 70, G - 40, 34, 40, '#fff8db', C.gas, 2); text(x0 - 53, G - 16, { gn: 'GN', glp: 'GLP', p13: 'P13' }[d.gas] || 'gás', { s: 10, c: 'gas', a: 'middle', b: true });
       path(`M${x0 - 36} ${G - 22} H${x0 + 40} V${G - fh + 34} H${x0 + 66}`, 'gas', 2.5);
@@ -215,7 +219,14 @@
     // pluviais e docas
     line(x1 + 10, top, x1 + 10, G + 10, 'pluv', 3); path(`M${x1 + 10} ${G + 10} H975`, 'pluv', 3); label(960, top - 50, ['Calhas e condutores', 'rede pluvial'], { c: 'pluv', a: 'end', b: true });
     if (d.lgDocas) { for (let i = 0; i < Math.min(3, d.lgDocas); i++) rect(x1 - 40 - i * 36, G - 20, 28, 20, '#fff', C.ed, 1.5); text(x1 - 76, G - 26, `${d.lgDocas} docas`, { s: 10, c: 'mut', a: 'middle' }); }
-    if (d.chuva) { tanque(x0 + 300, G + 64, 100, 36, 'Água de chuva', `${fmt(d.chuva.qty)} m³`, 'chuva'); }
+    if (d.chuva) { tanque(x0 + 300, G + 64, 100, 36, 'Água de chuva', `${fmt(d.chuva.qty)} m³`, 'chuva'); path(`M${x1 + 10} ${G + 10} V${G + 82} H${x0 + 400}`, 'chuva', 2.5); }
+    // gás da cozinha do refeitório: central (GLP) ou entrada (gás natural) do lado de fora
+    if (d.temGas) {
+      rect(928, G - 40, 34, 40, '#fff8db', C.gas, 2); text(945, G - 16, d.gas === 'gn' ? 'GN' : 'GLP', { s: 10, c: 'gas', a: 'middle', b: true });
+      path(`M945 ${G - 40} V${G - 100} H${x1 - 50}`, 'gas', 2.5);
+      rect(x1 - 120, G - 112, 70, 24, '#fff8db', C.gas, 2); text(x1 - 85, G - 96, 'cozinha', { s: 10, c: 'gas', a: 'middle' });
+      label(916, G - 112, [d.gas === 'gn' ? 'Gás natural' : 'Central GLP'], { s: 10, c: 'gas', b: true });
+    }
     return G + 120;
   }
 
