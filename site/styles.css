@@ -1583,6 +1583,25 @@ a.gl:hover { color: var(--teal-d); }
 .pm-pipe { fill: none; stroke: #3a7bc8; stroke-width: 9; stroke-linejoin: round; }
 .pm-hose { fill: none; stroke: #1b2027; stroke-width: 8; stroke-linecap: round; }
 .pm-roll { fill: #9aa6b2; stroke: #4a5563; stroke-width: 2; }
+/* Desenhos dos tipos de sprinkler (comparativos.js, SPK_TIPOS) */
+.spk-teto { fill: #dfe5ec; stroke: #9aa6b2; stroke-width: 1.2; }
+.spk-parede { fill: none; stroke: #9aa6b2; stroke-width: 5; }
+.spk-tubo { fill: none; stroke: #c62828; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.spk-tubo--grosso { stroke-width: 10; }
+.spk-corpo, .spk-defl { fill: #d8b45a; stroke: #8a6d1f; stroke-width: 1.5; }
+.spk-arm { fill: none; stroke: #8a6d1f; stroke-width: 3; stroke-linecap: round; }
+.spk-amp { fill: #e53935; stroke: #8e1b1b; stroke-width: 1; }
+.spk-esc { fill: #eef1f4; stroke: #8a96a3; stroke-width: 1.2; }
+.spk-jato { fill: none; stroke: #2f80ed; stroke-width: 2.2; stroke-dasharray: 3 5; stroke-linecap: round; }
+.spk-jato--forte { stroke-width: 4; stroke-dasharray: 7 4; }
+.spk-placa { fill: #f4f6f8; stroke: #5b6b80; stroke-width: 1.5; }
+.spk-oculto { opacity: .4; }
+.spk-seco { fill: #c9d1d9; stroke: #5b6b80; stroke-width: 1.5; }
+.spk-seta { stroke: #5b6b80; stroke-width: 1.5; }
+.spk-neve { fill: none; stroke: #4aa3df; stroke-width: 2; stroke-linecap: round; }
+.spk-rack { fill: #f1e4c8; stroke: #8a6d1f; stroke-width: 1.5; }
+.spk-rack-l { stroke: #8a6d1f; stroke-width: 1.2; }
+.spk-txt { font: 600 10px var(--font); fill: #5b6b80; }
 .cp-kind { font-size: .66rem; font-weight: 700; padding: .05em .45em; border-radius: 999px; white-space: nowrap; }
 .cp-kind--norma { background: #e3f6f8; color: #0b6f7d; } .cp-kind--estudo { background: #e5eefb; color: #2d5fa8; } .cp-kind--fab { background: #fff1de; color: #8a4b00; } .cp-kind--preco { background: #e3f6ec; color: #1d7a52; } .cp-kind--artigo { background: #f1e9fb; color: #6a3fa0; }
 .cp-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line); }
