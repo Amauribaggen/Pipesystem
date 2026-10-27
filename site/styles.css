@@ -137,10 +137,8 @@ p { margin: 0 0 1em; }
 .sresults__item strong { display: block; font-size: .95rem; }
 .sresults__item span { display: block; font-size: .82rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sresults__item mark { background: #fde7c3; color: inherit; border-radius: 2px; }
-/* Atalho das buscas locais para a busca no site inteiro */
-.busca-site { flex-basis: 100%; margin: 6px 0 0; font-size: .88rem; }
-.busca-site a { color: #7ee7f2; font-weight: 600; }
-#bim .busca-site a, #gp-glossario .busca-site a { color: var(--teal-d); }   /* BIM/CAD e Glossário têm fundo claro */
+/* Painel de resultados do site inteiro abaixo das caixas de busca das seções */
+.sresults--secao { max-width: none; flex-basis: 100%; margin: 10px 0 18px; border: 1px solid var(--line); }
 .sresults__empty { padding: 1rem; font-size: .9rem; color: var(--muted); }
 .sresults__empty a { color: #138a99; font-weight: 600; }
 .search-flash { animation: searchFlash 2.2s ease-out; }

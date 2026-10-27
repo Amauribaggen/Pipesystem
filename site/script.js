@@ -1130,11 +1130,10 @@ const MAGAZINES = [
 })();
 
 // ===== Busca geral do portal (caixa da página de abertura) =====
+// As seis caixas de busca do site (página inicial, catálogo, normas, comparativos, glossário e BIM) procuram
+// no site inteiro; as caixas das seções continuam também filtrando a própria lista.
 (() => {
-  const form = document.getElementById('heroSearch');
-  const input = document.getElementById('heroSearchInput');
-  const box = document.getElementById('heroResults');
-  if (!form) return;   // a busca geral fica só na página inicial
+  const instancias = [];
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const plain = s => String(s).replace(/<[^>]+>/g, '');
   const clean = s => plain(s).replace(/\s+/g, ' ').trim();
@@ -1173,9 +1172,8 @@ const MAGAZINES = [
   const carregaIndice = () => {
     if (PAG_IDX || pedindoIdx) return;
     pedindoIdx = true;
-    fetch('/busca.json').then(r => r.json()).then(j => { PAG_IDX = j; if (!box.hidden) render(); }).catch(() => { pedindoIdx = false; });
+    fetch('/busca.json').then(r => r.json()).then(j => { PAG_IDX = j; instancias.forEach(b => { if (!b.box.hidden) b.render(); }); }).catch(() => { pedindoIdx = false; });
   };
-  input.addEventListener('focus', carregaIndice);
   const titleOf = el => clean((el.querySelector('h2, h3, h4, strong, b') || el).textContent);
 
   function search(q) {
@@ -1242,6 +1240,7 @@ const MAGAZINES = [
     add('Outras seções do site', secs.map(s => ({ run: () => goTo(s.id), title: titleOf(s.querySelector('.section__head') || s), sub: snippet(s.textContent, terms, '') })));
     // Itens do menu e dos submenus: o resultado leva ao mesmo destino do menu (com os mesmos filtros)
     const ja = new Set(groups.flatMap(g => g.items.map(i => i.href)).filter(Boolean));
+    const jaTit = new Set(groups.flatMap(g => g.items.map(i => norm(clean(i.title)))));   // o mesmo item já listado com outro endereço
     const vistosMenu = new Set();
     const menuItens = [...document.querySelectorAll('#navLinks a[href]')].map(a => {
       const t = clean(a.textContent).replace(/[↗↓]/g, '').trim();
@@ -1251,7 +1250,7 @@ const MAGAZINES = [
     }).filter(x => x.t.length > 1 && !vistosMenu.has(norm(x.t)) && vistosMenu.add(norm(x.t)));
     add('Menu do site', pick(menuItens, x => x.t, x => ({ href: x.a.getAttribute('href'), title: x.t, sub: x.caminho ? 'Menu › ' + x.caminho : 'Menu principal',
       attrs: [...x.a.attributes].filter(at => at.name.startsWith('data-')).map(at => ` ${at.name}="${esc(at.value)}"`).join('') + (x.a.target ? ' target="_blank" rel="noopener noreferrer"' : '') }))
-      .filter(i => !ja.has(i.href)));
+      .filter(i => !ja.has(i.href) && !jaTit.has(norm(i.title))));
     // Palavras do texto das páginas próprias (Cotações, Dimensionamento, Feiras, Termos de uso...)
     if (PAG_IDX) {
       const ja2 = new Set(groups.flatMap(g => g.items.map(i => i.href)).filter(Boolean));
@@ -1264,6 +1263,7 @@ const MAGAZINES = [
     return { terms, groups };
   }
 
+  const hide = () => instancias.forEach(b => { b.box.hidden = true; });   // fecha os painéis de resultado de todas as caixas
   function goTo(id) {
     hide();
     const el = document.getElementById(id);
@@ -1281,6 +1281,9 @@ const MAGAZINES = [
     goTo('normas');
   }
 
+  // Liga uma caixa de busca ao seu painel de resultados (cada caixa tem o seu)
+  function liga(input, box, form) {
+  input.addEventListener('focus', carregaIndice);
   let actions = [];
   function render() {
     const q = input.value.trim();
@@ -1309,20 +1312,42 @@ const MAGAZINES = [
 
   let timer;
   input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(render, 150); });
-  input.addEventListener('keydown', e => { if (e.key === 'Escape') { input.value = ''; hide(); } });
-  form.addEventListener('submit', e => {
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { input.value = ''; input.dispatchEvent(new Event('input')); hide(); }
+    if (e.key === 'Enter' && !form) { e.preventDefault(); clearTimeout(timer); render(); }
+  });
+  form?.addEventListener('submit', e => {
     e.preventDefault();
     clearTimeout(timer); render();
     const first = box.querySelector('.sresults__item');
     if (first && window.innerWidth < 860) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
-  // Busca aberta pela URL (?q=válvulas): usada pelo Google ("caixa de busca do site") e para compartilhar buscas
-  const q0 = new URLSearchParams(location.search).get('q');
-  if (q0) { input.value = q0; render(); }
   box.addEventListener('click', e => {
     if (e.target.closest('.sresults__close')) { hide(); input.focus(); return; }
     const b = e.target.closest('[data-act]');
     if (b) actions[b.dataset.act]();
+  });
+  instancias.push({ box, render });
+  return render;
+  }
+
+  // Página inicial: a caixa principal; busca aberta pela URL (?q=válvulas), usada pelo Google e para compartilhar buscas
+  const form = document.getElementById('heroSearch');
+  if (form) {
+    const input = document.getElementById('heroSearchInput'), render = liga(input, document.getElementById('heroResults'), form);
+    const q0 = new URLSearchParams(location.search).get('q');
+    if (q0) { input.value = q0; render(); }
+  }
+  // Caixas das seções: continuam filtrando a lista da seção e mostram, logo abaixo, os resultados do site inteiro
+  ['catSearch', 'normSearch', 'cpBusca', 'glSearch', 'bimSearch'].forEach(id => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    const box = document.createElement('div');
+    box.className = 'sresults sresults--secao'; box.id = id + 'Site'; box.hidden = true;
+    box.setAttribute('role', 'region'); box.setAttribute('aria-live', 'polite'); box.setAttribute('aria-label', 'Resultados no site inteiro');
+    input.setAttribute('aria-controls', box.id); input.setAttribute('autocomplete', 'off');
+    (input.closest('.cp-search') || input).after(box);
+    liga(input, box);
   });
 })();
 // ===== Submenus do menu superior (abrem ao passar o mouse em qualquer item) =====
@@ -1614,20 +1639,3 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (id && SECTION_PATHS[sectionOf(id)] && !sheet.open) go(id, 'replace'); });
 })();
 
-// ===== Buscas locais (catálogo, normas, comparativos, glossário e BIM): atalho para procurar no site inteiro =====
-// A busca geral da página inicial (/?q=) cobre menus, submenus, fichas, normas, guias e o texto de todas as páginas.
-(() => {
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-  ['catSearch', 'normSearch', 'cpBusca', 'glSearch', 'bimSearch'].forEach(id => {
-    const inp = document.getElementById(id);
-    if (!inp) return;
-    const p = document.createElement('p');
-    p.className = 'busca-site'; p.hidden = true;
-    (inp.closest('.cp-search') || inp).after(p);
-    inp.addEventListener('input', () => {
-      const q = inp.value.trim();
-      p.hidden = q.length < 2;
-      if (!p.hidden) p.innerHTML = `<a href="/?q=${encodeURIComponent(q)}">Procurar “${esc(q)}” em todo o site →</a>`;
-    });
-  });
-})();
