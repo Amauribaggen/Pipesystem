@@ -1637,6 +1637,12 @@ a.gl:hover { color: var(--teal-d); }
 .ta-preto { fill: #2f3640; stroke: #1b2027; stroke-width: 1.2; }
 .ta-galv { fill: #c9d1d9; stroke: #7d8894; stroke-width: 1.2; }
 .ta-vermelho { fill: #c62828; stroke: #7f1d1d; stroke-width: 1.2; }
+/* Desenhos das válvulas para hidrantes (comparativos.js, VH_TIPOS) */
+.vh-storz { fill: #c3ccd6; stroke: #4a5563; stroke-width: 1.5; }
+.vh-volante { fill: #e53935; stroke: #8e1b1b; stroke-width: 1.5; }
+.vh-raio { stroke: #8e1b1b; stroke-width: 1.5; }
+.vh-corrente { fill: none; stroke: #6b7682; stroke-width: 2.5; stroke-dasharray: 4 2; }
+.vh-chave { stroke: #4a5563; stroke-width: 10; stroke-linecap: round; }
 .ta-revest { fill: #1f2933; stroke: #0b1016; stroke-width: 1.2; stroke-dasharray: 4 3; }
 .cp-kind { font-size: .66rem; font-weight: 700; padding: .05em .45em; border-radius: 999px; white-space: nowrap; }
 .cp-kind--norma { background: #e3f6f8; color: #0b6f7d; } .cp-kind--estudo { background: #e5eefb; color: #2d5fa8; } .cp-kind--fab { background: #fff1de; color: #8a4b00; } .cp-kind--preco { background: #e3f6ec; color: #1d7a52; } .cp-kind--artigo { background: #f1e9fb; color: #6a3fa0; }

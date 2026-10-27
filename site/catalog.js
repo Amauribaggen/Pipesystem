@@ -179,6 +179,12 @@ const CATALOG = [
     normas: ['BS 6364', 'API 609', 'ASME B16.34'],
     tipos: ['Para GNL e hidrocarbonetos liquefeitos', 'Para oxigênio (limpeza especial para serviço com oxigênio)', 'Para nitrogênio e argônio'],
     escolha: ['Instale com a haste na posição indicada pelo fabricante (em geral perto da vertical)', 'Para oxigênio, exija limpeza e materiais compatíveis com o serviço', 'Preveja o isolamento da linha sem cobrir o castelo estendido'] },
+  { id: 'mat-valvula-hidrante', cat: 'Válvulas', name: 'Válvulas angulares para hidrantes', apps: 'Hidrantes de prédios, indústrias e galpões, hidrante de recalque e mangotinhos', art: 'hydrantvalve', tone: '#d8b45a', veja: 'mat-hidrantes',
+    desc: 'Válvula globo angular que abre e fecha o ponto de tomada de água do hidrante. A água entra por baixo, vinda da rede de incêndio, e sai inclinada, onde se ligam o adaptador storz e a mangueira. Fica dentro do abrigo do hidrante e no hidrante de recalque, por onde o Corpo de Bombeiros abastece a rede.',
+    specs: [['Tipo', 'Globo angular: saída inclinada a 45° (predial) ou a 90° (industrial)'], ['Diâmetro', 'DN 65 (2 1/2"), escopo da NBR 16021; DN 40 (1 1/2") nos mangotinhos e em alguns sistemas'], ['Entrada', 'Rosca interna BSP de 11 fios por polegada, na tubulação de incêndio'], ['Saída', 'Rosca externa de 5 fios por polegada, para o adaptador storz (com redução quando a mangueira é de 1 1/2")'], ['Materiais', 'Corpo e castelo de latão fundido ou bronze; volante de alumínio ou latão; disco com borracha vulcanizada'], ['Pressão', 'Classe 150 lbs; uso até cerca de 200 psi (≈ 14 bar), conforme o fabricante'], ['Acionamento', 'Volante vermelho, abre no sentido anti-horário; no recalque, haste com engate para a chave de manobra'], ['Referência de custo', 'SINAPI: válvula globo angular de latão 45° 2 1/2" com volante, custo médio nacional de R$ 345,00 por unidade (05/2026)']],
+    normas: ['NBR 16021', 'NBR 13714', 'NBR 14349', 'NBR 11861', 'NBR NM ISO 7-1'],
+    tipos: ['Válvula angular 45° predial (abrigo de hidrante)', 'Válvula angular 45° para hidrante de recalque (passeio ou fachada)', 'Válvula angular 90° industrial', 'Válvula angular de 1 1/2" para mangotinho', 'Acessórios: adaptador storz 2 1/2" ou 2 1/2" × 1 1/2", tampão storz com corrente e chave de mangueira'],
+    escolha: ['Exigir conformidade com a NBR 16021 e a marca do fabricante gravada no corpo', 'Rosca de entrada BSP de 11 fios compatível com a conexão da rede: não misturar com rosca NPT', 'Adaptador storz do diâmetro da mangueira do projeto (redução quando a mangueira é de 1 1/2")', 'Instalar com o volante acessível e a saída voltada para baixo e para a frente, sem impedir o fechamento da porta do abrigo', 'Abrir e fechar a válvula nas inspeções periódicas do sistema e trocar a vedação que pingar (NBR 13714)'] },
   { id: 'mat-retencao', cat: 'Válvulas', name: 'Válvulas de retenção', apps: 'Recalque e bombeamento', art: 'check', tone: '#6b7682', veja: 'mat-valvulas',
     desc: 'Permitem o fluxo em um só sentido. Protegem bombas contra o retorno do fluido e mantêm as linhas de recalque escorvadas.',
     specs: [['Tipos', 'Portinhola, disco (vertical), pé com crivo e dupla portinhola (wafer)'], ['Corpo', 'Bronze, ferro fundido, aço ou inox'], ['Diâmetros', '1/2" a 24"'], ['Instalação', 'Horizontal ou vertical, conforme o modelo'], ['Atenção', 'Modelos de fechamento rápido reduzem o golpe de aríete']],
@@ -562,6 +568,13 @@ const MATERIAL_ART = (() => {
     filtery: () => line('M12 48H188', 22) + line('M96 48L138 98', 22) +
       `<rect x="126" y="92" width="30" height="14" rx="3" fill="#9aa7b8" stroke="${O}" stroke-width="2" transform="rotate(40 141 99)"/>` +
       box(20, 30, 12, 36, 3) + box(168, 30, 12, 36, 3) + shine(36, 42, 128, 5),
+    // válvula angular para hidrante: tubo de incêndio por baixo, corpo de latão, volante vermelho e saída a 45° com adaptador storz
+    hydrantvalve: () => line('M70 120V92', 16, '#c62828') + box(56, 54, 52, 42, 14) + shine(62, 58, 40, 5) +
+      `<path d="M98 66L134 98" stroke="${O}" stroke-width="26" stroke-linecap="butt"/><path d="M98 66L134 98" stroke="var(--m)" stroke-width="22" stroke-linecap="butt"/>` +
+      [0, 1, 2, 3].map(i => `<path d="M${114 + i * 5} ${70 + i * 4.5}l-10 12" stroke="${O}" stroke-width="1.5" opacity=".6"/>`).join('') +
+      `<rect x="128" y="88" width="28" height="22" rx="4" fill="#9aa7b8" stroke="${O}" stroke-width="2" transform="rotate(42 142 99)"/>` +
+      box(76, 30, 12, 26, 2, '#9aa7b8') + `<ellipse cx="82" cy="26" rx="30" ry="8" fill="#e5534b" stroke="${O}" stroke-width="2"/>` +
+      `<path d="M56 26h52M82 20v12" stroke="${O}" stroke-width="2" opacity=".5"/>`,
     // atuador pneumático (caixa com tampas e indicador) montado sobre válvula de esfera
     actuator: () => line('M14 96H186', 14, '#9aa7b8') + box(70, 80, 60, 32, 10, '#c9d1d9') + box(94, 62, 12, 20, 2, '#9aa7b8') +
       box(34, 24, 132, 40, 8) + box(26, 28, 12, 32, 4, '#6b7682') + box(162, 28, 12, 32, 4, '#6b7682') + shine(44, 30, 112, 6) +
@@ -597,6 +610,7 @@ const MATERIAL_ART = (() => {
 // Sites conferidos em 17/10/2026. Lista indicativa, sem vínculo comercial.
 // Tipo: 'N' = fabricante nacional, 'I' = internacional, 'M' = importador.
 const MANUFACTURERS = {
+  'mat-valvula-hidrante': [['Metalcasty', 'https://www.metalcasty.com.br', 'N'], ['Bucka', 'https://www.bucka.com.br', 'N'], ['Mipel', 'https://www.mipel.com.br', 'N'], ['Kidde', 'https://www.kiddelatam.com', 'I']],
   'mat-sanitarias': [['Genebre', 'https://www.genebre.com.br', 'I'], ['Alfa Laval', 'https://www.alfalaval.com', 'I'], ['GEA', 'https://www.gea.com', 'I'], ['SPX Flow', 'https://www.spxflow.com', 'I'], ['Inoxpa', 'https://www.inoxpa.com', 'I']],
   'mat-atuadores': [['Coester', 'https://www.coester.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Festo', 'https://www.festo.com', 'I'], ['Rotork', 'https://www.rotork.com', 'I'], ['Emerson', 'https://www.emerson.com', 'I']],
   'mat-boia': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Bermad', 'https://www.bermad.com', 'I'], ['Cla-Val', 'https://www.cla-val.com', 'I']],

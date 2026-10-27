@@ -707,6 +707,49 @@ function taTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
 }
+// Válvulas angulares para hidrantes e acessórios: tipos do mercado, em desenho próprio (160 × 140)
+// [id, nome, uso, descrição]
+const VH_TIPOS = [
+  ['predial', 'Angular 45° predial', 'Abrigo de hidrante', 'DN 65 (2 1/2"), saída a 45° para baixo e adaptador storz. A mais comum: fica dentro do abrigo, com a mangueira ligada e o esguicho pronto.'],
+  ['recalque', 'Angular 45° para recalque', 'Hidrante de recalque', 'Instalada no passeio ou na fachada, com tampão storz e corrente. Por ela o caminhão dos bombeiros bombeia água para dentro da rede do prédio.'],
+  ['industrial', 'Angular 90° industrial', 'Indústrias e galpões', 'Saída horizontal, corpo mais robusto (latão, bronze ou ferro fundido), para redes industriais e hidrantes externos.'],
+  ['mangotinho', 'Angular 1 1/2" para mangotinho', 'Mangotinho e risco leve', 'Versão DN 40 (1 1/2"), para mangueiras de 40 mm. Também usada como tomada dos bombeiros junto a sistemas de mangotinho.'],
+  ['adaptador', 'Adaptador storz', 'Acessório', 'Rosca de 5 fios de um lado e engate rápido storz do outro, de 2 1/2" ou com redução 2 1/2" × 1 1/2" para mangueira de 40 mm.'],
+  ['tampao', 'Tampão storz com corrente', 'Acessório', 'Fecha a saída da válvula sem mangueira, protege a rosca e o engate, e fica preso à válvula pela corrente.'],
+  ['chave', 'Chave de mangueira', 'Acessório', 'Chave para apertar e soltar os engates storz de mangueiras, adaptadores e tampões. Fica no abrigo, junto às mangueiras.'],
+];
+function vhInner(k) {
+  const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  // engate storz (alumínio, com as duas garras) desenhado na horizontal a partir de x
+  const storz = (x, y, h = 26) => `<rect class="vh-storz" x="${x}" y="${y - h / 2}" width="14" height="${h}" rx="3"/><rect class="vh-storz" x="${x + 12}" y="${y - h / 2 - 5}" width="7" height="${h + 10}" rx="2"/><path class="ta-fio" d="M${x + 4} ${y - h / 2 + 3}v${h - 6}M${x + 8} ${y - h / 2 + 3}v${h - 6}"/>`;
+  // válvula: entrada por baixo, corpo de latão, volante vermelho; a saída gira (45 = para baixo à direita, 0 = horizontal)
+  const valvula = ({ x = 62, y = 74, e = 1, rot = 45, ponta = 'storz', tubo = 44 }) => {
+    const saida = `<g transform="translate(16 6) rotate(${rot})"><rect class="spk-corpo" x="0" y="-11" width="30" height="22" rx="3"/>` +
+      [0, 1, 2, 3].map(i => `<path class="ta-fio" d="M${16 + i * 4} -11v22"/>`).join('') +
+      (ponta === 'tampao' ? `<rect class="vh-storz" x="28" y="-15" width="16" height="30" rx="4"/><circle class="vh-storz" cx="44" cy="0" r="9"/><path class="vh-corrente" d="M36 15q-8 22-30 16"/>` : storz(28, 0)) + '</g>';
+    return `<g transform="translate(${x} ${y}) scale(${e})"><path class="spk-tubo" d="M0 26V${tubo}"/>` + saida +
+      `<rect class="spk-corpo" x="-20" y="-14" width="40" height="44" rx="12"/><rect class="ta-brilho" x="-16" y="-10" width="30" height="4"/>` +
+      `<rect class="spk-corpo" x="-7" y="-34" width="14" height="22" rx="2"/><ellipse class="vh-volante" cx="0" cy="-38" rx="26" ry="7"/><path class="vh-raio" d="M-24 -38h48M0 -44v12"/></g>`;
+  };
+  if (k === 'predial') return valvula({}) + txt(80, 136, '2 1/2" · saída a 45°');
+  if (k === 'recalque') return '<rect class="spk-teto" x="0" y="118" width="160" height="22"/>' + valvula({ y: 70, ponta: 'tampao', tubo: 70 }) + txt(72, 134, 'no passeio', 'start');
+  if (k === 'industrial') return valvula({ x: 52, rot: 0 }) + txt(80, 136, 'saída a 90°');
+  if (k === 'mangotinho') return valvula({ x: 66, y: 82, e: .78 }) + txt(80, 136, '1 1/2" · saída a 45°');
+  if (k === 'adaptador') return `<rect class="spk-corpo" x="34" y="56" width="40" height="28" rx="3"/>` + [0, 1, 2, 3, 4, 5].map(i => `<path class="ta-fio" d="M${38 + i * 6} 56v28"/>`).join('') +
+    storz(72, 70, 34) + txt(54, 46, 'rosca 5 fios') + txt(112, 46, 'storz') + txt(80, 120, '2 1/2" ou 2 1/2" × 1 1/2"');
+  if (k === 'tampao') return storz(46, 66, 34) + `<circle class="vh-storz" cx="74" cy="66" r="18"/><circle class="ta-furo" cx="74" cy="66" r="6"/><path class="vh-corrente" d="M86 80q14 26 40 18"/><circle class="vh-storz" cx="128" cy="98" r="5"/>` + txt(80, 128, 'tampão + corrente');
+  // chave de mangueira storz
+  return `<path class="vh-chave" d="M24 98L106 50"/><path class="vh-storz" d="M100 34a20 20 0 1 1 6 34l-8-6a10 10 0 1 0-4-20z"/><circle class="vh-storz" cx="30" cy="95" r="7"/>` + txt(80, 128, 'aperta e solta os engates');
+}
+const vhSVG = k => `<svg viewBox="0 0 160 140" role="img" aria-label="Desenho esquemático: válvula para hidrante, ${k}">${vhInner(k)}</svg>`;
+function vhTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Os tipos do mercado, em desenho</${h}>
+      <ol class="bvt bvt--vh">${VH_TIPOS.map(([id, nome, def, txt], i) => `
+        <li class="bvt__item"><figure>${vhSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
+}
 const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML };
 
 // Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
@@ -714,6 +757,7 @@ function cmpTiposHTML(matId, h = 'h4') {
   const H = t => `<${h}${h === 'h4' ? '' : ' class="page__h"'}>${t}</${h}>`, semH = s => s.replace(/\n\s*<h4 class="cp-h">[^<]*<\/h4>/, '');
   if (matId === 'mat-borboleta') return H('Tipos de válvula borboleta') + semH(borbTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/valvulas-borboleta">Comparativo completo dos tipos, com normas e fontes</a></p>`;
   if (matId === 'mat-bombas') return H('Qual bomba para cada fluido') + semH(bombaTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/bombas-fluidos">Comparativo completo, com normas e fontes</a></p>`;
+  if (matId === 'mat-valvula-hidrante') return H('Tipos disponíveis no mercado') + semH(vhTiposHTML('h4'));
   if (matId === 'mat-aco') return H('Extremidades, espessuras e acabamentos') + semH(taTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;
   if (matId === 'mat-sprinklers') return H('Tipos de sprinkler') + semH(spkTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/sprinklers-tipos">Comparativo completo dos tipos, com normas e fontes</a></p>`;
   return '';
