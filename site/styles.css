@@ -1644,6 +1644,21 @@ a.gl:hover { color: var(--teal-d); }
 .vh-corrente { fill: none; stroke: #6b7682; stroke-width: 2.5; stroke-dasharray: 4 2; }
 .vh-chave { stroke: #4a5563; stroke-width: 10; stroke-linecap: round; }
 .ta-revest { fill: #1f2933; stroke: #0b1016; stroke-width: 1.2; stroke-dasharray: 4 3; }
+/* válvula esfera em corte */
+.esf-corpo { fill: #a9b4bf; stroke: #4a5563; stroke-width: 1.5; }
+.esf-corpo2 { fill: #c3ccd5; stroke: #4a5563; stroke-width: 1.5; }
+.esf-destaque { fill: #8fd3e0; stroke: #0b7285; }
+.esf-grossa { stroke-width: 3; }
+.esf-linha { fill: #6b7683; stroke: #3a434d; stroke-width: 1.2; }
+.esf-esfera { fill: #dfe5ea; stroke: #4a5563; stroke-width: 1.5; }
+.esf-sede { fill: #fffdf5; stroke: #4a5563; stroke-width: 1; }
+.esf-haste { fill: #7d8894; stroke: #3a434d; stroke-width: 1; }
+.esf-alavanca { fill: #c62828; stroke: #7f1d1d; stroke-width: 1; }
+.esf-mancal { fill: #e8a33d; stroke: #8a5a12; stroke-width: 1; }
+.esf-mola { fill: none; stroke: #e8590c; stroke-width: 1.4; }
+.esf-parafuso { fill: none; stroke: #3a434d; stroke-width: 2.4; }
+.esf-porca { fill: #3a434d; }
+.esf-seta { fill: none; stroke: #0b7285; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .cp-kind { font-size: .66rem; font-weight: 700; padding: .05em .45em; border-radius: 999px; white-space: nowrap; }
 .cp-kind--norma { background: #e3f6f8; color: #0b6f7d; } .cp-kind--estudo { background: #e5eefb; color: #2d5fa8; } .cp-kind--fab { background: #fff1de; color: #8a4b00; } .cp-kind--preco { background: #e3f6ec; color: #1d7a52; } .cp-kind--artigo { background: #f1e9fb; color: #6a3fa0; }
 .cp-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line); }

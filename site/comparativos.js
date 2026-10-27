@@ -87,6 +87,14 @@ const CMP_FONTES = {
   pmA106: ['Project Materials — ASTM A106 × A53: sem costura para alta temperatura (até ≈ 427 °C) × uso geral', 'https://blog.projectmaterials.com/quick-answers/pipes/astm-a106-vs-a53/', 'artigo'],
   pm5l: ['Project Materials — Tubos API 5L: graus B a X80, níveis PSL1 e PSL2, fabricação sem costura, ERW e SAW', 'https://blog.projectmaterials.com/pipes/api-5l-pipe', 'artigo'],
   pmA312: ['Project Materials — O que é a ASTM A312: tubos de inox 304L e 316L, schedules 5S a 80S, aplicações', 'https://blog.projectmaterials.com/quick-answers/pipes/what-is-astm-a312/', 'artigo'],
+  pmFlutTrun: ['Project Materials — Esfera flutuante × trunnion: apoio da esfera, vedação, torque, diâmetros e classes, bloqueio duplo', 'https://blog.projectmaterials.com/quick-answers/valves/floating-vs-trunnion-ball-valve/', 'artigo'],
+  pm23: ['Project Materials — Válvula esfera bipartida × tripartida: construção e manutenção na linha', 'https://blog.projectmaterials.com/quick-answers/valves/2-piece-vs-3-piece-ball-valve/', 'artigo'],
+  wikiEsfera: ['Wikipédia (inglês) — Ball valve: corpos monobloco, bipartido e tripartido, passagem plena e reduzida', 'https://en.wikipedia.org/wiki/Ball_valve', 'artigo'],
+  valmicroLinhas: ['Valmicro (Lupatech) — Linhas de válvulas esfera: monobloco, bipartida, tripartida, forjada, wafer, trunnion e diversora, com diâmetros e classes', 'https://valmicro.com.br/', 'fab'],
+  mssSp110: ['MSS SP-110 — Válvulas esfera roscadas, de encaixe para solda, solda e flangeadas, de 1/4" a 4" (passagem plena, regular e reduzida)', 'https://webstore.ansi.org/standards/mss/msssp1102010', 'norma'],
+  api6d: ['API 6D — Válvulas para dutos (pipeline valves), incluindo esfera trunnion', 'https://www.api.org/products-and-services/standards', 'norma'],
+  api608: ['API 608 — Válvulas esfera metálicas flangeadas, roscadas e de solda', 'https://www.api.org/products-and-services/standards', 'norma'],
+  asmeB1634: ['ASME B16.34 — Válvulas flangeadas, roscadas e de solda: classes de pressão e temperatura', 'https://www.asme.org/codes-standards', 'norma'],
   sinapi: ['Caixa Econômica Federal — SINAPI 09/2026, preços de insumos sem desoneração, Santa Catarina (base usada pelo Dimensionamento Inteligente do portal)', 'https://www.caixa.gov.br/site/Paginas/downloads.aspx#categoria_888', 'preco'],
 };
 const CMP_KIND = { norma: 'norma', estudo: 'estudo', fab: 'ficha de fabricante', preco: 'preço', artigo: 'artigo técnico' };
@@ -308,6 +316,45 @@ const CMPS = [
     erros: ['Usar assento de EPDM em linha com óleo ou hidrocarboneto (o NBR ou o FKM é que servem)', 'Instalar wafer em fim de linha esperando desmontar o lado de jusante com pressão (para isso existe o lug, se a classe permitir)', 'Abrir o disco contra a junta ou o tubo vizinho: confira se o disco gira livre antes de apertar os flanges', 'Dimensionar o atuador de uma tripla excêntrica sem o torque de vedação do fabricante', 'Instalar tripla excêntrica unidirecional no sentido contrário ao indicado no corpo'],
     apps: { casa: '—', predio: 'Concêntrica de assento resiliente (wafer ou lug) em água gelada, recalque e incêndio, com redutor de volante nos DN maiores.', hospital: 'Concêntrica nas utilidades de água e HVAC; dupla ou tripla excêntrica no vapor da central térmica.', industria: 'Resiliente em água e utilidades; dupla excêntrica em processos e modulação; tripla excêntrica em vapor, óleo térmico e hidrocarbonetos; criogênica em GNL, oxigênio e nitrogênio líquidos.' },
     fontes: ['dirac', 'api609', 'mssSp67', 'awwaC504', 'iso5752', 'api598', 'api607', 'bs6364'] },
+
+  { id: 'valvulas-esfera', tema: 'Válvulas', titulo: 'Válvula esfera: qual tipo? Corpo (monobloco, bipartida, tripartida, wafer, forjada) e esfera (flutuante, trunnion, três vias)',
+    tipos: 'esfera',
+    resumo: 'Monobloco para utilidades e pequenos diâmetros, quando é mais barato trocar que consertar; bipartida para uso geral, em diâmetros maiores e flangeada; tripartida quando é preciso trocar sedes sem tirar a válvula da linha; wafer onde falta espaço; forjada para pressões altas. Esfera flutuante até diâmetros médios; trunnion em grandes diâmetros, altas pressões e dutos; três vias para desviar ou misturar o fluxo {wikiEsfera}{pmFlutTrun}.',
+    intro: 'Toda válvula esfera abre e fecha com 1/4 de volta: uma esfera furada gira entre duas sedes. O que muda de um tipo para outro são duas escolhas independentes, por isso a comparação vem em duas tabelas: o corpo, que define como a válvula é feita, montada e consertada, e a forma de apoio da esfera, que define até que diâmetro e pressão ela trabalha bem. Uma tripartida, por exemplo, quase sempre tem esfera flutuante; uma trunnion costuma ter corpo bipartido ou soldado {wikiEsfera}{pmFlutTrun}.',
+    opcoes: [['Monobloco', 'esfera'], ['Bipartida', 'esfera'], ['Tripartida', 'esfera'], ['Wafer', 'esfera'], ['Forjada (alta pressão)', 'esfera'], ['Esfera flutuante', 'esfera'], ['Esfera trunnion', 'esfera'], ['Três vias (diversora)', 'esfera']],
+    tabelas: [
+      { titulo: 'Corpo: como a válvula é feita e montada', cols: [0, 1, 2, 3, 4], linhas: [
+        ['Construção', ['Corpo de uma peça; a esfera entra pela ponta e fica presa por um anel roscado {wikiEsfera}', 'Corpo em duas partes, unidas por rosca ou parafusos; cabe uma esfera maior {wikiEsfera}', 'Corpo central (esfera e sedes) preso entre duas pontas por parafusos {wikiEsfera}{pm23}', 'Corpo curto, montado entre dois flanges da linha e preso pelos parafusos deles', 'Corpo de aço forjado, de parede grossa, para pressões altas']],
+        ['Manutenção', ['Em geral se troca, não se conserta {wikiEsfera}', 'É preciso retirar da linha para consertar {wikiEsfera}', 'O corpo central sai sem soltar as pontas: troca de sedes e gaxetas no lugar {wikiEsfera}{pm23}', 'Sai da linha soltando os flanges', 'Conforme o modelo (bipartida ou tripartida forjada)']],
+        ['Passagem', ['Quase sempre reduzida {wikiEsfera}', 'Plena ou reduzida {wikiEsfera}', 'Plena ou reduzida', 'Plena ou reduzida, conforme o fabricante', 'Plena ou reduzida']],
+        ['Extremidades', ['Roscadas (BSP ou NPT)', 'Roscadas ou flangeadas', 'Roscadas, de encaixe para solda, de solda de topo ou clamp {valmicroLinhas}', 'Entre flanges (wafer)', 'Roscadas ou de encaixe para solda']],
+        ['Faixa usual (exemplo de fabricante nacional)', ['1/4" a 2", 1000 e 2000 psi {valmicroLinhas}', '1/2" a 10", classes 150 e 300 {valmicroLinhas}', '1/4" a 4", de 1000 a 1500 psi, classe 300 e PN 40 {valmicroLinhas}', '2" a 4", classe 150 {valmicroLinhas}', '1/4" a 2", classes 300, 800 e 1500 {valmicroLinhas}']],
+        ['Custo relativo', ['O menor', 'Baixo a médio', 'Médio', 'Baixo (corpo curto)', 'Alto']],
+        ['Normas', ['MSS SP-110 · ASME B16.34 {mssSp110}{asmeB1634}', 'API 608 · ASME B16.34 {api608}{asmeB1634}', 'MSS SP-110 · ASME B16.34 {mssSp110}{asmeB1634}', 'API 608 · ASME B16.34 {api608}{asmeB1634}', 'ASME B16.34 · API 608 {asmeB1634}{api608}']],
+      ] },
+      { titulo: 'Esfera: como ela é apoiada e onde trabalha', cols: [5, 6, 7], linhas: [
+        ['Apoio da esfera', ['Solta entre as sedes: a pressão da linha empurra a esfera contra a sede de jusante, e é isso que veda {pmFlutTrun}', 'Presa em cima e embaixo por mancais; as sedes, com molas, é que vão contra a esfera {pmFlutTrun}', 'Esfera com furo em L ou em T e corpo com três bocas']],
+        ['Diâmetros e pressões', ['Pequenos e médios diâmetros (em geral até 6" a 10"), classes 150 a 600 {pmFlutTrun}', 'Grandes diâmetros e altas pressões, classes 150 a 2500 {pmFlutTrun}', 'Pequenos e médios diâmetros, classes 150 e 300 e PN 40 {valmicroLinhas}']],
+        ['Torque de manobra', ['Cresce com a pressão e com o diâmetro {pmFlutTrun}', 'Menor e mais estável: a esfera não é empurrada contra a sede {pmFlutTrun}', 'Conforme a construção e o furo da esfera']],
+        ['Bloqueio duplo e dreno', ['Não: veda só do lado de jusante {pmFlutTrun}', 'Sim (double block and bleed), com alívio de pressão da cavidade {pmFlutTrun}', 'Não se aplica']],
+        ['Aplicações', ['Utilidades, água, ar, gás e linhas de processo de pequeno diâmetro', 'Dutos de óleo e gás, grandes adutoras e linhas de alta pressão {pmFlutTrun}', 'Desvio de fluxo, alternância entre filtros ou bombas e mistura']],
+        ['Normas', ['API 608 · MSS SP-110 {api608}{mssSp110}', 'API 6D · API 608 {api6d}{api608}', 'ASME B16.34 {asmeB1634}']],
+      ] },
+    ],
+    linhas: [],
+    pros: [[['O mais barato', 'Compacto e com poucos pontos de vazamento'], ['Quase sempre passagem reduzida', 'Em geral não tem conserto']],
+      [['Passagem plena possível', 'Grande variedade de diâmetros e extremidades'], ['Para consertar, sai da linha']],
+      [['Manutenção sem tirar as pontas da linha', 'Muitas opções de extremidade, inclusive solda e clamp'], ['Mais cara e mais pesada que a bipartida']],
+      [['Corpo curto e leve', 'Bom onde falta espaço'], ['Não serve para fim de linha', 'Depende dos parafusos dos flanges']],
+      [['Aguenta pressões altas (classes 800 a 1500)', 'Corpo resistente a esforços'], ['Custo alto', 'Diâmetros pequenos']],
+      [['Simples e barata', 'Boa vedação com pressão alta empurrando a esfera'], ['Torque alto em diâmetros grandes', 'Veda só a jusante']],
+      [['Torque baixo e estável', 'Grandes diâmetros e pressões', 'Bloqueio duplo com dreno'], ['Mais cara e complexa', 'Manutenção mais trabalhosa']],
+      [['Uma válvula faz o papel de duas ou três', 'Troca de fluxo sem parar a linha'], ['Exige atenção ao furo (L ou T) e à posição da alavanca', 'Não substitui bloqueio estanque em todas as posições']]],
+    criterios: ['Diâmetro, pressão e temperatura de operação (classe da válvula)', 'Fluido: água, gás, vapor, óleo ou produto químico (material do corpo e das sedes)', 'Frequência de manutenção e se é preciso consertar sem tirar a válvula da linha', 'Tipo de extremidade da linha: rosca, solda, flange ou clamp', 'Exigência de bloqueio duplo, ensaio de fogo (API 607) ou automação com atuador'],
+    fecho: 'Para trocar uma válvula esfera, não basta o diâmetro: confira classe de pressão, tipo de passagem, material das sedes e extremidades na ficha do fabricante {valmicroLinhas}.',
+    erros: ['Usar esfera monobloco de passagem reduzida onde a perda de carga importa', 'Deixar a válvula esfera meio aberta para regular vazão: a sede se desgasta (para isso existe a válvula de controle)', 'Fechar rápido demais em linhas longas de água e provocar golpe de aríete', 'Usar sedes de PTFE em temperatura acima do limite do fabricante', 'Instalar válvula de três vias sem conferir o furo (L ou T) e a posição da alavanca', 'Usar esfera flutuante de grande diâmetro sem conferir o torque do atuador'],
+    apps: { casa: 'Registro de esfera de latão no cavalete, no gás e na entrada de aparelhos.', predio: 'Bipartida ou tripartida de latão ou bronze no barrilete, nas prumadas e no gás; flangeada nos diâmetros maiores.', hospital: 'Tripartida de inox nas utilidades e nos gases; monobloco nos pontos de manutenção.', industria: 'Tripartida e forjada em processo e alta pressão; trunnion nos dutos e grandes diâmetros; três vias em desvio de filtros e bombas.' },
+    fontes: ['wikiEsfera', 'pm23', 'pmFlutTrun', 'valmicroLinhas', 'mssSp110', 'api608', 'api6d', 'asmeB1634'] },
 
   { id: 'bombas-fluidos', tema: 'Bombas', titulo: 'Qual bomba para cada fluido? Centrífuga, engrenagens, diafragma ou peristáltica',
     tipos: 'bombas',
@@ -750,13 +797,72 @@ function vhTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
 }
-const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML };
+// Válvulas esfera: corpos e tipos de esfera, em corte, em desenho próprio (200 × 120)
+// [id, nome, grupo, descrição]
+const ESF_TIPOS = [
+  ['monobloco', 'Monobloco', 'Corpo', 'Corpo de uma peça; a esfera entra pela ponta e fica presa por um anel roscado. Barata e compacta, quase sempre de passagem reduzida: em geral se troca, não se conserta.'],
+  ['bipartida', 'Bipartida', 'Corpo', 'Duas partes unidas por rosca ou parafusos, o que permite uma esfera maior e passagem plena. Roscada ou flangeada; para consertar, sai da linha.'],
+  ['tripartida', 'Tripartida', 'Corpo', 'Corpo central preso entre duas pontas por parafusos longos. Soltos os parafusos, o corpo central sai sem desmontar a tubulação, para trocar sedes e gaxetas.'],
+  ['wafer', 'Wafer', 'Corpo', 'Corpo curto, montado entre dois flanges da linha e preso pelos parafusos deles. Leve e econômica onde falta espaço; não serve para fim de linha.'],
+  ['forjada', 'Forjada', 'Corpo', 'Corpo de aço forjado, de parede grossa, em pequenos diâmetros e classes de pressão altas (800 e 1500), com pontas roscadas ou de encaixe para solda.'],
+  ['flutuante', 'Esfera flutuante', 'Esfera', 'A esfera fica solta entre as sedes, presa só pela haste. A pressão da linha empurra a esfera contra a sede de jusante, e é isso que veda. Pequenos e médios diâmetros.'],
+  ['trunnion', 'Esfera trunnion', 'Esfera', 'A esfera é presa em cima pela haste e embaixo por um munhão (trunnion), em mancais; as sedes, com molas, é que vão contra ela. Grandes diâmetros, altas pressões e bloqueio duplo.'],
+  ['tresvias', 'Três vias (diversora)', 'Esfera', 'Corpo com três bocas e esfera com furo em L ou em T: desvia o fluxo de uma saída para outra, alterna filtros ou bombas, ou mistura dois fluxos.'],
+];
+function esfInner(k) {
+  const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  const furo = (b, x1 = 14, x2 = 186) => `<rect class="ta-furo" x="${x1}" y="${58 - b / 2}" width="${x2 - x1}" height="${b}"/>`;
+  // sedes (em corte: acima e abaixo do furo, dos dois lados da esfera)
+  const sedes = (r, b, cx = 100) => [cx - r - 3, cx + r - 4].map(x => `<rect class="esf-sede" x="${x}" y="${58 - b / 2 - 9}" width="7" height="8"/><rect class="esf-sede" x="${x}" y="${58 + b / 2 + 1}" width="7" height="8"/>`).join('');
+  const esfera = (r, b, cx = 100, giro = 0) => `<g transform="rotate(${giro} ${cx} 58)"><circle class="esf-esfera" cx="${cx}" cy="58" r="${r}"/><rect class="ta-furo" x="${cx - r + 1}" y="${58 - b / 2}" width="${2 * r - 2}" height="${b}"/><rect class="ta-brilho" x="${cx - r * .6}" y="${58 - r * .75}" width="${r * .9}" height="3" rx="1.5"/></g>`;
+  // alavanca ao longo do tubo = aberta; fechada, fica atravessada (vista de topo)
+  const haste = (topo = 58 - 34, fechada) => `<rect class="esf-haste" x="96" y="12" width="8" height="${topo - 12}"/>` +
+    (fechada ? '<rect class="esf-alavanca" x="93" y="4" width="14" height="10" rx="3"/>' : '<rect class="esf-alavanca" x="94" y="6" width="84" height="8" rx="4"/>');
+  const pontaRosca = (x, w = 22) => `<rect class="esf-corpo" x="${x}" y="40" width="${w}" height="36"/>` + Array.from({ length: Math.floor(w / 4) }, (_, i) => `<path class="ta-fio" d="M${x + 2 + i * 4} 40l-2 6M${x + 2 + i * 4} 70l-2 6"/>`).join('');
+  const flange = (x, c = 'esf-corpo') => `<rect class="${c}" x="${x}" y="22" width="10" height="72" rx="1"/>`;
+  if (k === 'monobloco') return pontaRosca(16) + pontaRosca(162) + '<rect class="esf-corpo" x="36" y="28" width="128" height="60" rx="14"/>' +
+    '<rect class="esf-corpo2" x="128" y="34" width="12" height="48"/>' + furo(26, 16, 184) + furo(14, 64, 136) + sedes(22, 14) + esfera(22, 14) + haste(36) +
+    txt(134, 102, 'anel roscado') + txt(100, 114, 'uma peça · passagem reduzida');
+  if (k === 'bipartida') return flange(16) + flange(174) + '<path class="esf-corpo" d="M24 32h88v52H24z"/><path class="esf-corpo2" d="M112 28h64v60h-64z"/>' +
+    '<path class="esf-parafuso" d="M112 24v8M112 84v8"/>' + furo(26) + sedes(28, 26) + esfera(28, 26) + haste(30) + txt(100, 114, 'duas peças · passagem plena');
+  if (k === 'tripartida') return pontaRosca(10, 18) + pontaRosca(172, 18) + '<rect class="esf-corpo2" x="26" y="30" width="38" height="56" rx="4"/><rect class="esf-corpo2" x="136" y="30" width="38" height="56" rx="4"/>' +
+    '<rect class="esf-corpo esf-destaque" x="64" y="26" width="72" height="64" rx="6"/>' + furo(24) + sedes(26, 24) + esfera(26, 24) +
+    '<path class="esf-parafuso" d="M30 96h140"/><rect class="esf-porca" x="26" y="92" width="6" height="8"/><rect class="esf-porca" x="168" y="92" width="6" height="8"/>' + haste(32) +
+    txt(100, 114, 'o corpo central sai da linha');
+  if (k === 'wafer') return '<rect class="esf-linha" x="14" y="44" width="22" height="28"/><rect class="esf-linha" x="164" y="44" width="22" height="28"/>' +
+    flange(36, 'esf-linha') + flange(154, 'esf-linha') + '<rect class="esf-corpo" x="46" y="26" width="108" height="64" rx="4"/>' +
+    '<path class="esf-parafuso" d="M30 26h140M30 90h140"/>' + furo(24) + sedes(26, 24) + esfera(26, 24) + haste(26) + txt(100, 114, 'entre os flanges da linha');
+  if (k === 'forjada') return '<rect class="esf-corpo esf-grossa" x="26" y="22" width="148" height="72" rx="3"/><path class="esf-corpo esf-grossa" d="M84 22l4-8h24l4 8z"/>' +
+    '<rect class="ta-furo" x="18" y="48" width="22" height="20"/><rect class="ta-furo" x="160" y="48" width="22" height="20"/>' + furo(12, 40, 160) + sedes(20, 12) + esfera(20, 12) + haste(14) +
+    txt(100, 114, 'aço forjado · parede grossa');
+  if (k === 'flutuante') return flange(16) + flange(174) + '<rect class="esf-corpo" x="24" y="28" width="152" height="60" rx="8"/>' + furo(24) + sedes(26, 24) + esfera(26, 24, 103, 90) +
+    haste(32, true) + '<path class="esf-seta" d="M34 58h26M54 52l7 6-7 6"/>' + txt(46, 22, 'pressão') + txt(100, 114, 'fechada: a pressão empurra a esfera');
+  if (k === 'trunnion') return flange(16) + flange(174) + '<rect class="esf-corpo" x="24" y="24" width="152" height="70" rx="8"/>' + furo(24) + sedes(30, 24) + esfera(30, 24) +
+    '<rect class="esf-haste" x="95" y="88" width="10" height="14"/><rect class="esf-mancal" x="91" y="84" width="18" height="8"/><rect class="esf-mancal" x="91" y="24" width="18" height="8"/>' +
+    [63, 130].map(x => `<path class="esf-mola" d="M${x} 38l3 3-3 3 3 3-3 3M${x} 66l3 3-3 3 3 3-3 3"/>`).join('') + haste(28) +
+    txt(100, 114, 'fixa em cima e embaixo · sedes com mola');
+  // três vias: bocas à esquerda, à direita e embaixo; furo em L
+  return '<rect class="esf-corpo" x="24" y="28" width="152" height="58" rx="8"/><rect class="esf-corpo" x="74" y="80" width="52" height="24" rx="2"/>' + furo(22) +
+    '<rect class="ta-furo" x="89" y="58" width="22" height="48"/><circle class="esf-esfera" cx="100" cy="58" r="24"/><path class="ta-furo" d="M76 47h35v35H89V69H76z"/>' +
+    '<path class="esf-seta" d="M30 58h20M44 52l7 6-7 6M100 86v14M94 94l6 7 6-7"/>' + haste(34) + txt(150, 112, 'furo em L', 'middle');
+}
+const esfSVG = k => `<svg viewBox="0 0 200 120" role="img" aria-label="Desenho esquemático em corte: válvula esfera, ${k}">${esfInner(k)}</svg>`;
+function esfTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Corpos e esferas, em corte</${h}>
+      <ol class="bvt bvt--esf">${ESF_TIPOS.map(([id, nome, def, txt], i) => `
+        <li class="bvt__item"><figure>${esfSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, em corte e fora de escala. Esfera cromada, sedes em branco, corpo em cinza; alavanca ao longo do tubo = válvula aberta; atravessada = fechada.</p>`;
+}
+const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML };
 
 // Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
 function cmpTiposHTML(matId, h = 'h4') {
   const H = t => `<${h}${h === 'h4' ? '' : ' class="page__h"'}>${t}</${h}>`, semH = s => s.replace(/\n\s*<h4 class="cp-h">[^<]*<\/h4>/, '');
   if (matId === 'mat-borboleta') return H('Tipos de válvula borboleta') + semH(borbTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/valvulas-borboleta">Comparativo completo dos tipos, com normas e fontes</a></p>`;
   if (matId === 'mat-bombas') return H('Qual bomba para cada fluido') + semH(bombaTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/bombas-fluidos">Comparativo completo, com normas e fontes</a></p>`;
+  if (matId === 'mat-esfera') return H('Corpos e esferas, em corte') + semH(esfTiposHTML('h4'));
   if (matId === 'mat-valvula-hidrante') return H('Tipos disponíveis no mercado') + semH(vhTiposHTML('h4'));
   if (matId === 'mat-aco') return H('Extremidades, espessuras e acabamentos') + semH(taTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;
   if (matId === 'mat-sprinklers') return H('Tipos de sprinkler') + semH(spkTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/sprinklers-tipos">Comparativo completo dos tipos, com normas e fontes</a></p>`;

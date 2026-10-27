@@ -185,6 +185,12 @@ const CATALOG = [
     normas: ['NBR 16021', 'NBR 13714', 'NBR 14349', 'NBR 11861', 'NBR NM ISO 7-1'],
     tipos: ['Válvula angular 45° predial (abrigo de hidrante)', 'Válvula angular 45° para hidrante de recalque (passeio ou fachada)', 'Válvula angular 90° industrial', 'Válvula angular de 1 1/2" para mangotinho', 'Acessórios: adaptador storz 2 1/2" ou 2 1/2" × 1 1/2", tampão storz com corrente e chave de mangueira'],
     escolha: ['Exigir conformidade com a NBR 16021 e a marca do fabricante gravada no corpo', 'Rosca de entrada BSP de 11 fios compatível com a conexão da rede: não misturar com rosca NPT', 'Adaptador storz do diâmetro da mangueira do projeto (redução quando a mangueira é de 1 1/2")', 'Instalar com o volante acessível e a saída voltada para baixo e para a frente, sem impedir o fechamento da porta do abrigo', 'Abrir e fechar a válvula nas inspeções periódicas do sistema e trocar a vedação que pingar (NBR 13714)'] },
+  { id: 'mat-controle', cat: 'Válvulas', name: 'Válvulas de controle', apps: 'Controle de vazão, pressão, nível e temperatura em processos, vapor e utilidades', art: 'controlvalve', tone: '#2d7fd3', veja: 'mat-atuadores',
+    desc: 'Válvulas que modulam a vazão, parando em qualquer posição entre aberta e fechada por ordem do sistema de controle, para manter uma pressão, um nível, uma temperatura ou uma vazão. Reúnem o corpo (globo, esfera ou borboleta), o atuador e o posicionador.',
+    specs: [['Corpo', 'Globo (sede simples, dupla ou com gaiola), esfera segmentada ou em V e borboleta de alto desempenho'], ['Atuador', 'Pneumático de diafragma com mola (falha abre ou falha fecha), pistão ou elétrico'], ['Posicionador', 'Recebe o sinal do controlador (4–20 mA, HART ou rede de campo) e garante a posição da haste'], ['Característica de vazão', 'Linear, igual porcentagem ou abertura rápida (esta, mais usada em liga-desliga)'], ['Dimensionamento', 'Pelo coeficiente de vazão (Cv), pela queda de pressão e pelo risco de cavitação e ruído'], ['Vedação', 'Classes de vazamento ANSI/FCI 70-2, da II à VI (a VI, de vedação macia, é praticamente estanque)'], ['Materiais e classes', 'Aço-carbono ASTM A216 WCB ou inox ASTM A351 CF8M; classes ASME 150 a 1500']],
+    normas: ['IEC 60534', 'ANSI/FCI 70-2', 'ISA-75', 'ASME B16.34'],
+    tipos: ['Globo de sede simples', 'Globo com gaiola (cage)', 'Globo de três vias (mistura ou desvio)', 'Esfera segmentada (V-port)', 'Borboleta de alto desempenho', 'Autoatuada (reguladora, sem energia externa)'],
+    escolha: ['Dimensionar pelo Cv no ponto de operação, não pelo diâmetro da tubulação: a válvula costuma ser menor que a linha', 'Característica igual porcentagem quando a queda de pressão na válvula varia muito; linear quando ela é quase constante', 'Definir a posição de falha (abre ou fecha) pela segurança do processo', 'Verificar cavitação, ruído e flashing com os dados do fabricante', 'Classe de vazamento e materiais compatíveis com o fluido e a temperatura'] },
   { id: 'mat-retencao', cat: 'Válvulas', name: 'Válvulas de retenção', apps: 'Recalque e bombeamento', art: 'check', tone: '#6b7682', veja: 'mat-valvulas',
     desc: 'Permitem o fluxo em um só sentido. Protegem bombas contra o retorno do fluido e mantêm as linhas de recalque escorvadas.',
     specs: [['Tipos', 'Portinhola, disco (vertical), pé com crivo e dupla portinhola (wafer)'], ['Corpo', 'Bronze, ferro fundido, aço ou inox'], ['Diâmetros', '1/2" a 24"'], ['Instalação', 'Horizontal ou vertical, conforme o modelo'], ['Atenção', 'Modelos de fechamento rápido reduzem o golpe de aríete']],
@@ -568,6 +574,12 @@ const MATERIAL_ART = (() => {
     filtery: () => line('M12 48H188', 22) + line('M96 48L138 98', 22) +
       `<rect x="126" y="92" width="30" height="14" rx="3" fill="#9aa7b8" stroke="${O}" stroke-width="2" transform="rotate(40 141 99)"/>` +
       box(20, 30, 12, 36, 3) + box(168, 30, 12, 36, 3) + shine(36, 42, 128, 5),
+    // válvula de controle: corpo globo flangeado, arcada, atuador de diafragma (cúpula) e posicionador ao lado
+    controlvalve: () => line('M14 96H186', 14, '#9aa7b8') + box(40, 80, 10, 32, 2) + box(150, 80, 10, 32, 2) +
+      `<ellipse cx="100" cy="96" rx="44" ry="22" fill="var(--m)" stroke="${O}" stroke-width="2"/>` + shine(72, 82, 56, 5) +
+      box(90, 56, 20, 20, 2, '#9aa7b8') + `<path d="M84 56V36M116 56V36" stroke="${O}" stroke-width="5"/>` + `<path d="M100 56V30" stroke="${O}" stroke-width="3"/>` +
+      `<path d="M60 30Q100 -6 140 30Z" fill="#c9d1d9" stroke="${O}" stroke-width="2"/>` + box(58, 28, 84, 8, 3, '#9aa7b8') +
+      box(126, 44, 34, 24, 4, '#e8edf2') + `<circle cx="143" cy="56" r="7" fill="#fff" stroke="${O}" stroke-width="1.5"/><path d="M143 56l4-4" stroke="#e5534b" stroke-width="2"/>`,
     // válvula angular para hidrante: tubo de incêndio por baixo, corpo de latão, volante vermelho e saída a 45° com adaptador storz
     hydrantvalve: () => line('M70 120V92', 16, '#c62828') + box(56, 54, 52, 42, 14) + shine(62, 58, 40, 5) +
       `<path d="M98 66L134 98" stroke="${O}" stroke-width="26" stroke-linecap="butt"/><path d="M98 66L134 98" stroke="var(--m)" stroke-width="22" stroke-linecap="butt"/>` +
@@ -610,9 +622,13 @@ const MATERIAL_ART = (() => {
 // Sites conferidos em 17/10/2026. Lista indicativa, sem vínculo comercial.
 // Tipo: 'N' = fabricante nacional, 'I' = internacional, 'M' = importador.
 const MANUFACTURERS = {
+  'mat-controle': [['Valmicro', 'https://valmicro.com.br', 'N'], ['Emerson (Fisher)', 'https://www.emerson.com', 'I'], ['Samson', 'https://www.samsongroup.com', 'I'], ['Flowserve', 'https://www.flowserve.com', 'I'], ['Spirax Sarco', 'https://www.spiraxsarco.com', 'I']],
+  'mat-borboleta-assento-resiliente': [['Valmicro', 'https://valmicro.com.br', 'N']],
+  'mat-borboleta-wafer': [['Valmicro', 'https://valmicro.com.br', 'N']],
+  'mat-borboleta-dupla-excentrica': [['Valmicro', 'https://valmicro.com.br', 'N']],
   'mat-valvula-hidrante': [['Metalcasty', 'https://www.metalcasty.com.br', 'N'], ['Bucka', 'https://www.bucka.com.br', 'N'], ['Mipel', 'https://www.mipel.com.br', 'N'], ['Kidde', 'https://www.kiddelatam.com', 'I']],
-  'mat-sanitarias': [['Genebre', 'https://www.genebre.com.br', 'I'], ['Alfa Laval', 'https://www.alfalaval.com', 'I'], ['GEA', 'https://www.gea.com', 'I'], ['SPX Flow', 'https://www.spxflow.com', 'I'], ['Inoxpa', 'https://www.inoxpa.com', 'I']],
-  'mat-atuadores': [['Coester', 'https://www.coester.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Festo', 'https://www.festo.com', 'I'], ['Rotork', 'https://www.rotork.com', 'I'], ['Emerson', 'https://www.emerson.com', 'I']],
+  'mat-sanitarias': [['Valmicro', 'https://valmicro.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Alfa Laval', 'https://www.alfalaval.com', 'I'], ['GEA', 'https://www.gea.com', 'I'], ['SPX Flow', 'https://www.spxflow.com', 'I'], ['Inoxpa', 'https://www.inoxpa.com', 'I']],
+  'mat-atuadores': [['Coester', 'https://www.coester.com.br', 'N'], ['Valmicro', 'https://valmicro.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Festo', 'https://www.festo.com', 'I'], ['Rotork', 'https://www.rotork.com', 'I'], ['Emerson', 'https://www.emerson.com', 'I']],
   'mat-boia': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Bermad', 'https://www.bermad.com', 'I'], ['Cla-Val', 'https://www.cla-val.com', 'I']],
   'mat-balanceamento': [['IMI Hydronic', 'https://www.imi-hydronic.com', 'I'], ['Danfoss', 'https://www.danfoss.com', 'I'], ['Caleffi', 'https://www.caleffi.com', 'I'], ['Belimo', 'https://www.belimo.com', 'I'], ['Genebre', 'https://www.genebre.com.br', 'I']],
   'mat-coletores': [['Amanco Wavin', 'https://wavin.com', 'N'], ['Tigre', 'https://www.tigre.com.br', 'N'], ['Uponor', 'https://www.uponor.com', 'I'], ['Rehau', 'https://www.rehau.com', 'I'], ['Genebre', 'https://www.genebre.com.br', 'I']],
@@ -633,7 +649,7 @@ const MANUFACTURERS = {
   'mat-teste': [['Ridgid', 'https://www.ridgid.com', 'I'], ['Rothenberger', 'https://www.rothenberger.com', 'I'], ['REMS', 'https://www.rems.de', 'I']],
   'mat-agua-chuva': [['Acqualimp', 'https://www.acqualimp.com.br', 'N'], ['Fortlev', 'https://www.fortlev.com.br', 'N'], ['Graf', 'https://www.graf.info', 'I'], ['3P Technik', 'https://3ptechnik.de', 'I']],
   'mat-calhas': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Amanco Wavin', 'https://wavin.com', 'N']],
-  'mat-solenoides': [['MGA', 'https://www.mga.com.br', 'N'], ['Emerson (ASCO)', 'https://www.emerson.com', 'I'], ['Danfoss', 'https://www.danfoss.com', 'I'], ['Bürkert', 'https://www.burkert.com', 'I']],
+  'mat-solenoides': [['MGA', 'https://www.mga.com.br', 'N'], ['Valmicro', 'https://valmicro.com.br', 'N'], ['Emerson (ASCO)', 'https://www.emerson.com', 'I'], ['Danfoss', 'https://www.danfoss.com', 'I'], ['Bürkert', 'https://www.burkert.com', 'I']],
   'mat-seguranca': [['Spirax Sarco', 'https://www.spiraxsarco.com', 'I'], ['LESER', 'https://www.leser.com', 'I'], ['Emerson (Crosby)', 'https://www.emerson.com', 'I']],
   'mat-vasos-expansao': [['Zilmet', 'https://zilmet.it', 'I'], ['Reflex', 'https://reflex-winkelmann.com', 'I'], ['Varem', 'https://www.varem.com', 'I']],
   'mat-separador': [['Zeppini', 'https://zeppini.com.br', 'N']],
@@ -668,10 +684,10 @@ const MANUFACTURERS = {
   'mat-ranhurado': [['Victaulic', 'https://www.victaulic.com', 'I'], ['Tyco (Johnson Controls)', 'https://www.tyco-fire.com', 'I'], ['Viking', 'https://www.vikinggroupinc.com', 'I'], ['ASC Engineered Solutions (Gruvlok)', 'https://www.asc-es.com', 'I']],
   // Importadores (todos 'M': a ficha mostra o título "Importadores"). Sem link = site ainda não informado.
   'mat-grooved': [['Comercial Rimar', 'https://rimar.com.br/', 'M'], ['Dinâmica', 'https://dinamicadistribuidor.com.br/', 'M'], ['Potenza', 'https://www.hidraulicapotenza.com.br/', 'M'], ['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M']],
-  'mat-esfera': [['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M'], ['Mipel', 'https://www.mipel.com.br', 'N'], ['Docol', 'https://www.docol.com.br', 'N'], ['Deca', 'https://www.deca.com.br', 'N'], ['MGA', 'https://www.mga.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['Swagelok', 'https://www.swagelok.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
+  'mat-esfera': [['IPC/GIPP', 'https://catalogo.ipcbrasil.ind.br/pt/home', 'M'], ['Mipel', 'https://www.mipel.com.br', 'N'], ['Docol', 'https://www.docol.com.br', 'N'], ['Deca', 'https://www.deca.com.br', 'N'], ['MGA', 'https://www.mga.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['Valmicro', 'https://valmicro.com.br', 'N'], ['Swagelok', 'https://www.swagelok.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
   'mat-gaveta': [['Niagara', 'https://www.niagara.com.br', 'N'], ['Mipel', 'https://www.mipel.com.br', 'N'], ['MGA', 'https://www.mga.com.br', 'N'], ['KSB', 'https://www.ksb.com', 'I'], ['Velan', 'https://www.velan.com', 'I']],
   'mat-globo': [['Niagara', 'https://www.niagara.com.br', 'N'], ['MGA', 'https://www.mga.com.br', 'N'], ['Spirax Sarco', 'https://www.spiraxsarco.com', 'I'], ['KSB', 'https://www.ksb.com', 'I'], ['Velan', 'https://www.velan.com', 'I']],
-  'mat-borboleta': [['Niagara', 'https://www.niagara.com.br', 'N'], ['MGA', 'https://www.mga.com.br', 'N'], ['Bray International', 'https://www.bray.com', 'I'], ['Emerson (Keystone)', 'https://www.emerson.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
+  'mat-borboleta': [['Niagara', 'https://www.niagara.com.br', 'N'], ['MGA', 'https://www.mga.com.br', 'N'], ['Valmicro', 'https://valmicro.com.br', 'N'], ['Bray International', 'https://www.bray.com', 'I'], ['Emerson (Keystone)', 'https://www.emerson.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
   'mat-redutora': [['Niagara', 'https://www.niagara.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['Watts', 'https://www.watts.com', 'I'], ['Bermad', 'https://www.bermad.com', 'I'], ['Caleffi', 'https://www.caleffi.com', 'I']],
   'mat-retencao': [['Mipel', 'https://www.mipel.com.br', 'N'], ['Niagara', 'https://www.niagara.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['KSB', 'https://www.ksb.com', 'I'], ['Genebre', 'https://www.genebre.es', 'I']],
   'mat-reguladores': [['Aliança Metalúrgica', 'https://www.aliancametalurgica.com.br', 'N'], ['Gascat', 'https://www.gascat.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['Pietro Fiorentini', 'https://www.fiorentini.com', 'I'], ['Emerson (Fisher)', 'https://www.emerson.com', 'I']],
