@@ -1286,7 +1286,8 @@ const MAGAZINES = [
   // bibliotecas BIM: montadas por bim.js só na página BIM/CAD; nas outras, saem dos dados (mesmos ids de bim.js)
   const bimItens = (sel, lista) => document.querySelector(sel) ? tag(sel, 'bim') : lista.map(b => ({ href: '#bim-' + slug(b.nome), label: b.nome }));
   const link = l => `<a href="${l.href}"${l.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}${l.attrs || ''}>${l.label}${l.ext ? ' <span aria-hidden="true">↗</span>' : ''}</a>`;
-  const group = (title, items) => `<div class="dd__group">${title ? `<p>${title}</p>` : ''}${items.map(link).join('')}</div>`;
+  // título do grupo: texto, ou link para o começo da lista quando recebe href
+  const group = (title, items, href) => `<div class="dd__group">${title ? `<p>${href ? `<a class="dd__head" href="${href}">${title}</a>` : title}</p>` : ''}${items.map(link).join('')}</div>`;
 
   const MENUS = {
     servicos: () => group('Serviços', tag('#servicos .svc', 'servico', 'servicos')) +
@@ -1303,8 +1304,8 @@ const MAGAZINES = [
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })))).join(''),
-    artigos: () => group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema }))) +
-      group('Revistas especializadas', MAGAZINES.map(m => ({ href: m.edicaoUrl || m.url, ext: true, label: m.nome }))) +
+    artigos: () => group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema })), '#artList') +
+      group('Revistas especializadas', MAGAZINES.map(m => ({ href: m.edicaoUrl || m.url, ext: true, label: m.nome })), '#revistas') +
       group('', [{ href: '#artigo-envio', label: 'Adicione seu artigo técnico aqui' }]),
     feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira', 'feiras', x => !x.intl)) + group('No exterior', tag('#feiras .fair--intl', 'feira', 'feiras', x => x.intl)) +
       group('', [{ href: '#links-uteis', label: 'Links úteis: entidades e normas do setor' }]),
