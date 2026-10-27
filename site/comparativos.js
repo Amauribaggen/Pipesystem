@@ -629,7 +629,7 @@ function spkTiposHTML(h = 'h4') {
       <ol class="bvt bvt--spk">${SPK_TIPOS.map(([id, nome, def, txt], i) => `
         <li class="bvt__item"><figure>${spkSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
       </ol>
-      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala; o bulbo vermelho indica 68 °C.</p>`;
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala; o bulbo vermelho indica 68 °C.<span class="spk-rm"> Passe o mouse ou toque em um desenho para ver a água em movimento.</span></p>`;
 }
 const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML };
 

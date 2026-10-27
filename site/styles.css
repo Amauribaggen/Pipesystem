@@ -1594,6 +1594,18 @@ a.gl:hover { color: var(--teal-d); }
 .spk-esc { fill: #eef1f4; stroke: #8a96a3; stroke-width: 1.2; }
 .spk-jato { fill: none; stroke: #2f80ed; stroke-width: 2.2; stroke-dasharray: 3 5; stroke-linecap: round; }
 .spk-jato--forte { stroke-width: 4; stroke-dasharray: 7 4; }
+/* água em movimento: os traços correm do defletor para fora (um ciclo do tracejado por volta) */
+.spk-jato { animation: spk-agua .7s linear infinite; }
+.spk-jato--forte { animation: spk-agua-forte .45s linear infinite; }
+@keyframes spk-agua { to { stroke-dashoffset: -16; } }
+@keyframes spk-agua-forte { to { stroke-dashoffset: -22; } }
+.spk-rm { display: none; }
+/* quem pediu ao sistema para reduzir animações vê a água parada; ela corre ao passar o mouse ou tocar no desenho */
+@media (prefers-reduced-motion: reduce) {
+  .spk-jato { animation-play-state: paused; }
+  .bvt__item:hover .spk-jato, .bvt__item:focus-within .spk-jato, .bvt__item:active .spk-jato { animation-play-state: running; }
+  .spk-rm { display: inline; }
+}
 .spk-placa { fill: #f4f6f8; stroke: #5b6b80; stroke-width: 1.5; }
 .spk-oculto { opacity: .4; }
 .spk-seco { fill: #c9d1d9; stroke: #5b6b80; stroke-width: 1.5; }
