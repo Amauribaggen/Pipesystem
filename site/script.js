@@ -37,7 +37,10 @@ document.addEventListener('click', e => {
   const p = paginaDe(id);
   if (!p) return;
   e.preventDefault(); e.stopImmediatePropagation();
-  location.href = p + '#' + id;
+  // Normas e Materiais em outra página: leva o modo/grupo das normas ou a categoria escolhidos no submenu
+  const q = a.dataset.normMode ? '?modo=' + a.dataset.normMode + (a.dataset.normGroup ? '&grupo=' + encodeURIComponent(a.dataset.normGroup) : '')
+    : a.dataset.catFiltro ? '?cat=' + encodeURIComponent(a.dataset.catFiltro) : '';
+  location.href = p + q + '#' + id;
 }, true);
 // endereço antigo (/#materiais, /#cmp-..., /#lmatTool) aberto direto: vai para a página nova
 if (location.hash.length > 1 && !document.getElementById(location.hash.slice(1))) {
@@ -90,7 +93,7 @@ function matchText(text, terms) {
   return terms.every(w => t.includes(w) || compact.includes(w.replace(/[.\-]/g, '')));
 }
 
-searchEl?.addEventListener('input', renderCatalog);
+searchEl?.addEventListener('input', () => { activeCat = 'Todos'; renderCatalog(); });   // a busca vale para todo o catálogo
 
 // Foto real do item do catálogo (própria ou reaproveitada da ficha técnica em products.js)
 function materialPhoto(m) {
@@ -114,9 +117,21 @@ function renderCatalog() {
     </a>`;
   }).join('');
   emptyEl.hidden = items.length > 0;
+  let aviso = document.getElementById('catFiltro');
+  if (activeCat === 'Todos') { aviso?.remove(); return; }
+  if (!aviso) { aviso = document.createElement('p'); aviso.id = 'catFiltro'; aviso.className = 'cat-filtro'; catEl.before(aviso); }
+  aviso.innerHTML = `Mostrando: <b>${activeCat}</b> · ${items.length} itens <button type="button">Ver todos os materiais</button>`;
+  aviso.querySelector('button').onclick = () => { activeCat = 'Todos'; renderCatalog(); };
 }
 renderCatalog();
 
+// Categoria escolhida no submenu de Materiais: mostra só os itens dela, com um aviso para voltar a todos
+function filtraCategoria(cat) {
+  if (!catEl) { location.href = '/materiais?cat=' + encodeURIComponent(cat); return; }
+  activeCat = cat; searchEl.value = '';
+  renderCatalog();
+  catEl.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+}
 function searchCatalog(q) {
   if (!catEl) { location.href = '/materiais?busca=' + encodeURIComponent(q); return; }   // outra página: abre Materiais já filtrado
   activeCat = 'Todos';
@@ -125,6 +140,7 @@ function searchCatalog(q) {
 }
 document.querySelectorAll('[data-q]').forEach(a => a.addEventListener('click', e => { if (!catEl) e.preventDefault(); searchCatalog(a.dataset.q); }));
 { const b = new URLSearchParams(location.search).get('busca'); if (b && catEl) searchCatalog(b); }
+{ const c = new URLSearchParams(location.search).get('cat'); if (c && catEl && CATALOG.some(m => m.cat === c)) filtraCategoria(c); }
 
 // Fichas técnicas (products.js): o antigo guia de produtos agora aparece dentro dos itens do catálogo
 const productById = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
@@ -741,6 +757,14 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
   // busca vinda da página inicial (/normas?norma=NBR 5626)
   const q0 = new URLSearchParams(location.search).get('norma');
   if (q0) { search.value = q0; monta(); renderList(); }
+  // modo e grupo vindos do submenu de outra página (/normas?modo=produto&grupo=...)
+  const qs = new URLSearchParams(location.search), m0 = qs.get('modo'), g0 = qs.get('grupo');
+  if (m0) {
+    monta();
+    const b = document.querySelector(`.nrm__mode button[data-mode="${m0}"]`);
+    if (b && b.getAttribute('aria-selected') !== 'true') b.click();
+    if (g0) groupsEl.querySelector(`button[data-id="${g0}"]`)?.click();
+  }
 })();
 
 // ===== Espaços publicitários ("Seu banner aqui!") =====
@@ -1287,31 +1311,31 @@ const MAGAZINES = [
   const bimItens = (sel, lista) => document.querySelector(sel) ? tag(sel, 'bim') : lista.map(b => ({ href: '#bim-' + slug(b.nome), label: b.nome }));
   const link = l => `<a href="${l.href}"${l.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}${l.attrs || ''}>${l.label}${l.ext ? ' <span aria-hidden="true">↗</span>' : ''}</a>`;
   // título do grupo: texto, ou link para o começo da lista quando recebe href
-  const group = (title, items, href) => `<div class="dd__group">${title ? `<p>${href ? `<a class="dd__head" href="${href}">${title}</a>` : title}</p>` : ''}${items.map(link).join('')}</div>`;
+  const group = (title, items, href, attrs = '') => `<div class="dd__group">${title ? `<p>${href ? `<a class="dd__head" href="${href}"${attrs}>${title}</a>` : title}</p>` : ''}${items.map(link).join('')}</div>`;
 
   const MENUS = {
-    servicos: () => group('Serviços', tag('#servicos .svc', 'servico', 'servicos')) +
-      group('Receber cotações', [{ href: '#assinaturas', label: 'Assinaturas para distribuidores' }, ...tag('#assinaturas .qplan', 'assinatura', 'assinaturas')]),
-    sistemas: () => group('Áreas de aplicação', SYSTEMS.map(s => ({ href: '/sistemas/' + s.id.slice(4), label: s.name, attrs: ` data-sheet="${s.id}"` }))),
+    servicos: () => group('Serviços', tag('#servicos .svc', 'servico', 'servicos'), '#servicos') +
+      group('Receber cotações', [{ href: '#assinaturas', label: 'Assinaturas para distribuidores' }, ...tag('#assinaturas .qplan', 'assinatura', 'assinaturas')], '#assinaturas'),
+    sistemas: () => group('Áreas de aplicação', SYSTEMS.map(s => ({ href: '/sistemas/' + s.id.slice(4), label: s.name, attrs: ` data-sheet="${s.id}"` })), '#systems'),
     materiais: () => [...new Set(CATALOG.map(m => m.cat))].map(cat =>
-      group(cat, CATALOG.filter(m => m.cat === cat).map(m => ({ href: '/materiais/' + m.id.slice(4), label: m.name, attrs: ` data-sheet="${m.id}"` })))).join(''),
-    ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc', 'ferramentas')) +
-      group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }]),
-    bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS)) + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS)),
-    guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo }))) +
-      group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo }))) +
+      group(cat, CATALOG.filter(m => m.cat === cat).map(m => ({ href: '/materiais/' + m.id.slice(4), label: m.name, attrs: ` data-sheet="${m.id}"` })), '#catalog', ` data-cat-filtro="${cat}"`)).join(''),
+    ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc', 'ferramentas'), '#ferramentas') +
+      group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }], '#webtools'),
+    bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS), '#bimGrid') + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS), '#bimPlats'),
+    guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo })), '#comparativos') +
+      group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo })), '#gp-guias') +
       group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-check', label: 'Checklist de entrega' }, { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
-        .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })))).join(''),
+        .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })), '#normas', ` data-norm-mode="${tipo}"`)).join(''),
     artigos: () => group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema })), '#artList') +
       group('Revistas especializadas', MAGAZINES.map(m => ({ href: m.edicaoUrl || m.url, ext: true, label: m.nome })), '#revistas') +
       group('', [{ href: '#artigo-envio', label: 'Adicione seu artigo técnico aqui' }]),
-    feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira', 'feiras', x => !x.intl)) + group('No exterior', tag('#feiras .fair--intl', 'feira', 'feiras', x => x.intl)) +
+    feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira', 'feiras', x => !x.intl), '#feiras-brasil') + group('No exterior', tag('#feiras .fair--intl', 'feira', 'feiras', x => x.intl), '#feiras-exterior') +
       group('', [{ href: '#links-uteis', label: 'Links úteis: entidades e normas do setor' }]),
-    anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano', 'anuncie')) +
+    anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano', 'anuncie'), '#planos-banner') +
       group('', [{ href: '#adMap', label: 'Onde os banners aparecem' }]),
-    sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor', 'sobre')) +
+    sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor', 'sobre'), '#diretoria') +
       group('', [{ href: '#contato', label: 'Consultoria técnica & comercial', attrs: ' data-subject="Consultoria técnica & comercial e pesquisa de mercado"' },
         { href: '#contato', label: 'Fale conosco' }]),
   };
@@ -1383,12 +1407,13 @@ const MAGAZINES = [
     if (dd) dd.classList.add('dd--hold');
     a.blur();
     // Normas: abre o grupo escolhido
-    if (a.dataset.normGroup) {
+    if (a.dataset.normMode) {
       window.montaNormas?.();
       const mode = document.querySelector(`.nrm__mode button[data-mode="${a.dataset.normMode}"]`);
       if (mode && mode.getAttribute('aria-selected') !== 'true') mode.click();
-      document.querySelector(`#normGroups button[data-id="${a.dataset.normGroup}"]`)?.click();
+      if (a.dataset.normGroup) document.querySelector(`#normGroups button[data-id="${a.dataset.normGroup}"]`)?.click();
     }
+    if (a.dataset.catFiltro) { e.preventDefault(); filtraCategoria(a.dataset.catFiltro); }
   });
   // Destaca o cartão escolhido no submenu
   window.addEventListener('hashchange', () => {

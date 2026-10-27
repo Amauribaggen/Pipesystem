@@ -82,6 +82,10 @@ p { margin: 0 0 1em; }
 .dd__menu:not(.dd__menu--mega):not(.dd__menu--cols2) { min-width: 240px; }
 .dd__menu a { white-space: normal; }
 .dd__menu .dd__group a { display: block; padding: .38em .8em; font-size: .9rem; line-height: 1.35; }
+.cat-filtro { margin: 0 0 14px; font-size: .95rem; }
+.cat-filtro + #catalog { scroll-margin-top: 140px; }   /* o aviso da categoria fica visível abaixo do menu fixo */
+.cat-filtro button { margin-left: .5em; padding: .3em .9em; border-radius: 999px; border: 1px solid var(--teal); background: transparent; color: var(--teal-d); font: inherit; font-weight: 600; cursor: pointer; }
+.cat-filtro button:hover { background: var(--teal); color: #04202a; }
 .dd__menu .dd__group p a.dd__head { display: inline; padding: 0; font-size: inherit; color: inherit; text-decoration: none; }
 .dd__menu .dd__group p a.dd__head::after { content: ' ↓'; }
 .dd__menu .dd__group p a.dd__head:hover, .dd__menu .dd__group p a.dd__head:focus-visible { text-decoration: underline; }
