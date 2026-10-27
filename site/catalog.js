@@ -413,7 +413,82 @@ const CATALOG = [
     ],
     tipos: ['Kit cavalete de PVC', 'Cavalete de aço galvanizado', 'Cavalete em caixa de proteção no passeio', 'Cavalete embutido no muro', 'Cavalete múltiplo (medição individualizada)'],
     escolha: ['Consultar o padrão de ligação da concessionária antes de comprar', 'Kit compatível com o diâmetro e as conexões do hidrômetro', 'Abrigo com acesso livre para leitura e manutenção', 'Registro antes do hidrômetro para manutenção'] },
-];
+  // ----- Itens acrescentados em 27/10/2026 (comparação com o portfólio de fabricantes de válvulas) -----
+  { id: 'mat-sanitarias', rascunho: true, cat: 'Válvulas', name: 'Válvulas e conexões sanitárias de inox', apps: 'Alimentos, bebidas, laticínios, farmacêutica e cosméticos', art: 'ballvalve', tone: '#c9d1d9',
+    desc: 'Válvulas e conexões de aço inox com acabamento polido e sem frestas, que se limpam sem desmontar (CIP). Usadas onde o produto não pode ser contaminado: alimentos, bebidas, laticínios, farmacêutica e cosméticos.',
+    specs: [['Tipos de válvula', 'Borboleta, esfera, retenção, assento (mix-proof), amostragem e diafragma'], ['Conexões', 'Clamp (tri-clamp), roscadas DIN 11851 e SMS, solda de topo; curvas, tês, reduções e visores'], ['Material', 'Inox AISI 304 ou 316L; vedações de EPDM, silicone, FKM ou PTFE de grau alimentício'], ['Acabamento interno', 'Rugosidade baixa (em geral Ra ≤ 0,8 µm), sem cantos mortos, drenável'], ['Acionamento', 'Manual, pneumático ou elétrico, com cabeçote de controle e sensores de posição']],
+    normas: ['3-A Sanitary Standards', 'EHEDG', 'ASME BPE', 'DIN 11851', 'ISO 2852'],
+    tipos: ['Válvula borboleta sanitária', 'Válvula de esfera sanitária', 'Válvula de assento e mix-proof', 'Válvula de retenção sanitária', 'Conexões clamp, DIN e SMS', 'Visores e filtros sanitários'],
+    escolha: ['Inox 316L e vedação compatível com o produto e com a limpeza química e térmica', 'Mesmo padrão de conexão (clamp, DIN ou SMS) em toda a planta', 'Acabamento interno e certificação (3-A, EHEDG) exigidos pelo cliente ou pela vigilância sanitária', 'Válvulas mix-proof onde produto e solução de limpeza se cruzam'] },
+  { id: 'mat-atuadores', cat: 'Válvulas', name: 'Atuadores pneumáticos e elétricos', apps: 'Automação de válvulas de esfera, borboleta e gaveta', art: 'actuator', tone: '#2d7fd3', veja: 'mat-solenoides',
+    desc: 'Equipamentos que abrem, fecham ou posicionam válvulas a distância, comandados pelo sistema de controle. Os pneumáticos usam ar comprimido; os elétricos, um motor com redutor.',
+    specs: [['Pneumático', 'Pinhão e cremalheira ou garfo (scotch yoke); dupla ação ou simples ação (retorno por mola, que leva a válvula a uma posição segura se faltar ar)'], ['Elétrico', '1/4 de volta ou multivoltas; 24 V, 220 V monofásico ou trifásico; volante manual de emergência'], ['Montagem', 'Flange padrão ISO 5211 e interface NAMUR para solenoide e chaves de fim de curso'], ['Controle', 'Liga-desliga ou modulante, com posicionador (4–20 mA) e indicação de posição'], ['Proteção', 'Grau IP do invólucro; versões à prova de explosão para áreas classificadas']],
+    normas: ['ISO 5211', 'VDI/VDE 3845 (NAMUR)', 'IEC 60529', 'IEC 60079'],
+    fotos: [
+      { src: 'img/materiais/mat-atuadores-1.webp', alt: "Atuador pneumático vermelho montado sobre válvula de esfera de inox, com válvula solenoide de comando", legenda: "Atuador pneumático com solenoide de comando", autor: "Pierre.hamelin", licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Solenoid_valve_on_an_on-off_pneumatic_valve_actuator.jpg' },
+      { src: 'img/materiais/mat-atuadores-2.webp', alt: "Atuador elétrico de 1/4 de volta com volante manual, montado sobre válvula borboleta", legenda: "Atuador elétrico em válvula borboleta", autor: "HerbstrittM", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Schwenkantrieb_auf_klappe.jpg' },
+      { src: 'img/materiais/mat-atuadores-3.webp', alt: "Atuadores pneumáticos de pinhão e cremalheira comandando válvulas de uma rede de água", legenda: "Atuadores de pinhão e cremalheira", autor: "Z22", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Pneumatic_Rack_and_Pinion_Actuators.JPG' },
+    ],
+    tipos: ['Pneumático de dupla ação', 'Pneumático de simples ação (retorno por mola)', 'Elétrico de 1/4 de volta', 'Elétrico multivoltas', 'Posicionadores e chaves de fim de curso', 'Válvulas solenoides de comando'],
+    escolha: ['Torque do atuador acima do torque máximo da válvula, com margem de segurança', 'Simples ação quando a válvula precisa ir a uma posição segura na falta de ar ou de energia', 'Elétrico onde não há ar comprimido; pneumático onde há e as manobras são frequentes', 'Grau de proteção e certificação compatíveis com o ambiente (umidade, poeira, área classificada)'] },
+  { id: 'mat-boia', cat: 'Válvulas', name: 'Válvulas e torneiras de boia', apps: "Caixas d'água, reservatórios, cisternas e torres de resfriamento", art: 'float', tone: '#f2a03d', veja: 'mat-reservatorios',
+    desc: "Fecham a entrada de água quando o reservatório enche: a boia sobe com o nível e aciona o obturador. Vão da torneira de boia da caixa d'água residencial às válvulas de controle de nível de grandes reservatórios.",
+    specs: [['Torneira de boia', "Caixas d'água residenciais, 1/2\" a 1\"; corpo plástico ou de latão; boia de plástico"], ['Válvula de boia industrial', 'Diâmetros maiores, corpo de bronze, ferro fundido ou aço; boia de inox ou plástico'], ['Válvula de controle de nível', 'Hidráulica, comandada por piloto de boia; fecha devagar e evita golpe de aríete'], ['Pressão', 'Conforme o modelo: baixa pressão (alimentação por gravidade) ou alta pressão (rede da rua)'], ['Instalação', 'Acima do extravasor, com folga para a boia e acesso para manutenção']],
+    normas: ['NBR 14534', 'NBR 5626'],
+    fotos: [
+      { src: 'img/materiais/mat-boia-1.webp', alt: "Válvula de boia de caixa de descarga, com corpo plástico e boia vertical", legenda: "Válvula de boia de caixa de descarga", autor: "Cschirp", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Fuellventil_schwimmerventil_toilettenspuelung.JPG' },
+      { src: 'img/materiais/mat-boia-2.webp', alt: "Torneira de boia instalada dentro de reservatório de água fria", legenda: "Torneira de boia na caixa d'água", autor: "Stubacca", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Ball_valve_cold_water_tank.jpg' },
+    ],
+    tipos: ['Torneira de boia residencial', 'Válvula de boia de bronze ou latão', 'Válvula de boia de alta vazão', 'Válvula de controle de nível com piloto de boia', 'Boias e hastes de reposição'],
+    escolha: ['Modelo compatível com a pressão da rede que alimenta o reservatório', 'Vazão suficiente para encher o reservatório no tempo de projeto', 'Válvula de controle de nível, de fechamento lento, em reservatórios grandes', 'Extravasor sempre abaixo da entrada de água e livre'] },
+  { id: 'mat-balanceamento', rascunho: true, cat: 'Válvulas', name: 'Válvulas de balanceamento', apps: 'Água gelada, aquecimento e recirculação de água quente', art: 'balance', tone: '#e5534b',
+    desc: 'Ajustam e medem a vazão de cada ramal para que todos os equipamentos recebam a água prevista no projeto: fan-coils e climatizadores na água gelada, radiadores no aquecimento e prumadas na recirculação de água quente.',
+    specs: [['Manual (estática)', 'Ajuste fixo com escala e tomadas de pressão para medir a vazão'], ['Dinâmica (PICV)', 'Mantém a vazão mesmo com a pressão variando; pode controlar a temperatura com atuador'], ['Termostática', 'Para recirculação de água quente: fecha conforme a temperatura de retorno'], ['Medição', 'Tomadas de pressão para o medidor de vazão do balanceamento'], ['Corpo', 'Latão, bronze ou ferro fundido; roscadas ou flangeadas']],
+    normas: ['NBR 16401', 'BS 7350', 'NBR 7198'],
+    tipos: ['Balanceamento manual (estática)', 'Independente da pressão (PICV)', 'Termostática de recirculação', 'Controladora de pressão diferencial'],
+    escolha: ['Uma válvula por circuito ou equipamento, com tomadas de pressão acessíveis', 'PICV em sistemas de vazão variável (bombas com inversor)', 'Termostática nas prumadas de recirculação de água quente', 'Prever o balanceamento no comissionamento, com relatório de vazões'] },
+  { id: 'mat-coletores', cat: 'Conexões', name: 'Coletores (manifolds) de distribuição', apps: 'Água fria e quente em PEX, piso radiante e aquecimento', art: 'manifold', tone: '#d8b45a', veja: 'mat-pex',
+    desc: 'Barras com várias saídas que distribuem a água para cada ponto de uso por um tubo próprio, sem emendas no caminho (sistema ponto a ponto). Usados com PEX e multicamada em água fria e quente, piso radiante e aquecimento.',
+    specs: [['Saídas', 'De 2 a 12 vias; 1/2" com adaptadores para PEX ou multicamada'], ['Registros', 'Registro por saída, para fechar um ponto sem cortar a água da unidade'], ['Piso radiante', 'Com medidores de vazão, válvulas de ajuste e purgador'], ['Material', 'Latão, aço inox ou polímero técnico'], ['Instalação', 'Em caixa embutida na parede, com acesso para manutenção']],
+    normas: ['NBR 15939', 'NBR 5626', 'EN 1264'],
+    fotos: [
+      { src: 'img/materiais/mat-coletores-1.webp', alt: "Coletor de inox para piso radiante, com medidores de vazão e registros por circuito", legenda: "Coletor de piso radiante com medidores de vazão", autor: "Best Tech Nick 25", licenca: 'CC0', licUrl: 'https://creativecommons.org/publicdomain/zero/1.0', fonte: 'https://commons.wikimedia.org/wiki/File:Fu%C3%9Fbodenheizung_Heizkreisverteiler_Multitherm_Rohranschl%C3%BCsse.jpg' },
+      { src: 'img/materiais/mat-coletores-2.webp', alt: "Coletores de ida e retorno com nove circuitos de tubo plástico e registros coloridos", legenda: "Coletores de ida e retorno", autor: "Tetris L", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Heizkreisverteiler.jpg' },
+    ],
+    tipos: ['Coletor de água fria', 'Coletor de água quente', 'Coletor para piso radiante', 'Caixa de coletores embutida'],
+    escolha: ['Número de saídas igual ao de pontos de uso, mais reserva', 'Registros individuais por saída', 'Caixa com acesso pela parede para manutenção', 'Na água quente, isolamento térmico nos tubos que saem do coletor'] },
+  { id: 'mat-flexiveis', cat: 'Acessórios', name: 'Flexíveis de ligação e tubos corrugados de inox', apps: 'Ligação de torneiras, aquecedores e aparelhos a gás', art: 'hose', tone: '#9aa7b8', veja: 'mat-mangueiras',
+    desc: 'Ligações flexíveis entre a rede e o aparelho: torneiras, bacias, aquecedores e fogões. Também incluem os tubos corrugados de inox, que dobram à mão e levam água ou gás em trechos maiores, com poucas conexões.',
+    specs: [['Flexível para água', 'Trançado de inox com mangueira interna atóxica; 30 a 80 cm'], ['Flexível para gás', 'Metálico, certificado para gás (NBR 14177); nunca usar flexível de água'], ['Corrugado de inox', 'Para água, aquecimento e gás; dobra à mão e é cortado na obra'], ['Conexões', 'Rosca 1/2" ou 3/4"; porca girante'], ['Cuidados', 'Sem torção nem dobra fechada; trocar quando estiver ressecado ou oxidado']],
+    normas: ['NBR 14177', 'NBR 15526', 'ISO 10380'],
+    fotos: [
+      { src: 'img/materiais/mat-flexiveis-1.webp', alt: "Tubo corrugado de inox enrolado em volta de um reservatório de água quente", legenda: "Tubo corrugado de inox", autor: "Ra Boe", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Warmwasserspeicher_05_(RaBoe).jpg' },
+      { src: 'img/materiais/mat-flexiveis-2.webp', alt: "Corte de tubo corrugado de inox com isolamento térmico", legenda: "Tubo corrugado de inox com isolamento", autor: "Sönke Kraft", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:CrNi-Stahl-Wellrohrflex_60_126.jpg' },
+    ],
+    tipos: ['Flexível trançado para água', 'Flexível metálico para gás', 'Tubo corrugado de inox para água e aquecimento', 'Tubo corrugado de inox para gás'],
+    escolha: ['Flexível de gás certificado e dentro da validade marcada', 'Comprimento suficiente para não ficar esticado nem torcido', 'Corrugado de inox onde a rede tem muitas curvas e pouca altura disponível', 'Registro antes de cada aparelho, para trocar o flexível sem fechar a casa'] },
+  { id: 'mat-emergencia', cat: 'Equipamentos', name: 'Chuveiros e lava-olhos de emergência', apps: 'Laboratórios, indústrias químicas, hospitais e postos de abastecimento', art: 'shower', tone: '#3fb27f',
+    desc: 'Equipamentos de primeiros socorros que lavam o corpo ou os olhos de quem foi atingido por produto químico. Abrem com um só movimento e ficam perto do risco, com acesso livre.',
+    specs: [['Chuveiro', 'Vazão alta e contínua, acionado por haste ou pedal; em geral 1 1/4"'], ['Lava-olhos', 'Dois jatos suaves que lavam os dois olhos ao mesmo tempo; acionado por placa ou pedal'], ['Combinado', 'Chuveiro e lava-olhos na mesma coluna'], ['Água', 'Temperatura morna recomendada; versões com proteção contra congelamento'], ['Instalação', 'Perto do risco, sem obstáculos, com sinalização e teste periódico']],
+    normas: ['ANSI/ISEA Z358.1', 'NBR 16291', 'EN 15154'],
+    fotos: [
+      { src: 'img/materiais/mat-emergencia-1.webp', alt: "Lava-olhos de emergência de parede, com dois esguichos protegidos por tampas", legenda: "Lava-olhos de parede", autor: "Robert Cudmore", licenca: 'CC BY-SA 2.0', licUrl: 'https://creativecommons.org/licenses/by-sa/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Eye_Wash_Station.jpg' },
+      { src: 'img/materiais/mat-emergencia-2.webp', alt: "Estação de chuveiro e lava-olhos de emergência embutida na parede de um corredor", legenda: "Chuveiro e lava-olhos embutidos", autor: "Mbrickn", licenca: 'CC BY 4.0', licUrl: 'https://creativecommons.org/licenses/by/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Emergency_Eyewash_and_Shower.jpg' },
+    ],
+    tipos: ['Chuveiro de emergência', 'Lava-olhos de pedestal ou de parede', 'Chuveiro e lava-olhos combinados', 'Lava-olhos portátil'],
+    escolha: ['Distância e tempo de acesso até o risco conforme a norma', 'Água potável com vazão e pressão para o tempo de lavagem exigido', 'Material resistente ao produto químico do local', 'Rotina de teste e drenagem para renovar a água parada'] },
+  { id: 'mat-termostaticas', cat: 'Válvulas', name: 'Válvulas misturadoras termostáticas', apps: 'Água quente em hospitais, escolas, hotéis, aquecimento solar e residências', art: 'mixer', tone: '#e8590c', veja: 'mat-caldeiras',
+    desc: 'Misturam água quente e fria e mantêm a temperatura de saída constante, mesmo quando a pressão ou a temperatura de entrada variam. Permitem guardar a água quente acima de 60 °C, contra a Legionella, e entregar no ponto uma água que não queima.',
+    specs: [['Funcionamento', 'Elemento termostático que move o obturador e ajusta a mistura automaticamente'], ['Segurança', 'Fecha a água quente se faltar água fria (proteção contra queimaduras)'], ['Faixa de ajuste', 'Em geral de 30 °C a 65 °C, conforme o modelo'], ['Aplicações', 'Central (saída do aquecedor) ou no ponto de uso (chuveiros, lavatórios)'], ['Corpo', 'Latão ou bronze, com filtros e retenções nas entradas']],
+    normas: ['EN 1111', 'EN 1287', 'ASSE 1017', 'ASSE 1070', 'NBR 5626'],
+    fotos: [
+      { src: 'img/materiais/mat-termostaticas-1.webp', alt: "Misturadora termostática de chuveiro cromada, instalada na parede", legenda: "Misturadora termostática de chuveiro", autor: "Sevela.p", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Thermostatic_valve.jpg' },
+      { src: 'img/materiais/mat-termostaticas-2.webp', alt: "Corte de uma misturadora termostática mostrando as entradas de água quente e fria, o regulador de temperatura e a saída", legenda: "Misturadora termostática em corte", autor: "Cschirp", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Thermostatbatterie.jpg' },
+      { src: 'img/materiais/mat-termostaticas-3.webp', alt: "Misturadora termostática de banheira com manopla graduada de temperatura", legenda: "Misturadora termostática de banheira", autor: "YxdLe9Z4", licenca: 'CC0', licUrl: 'https://creativecommons.org/publicdomain/zero/1.0', fonte: 'https://commons.wikimedia.org/wiki/File:Kuglostat_bath_mixer_unit.jpg' },
+    ],
+    tipos: ['Misturadora central (saída do aquecedor)', 'Misturadora de ponto de uso', 'Misturadora para aquecimento solar', 'Torneiras e chuveiros termostáticos'],
+    escolha: ['Misturadora central na saída de aquecedores solares e de acumulação', 'De ponto de uso em hospitais, creches e asilos, onde o risco de queimadura é maior', 'Vazão nominal compatível com o número de pontos atendidos', 'Retenções nas entradas para a água quente não voltar pela fria'] },
+].filter(m => !m.rascunho);   // rascunho: ficha pronta, à espera de foto real do produto
 
 // Ilustrações dos produtos (viewBox 0 0 200 120). var(--m) = cor do material.
 const MATERIAL_ART = (() => {
@@ -487,6 +562,31 @@ const MATERIAL_ART = (() => {
     filtery: () => line('M12 48H188', 22) + line('M96 48L138 98', 22) +
       `<rect x="126" y="92" width="30" height="14" rx="3" fill="#9aa7b8" stroke="${O}" stroke-width="2" transform="rotate(40 141 99)"/>` +
       box(20, 30, 12, 36, 3) + box(168, 30, 12, 36, 3) + shine(36, 42, 128, 5),
+    // atuador pneumático (caixa com tampas e indicador) montado sobre válvula de esfera
+    actuator: () => line('M14 96H186', 14, '#9aa7b8') + box(70, 80, 60, 32, 10, '#c9d1d9') + box(94, 62, 12, 20, 2, '#9aa7b8') +
+      box(34, 24, 132, 40, 8) + box(26, 28, 12, 32, 4, '#6b7682') + box(162, 28, 12, 32, 4, '#6b7682') + shine(44, 30, 112, 6) +
+      box(88, 10, 24, 16, 3, '#e8edf2') + `<path d="M100 12v12M94 18h12" stroke="${O}" stroke-width="2"/>`,
+    // válvula de boia: corpo, haste e boia
+    float: () => line('M12 34H74', 14, '#9aa7b8') + box(66, 20, 36, 30, 6) + `<path d="M84 50V76" stroke="${O}" stroke-width="6"/>` +
+      line('M84 44L150 80', 6, '#9aa7b8') + `<ellipse cx="162" cy="86" rx="28" ry="20" fill="var(--m)" stroke="${O}" stroke-width="2"/>` +
+      `<path d="M20 108H190" stroke="#2f80ed" stroke-width="3" stroke-dasharray="10 6"/>` + shine(146, 74, 30, 5),
+    // válvula de balanceamento: corpo com volante graduado e tomadas de pressão
+    balance: () => line('M14 80H186', 16, '#9aa7b8') + box(30, 62, 20, 36, 3) + box(150, 62, 20, 36, 3) + box(48, 56, 104, 48, 18) +
+      box(90, 34, 20, 24, 2, '#9aa7b8') + box(64, 14, 72, 22, 11) + shine(70, 18, 60, 5) +
+      box(58, 104, 12, 12, 2, '#e5534b') + box(130, 104, 12, 12, 2, '#2f80ed'),
+    // coletor: barra com saídas e registros
+    manifold: () => box(18, 50, 164, 24, 10) + shine(24, 54, 152, 5) + [40, 76, 112, 148].map(x =>
+      box(x - 6, 74, 12, 30, 2, '#9aa7b8') + box(x - 10, 26, 20, 26, 4, '#e5534b') + `<path d="M${x - 14} 18h28" stroke="${O}" stroke-width="4" stroke-linecap="round"/>`).join('') +
+      box(4, 54, 16, 16, 3, '#9aa7b8') + box(180, 54, 16, 16, 3, '#9aa7b8'),
+    // chuveiro e lava-olhos de emergência: coluna, crivo, haste e bacia
+    shower: () => box(92, 22, 12, 94, 2, '#9aa7b8') + box(40, 14, 64, 10, 3, '#9aa7b8') + `<path d="M24 22a22 10 0 0 1 44 0z" fill="var(--m)" stroke="${O}" stroke-width="2"/>` +
+      `<path d="M46 24V48" stroke="${O}" stroke-width="3"/><circle cx="46" cy="52" r="5" fill="var(--m)" stroke="${O}" stroke-width="2"/>` +
+      `<path d="M104 62h20a28 14 0 0 0 56 0z" fill="var(--m)" stroke="${O}" stroke-width="2"/>` + box(146, 52, 6, 10, 2, '#9aa7b8') + box(158, 52, 6, 10, 2, '#9aa7b8') +
+      box(82, 112, 32, 6, 2, O),
+    // misturadora termostática: corpo em T com entradas quente (vermelha) e fria (azul) e manopla
+    mixer: () => line('M12 82H70', 14, '#e5534b') + line('M130 82H188', 14, '#2f80ed') + line('M100 96V118', 14, '#9aa7b8') +
+      box(62, 58, 76, 46, 12) + shine(68, 62, 64, 5) + box(90, 36, 20, 24, 2, '#9aa7b8') + `<circle cx="100" cy="28" r="18" fill="#e8edf2" stroke="${O}" stroke-width="2"/>` +
+      `<path d="M100 14v10" stroke="${O}" stroke-width="3" stroke-linecap="round"/>`,
     wrench: () => `<path d="M38 104L126 38" stroke="${O}" stroke-width="22" stroke-linecap="round"/><path d="M38 104L126 38" stroke="var(--m)" stroke-width="18" stroke-linecap="round"/>` +
       `<path d="M112 22h56v18h-34v12h-22z" fill="#9aa7b8" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>` +
       `<path d="M114 58h44v14h-44z" fill="#9aa7b8" stroke="${O}" stroke-width="2"/>` + box(120, 40, 12, 18, 2, '#6b7682'),
@@ -497,6 +597,14 @@ const MATERIAL_ART = (() => {
 // Sites conferidos em 17/10/2026. Lista indicativa, sem vínculo comercial.
 // Tipo: 'N' = fabricante nacional, 'I' = internacional, 'M' = importador.
 const MANUFACTURERS = {
+  'mat-sanitarias': [['Genebre', 'https://www.genebre.com.br', 'I'], ['Alfa Laval', 'https://www.alfalaval.com', 'I'], ['GEA', 'https://www.gea.com', 'I'], ['SPX Flow', 'https://www.spxflow.com', 'I'], ['Inoxpa', 'https://www.inoxpa.com', 'I']],
+  'mat-atuadores': [['Coester', 'https://www.coester.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Festo', 'https://www.festo.com', 'I'], ['Rotork', 'https://www.rotork.com', 'I'], ['Emerson', 'https://www.emerson.com', 'I']],
+  'mat-boia': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Bermad', 'https://www.bermad.com', 'I'], ['Cla-Val', 'https://www.cla-val.com', 'I']],
+  'mat-balanceamento': [['IMI Hydronic', 'https://www.imi-hydronic.com', 'I'], ['Danfoss', 'https://www.danfoss.com', 'I'], ['Caleffi', 'https://www.caleffi.com', 'I'], ['Belimo', 'https://www.belimo.com', 'I'], ['Genebre', 'https://www.genebre.com.br', 'I']],
+  'mat-coletores': [['Amanco Wavin', 'https://wavin.com', 'N'], ['Tigre', 'https://www.tigre.com.br', 'N'], ['Uponor', 'https://www.uponor.com', 'I'], ['Rehau', 'https://www.rehau.com', 'I'], ['Genebre', 'https://www.genebre.com.br', 'I']],
+  'mat-flexiveis': [['Blukit', 'https://www.blukit.com.br', 'N'], ['Genebre', 'https://www.genebre.com.br', 'I'], ['Omega Flex (TracPipe)', 'https://www.omegaflex.com', 'I']],
+  'mat-emergencia': [['Haws', 'https://www.hawsco.com', 'I'], ['Bradley', 'https://www.bradleycorp.com', 'I'], ['Guardian Equipment', 'https://www.gesafety.com', 'I'], ['Genebre', 'https://www.genebre.com.br', 'I']],
+  'mat-termostaticas': [['Caleffi', 'https://www.caleffi.com', 'I'], ['ESBE', 'https://www.esbe.eu', 'I'], ['Honeywell (Resideo)', 'https://www.resideo.com', 'I'], ['Genebre', 'https://www.genebre.com.br', 'I']],
   'mat-cavaletes': [['Krona', 'https://www.krona.com.br', 'N']],
   'mat-hidrometros': [['HidroReader', 'https://hidroreader.com.br', 'N'], ['Renova Medição', 'https://www.renovamedicao.com.br', 'N'], ['Itron', 'https://www.itron.com', 'I'], ['Zenner', 'https://zenner.com', 'I'], ['Sensus (Xylem)', 'https://www.xylem.com/en-us/brand/sensus/', 'I']],
   'mat-metais': [['Docol', 'https://www.docol.com.br', 'N'], ['Deca', 'https://www.deca.com.br', 'N'], ['Fabrimar', 'https://www.fabrimar.com.br', 'N'], ['Lorenzetti', 'https://www.lorenzetti.com.br', 'N'], ['Grohe', 'https://www.grohe.com', 'I'], ['Hansgrohe', 'https://www.hansgrohe.com', 'I']],
@@ -569,6 +677,12 @@ const MANUFACTURERS = {
 // Foto real de cada item do catálogo (Wikimedia Commons, licenças livres; manter os créditos).
 // [produto, n] reaproveita a n-ésima foto (0 = primeira) da ficha do guia técnico.
 const MATERIAL_PHOTOS = {
+  'mat-atuadores': { src: 'img/materiais/mat-atuadores-1.webp', alt: "Atuador pneumático vermelho montado sobre válvula de esfera de inox, com válvula solenoide de comando", legenda: "Atuador pneumático com solenoide de comando", autor: "Pierre.hamelin", licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Solenoid_valve_on_an_on-off_pneumatic_valve_actuator.jpg' },
+  'mat-boia': { src: 'img/materiais/mat-boia-1.webp', inteira: true, alt: "Válvula de boia de caixa de descarga, com corpo plástico e boia vertical", legenda: "Válvula de boia de caixa de descarga", autor: "Cschirp", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Fuellventil_schwimmerventil_toilettenspuelung.JPG' },
+  'mat-coletores': { src: 'img/materiais/mat-coletores-1.webp', alt: "Coletor de inox para piso radiante, com medidores de vazão e registros por circuito", legenda: "Coletor de piso radiante com medidores de vazão", autor: "Best Tech Nick 25", licenca: 'CC0', licUrl: 'https://creativecommons.org/publicdomain/zero/1.0', fonte: 'https://commons.wikimedia.org/wiki/File:Fu%C3%9Fbodenheizung_Heizkreisverteiler_Multitherm_Rohranschl%C3%BCsse.jpg' },
+  'mat-flexiveis': { src: 'img/materiais/mat-flexiveis-1.webp', alt: "Tubo corrugado de inox enrolado em volta de um reservatório de água quente", legenda: "Tubo corrugado de inox", autor: "Ra Boe", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Warmwasserspeicher_05_(RaBoe).jpg' },
+  'mat-emergencia': { src: 'img/materiais/mat-emergencia-1.webp', inteira: true, alt: "Lava-olhos de emergência de parede, com dois esguichos protegidos por tampas", legenda: "Lava-olhos de parede", autor: "Robert Cudmore", licenca: 'CC BY-SA 2.0', licUrl: 'https://creativecommons.org/licenses/by-sa/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Eye_Wash_Station.jpg' },
+  'mat-termostaticas': { src: 'img/materiais/mat-termostaticas-1.webp', alt: "Misturadora termostática de chuveiro cromada, instalada na parede", legenda: "Misturadora termostática de chuveiro", autor: "Sevela.p", licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Thermostatic_valve.jpg' },
   // Itens acrescentados em 24/10/2026
   'mat-cavaletes': { src: 'img/materiais/mat-hidrometros-1.webp', alt: 'Cavalete de entrada de água com registros e hidrômetro instalado', legenda: 'Cavalete com hidrômetro', autor: 'Andrevruas', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hidr%C3%B4metro.JPG' },
   'mat-hidrometros': { src: 'img/materiais/mat-hidrometros-1.webp', alt: 'Hidrômetro instalado no cavalete de uma ligação predial de água', legenda: 'Hidrômetro no cavalete', autor: 'Andrevruas', licenca: 'CC BY 3.0', licUrl: 'https://creativecommons.org/licenses/by/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Hidr%C3%B4metro.JPG' },
