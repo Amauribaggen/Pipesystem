@@ -1168,6 +1168,14 @@ const MAGAZINES = [
     ['#assinaturas .qtime__step', 'Assinaturas de cotações'], ['#sobre .person', 'Quem somos'],
   ];
   const DATA_SECTIONS = new Set(['sistemas', 'materiais', 'normas', 'artigos']);
+  // Texto das páginas próprias (busca.json, gerado no build): carregado só quando o visitante começa a buscar
+  let PAG_IDX = null, pedindoIdx = false;
+  const carregaIndice = () => {
+    if (PAG_IDX || pedindoIdx) return;
+    pedindoIdx = true;
+    fetch('/busca.json').then(r => r.json()).then(j => { PAG_IDX = j; if (!box.hidden) render(); }).catch(() => { pedindoIdx = false; });
+  };
+  input.addEventListener('focus', carregaIndice);
   const titleOf = el => clean((el.querySelector('h2, h3, h4, strong, b') || el).textContent);
 
   function search(q) {
@@ -1232,6 +1240,24 @@ const MAGAZINES = [
     // Qualquer outra palavra: aponta a seção em que ela aparece
     const secs = [...document.querySelectorAll('section[id]')].filter(s => !DATA_SECTIONS.has(s.id) && !found.has(s) && matchText(s.textContent, terms));
     add('Outras seções do site', secs.map(s => ({ run: () => goTo(s.id), title: titleOf(s.querySelector('.section__head') || s), sub: snippet(s.textContent, terms, '') })));
+    // Itens do menu e dos submenus: o resultado leva ao mesmo destino do menu (com os mesmos filtros)
+    const ja = new Set(groups.flatMap(g => g.items.map(i => i.href)).filter(Boolean));
+    const vistosMenu = new Set();
+    const menuItens = [...document.querySelectorAll('#navLinks a[href]')].map(a => {
+      const t = clean(a.textContent).replace(/[↗↓]/g, '').trim();
+      const topo = clean(a.closest('.dd')?.querySelector('.dd__btn')?.textContent || '').replace(/[↗↓]/g, '').trim();
+      const grupo = clean(a.closest('.dd__group')?.querySelector('p')?.textContent || '').replace(/[↗↓]/g, '').trim();
+      return { a, t, caminho: [topo, grupo].filter(x => x && x !== t).join(' › ') };
+    }).filter(x => x.t.length > 1 && !vistosMenu.has(norm(x.t)) && vistosMenu.add(norm(x.t)));
+    add('Menu do site', pick(menuItens, x => x.t, x => ({ href: x.a.getAttribute('href'), title: x.t, sub: x.caminho ? 'Menu › ' + x.caminho : 'Menu principal',
+      attrs: [...x.a.attributes].filter(at => at.name.startsWith('data-')).map(at => ` ${at.name}="${esc(at.value)}"`).join('') + (x.a.target ? ' target="_blank" rel="noopener noreferrer"' : '') }))
+      .filter(i => !ja.has(i.href)));
+    // Palavras do texto das páginas próprias (Cotações, Dimensionamento, Feiras, Termos de uso...)
+    if (PAG_IDX) {
+      const ja2 = new Set(groups.flatMap(g => g.items.map(i => i.href)).filter(Boolean));
+      add('No texto das páginas', pick(PAG_IDX, x => x.t + ' ' + x.x, x => ({ href: x.p + (x.id ? '#' + x.id : ''), title: x.t, sub: x.s + ' · ' + snippet(x.x, terms, '') }))
+        .filter(i => !ja2.has(i.href) && ja2.add(i.href)));
+    }
     // Grupos com o termo no título dos itens vêm primeiro (ex.: "perda de carga" → calculadora)
     groups.forEach((g, i) => { g.i = g.name === 'Calculadoras on-line' ? -1 : i; g.items.forEach(it => { it.score ??= matchText(it.title, terms) ? 2 : 0; }); g.items.sort((a, b) => b.score - a.score); g.best = g.items[0].score; });
     groups.sort((a, b) => b.best - a.best || a.i - b.i);
@@ -1259,12 +1285,13 @@ const MAGAZINES = [
   function render() {
     const q = input.value.trim();
     if (q.length < 2) { hide(); return; }
+    carregaIndice();
     const { terms, groups } = search(q);
     actions = [];
     const total = groups.reduce((n, g) => n + g.items.length, 0);
     const item = it => {
       const inner = `<strong>${mark(it.title, terms)}</strong>${it.sub ? `<span>${mark(it.sub, terms)}</span>` : ''}`;
-      if (it.href) return `<a class="sresults__item" href="${esc(it.href)}"${it.sheet ? ` data-sheet="${it.sheet}"` : ''}${it.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}>${inner}</a>`;
+      if (it.href) return `<a class="sresults__item" href="${esc(it.href)}"${it.sheet ? ` data-sheet="${it.sheet}"` : ''}${it.ext ? ' target="_blank" rel="noopener noreferrer"' : ''}${it.attrs || ''}>${inner}</a>`;
       actions.push(it.run);
       return `<button type="button" class="sresults__item" data-act="${actions.length - 1}">${inner}</button>`;
     };
@@ -1585,4 +1612,22 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   };
   if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
   window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (id && SECTION_PATHS[sectionOf(id)] && !sheet.open) go(id, 'replace'); });
+})();
+
+// ===== Buscas locais (catálogo, normas, comparativos, glossário e BIM): atalho para procurar no site inteiro =====
+// A busca geral da página inicial (/?q=) cobre menus, submenus, fichas, normas, guias e o texto de todas as páginas.
+(() => {
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  ['catSearch', 'normSearch', 'cpBusca', 'glSearch', 'bimSearch'].forEach(id => {
+    const inp = document.getElementById(id);
+    if (!inp) return;
+    const p = document.createElement('p');
+    p.className = 'busca-site'; p.hidden = true;
+    (inp.closest('.cp-search') || inp).after(p);
+    inp.addEventListener('input', () => {
+      const q = inp.value.trim();
+      p.hidden = q.length < 2;
+      if (!p.hidden) p.innerHTML = `<a href="/?q=${encodeURIComponent(q)}">Procurar “${esc(q)}” em todo o site →</a>`;
+    });
+  });
 })();

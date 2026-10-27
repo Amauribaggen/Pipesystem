@@ -110,6 +110,36 @@ function contaArtigos(src) {
   return (bloco.match(/\{ tema:/g) || []).length;
 }
 
+// Índice de busca do texto das páginas (busca.json): cada trecho vai de um título (h2 a h4) ao seguinte, com o id
+// mais próximo para o link. A busca da página inicial carrega o arquivo só quando o visitante começa a digitar.
+function indiceBusca(out, secoes) {
+  const extras = [['/politica-editorial', 'Política editorial'], ['/termos', 'Termos de uso'], ['/privacidade', 'Política de privacidade']];
+  for (const [path, nome] of extras) {
+    try {
+      const h = readFileSync(join(out, path.slice(1) + '.html'), 'utf8');
+      const a = h.indexOf('<main'), b = h.indexOf('</main>');
+      if (a > -1 && b > a) secoes.push({ path, nome, html: h.slice(a, b) });
+    } catch {}
+  }
+  const itens = [];
+  for (const { path, nome, html } of secoes) {
+    // sem scripts, estilos, SVG e formulários (só o texto que o visitante lê)
+    const limpo = html.replace(/<(script|style|svg|select|template)\b[\s\S]*?<\/\1>/gi, ' ');
+    const partes = limpo.split(/(?=<h[2-4]\b)/i);
+    let ultimoId = '';
+    for (const parte of partes) {
+      const tit = (parte.match(/^<h[2-4]\b[^>]*>([\s\S]*?)<\/h[2-4]>/i) || [])[1];
+      const ids = [...parte.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]);
+      const idTit = (parte.match(/^<h[2-4]\b[^>]*\sid="([^"]+)"/i) || [])[1];
+      const x = texto(parte).slice(0, 900);
+      if (tit && x.length > 20) itens.push({ p: path, s: nome, id: idTit || ultimoId, t: texto(tit).slice(0, 120), x });
+      if (ids.length) ultimoId = ids[ids.length - 1];
+    }
+  }
+  writeFileSync(join(out, 'busca.json'), JSON.stringify(itens));
+  console.log(`Índice de busca: ${itens.length} trechos (${Math.round(JSON.stringify(itens).length / 1024)} KB)`);
+}
+
 export function separar(out, D, src) {
   const file = join(out, 'index.html');
   let html = readFileSync(file, 'utf8');
@@ -242,5 +272,6 @@ export function separar(out, D, src) {
     writeFileSync(join(out, p.path.slice(1) + '.html'), comDados(pg));
     urls.push(p.path);
   }
+  indiceBusca(out, PAGINAS.map(p => ({ path: p.path, nome: p.nome, html: porId[p.id].html })));
   return urls;
 }
