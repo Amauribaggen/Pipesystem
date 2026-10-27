@@ -948,6 +948,20 @@ font[style] { background: transparent !important; box-shadow: none !important; }
 .qtime__step--premium b { color: #7ee7f2; }
 .qtime__step--basico b { color: #ffd08a; }
 .qtime__axis { display: flex; justify-content: space-between; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255, 255, 255, .15); font-size: .75rem; color: #6f87a3; font-variant-numeric: tabular-nums; }
+/* Exemplo de cotação recebida pelo assinante: texto e trecho da planilha (PDF completo em docs/) */
+.qexemplo { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 28px; align-items: center; margin-top: 30px; padding: 26px; border-radius: 18px; background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .1); }
+.qexemplo__txt h3 { color: #fff; margin-bottom: .5em; }
+.qexemplo__txt p:not(.qplan__tag) { color: #b8c7d9; font-size: .95rem; margin: 0 0 18px; }
+.qexemplo__doc { background: #fff; color: #111; border-radius: 10px; padding: 14px; box-shadow: 0 18px 40px -18px rgba(0, 0, 0, .6); overflow-x: auto; }
+.qexemplo__doc table { width: 100%; border-collapse: collapse; font-size: .78rem; line-height: 1.35; }
+.qexemplo__doc th, .qexemplo__doc td { border: 1px solid #333; padding: 4px 6px; vertical-align: middle; }
+.qexemplo__doc th { background: #f5c242; text-transform: uppercase; font-size: .72rem; white-space: nowrap; }
+.qexemplo__doc td:nth-child(n+2) { text-align: center; white-space: nowrap; }
+.qexemplo__grupo td { background: #f5c242; font-weight: 700; text-transform: uppercase; text-align: left !important; font-size: .72rem; }
+.qexemplo__preco { color: #9aa5b1; background: #f6f8fb; min-width: 64px; text-align: left !important; }
+.qexemplo__mais { margin: 8px 0 0; font-size: .78rem; color: #5b6b80; text-align: center; }
+@media (max-width: 900px) { .qexemplo { grid-template-columns: 1fr; padding: 18px; } }
+@media (max-width: 600px) { .qexemplo__doc { padding: 8px; } .qexemplo__doc th:last-child, .qexemplo__doc td:last-child:not([colspan]) { display: none; } .qexemplo__preco { min-width: 0; } .qexemplo__doc th, .qexemplo__doc td { padding: 4px; } }
 .qplans { display: grid; grid-template-columns: repeat(2, minmax(0, 380px)); gap: 20px; }
 .qplan { position: relative; display: flex; flex-direction: column; padding: 28px 26px; border-radius: 18px; background: #fff; color: var(--ink); border: 2px solid transparent; }
 .qplan--premium { border-color: var(--teal); box-shadow: 0 20px 44px -24px rgba(31, 182, 201, .55); }
