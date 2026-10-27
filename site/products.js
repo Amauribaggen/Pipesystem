@@ -12,9 +12,9 @@ const PRODUCTS = [
   // Tubos
   { id: 'tubos-aco', g: 'tubos', name: 'Tubos de Aço',
     desc: 'Aço-carbono preto ou galvanizado, com ou sem costura, para incêndio, vapor, gás, ar comprimido e processos industriais.',
-    tipos: ['Com costura e sem costura', 'Preto e galvanizado', 'Schedule 40 e 80', 'Classes leve, média e pesada', 'Pontas roscadas, chanfradas ou ranhuradas'],
+    tipos: ['Com costura e sem costura', 'Preto e galvanizado', 'Schedule 40 e 80', 'Classes leve, média e pesada', 'Pontas roscadas, chanfradas ou ranhuradas', 'Tubos API 5L (line pipe) e API 5CT (revestimento e produção de poços) para petróleo e gás'],
     escolha: ['Espessura (schedule ou classe) conforme pressão e temperatura', 'Galvanizado para água e incêndio; preto para vapor e gás industrial', 'Tipo de união: rosca, solda ou ranhura', 'Proteção anticorrosiva em áreas externas'],
-    normas: ['NBR 5580', 'NBR 5590', 'ASTM A53', 'ASTM A106'],
+    normas: ['NBR 5580', 'NBR 5590', 'ASTM A53', 'ASTM A106', 'API 5L', 'API 5CT'],
     fotos: [
       { src: 'img/produtos/tubos-aco-1.webp', alt: 'Feixes de tubos de aço-carbono empilhados', legenda: 'Feixes de tubos de aço', autor: 'Everettbri', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:De-coiled_two_%26_three_eighths_pipe.jpg' },
       { src: 'img/produtos/tubos-aco-2.webp', alt: 'Tubos de aço armazenados em pátio', legenda: 'Estoque em pátio', autor: 'AlexHauss2608', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Isoplus_fernw%C3%A4rme_Technik_Rohrlager_am_Bahnhof_sankt_Aegyd_am_Neuwalde_Ende_April_2022.jpg' },
