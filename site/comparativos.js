@@ -75,6 +75,18 @@ const CMP_FONTES = {
   vikingSeco: ['Viking VK194 — Chuveiro seco pendente para áreas sujeitas a congelamento, alimentado pela rede molhada de uma área aquecida', 'https://vikinggroupinc.com/node/225', 'fab'],
   tycoEsfr: ['Tyco — Ficha técnica de ESFR (K 16,8): montagem pendente, distância do defletor ao teto e remissão aos critérios FM 2-0 e 8-9', 'https://www.qrfs.com/content/attachments/Datasheet_Tyco_TY7126_2021_January.pdf', 'fab'],
   qrfs: ['QRFS — Diferença entre chuveiros de resposta padrão, de resposta rápida e residenciais', 'https://blog.qrfs.com/390-the-difference-between-standard-response-and-quick-response-sprinklers/', 'artigo'],
+  nbr5580: ['ABNT NBR 5580 — Tubos de aço-carbono para usos comuns na condução de fluidos (classes leve, média e pesada)', 'https://www.abntcatalogo.com.br/', 'norma'],
+  nbr5590: ['ABNT NBR 5590 — Tubos de aço-carbono com ou sem solda longitudinal, pretos ou galvanizados (graus A e B)', 'https://www.abntcatalogo.com.br/', 'norma'],
+  astmA53: ['ASTM A53 — Tubos de aço pretos e galvanizados a quente, com e sem costura (NPS 1/8 a 26)', 'https://webstore.ansi.org/standards/astm/astma53a53m04', 'norma'],
+  astmA312: ['ASTM A312 — Tubos de aço inoxidável austenítico com e sem costura para alta temperatura e serviço corrosivo', 'https://webstore.ansi.org/standards/astm/astma312a312m16a', 'norma'],
+  derEs: ['DER-ES — Caderno de especificações: rede de água fria em tubos metálicos (NBR 5580, classes P, M e L, rosca BSP)', 'https://der.es.gov.br/Media/der/Documentos/Tabela%20Referencial%20de%20Pre%C3%A7o/Referencial%20de%20Edifica%C3%A7%C3%B5es/CADERNO_ESPECIFICACOES/1412-REDE%20DE%20%C3%81GUA%20FRIA%20-%20TUBOS%20MET%C3%81LICOS.pdf', 'norma'],
+  sinapi5580: ['Insumo SINAPI — Tubo de aço-carbono com costura NBR 5580, classe M, DN 80, parede de 4,05 mm (8,47 kg/m)', 'https://orcamentor.com/insumo/21024/', 'preco'],
+  tuper: ['Tuper — Tubos de condução NBR 5580 e NBR 5590: solda por indução de alta frequência, 1/2" a 12", paredes de 2,11 a 12,70 mm, pretos, galvanizados ou pintados', 'https://www.tuper.com.br/en/market-and-products/transport-pipes-nbr-5580-and-5590', 'fab'],
+  vallourec5590: ['Vallourec — Tubos sem costura ABNT NBR 5590 grau A, pretos, em schedules 40 e 80', 'https://www.vallourec.com/app/uploads/sites/5/2021/09/BRR-ABNT-NBR-55902015-A-P.pdf', 'fab'],
+  wheatlandA795: ['Wheatland — Tubos para sprinklers Schedule 10 e 40 (ASTM A795 e A135), pretos ou galvanizados, aprovações UL/FM', 'https://www.wheatland.com/wp-content/uploads/2021/08/Schedule-10-and-Schedule-40-Submittal-Sheet.pdf', 'fab'],
+  pmA106: ['Project Materials — ASTM A106 × A53: sem costura para alta temperatura (até ≈ 427 °C) × uso geral', 'https://blog.projectmaterials.com/quick-answers/pipes/astm-a106-vs-a53/', 'artigo'],
+  pm5l: ['Project Materials — Tubos API 5L: graus B a X80, níveis PSL1 e PSL2, fabricação sem costura, ERW e SAW', 'https://blog.projectmaterials.com/pipes/api-5l-pipe', 'artigo'],
+  pmA312: ['Project Materials — O que é a ASTM A312: tubos de inox 304L e 316L, schedules 5S a 80S, aplicações', 'https://blog.projectmaterials.com/quick-answers/pipes/what-is-astm-a312/', 'artigo'],
   sinapi: ['Caixa Econômica Federal — SINAPI 09/2026, preços de insumos sem desoneração, Santa Catarina (base usada pelo Dimensionamento Inteligente do portal)', 'https://www.caixa.gov.br/site/Paginas/downloads.aspx#categoria_888', 'preco'],
 };
 const CMP_KIND = { norma: 'norma', estudo: 'estudo', fab: 'ficha de fabricante', preco: 'preço', artigo: 'artigo técnico' };
@@ -380,6 +392,35 @@ const CMPS = [
     apps: { casa: '—', predio: 'Galvanizado em incêndio.', hospital: 'Inox em cozinhas e áreas técnicas especiais.', industria: 'Conforme o fluido, a temperatura e a higiene exigida.' },
     fontes: ['galv1', 'galv2', 'sinapi'] },
 
+  { id: 'tubos-aco', tema: 'Indústria', titulo: 'Tubos de aço para condução de fluidos: NBR 5580, NBR 5590 (ASTM A53), ASTM A106, API 5L, ASTM A795 ou inox ASTM A312?',
+    tipos: 'tubosAco',
+    resumo: 'NBR 5580 para água, ar, gás e incêndio em prédios e indústrias, com rosca BSP; NBR 5590 (ou ASTM A53) para redes industriais e de utilidades, em schedules; ASTM A106 sem costura para vapor e linhas quentes; API 5L para dutos de óleo, gás e adutoras; ASTM A795 para sprinklers e hidrantes; inox ASTM A312 para meios corrosivos e indústrias de alimentos, química e farmacêutica {nbr5580}{nbr5590}{pmA106}{pm5l}{wheatlandA795}{pmA312}.',
+    intro: 'Tubos de aço parecem iguais na pilha, mas a norma define como foram feitos (com ou sem costura), a espessura da parede (classe ou schedule), o acabamento e o que aguentam de pressão e temperatura. Na obra, os mais comuns são os de aço-carbono com costura das normas NBR 5580 e NBR 5590, pretos ou galvanizados. Nas indústrias de processo entram os sem costura da ASTM A106 e o inox da ASTM A312; nos dutos, a API 5L; e nas redes de sprinklers, a ASTM A795. Por isso a escolha começa pelo fluido, pela pressão e pela temperatura, e só depois pelo preço {tuper}{pmA106}.',
+    opcoes: [['NBR 5580', 'aco'], ['NBR 5590 / ASTM A53', 'aco'], ['ASTM A106', 'aco'], ['API 5L', 'aco'], ['ASTM A795', 'aco'], ['Inox ASTM A312', 'inox']],
+    linhas: [
+      ['O que é', ['Aço-carbono com costura para usos comuns na condução de fluidos {nbr5580}', 'Aço-carbono com ou sem costura, graus A e B; equivale na prática à ASTM A53 {nbr5590}{astmA53}{tuper}', 'Aço-carbono sem costura para serviço em alta temperatura, graus A, B e C {pmA106}', 'Tubo para dutos (line pipe) de transporte de óleo, gás e água, do grau B ao X80 ou mais {pm5l}', 'Aço-carbono preto ou galvanizado, próprio para sistemas de proteção contra incêndio {wheatlandA795}', 'Aço inoxidável austenítico (304L, 316L), com ou sem costura {astmA312}']],
+      ['Fabricação', ['Com costura (solda longitudinal por indução de alta frequência) {tuper}', 'Com costura (ERW) ou sem costura {astmA53}{vallourec5590}', 'Sem costura {pmA106}', 'Sem costura, ERW, SAW ou DSAW; níveis PSL1 e PSL2 (o PSL2 tem ensaios e limites mais rigorosos) {pm5l}', 'Com costura ou sem costura {wheatlandA795}', 'Sem costura ou soldado, com a solda recozida {pmA312}']],
+      ['Espessura da parede', ['Classes L (leve), M (média) e P (pesada) {derEs}; ex.: DN 80 classe M com 4,05 mm {sinapi5580}', 'Schedules (40, 80 e outros); de 2,11 a 12,70 mm na faixa de 1/2" a 12" {tuper}{vallourec5590}', 'Schedules 40, 80 e mais pesados, para pressão e temperatura altas', 'Calculada pela pressão do duto e pelo grau do aço', 'Schedule 10 (parede fina, para ranhura laminada) e Schedule 40 (rosca ou ranhura) {wheatlandA795}', 'Schedules 5S, 10S, 40S e 80S (a série "S" do inox) {pmA312}']],
+      ['Diâmetros usuais', ['De 1/2" a 6", conforme a classe', 'De 1/2" a 12" no mercado nacional {tuper}', 'De pequenos a grandes, conforme a fabricação sem costura', 'Dos ramais aos grandes troncos de dutos', 'De 1" a 10" {wheatlandA795}', 'De pequenos a grandes, conforme o schedule']],
+      ['Acabamento superficial', ['Preto (com óleo protetivo), galvanizado a fogo ou pintado {tuper}', 'Preto, galvanizado a fogo ou pintado {tuper}', 'Preto, com óleo ou verniz protetivo; pintura ou isolamento térmico na obra', 'Preto; enterrado, com revestimento externo anticorrosivo de fábrica (polietileno ou epóxi)', 'Preto ou galvanizado a fogo; pintado de vermelho por fora ou com revestimento de fábrica {wheatlandA795}', 'Decapado e passivado; polido por dentro nas versões sanitárias']],
+      ['Extremidades', ['Rosca BSP com luva, ou ponta lisa {tuper}{derEs}', 'Lisa, chanfrada para solda, roscada (NPT) ou ranhurada {tuper}', 'Chanfrada para solda de topo', 'Chanfrada para solda de topo', 'Ranhurada, roscada ou lisa {wheatlandA795}', 'Lisa ou chanfrada para solda TIG; flange ou clamp nas linhas sanitárias']],
+      ['Pressão e temperatura', ['Pressões e temperaturas moderadas: água, ar, gás e vapor de baixa pressão', 'Definidas pelo schedule; uso geral até temperaturas moderadas (≈ 340 °C nos com costura) {pmA106}', 'Alta temperatura, até cerca de 427 °C {pmA106}', 'Alta pressão; o grau (X42 a X70 e acima) define a resistência {pm5l}', 'As do sistema de incêndio, conforme a listagem e o projeto {nbr10897}', 'Do frio criogênico à alta temperatura, conforme a liga {pmA312}']],
+      ['Aplicações recomendadas', ['Água fria, hidrantes, ar comprimido, gás e vapor de baixa pressão em prédios e indústrias', 'Redes industriais, utilidades, incêndio, vapor e ar comprimido', 'Vapor, condensado, óleo térmico e linhas de processo quentes em refinarias, usinas e caldeiras {pmA106}', 'Oleodutos, gasodutos, adutoras e interligação de poços {pm5l}', 'Redes de sprinklers e de hidrantes {wheatlandA795}', 'Indústria química, de alimentos e farmacêutica, água desmineralizada e meios corrosivos {pmA312}']],
+      ['Custo relativo', ['O menor', 'Baixo a médio', 'Médio a alto', 'Médio a alto; cresce com o grau e com o PSL2', 'Baixo no Schedule 10 (mais leve) a médio', 'O maior']],
+      ['Normas', ['ABNT NBR 5580 {nbr5580}', 'ABNT NBR 5590 · ASTM A53 {nbr5590}{astmA53}', 'ASTM A106 · ASME B31.3 {pmA106}{asmeB313}', 'API 5L {pm5l}', 'ASTM A795 · ABNT NBR 10897 {wheatlandA795}{nbr10897}', 'ASTM A312 {astmA312}']],
+    ],
+    pros: [[['Barato e fácil de achar', 'Rosca BSP compatível com as conexões galvanizadas'], ['Não serve para pressões e temperaturas altas', 'A rosca reduz a parede na ponta']],
+      [['Muitas espessuras (schedules) e acabamentos', 'Aceita rosca, solda e ranhura'], ['Com costura tem limite de temperatura menor que o sem costura']],
+      [['Sem costura: confiável em alta temperatura e pressão', 'Padrão em vapor e processo'], ['Mais caro e com menos fornecedores', 'Exige solda qualificada']],
+      [['Alta resistência com parede mais fina nos graus X', 'Rastreabilidade e ensaios rigorosos (PSL2)'], ['Pensado para dutos, não para instalações prediais', 'Exige revestimento e proteção catódica quando enterrado']],
+      [['Parede fina no Schedule 10: mais leve e barato', 'Pronto para ranhura e com aprovações UL/FM {wheatlandA795}'], ['Uso só em incêndio', 'Schedule 10 não aceita rosca']],
+      [['Não corrói na maioria dos meios', 'Superfície limpa e lisa, boa para higiene'], ['O mais caro', 'Cloretos podem causar corrosão por pites (escolher 316L)']]],
+    criterios: ['Fluido: água, ar, gás, vapor, óleo ou produto químico (corrosividade)', 'Pressão e temperatura de projeto', 'Tipo de união: rosca, solda, ranhura ou flange', 'Ambiente: aparente, enterrado, úmido ou agressivo (acabamento e revestimento)', 'Exigência de norma, de seguradora ou de listagem (incêndio, gás, alimentos)', 'Disponibilidade e custo do diâmetro e da espessura na região'],
+    fecho: 'A norma vale mais que a aparência: peça o certificado do fabricante com a norma, o grau e a espessura, e confira as marcas gravadas no tubo antes de montar {tuper}.',
+    erros: ['Usar tubo NBR 5580 de classe leve em vapor ou em pressões altas', 'Rosquear tubo de parede fina (Schedule 10 ou classe leve) e perder a resistência na ponta', 'Soldar tubo galvanizado sem remover o zinco e sem ventilação (fumos tóxicos)', 'Usar tubo com costura onde o projeto pede sem costura (vapor e processo quente)', 'Instalar inox 304 em ambiente com cloretos, onde o 316L é o indicado', 'Enterrar tubo de aço sem revestimento nem proteção contra corrosão', 'Misturar rosca BSP e NPT na mesma junta'],
+    apps: { casa: 'Pouco usado hoje: nas casas, o galvanizado deu lugar ao PVC, PPR e PEX; segue em gás e em reformas de redes antigas.', predio: 'NBR 5580 ou NBR 5590 galvanizado nos hidrantes e no recalque; ASTM A795 nos sprinklers; aço preto no gás, conforme a norma de gás.', hospital: 'Aço galvanizado ou ASTM A795 no incêndio; ASTM A106 no vapor da central térmica; inox nos gases e nas áreas críticas.', industria: 'NBR 5590 nas utilidades; ASTM A106 em vapor e processo quente; inox ASTM A312 em química e alimentos; API 5L nas linhas de transferência e dutos.' },
+    fontes: ['nbr5580', 'nbr5590', 'astmA53', 'astmA312', 'derEs', 'sinapi5580', 'tuper', 'vallourec5590', 'wheatlandA795', 'pmA106', 'pm5l', 'pmA312', 'asmeB313', 'nbr10897'] },
+
   { id: 'soldar-flangear-rosquear', tema: 'Indústria', titulo: 'Soldar, flangear ou rosquear? A escolha da conexão na tubulação industrial',
     resumo: 'Não existe conexão universalmente melhor. A solda dá integridade e estanqueidade em condições severas; o flange dá acesso para desmontar válvulas, bombas e filtros; a rosca simplifica a montagem em pequenos diâmetros e utilidades, dentro dos limites do código {asmeB313}.',
     intro: 'No projeto de tubulações industriais, o tipo de conexão é uma decisão técnica: define a integridade mecânica, a estanqueidade, a confiabilidade operacional e a facilidade de manutenção do sistema. Pressão, temperatura, fluido, diâmetro nominal, corrosividade, vibração e necessidade de desmontagem devem orientar a escolha.',
@@ -631,13 +672,49 @@ function spkTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala; o bulbo vermelho indica 68 °C.<span class="spk-rm"> Passe o mouse ou toque em um desenho para ver a água em movimento.</span></p>`;
 }
-const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML };
+// Tubos de aço: extremidades, espessuras e acabamentos, em desenho próprio (200 × 120)
+// [id, nome, grupo, descrição]
+const TA_TIPOS = [
+  ['rosca', 'Ponta roscada', 'Extremidade', 'Rosca cônica BSP (NBR 5580) ou NPT (ASTM A53), unida por luva ou conexão roscada. Comum até 4" em água, gás, ar e incêndio.'],
+  ['chanfro', 'Ponta chanfrada', 'Extremidade', 'Chanfro de 37,5° para solda de topo. Padrão em vapor, processo, dutos e diâmetros grandes (ASTM A106, API 5L).'],
+  ['ranhura', 'Ponta ranhurada', 'Extremidade', 'Ranhura laminada ou cortada perto da ponta, para acoplamento mecânico com junta de borracha. Padrão em sprinklers e hidrantes.'],
+  ['lisa', 'Ponta lisa', 'Extremidade', 'Corte reto, para solda de encaixe, flange sobreposto ou conexões de compressão.'],
+  ['espessura', 'Espessura da parede', 'Classe ou schedule', 'Mesmo diâmetro externo, paredes diferentes: quanto maior o schedule (ou a classe), mais pressão o tubo aguenta e mais pesa.'],
+  ['acabamento', 'Acabamentos', 'Superfície', 'Preto com óleo protetivo, galvanizado a fogo, pintado de vermelho (incêndio) ou com revestimento externo de fábrica para tubos enterrados.'],
+];
+function taInner(k) {
+  const tubo = (x1, x2, y = 44, h = 32) => `<rect class="ta-aco" x="${x1}" y="${y}" width="${x2 - x1}" height="${h}"/><rect class="ta-brilho" x="${x1}" y="${y + 6}" width="${x2 - x1}" height="4"/>`;
+  const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  if (k === 'rosca') return tubo(14, 142) + Array.from({ length: 9 }, (_, i) => `<path class="ta-fio" d="M${104 + i * 4} 44l-3 32"/>`).join('') +
+    '<rect class="ta-luva" x="132" y="38" width="50" height="44" rx="3"/>' + Array.from({ length: 10 }, (_, i) => `<path class="ta-fio" d="M${136 + i * 4} 38v44"/>`).join('') + txt(100, 104, 'rosca BSP ou NPT + luva');
+  if (k === 'chanfro') return '<rect class="ta-aco" x="14" y="38" width="150" height="10"/><rect class="ta-aco" x="14" y="72" width="150" height="10"/><rect class="ta-furo" x="14" y="48" width="160" height="24"/>' +
+    '<path class="ta-aco" d="M164 38L174 48H164Z"/><path class="ta-aco" d="M164 82L174 72H164Z"/><path class="ta-cota" d="M174 30l-10 8M182 46a14 14 0 0 0-8-14"/>' + txt(184, 28, '37,5°', 'end') + txt(96, 104, 'corte: parede chanfrada para solda');
+  if (k === 'ranhura') return tubo(14, 186) + '<rect class="ta-ranhura" x="160" y="44" width="6" height="5"/><rect class="ta-ranhura" x="160" y="71" width="6" height="5"/>' +
+    '<path class="ta-cota" d="M163 30v12"/>' + txt(163, 26, 'ranhura') + txt(100, 104, 'acoplamento mecânico com junta');
+  if (k === 'lisa') return tubo(14, 176) + '<ellipse class="ta-boca" cx="176" cy="60" rx="7" ry="16"/><ellipse class="ta-furo" cx="176" cy="60" rx="4.5" ry="11"/>' + txt(100, 104, 'encaixe, flange ou compressão');
+  if (k === 'espessura') return [[40, 3, 'Sch 10'], [100, 7, 'Sch 40'], [160, 12, 'Sch 80']].map(([cx, e, n]) =>
+    `<circle class="ta-aco" cx="${cx}" cy="56" r="26"/><circle class="ta-furo" cx="${cx}" cy="56" r="${26 - e}"/>` + txt(cx, 104, n)).join('');
+  // acabamentos: quatro trechos de tubo
+  return [['ta-preto', 'preto'], ['ta-galv', 'galvanizado'], ['ta-vermelho', 'pintado (incêndio)'], ['ta-revest', 'revestido']].map(([c, n], i) =>
+    `<rect class="${c}" x="14" y="${10 + i * 26}" width="80" height="16" rx="2"/><rect class="ta-brilho" x="14" y="${13 + i * 26}" width="80" height="3"/>` + txt(102, 22 + i * 26, n, 'start')).join('');
+}
+const taSVG = k => `<svg viewBox="0 0 200 120" role="img" aria-label="Desenho esquemático: tubo de aço, ${k}">${taInner(k)}</svg>`;
+function taTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Extremidades, espessuras e acabamentos, em desenho</${h}>
+      <ol class="bvt bvt--ta">${TA_TIPOS.map(([id, nome, def, txt], i) => `
+        <li class="bvt__item"><figure>${taSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
+}
+const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML };
 
 // Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
 function cmpTiposHTML(matId, h = 'h4') {
   const H = t => `<${h}${h === 'h4' ? '' : ' class="page__h"'}>${t}</${h}>`, semH = s => s.replace(/\n\s*<h4 class="cp-h">[^<]*<\/h4>/, '');
   if (matId === 'mat-borboleta') return H('Tipos de válvula borboleta') + semH(borbTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/valvulas-borboleta">Comparativo completo dos tipos, com normas e fontes</a></p>`;
   if (matId === 'mat-bombas') return H('Qual bomba para cada fluido') + semH(bombaTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/bombas-fluidos">Comparativo completo, com normas e fontes</a></p>`;
+  if (matId === 'mat-aco') return H('Extremidades, espessuras e acabamentos') + semH(taTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;
   if (matId === 'mat-sprinklers') return H('Tipos de sprinkler') + semH(spkTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/sprinklers-tipos">Comparativo completo dos tipos, com normas e fontes</a></p>`;
   return '';
 }
