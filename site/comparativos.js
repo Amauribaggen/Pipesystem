@@ -64,6 +64,7 @@ const CMP_FONTES = {
   iso2858: ['ISO 2858 / ISO 5199 — Bombas centrífugas de sucção axial: dimensões e especificações técnicas', 'https://www.iso.org/', 'norma'],
   api610: ['API 610 / ISO 13709 — Bombas centrífugas para petróleo, petroquímica e gás natural', 'https://www.api.org/products-and-services/standards', 'norma'],
   api676: ['API 676 — Bombas rotativas de deslocamento positivo', 'https://www.api.org/products-and-services/standards', 'norma'],
+  omelLinhas: ['Omel — Bombas centrífugas ANSI/ASME B73.1, bombas dosadoras de pistão e de diafragma (até 6 cabeças), válvulas de mangote, rotâmetros e sopradores', 'https://omel.com.br/bombas-dosadoras/', 'fab'],
   api675: ['API 675 — Bombas dosadoras de deslocamento positivo (controle de vazão)', 'https://www.api.org/products-and-services/standards', 'norma'],
   nfpa13: ['NFPA 13 — Standard for the Installation of Sprinkler Systems: tipos de chuveiros, áreas de cobertura e critérios de projeto', 'https://www.nfpa.org/codes-and-standards/nfpa-13-standard-development/13', 'norma'],
   nbr16400: ['ABNT NBR 16400 — Chuveiros automáticos para controle e supressão de incêndios: especificação e métodos de ensaio', 'https://www.abntcatalogo.com.br/', 'norma'],
@@ -361,30 +362,31 @@ const CMPS = [
     apps: { casa: 'Registro de esfera de latão no cavalete, no gás e na entrada de aparelhos.', predio: 'Bipartida ou tripartida de latão ou bronze no barrilete, nas prumadas e no gás; flangeada nos diâmetros maiores.', hospital: 'Tripartida de inox nas utilidades e nos gases; monobloco nos pontos de manutenção.', industria: 'Tripartida e forjada em processo e alta pressão; trunnion e top entry nos dutos e grandes diâmetros; dupla esfera no isolamento para manutenção e nos instrumentos; três vias em desvio de filtros e bombas.' },
     fontes: ['wikiEsfera', 'pm23', 'pmFlutTrun', 'valmicroLinhas', 'micromazzaLinhas', 'mssSp110', 'api608', 'api6d', 'api607', 'asmeB1634'] },
 
-  { id: 'bombas-fluidos', tema: 'Bombas', titulo: 'Qual bomba para cada fluido? Centrífuga, engrenagens, diafragma ou peristáltica',
+  { id: 'bombas-fluidos', tema: 'Bombas', titulo: 'Qual bomba para cada fluido? Centrífuga, engrenagens, diafragma, peristáltica ou dosadora',
     tipos: 'bombas',
-    resumo: 'Centrífuga para água e líquidos limpos; de engrenagens para óleos e fluidos viscosos; de diafragma para químicos corrosivos e fluidos que não podem vazar; peristáltica para polpas, lamas com sólidos abrasivos e dosagem {hiRoto}{hiRot}{hiAodd}.',
+    resumo: 'Centrífuga para água e líquidos limpos; de engrenagens para óleos e fluidos viscosos; de diafragma para químicos corrosivos e fluidos que não podem vazar; peristáltica para polpas, lamas com sólidos abrasivos e dosagem; dosadora de pistão ou diafragma para injetar produto químico em quantidade exata {hiRoto}{hiRot}{hiAodd}{api675}.',
     intro: 'O fluido decide a bomba. Viscosidade, sólidos, abrasividade, corrosividade e a necessidade de dosar com precisão pesam mais que a vazão. A regra rápida é a do resumo abaixo; ela simplifica: em mineração e saneamento, grandes vazões de polpa costumam usar centrífugas próprias para polpa (rotor aberto e revestimento resistente à abrasão), e a peristáltica fica com vazões menores, polpas muito abrasivas e dosagem.',
-    opcoes: [['Centrífuga', 'bombas'], ['De engrenagens', 'bombas'], ['De diafragma (pneumática)', 'bombas'], ['Peristáltica', 'bombas']],
+    opcoes: [['Centrífuga', 'bombas'], ['De engrenagens', 'bombas'], ['De diafragma (pneumática)', 'bombas'], ['Peristáltica', 'bombas'], ['Dosadora (pistão ou diafragma)', 'dosadoras']],
     linhas: [
-      ['Fluido indicado', ['Água e líquidos limpos, de baixa viscosidade', 'Óleos, lubrificantes, combustíveis, resinas e outros viscosos sem abrasivos', 'Químicos corrosivos, tintas, solventes, lodos e líquidos com sólidos moderados', 'Polpas, lamas e líquidos com sólidos abrasivos; fluidos sensíveis ao cisalhamento']],
-      ['Princípio', ['Rotodinâmica: o rotor acelera o líquido e a voluta converte velocidade em pressão {hiRoto}', 'Deslocamento positivo rotativo: volumes fixos entre os dentes e a carcaça {hiRot}', 'Deslocamento positivo alternativo: duas membranas movidas a ar comprimido, com válvulas de esfera {hiAodd}', 'Deslocamento positivo: rolos ou sapatas comprimem uma mangueira; o fluido só toca a mangueira']],
-      ['Viscosidade', ['Baixa; com fluido viscoso a vazão, a altura e o rendimento caem {hiRoto}', 'Média a muito alta; a viscosidade até melhora a vedação interna {hiRot}', 'Baixa a alta', 'Baixa a alta']],
-      ['Sólidos e abrasivos', ['Pouca tolerância (exceto centrífugas de polpa, de rotor aberto)', 'Não tolera abrasivos: desgastam engrenagens e folgas', 'Tolera sólidos até a passagem das esferas', 'Tolera bem; o abrasivo só desgasta a mangueira']],
-      ['Vazão e pressão', ['Vazão alta e contínua, que varia com a pressão do sistema (curva da bomba)', 'Vazão proporcional à rotação, quase independente da pressão; exige válvula de alívio', 'Vazão pulsante, ajustada pelo ar; não passa da pressão do ar de acionamento', 'Vazão proporcional à rotação, boa para dosagem; pulsante']],
-      ['Escorvamento e operação a seco', ['Em geral não é autoescorvante; precisa de NPSH disponível acima do requerido {hiNpsh}', 'Autoescorvante; não deve rodar a seco por muito tempo', 'Autoescorvante; pode rodar a seco e contra o registro fechado', 'Autoescorvante; pode rodar a seco e inverter o sentido']],
-      ['Manutenção', ['Selo mecânico e rolamentos', 'Desgaste de engrenagens, buchas e folgas; vedação do eixo', 'Membranas, esferas e sedes', 'Troca da mangueira; sem selos nem válvulas']],
-      ['Normas', ['ISO 2858 · ISO 5199 · API 610 · ANSI/HI 1.1–1.2 {iso2858}{api610}{hiRoto}', 'API 676 · ANSI/HI 3.1–3.5 {api676}{hiRot}', 'ANSI/HI 10.1–10.5 {hiAodd}', 'Ficha do fabricante; para dosagem, API 675 {api675}']],
+      ['Fluido indicado', ['Água e líquidos limpos, de baixa viscosidade', 'Óleos, lubrificantes, combustíveis, resinas e outros viscosos sem abrasivos', 'Químicos corrosivos, tintas, solventes, lodos e líquidos com sólidos moderados', 'Polpas, lamas e líquidos com sólidos abrasivos; fluidos sensíveis ao cisalhamento', 'Produtos químicos em pequenas vazões: cloro, flúor, coagulantes, ácidos, soda e aditivos']],
+      ['Princípio', ['Rotodinâmica: o rotor acelera o líquido e a voluta converte velocidade em pressão {hiRoto}', 'Deslocamento positivo rotativo: volumes fixos entre os dentes e a carcaça {hiRot}', 'Deslocamento positivo alternativo: duas membranas movidas a ar comprimido, com válvulas de esfera {hiAodd}', 'Deslocamento positivo: rolos ou sapatas comprimem uma mangueira; o fluido só toca a mangueira', 'Deslocamento positivo alternativo: pistão ou diafragma movido por motor e excêntrico, com válvulas de retenção na sucção e na descarga {api675}']],
+      ['Viscosidade', ['Baixa; com fluido viscoso a vazão, a altura e o rendimento caem {hiRoto}', 'Média a muito alta; a viscosidade até melhora a vedação interna {hiRot}', 'Baixa a alta', 'Baixa a alta', 'Baixa a média; para viscosos, válvulas e velocidade adequadas']],
+      ['Sólidos e abrasivos', ['Pouca tolerância (exceto centrífugas de polpa, de rotor aberto)', 'Não tolera abrasivos: desgastam engrenagens e folgas', 'Tolera sólidos até a passagem das esferas', 'Tolera bem; o abrasivo só desgasta a mangueira', 'Não tolera sólidos: prender uma válvula de retenção muda a dosagem']],
+      ['Vazão e pressão', ['Vazão alta e contínua, que varia com a pressão do sistema (curva da bomba)', 'Vazão proporcional à rotação, quase independente da pressão; exige válvula de alívio', 'Vazão pulsante, ajustada pelo ar; não passa da pressão do ar de acionamento', 'Vazão proporcional à rotação, boa para dosagem; pulsante', 'Vazão pequena e exata, regulada pelo curso e pela frequência; pressões altas (o pistão passa de 300 bar) {omelLinhas}']],
+      ['Escorvamento e operação a seco', ['Em geral não é autoescorvante; precisa de NPSH disponível acima do requerido {hiNpsh}', 'Autoescorvante; não deve rodar a seco por muito tempo', 'Autoescorvante; pode rodar a seco e contra o registro fechado', 'Autoescorvante; pode rodar a seco e inverter o sentido', 'Autoescorvante com pouca altura de sucção; o pistão não deve rodar a seco']],
+      ['Manutenção', ['Selo mecânico e rolamentos', 'Desgaste de engrenagens, buchas e folgas; vedação do eixo', 'Membranas, esferas e sedes', 'Troca da mangueira; sem selos nem válvulas', 'Diafragma ou gaxetas do pistão, válvulas de retenção e sedes']],
+      ['Normas', ['ISO 2858 · ISO 5199 · API 610 · ANSI/HI 1.1–1.2 {iso2858}{api610}{hiRoto}', 'API 676 · ANSI/HI 3.1–3.5 {api676}{hiRot}', 'ANSI/HI 10.1–10.5 {hiAodd}', 'Ficha do fabricante; para dosagem, API 675 {api675}', 'API 675 {api675}']],
     ],
     pros: [[['Simples, barata e de grande vazão', 'Fluxo contínuo, sem pulsação', 'Muitos fabricantes e peças no mercado'], ['Perde desempenho com fluido viscoso', 'Cavita se o NPSH disponível for baixo', 'Não deve rodar a seco']],
       [['Bom rendimento com viscosos', 'Vazão estável e previsível', 'Compacta'], ['Não aceita abrasivos nem sólidos', 'Precisa de válvula de alívio: com a descarga fechada, a pressão sobe sem limite']],
       [['Sem selo nem motor elétrico: boa para áreas classificadas', 'Trabalha a seco e com sólidos moderados', 'Materiais para quase todo químico'], ['Consome ar comprimido', 'Fluxo pulsante (pode pedir amortecedor)', 'Membranas exigem troca periódica']],
-      [['Fluido isolado na mangueira: sem contaminação e sem vazamento por selo', 'Lida com abrasivos e sólidos', 'Dosagem precisa e reversível'], ['Vazão e pressão limitadas pelo tamanho da mangueira', 'Mangueira é item de troca frequente', 'Fluxo pulsante']]],
+      [['Fluido isolado na mangueira: sem contaminação e sem vazamento por selo', 'Lida com abrasivos e sólidos', 'Dosagem precisa e reversível'], ['Vazão e pressão limitadas pelo tamanho da mangueira', 'Mangueira é item de troca frequente', 'Fluxo pulsante']],
+      [['Dosagem exata e ajustável, inclusive pelo sinal de um medidor de vazão', 'Pressões altas com vazões pequenas', 'Várias cabeças num só motor'], ['Não aceita sólidos', 'Fluxo pulsante: pede amortecedor em linhas longas', 'Exige válvula de alívio e, às vezes, de contrapressão']]],
     criterios: ['Viscosidade do fluido na temperatura de operação', 'Teor, tamanho e dureza dos sólidos (abrasividade)', 'Compatibilidade química dos materiais (carcaça, membrana, mangueira, selo)', 'Vazão e altura manométrica no ponto de operação (curva da bomba × curva do sistema)', 'NPSH disponível na sucção e risco de rodar a seco', 'Precisão de dosagem, energia disponível (elétrica ou ar comprimido) e manutenção'],
     fecho: 'A melhor bomba é a que atende o fluido e o ponto de operação com folga, não a mais barata nem a mais potente.',
     erros: ['Usar centrífuga em óleo muito viscoso sem corrigir a curva para a viscosidade', 'Instalar bomba de engrenagens sem válvula de alívio na descarga', 'Deixar a centrífuga cavitar por NPSH disponível insuficiente (sucção longa, quente ou estrangulada)', 'Bomba de diafragma sem filtro, regulador e lubrificação adequada do ar', 'Escolher membrana ou mangueira sem conferir a compatibilidade química com o fluido'],
     apps: { casa: 'Centrífuga: pressurizador, piscina, poço e recalque para a caixa d’água.', predio: 'Centrífuga no recalque, na pressurização e no incêndio; dosagem de cloro com bomba dosadora de diafragma.', hospital: 'Centrífugas nas utilidades; dosadoras de diafragma ou peristálticas no tratamento de água e na dosagem de produtos.', industria: 'Engrenagens para óleos e resinas; diafragma para químicos e transferência de tambores; peristáltica para polpas, lodos e dosagem; centrífuga de polpa para grandes vazões de mineração.' },
-    fontes: ['hiRoto', 'hiRot', 'hiAodd', 'hiNpsh', 'iso2858', 'api610', 'api676', 'api675'] },
+    fontes: ['hiRoto', 'hiRot', 'hiAodd', 'hiNpsh', 'iso2858', 'api610', 'api676', 'api675', 'omelLinhas'] },
 
   { id: 'aquecimento', tema: 'Aquecimento de água', titulo: 'Aquecimento de água: solar, gás, bomba de calor ou elétrico?',
     resumo: 'Solar reduz o custo de operação e precisa de apoio; gás entrega vazão alta; bomba de calor gasta menos energia que a resistência elétrica; o elétrico tem o menor custo de instalação e o maior de operação.',
@@ -616,6 +618,7 @@ const BOMBA_TIPOS = [
   ['engrenagens', 'De engrenagens', 'Óleos e fluidos viscosos', 'Duas engrenagens levam volumes fixos de fluido entre os dentes e a carcaça (deslocamento positivo). A vazão acompanha a rotação e o rendimento melhora com a viscosidade.'],
   ['diafragma', 'De diafragma', 'Químicos corrosivos', 'Duas membranas movidas a ar comprimido alternam sucção e recalque, com válvulas de esfera. O fluido só toca a carcaça e as membranas (PP, PVDF, PTFE, inox); trabalha a seco.'],
   ['peristaltica', 'Peristáltica', 'Polpas e lamas com sólidos', 'Rolos ou sapatas comprimem uma mangueira e empurram o fluido. Sem válvulas nem selos: só a mangueira se desgasta. Boa para abrasivos, sólidos e dosagem.'],
+  ['dosadora', 'Dosadora', 'Produtos químicos em dose exata', 'Um pistão ou diafragma, movido pelo motor e um excêntrico, aspira e expulsa o mesmo volume a cada golpe, entre duas válvulas de retenção. O ajuste do curso e da frequência define a dose: cloro, flúor, coagulantes e aditivos.'],
 ];
 function bombaInner(k) {
   // engrenagem de dentes trapezoidais (10 dentes); fase desloca meio dente para a outra engrenar
@@ -650,6 +653,12 @@ function bombaInner(k) {
       '<path class="pm-pipe" d="M64 58V36H136V58M100 36V22"/><rect class="bv-bd" x="90" y="14" width="20" height="9" rx="2"/>' +
       '<path class="pm-pipe" d="M64 114V124H136V114"/><rect class="bv-bd" x="92" y="120" width="16" height="12" rx="2"/>';
   }
+  if (k === 'dosadora') return base +   // cabeçote com diafragma, válvulas de retenção, redutor com ajuste de curso e motor
+    '<path class="pm-pipe" d="M38 62V22M38 112V132"/><circle class="pm-roll" cx="38" cy="40" r="6"/><circle class="pm-roll" cx="38" cy="122" r="6"/>' +
+    '<rect class="bv-bd" x="18" y="60" width="42" height="54" rx="8"/><path class="pm-diaf" d="M52 64q-9 23 0 46"/>' +
+    '<rect class="bv-act" x="58" y="80" width="10" height="14"/><rect class="bv-bd" x="66" y="56" width="50" height="76" rx="6"/>' +
+    '<circle class="bv-act" cx="91" cy="44" r="10"/><rect class="bv-act" x="87" y="50" width="8" height="8"/>' + motor(122, 66, 62, 42) +
+    '<path class="pm-arrow" d="M28 30l10-10 10 10"/>';
   return base +   // peristáltica
     '<circle class="bv-bd" cx="72" cy="84" r="46"/><circle class="bv-bore" cx="72" cy="84" r="37"/>' +
     '<path class="pm-hose" d="M34 134V88a38 38 0 1 1 76 0V134"/>' +
@@ -659,7 +668,7 @@ function bombaInner(k) {
 const bombaSVG = k => `<svg viewBox="0 0 200 150" role="img" aria-label="Desenho esquemático: bomba ${k}">${bombaInner(k)}</svg>`;
 function bombaTiposHTML(h = 'h4') {
   return `
-      <${h} class="cp-h">Os 4 tipos, em desenho</${h}>
+      <${h} class="cp-h">Os 5 tipos, em desenho</${h}>
       <ol class="bvt bvt--bombas">${BOMBA_TIPOS.map(([id, nome, fluido, txt], i) => `
         <li class="bvt__item"><figure>${bombaSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${fluido}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
       </ol>

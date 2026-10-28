@@ -1201,7 +1201,7 @@ const MAGAZINES = [
     add('Áreas de aplicação', pick(SYSTEMS, sysText, s => ({ href: '/sistemas/' + s.id.slice(4), sheet: s.id, title: s.name, sub: snippet(sysText(s), terms, s.desc) })));
 
     const matText = m => { const p = productById[m.rel] || { tipos: m.tipos || [], escolha: m.escolha || [], normas: [], desc: '' };
-      return [m.cat, m.name, m.apps, m.desc, p.desc, ...m.normas, ...p.normas, ...p.tipos, ...p.escolha, ...m.specs.flat(), ...(MANUFACTURERS[m.id] || []).map(f => f[0])].join(' '); };
+      return [m.cat, m.name, m.apps, m.desc, p.desc, ...m.normas, ...p.normas, ...p.tipos, ...p.escolha, ...m.specs.flat(), ...(m.chaves || []), ...(MANUFACTURERS[m.id] || []).map(f => f[0])].join(' '); };
     add('Produtos e materiais', pick(CATALOG, matText, m => ({ href: '/materiais/' + m.id.slice(4), sheet: m.id, title: m.name, sub: snippet(matText(m), terms, m.apps) })),
       { label: 'Ver no catálogo', run: () => { searchCatalog(q); goTo('materiais'); } });
 

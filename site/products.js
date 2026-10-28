@@ -242,13 +242,14 @@ const PRODUCTS = [
   // Equipamentos
   { id: 'bombas', g: 'equipamentos', name: 'Bombas',
     desc: 'Fornecem a energia que move o fluido: recalque predial, pressurização, irrigação, combate a incêndio e processos.',
-    tipos: ['Centrífugas (monoestágio e multiestágio)', 'Autoescorvantes', 'Submersas e de poço', 'Deslocamento positivo', 'Bombas de incêndio'],
+    tipos: ['Centrífugas (monoestágio e multiestágio)', 'Centrífugas normalizadas (ISO 2858, EN 733) e de processo (ANSI/ASME B73.1, API 610)', 'Autoescorvantes', 'Submersíveis para esgoto e drenagem', 'Verticais de poço e de turbina', 'Para polpa (mineração)', 'Deslocamento positivo', 'Dosadoras (pistão e diafragma)', 'Bombas de incêndio'],
     escolha: ['Vazão e altura manométrica total', 'NPSH disponível maior que o requerido, para evitar cavitação', 'Operar perto do ponto de máxima eficiência', 'Materiais compatíveis com o fluido'],
     normas: ['NBR 5626', 'NBR 13714', 'ISO 9906'],
     fotos: [
       { src: 'img/produtos/bombas-1.webp', alt: 'Bombas centrífugas em linha instaladas na casa de máquinas', legenda: 'Bombas em linha', autor: 'Saud', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Centrifugal_Pump.jpg' },
       { src: 'img/produtos/bombas-2.webp', alt: 'Bomba centrífuga de sucção frontal com motor', legenda: 'Bomba centrífuga', autor: 'Bitjungle', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Centrifugal_pumps.jpg' },
       { src: 'img/produtos/bombas-3.webp', alt: 'Técnico trabalhando em uma bomba centrífuga', legenda: 'Montagem da bomba', autor: 'KSB Aktiengesellschaft, Frankenthal', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Chemienormpumpe_in_der_Fertigung.jpg' },
+      { src: 'img/produtos/bombas-4.webp', alt: 'Bomba centrífuga normalizada KSB Etanorm com motor e inversor de frequência sobre a base', legenda: 'Bomba normalizada com inversor', autor: 'KSB Aktiengesellschaft, Frankenthal', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:KSB_09_Etanorm_mit_Motor_und_Frequenzumrichter.jpg' },
     ] },
   { id: 'compressores', g: 'equipamentos', name: 'Compressores',
     desc: 'Geram o ar comprimido para ferramentas, automação e processos, formando um sistema único com o tratamento e a rede de ar.',
