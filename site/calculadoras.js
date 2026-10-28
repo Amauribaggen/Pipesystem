@@ -179,4 +179,37 @@
     hint('gaHint', avisos.join(' '), warn);
   }
   on('calcGolpe', calcGolpe);
+
+  // ---------- 7. Aquecedor de água: vazão simultânea, potência, aquecedor a gás e reservatório ----------
+  // potência: Q (L/min) × 4,186 kJ/kg·°C × ΔT / 60 = kW. Aquecedor a gás: vazão de etiqueta com ΔT de 20 °C (como na Rinnai).
+  const COMERCIAL = [100, 150, 200, 300, 400, 500, 600, 800, 1000, 1500, 2000];
+  function calcAq() {
+    const Q = v('aqDuchas') * v('aqVd') + v('aqTorn') * v('aqVt'), dT = v('aqTq') - v('aqTf');
+    if (!(Q > 0 && dT > 0)) { ['aqQ', 'aqP', 'aqGas', 'aqV'].forEach(id => set(id, '—')); hint('aqHint', 'Informe ao menos um ponto e uma temperatura do banho maior que a da água fria.', true); return; }
+    const kW = Q * 4.186 * dT / 60, etiq = Q * dT / 20;
+    set('aqQ', `${n(Q, 1)} L/min`);
+    set('aqP', `${n(kW, 1)} kW (${n(Q * 60 * dT, 0)} kcal/h)`);
+    set('aqGas', `no mínimo ${n(Math.ceil(etiq), 0)} L/min`);
+    const dia = v('aqPes') * v('aqCons'), res = COMERCIAL.find(x => x >= dia) || dia;
+    set('aqV', `${n(dia, 0)} L/dia → ${n(res, 0)} L`);
+    const kwDucha = v('aqVd') * 4.186 * dT / 60, qMax = 7.5 * 60 / (4.186 * dT);
+    const avisos = [`A vazão de etiqueta dos aquecedores a gás vale para um aumento de 20 °C; com a água a ${n(v('aqTf'), 0)} °C e banho a ${n(v('aqTq'), 0)} °C o aumento é de ${n(dT, 0)} °C.`];
+    avisos.push(kwDucha > 7.5 ? `Um chuveiro elétrico de 7,5 kW não aquece ${n(v('aqVd'), 1)} L/min a essa temperatura: a vazão cai para cerca de ${n(qMax, 1)} L/min.` : `Cada ducha pede ${n(kwDucha, 1)} kW: um chuveiro elétrico de 7,5 kW dá conta.`);
+    avisos.push(`Solar: área de coletores estimada entre ${n(dia / 100, 1)} e ${n(dia / 80, 1)} m², conforme a região; o projeto segue a NBR 15569. Confira também nas calculadoras dos fabricantes, em Ferramentas gratuitas.`);
+    hint('aqHint', avisos.join(' '), kwDucha > 7.5);
+  }
+  on('calcAq', calcAq);
+
+  // ---------- 8. Aquecimento de ambiente: estimativa pela regra prática por volume ----------
+  // 30, 40 ou 50 kcal/h por m³ (isolamento bom, médio ou ruim), ajustado pelo clima. 1 kcal/h = 1,163 W; 1 W = 3,412 BTU/h.
+  function calcAmb() {
+    const vol = v('amA') * v('amH'), kcal = vol * v('amIso') * v('amClima'), W = kcal * 1.163;
+    if (!(vol > 0)) { ['amP', 'amBtu', 'amPort', 'amCons'].forEach(id => set(id, '—')); return; }
+    set('amP', `${n(W / 1000, 1)} kW (${n(kcal, 0)} kcal/h)`);
+    set('amBtu', `${n(W * 3.412, 0)} BTU/h`);
+    set('amPort', `${n(Math.ceil(W / 2000), 0)} aparelho(s)`);
+    set('amCons', `${n(W / 1000, 1)} kW × cerca de ${n(W / 3000, 1)} kW`);
+    hint('amHint', `Volume de ${n(vol, 1)} m³. Estimativa pela regra prática de potência por volume: serve para comparar opções, não substitui o cálculo de carga térmica. No ar-condicionado, escolha o modelo pela capacidade de aquecimento informada na etiqueta, que costuma ser diferente da de resfriamento. Lareiras e aquecedores a gás exigem chaminé e entrada de ar (NBR 13103).`, false);
+  }
+  on('calcAmb', calcAmb);
 })();

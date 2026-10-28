@@ -17,6 +17,18 @@ const CMP_FONTES = {
   iso16422: ['ISO 16422 — Tubos e juntas de PVC orientado (PVC-O) para condução de água sob pressão', 'https://www.iso.org/', 'norma'],
   iso2531: ['ISO 2531 / ABNT NBR 7675 — Tubos e conexões de ferro dúctil para água', 'https://www.iso.org/', 'norma'],
   iso4427: ['ISO 4427 / ABNT NBR 15561 — Tubos de polietileno (PEAD) para abastecimento de água', 'https://www.iso.org/', 'norma'],
+  rinnaiEscolha: ['Rinnai — Escolha do aquecedor a gás: soma das duchas usadas ao mesmo tempo, vazão de etiqueta com aumento de 20 °C e fórmulas próximas às da ABNT NBR 16057', 'https://www.rinnai.com.br/escolha-aquecedor-a-gas/', 'fab'],
+  rinnaiBc: ['Rinnai — Dimensionador de bomba de calor para piscina', 'https://www.rinnai.com.br/dimensionador-bomba-de-calor/', 'fab'],
+  soletrolSim: ['Soletrol — Simulador de consumo diário de água quente baseado na ABNT NBR 15569', 'https://www.soletrol.com.br/extras/simulador-de-consumo-de-agua-quente/', 'fab'],
+  tsol: ['Valentin Software — T*SOL online: calculadora grátis de aquecimento solar (rendimento e fração solar)', 'https://valentin-software.com/en/?p=4916', 'artigo'],
+  mideaBtu: ['Midea — Calculadora de BTU: área, pessoas, aparelhos e incidência de sol', 'https://www.midea.com.br/calculadora-de-btu', 'fab'],
+  webArQuente: ['WebArCondicionado — O cálculo de BTU vale para o frio e para o quente? Aquecer depende também de ventilação e paredes', 'https://webarcondicionado.com.br/calculo-btu-vale-para-o-ar-condicionado-frio-e-tambem-para-o-quente', 'artigo'],
+  doeHpwh: ['U.S. Department of Energy — Aquecedores de água com bomba de calor: de 2 a 3 vezes mais eficientes que os de resistência elétrica', 'https://bsesc.energy.gov/energy-basics/water-heaters-heat-pumps', 'estudo'],
+  nbr16057: ['ABNT NBR 16057 — Sistema de aquecimento de água a gás (SAAG): projeto e instalação', 'https://www.abntcatalogo.com.br/', 'norma'],
+  nbr5626: ['ABNT NBR 5626 — Sistemas prediais de água fria e água quente: projeto, execução, operação e manutenção', 'https://www.abntcatalogo.com.br/', 'norma'],
+  nbr5410: ['ABNT NBR 5410 — Instalações elétricas de baixa tensão (circuito próprio e proteção diferencial-residual para chuveiros e aquecedores)', 'https://www.abntcatalogo.com.br/', 'norma'],
+  nbr16401: ['ABNT NBR 16401 — Instalações de ar-condicionado: sistemas centrais e unitários', 'https://www.abntcatalogo.com.br/', 'norma'],
+  en1264: ['EN 1264 — Sistemas de aquecimento e resfriamento radiante embutidos no piso, parede e teto com água', 'https://standards.cencenelec.eu/', 'norma'],
   nbr10897: ['ABNT NBR 10897 — Sistemas de proteção contra incêndio por chuveiros automáticos', 'https://www.abntcatalogo.com.br/', 'norma'],
   nbr13714: ['ABNT NBR 13714 — Sistemas de hidrantes e de mangotinhos para combate a incêndio', 'https://www.abntcatalogo.com.br/', 'norma'],
   ul1821: ['UL — Q&A sobre tubos plásticos de sprinkler (UL 1821): uso em ocupações de risco leve da NFPA 13 e residenciais (NFPA 13R/13D)', 'https://ul.com/news/qa-installation-plastic-fire-sprinkler-pipe-exposed-locations', 'norma'],
@@ -388,20 +400,53 @@ const CMPS = [
     apps: { casa: 'Centrífuga: pressurizador, piscina, poço e recalque para a caixa d’água.', predio: 'Centrífuga no recalque, na pressurização e no incêndio; dosagem de cloro com bomba dosadora de diafragma.', hospital: 'Centrífugas nas utilidades; dosadoras de diafragma ou peristálticas no tratamento de água e na dosagem de produtos.', industria: 'Engrenagens para óleos e resinas; diafragma para químicos e transferência de tambores; peristáltica para polpas, lodos e dosagem; centrífuga de polpa para grandes vazões de mineração.' },
     fontes: ['hiRoto', 'hiRot', 'hiAodd', 'hiNpsh', 'iso2858', 'api610', 'api676', 'api675', 'omelLinhas'] },
 
-  { id: 'aquecimento', tema: 'Aquecimento de água', titulo: 'Aquecimento de água: solar, gás, bomba de calor ou elétrico?',
-    resumo: 'Solar reduz o custo de operação e precisa de apoio; gás entrega vazão alta; bomba de calor gasta menos energia que a resistência elétrica; o elétrico tem o menor custo de instalação e o maior de operação.',
-    opcoes: [['Solar', 'solar'], ['Gás', 'caldeiras'], ['Bomba de calor', 'solar'], ['Elétrico', 'caldeiras']],
-    linhas: [
-      ['Custo de instalação', ['Médio a alto', 'Médio', 'Alto', 'Baixo']],
-      ['Custo de operação', ['O menor (apoio em dias nublados)', 'Médio (tarifa do gás)', 'Baixo (usa várias vezes menos energia que a resistência)', 'O maior']],
-      ['Vazão de água quente', ['Conforme o reservatório', 'Alta e contínua (passagem)', 'Conforme o reservatório', 'Limitada']],
-      ['Exigências', ['Área de telhado e orientação {nbr15569}', 'Ventilação e chaminé {nbr13103}', 'Local ventilado para a unidade externa', 'Circuito elétrico dimensionado']],
-      ['Normas', ['NBR 15569', 'NBR 13103 · NBR 15526', '—', 'NBR 5410 (elétrica)']],
+  { id: 'aquecimento', tema: 'Aquecimento', titulo: 'Aquecedores de água e de ambiente residenciais: qual escolher?',
+    tipos: 'aquecedores',
+    chaves: ['aquecedor de água', 'aquecedor a gás', 'aquecedor de passagem', 'boiler', 'chuveiro elétrico', 'aquecedor solar', 'bomba de calor', 'aquecedor de ambiente', 'aquecedor elétrico', 'aquecedor a óleo', 'infravermelho', 'lareira', 'piso aquecido', 'piso radiante', 'radiador', 'calefação', 'ar-condicionado quente e frio', 'BTU', 'Rinnai', 'Soletrol'],
+    resumo: 'Água: elétrico de passagem (chuveiro) para um ponto e pouca vazão; gás de passagem para vários banhos ao mesmo tempo; solar com apoio para gastar pouco no dia a dia; bomba de calor onde não há gás e se quer economia; boiler elétrico ou a gás quando se precisa de reserva de água quente. Ambiente: ar-condicionado quente e frio para aquecer gastando menos eletricidade; aquecedores elétricos portáteis para uso curto em cômodos pequenos; piso aquecido e radiadores para aquecer a casa toda com conforto; lareira para o clima e o calor de ambiente, com chaminé e ventilação {rinnaiEscolha}{doeHpwh}{nbr13103}.',
+    intro: 'Aquecer água e aquecer o ar da casa são problemas diferentes, mas a escolha segue as mesmas perguntas: qual energia está disponível (eletricidade, gás, sol), quanto custa usar, quanto custa instalar e quanto espaço e obra cada sistema pede. Por isso esta ficha traz duas tabelas: a primeira compara os aquecedores de água do banho e da cozinha; a segunda, os aquecedores de ambiente. Para dimensionar, use as calculadoras de Aquecedor de água e Aquecimento de ambiente na seção Dimensionamento, ou as calculadoras on-line dos fabricantes citadas nas fontes {rinnaiEscolha}{soletrolSim}{mideaBtu}.',
+    opcoes: [['Elétrico de passagem', 'caldeiras'], ['Elétrico de acumulação (boiler)', 'caldeiras'], ['Gás de passagem', 'caldeiras'], ['Gás de acumulação', 'caldeiras'], ['Solar com apoio', 'solar'], ['Bomba de calor', 'solar'],
+      ['Elétrico de resistência (termoventilador)', 'aquecedores-ambiente'], ['A óleo', 'aquecedores-ambiente'], ['Infravermelho (quartzo ou halogênio)', 'aquecedores-ambiente'], ['Ar-condicionado quente e frio', 'aquecedores-ambiente'], ['Lareira (lenha, gás ou etanol)', 'aquecedores-ambiente'], ['Piso aquecido', 'aquecedores-ambiente'], ['Radiadores com caldeira', 'aquecedores-ambiente']],
+    tabelas: [
+      { titulo: 'Aquecedores de água: banho, cozinha e lavanderia', cols: [0, 1, 2, 3, 4, 5], linhas: [
+        ['Como funciona', ['Resistência aquece a água enquanto ela passa (chuveiro, torneira elétrica)', 'Resistência aquece a água guardada num reservatório isolado', 'Queimador aquece a água enquanto ela passa, só quando a torneira abre', 'Queimador aquece a água guardada num reservatório', 'Coletores no telhado aquecem a água do reservatório; uma resistência ou o gás completa nos dias sem sol', 'Retira calor do ar e passa para a água, como uma geladeira ao contrário']],
+        ['Custo de instalação', ['O menor', 'Baixo a médio', 'Médio (rede de gás, chaminé, tubulação de água quente)', 'Médio a alto', 'Médio a alto (coletores, reservatório, apoio)', 'Alto']],
+        ['Custo de uso', ['O maior por litro aquecido', 'Alto, com perda de calor do reservatório', 'Médio (tarifa do gás)', 'Médio, com perda de calor do reservatório', 'O menor: o sol paga a maior parte', 'Baixo: de 2 a 3 vezes mais eficiente que a resistência {doeHpwh}']],
+        ['Vazão e uso simultâneo', ['Um ponto por aparelho; no inverno a vazão cai para manter a temperatura', 'Limitada pelo volume guardado e pelo tempo de recuperação', 'Alta e contínua, pela vazão do aparelho (de 7 a mais de 30 L/min) {rinnaiEscolha}', 'Pelo volume guardado; recupera mais rápido que o elétrico', 'Pelo volume do reservatório e pelo apoio', 'Pelo volume do reservatório; recupera devagar']],
+        ['Espaço e instalação', ['Circuito elétrico próprio, com disjuntor e proteção DR {nbr5410}', 'Reservatório em forro, área técnica ou laje', 'Parede ventilada ou área externa, com exaustão; nunca no banheiro fechado {nbr13103}', 'Reservatório e chaminé em área ventilada {nbr13103}', 'Telhado bem orientado e reservatório próximo {nbr15569}', 'Unidade em local ventilado e reservatório; faz algum ruído']],
+        ['Normas', ['NBR 5410 {nbr5410}', 'NBR 5626 · NBR 5410 {nbr5626}{nbr5410}', 'NBR 16057 · NBR 13103 · NBR 15526 {nbr16057}{nbr13103}', 'NBR 16057 · NBR 13103 {nbr16057}{nbr13103}', 'NBR 15569 · NBR 5626 {nbr15569}{nbr5626}', 'NBR 5626 · NBR 5410 {nbr5626}{nbr5410}']],
+      ] },
+      { titulo: 'Aquecedores de ambiente residenciais', cols: [6, 7, 8, 9, 10, 11, 12], linhas: [
+        ['Como aquece', ['Resistência aquece o ar, e um ventilador espalha', 'Resistência aquece um óleo selado nas aletas, que aquece o ar devagar', 'Radiação: aquece pessoas e objetos à frente, não o ar', 'Bomba de calor: tira calor do ar de fora e leva para dentro', 'Chama aquece por radiação e pelo ar; com chaminé (lenha, gás) ou sem (etanol)', 'Cabos elétricos ou tubos de água quente sob o piso aquecem o chão', 'Água quente da caldeira (ou bomba de calor) circula em radiadores nas paredes']],
+        ['Rapidez', ['Imediata, perto do aparelho', 'Lenta para começar; mantém o calor depois de desligar', 'Imediata para quem está na frente', 'Rápida no cômodo todo', 'Rápida perto da lareira', 'Lenta para começar; calor uniforme e contínuo', 'Média; aquece a casa toda']],
+        ['Custo de uso', ['Alto: cada 1 kW de calor gasta 1 kW de eletricidade', 'Alto (também é resistência)', 'Alto, mas só aquece onde se está', 'O menor entre os elétricos: entrega mais calor que a eletricidade que consome', 'Lenha barata em regiões produtoras; gás e etanol mais caros', 'Elétrico: alto; a água: médio, conforme a fonte de calor', 'Médio, conforme o gás ou a bomba de calor']],
+        ['Segurança e ventilação', ['Não cobrir nem usar perto de cortinas; desliga se tombar', 'Superfície quente, porém sem chama nem ar ressecado pelo ventilador', 'Manter distância de tecidos e móveis', 'Sem chama nem gases', 'Monóxido de carbono e fumaça: chaminé, entrada de ar e nunca dormir com lareira sem exaustão {nbr13103}', 'Sem chama; termostato no piso', 'Caldeira a gás com exaustão para fora {nbr13103}']],
+        ['Instalação', ['Só tomada (até cerca de 2.000 W por aparelho)', 'Só tomada', 'Tomada ou fixo na parede', 'Unidade interna, externa e circuito próprio {nbr16401}', 'Obra de chaminé (lenha, gás) e rede de gás quando for a gás', 'Na obra ou na troca do piso', 'Obra de tubulação, caldeira e radiadores']],
+        ['Onde usar', ['Banheiros e quartos pequenos, uso curto', 'Quartos, durante a noite', 'Varandas, áreas abertas e escritórios', 'Salas e quartos em regiões de inverno ameno a frio', 'Salas, pelo clima e como apoio', 'Casas novas em regiões frias, banheiros', 'Casas inteiras em regiões frias']],
+        ['Normas', ['NBR 5410 {nbr5410}', 'NBR 5410 {nbr5410}', 'NBR 5410 {nbr5410}', 'NBR 16401 {nbr16401}', 'NBR 13103 (a gás) {nbr13103}', 'EN 1264 (a água) {en1264}', 'NBR 13103 · EN 1264 {nbr13103}{en1264}']],
+      ] },
     ],
-    pros: [[['Energia gratuita'], ['Precisa de apoio e espaço']], [['Vazão alta'], ['Exige ventilação e rede de gás']], [['Eficiente'], ['Investimento alto']], [['Barato para instalar'], ['Operação cara', 'Pico na rede elétrica']]],
-    erros: ['Instalar aquecedor a gás em banheiro sem ventilação', 'Rede de água quente em PVC marrom'],
-    apps: { casa: 'Solar com apoio elétrico ou gás.', predio: 'Central a gás ou solar coletivo com recirculação.', hospital: 'Central com redundância e controle de temperatura.', industria: 'Caldeira ou bomba de calor conforme a carga.' },
-    fontes: ['nbr15569', 'nbr13103'] },
+    linhas: [],
+    pros: [
+      [['Mais barato para comprar e instalar', 'Água quente na hora'], ['Gasta mais energia', 'No inverno, menos vazão ou água morna', 'Pesa no pico de consumo elétrico']],
+      [['Reserva de água quente para vários pontos', 'Simples de instalar'], ['Perde calor parado', 'Acaba a água quente se o consumo passa do volume']],
+      [['Vários banhos ao mesmo tempo', 'Água quente sem limite de volume'], ['Rede de gás, exaustão e manutenção anual', 'Pequena espera até a água quente chegar ao ponto']],
+      [['Grande volume de uma vez (banheiras, vários pontos)'], ['Perde calor parado', 'Ocupa espaço e pede chaminé']],
+      [['O menor custo de uso', 'Energia limpa'], ['Investimento inicial maior', 'Depende de telhado bem orientado e de apoio']],
+      [['Muito econômico onde não há gás', 'Funciona com chuva e à noite'], ['Investimento alto', 'Ruído e local ventilado']],
+      [['Barato e portátil', 'Aquece rápido'], ['Consumo alto', 'Só para cômodos pequenos e uso curto']],
+      [['Silencioso, calor suave', 'Não resseca o ar com ventilação forçada'], ['Demora para aquecer', 'Consumo alto']],
+      [['Aquece a pessoa na hora, até ao ar livre'], ['Não aquece o ambiente', 'Luz e calor concentrados']],
+      [['Aquece e esfria', 'Gasta bem menos eletricidade que a resistência'], ['Instalação com obra', 'Rende menos em frio intenso; confira a capacidade de aquecimento na ficha {webArQuente}']],
+      [['Aconchego e calor intenso', 'Lenha barata em algumas regiões'], ['Chaminé, fumaça e risco de monóxido de carbono', 'Lareira aberta perde muito calor pela chaminé']],
+      [['O mais confortável: calor uniforme do chão', 'Invisível e silencioso'], ['Precisa ser feito na obra', 'Lento para responder']],
+      [['Aquece a casa toda', 'Pode usar a mesma caldeira da água quente'], ['Obra e investimento altos', 'Radiadores ocupam parede']],
+    ],
+    criterios: ['Energia disponível na casa: eletricidade (potência da entrada), gás encanado ou de botijão, telhado para coletores', 'Quantos pontos de água quente são usados ao mesmo tempo e quantas pessoas moram na casa', 'Clima da região: temperatura da água fria e duração do inverno', 'Custo de instalação contra custo de uso ao longo dos anos', 'Ventilação, chaminé e segurança de aparelhos a gás e a lenha', 'Espaço disponível e obra possível (casa pronta ou em construção)'],
+    fecho: 'Não existe o melhor aquecedor em geral: existe o que combina com a energia disponível, com o uso da família e com o clima. Dimensione antes de comprar: aquecedor pequeno não dá conta, e grande demais custa mais e gasta à toa {rinnaiEscolha}{soletrolSim}.',
+    erros: ['Instalar aquecedor a gás dentro do banheiro ou em cômodo sem ventilação e exaustão', 'Usar aquecedor de ambiente a gás sem chaminé em quarto fechado (risco de monóxido de carbono)', 'Escolher o aquecedor a gás pela vazão sem considerar a temperatura da água fria no inverno', 'Ligar chuveiro elétrico sem circuito próprio e sem DR', 'Dimensionar o ar-condicionado só pela tabela de resfriamento, sem conferir a capacidade de aquecimento', 'Cobrir aquecedor elétrico com roupas para secar', 'Rede de água quente em PVC marrom (de água fria)'],
+    apps: { casa: 'Água: solar com apoio a gás ou elétrico, ou gás de passagem. Ambiente: ar-condicionado quente e frio nos quartos e salas; piso aquecido no banheiro em regiões frias.', predio: 'Água: gás de passagem por apartamento ou central coletiva (gás ou solar com recirculação). Ambiente: ar-condicionado quente e frio.', hospital: 'Água: central a gás ou bomba de calor com redundância e controle de temperatura. Ambiente: climatização central conforme a NBR 7256.', industria: 'Água de processo e banho: caldeira ou bomba de calor industrial; ambiente: aquecimento central ou infravermelho em áreas abertas.' },
+    fontes: ['rinnaiEscolha', 'rinnaiBc', 'soletrolSim', 'tsol', 'mideaBtu', 'webArQuente', 'doeHpwh', 'nbr5626', 'nbr5410', 'nbr13103', 'nbr15569', 'nbr16057', 'nbr16401', 'en1264'] },
 
   { id: 'reservatorios', tema: 'Reservatórios', titulo: "Caixa d'água: polietileno, fibra de vidro ou concreto?",
     resumo: 'Polietileno até alguns milhares de litros pela leveza e preço; fibra de vidro para volumes maiores; concreto quando o reservatório faz parte da estrutura do prédio.',
@@ -887,7 +932,67 @@ function esfTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Desenhos esquemáticos PipeSystem, em corte e fora de escala. Esfera cromada, sedes em branco, corpo em cinza; alavanca ao longo do tubo = válvula aberta; atravessada = fechada.</p>`;
 }
-const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML };
+// Aquecedores de água e de ambiente: desenhos próprios (160 × 140)
+// [id, nome, grupo, descrição]
+const AQ_TIPOS = [
+  ['eletpass', 'Elétrico de passagem', 'Água', 'O chuveiro ou a torneira elétrica aquece a água enquanto ela passa pela resistência. Barato e simples, mas é o que mais gasta energia; no inverno a vazão cai.'],
+  ['eletacum', 'Elétrico de acumulação', 'Água', 'Boiler com resistência e isolamento térmico: guarda a água quente para vários pontos. Perde calor parado e acaba se o consumo passar do volume.'],
+  ['gaspass', 'Gás de passagem', 'Água', 'O queimador acende quando a torneira abre e aquece a água em fluxo contínuo. Atende vários banhos ao mesmo tempo; precisa de exaustão para fora.'],
+  ['gasacum', 'Gás de acumulação', 'Água', 'Reservatório com queimador embaixo e chaminé no meio: grande volume de água quente de uma vez, para banheiras e muitos pontos.'],
+  ['solar', 'Solar com apoio', 'Água', 'Coletores no telhado aquecem a água que sobe ao reservatório térmico; uma resistência ou o gás completa nos dias nublados. O menor custo de uso.'],
+  ['bombacalor', 'Bomba de calor', 'Água', 'Retira calor do ar e passa para a água do reservatório, gastando de 2 a 3 vezes menos energia que a resistência. Boa onde não há gás.'],
+  ['termo', 'Elétrico de resistência', 'Ambiente', 'Termoventilador ou aquecedor de resistência: aquece rápido o ar perto do aparelho. Barato e portátil, com consumo alto: para cômodos pequenos e uso curto.'],
+  ['oleo', 'A óleo', 'Ambiente', 'Radiador com óleo selado aquecido por resistência: calor suave e silencioso, sem ventilador. Demora para aquecer e mantém o calor depois de desligado.'],
+  ['infra', 'Infravermelho', 'Ambiente', 'Lâmpadas de quartzo ou halogênio aquecem por radiação quem está na frente, sem aquecer o ar. Varandas, áreas abertas e escritórios.'],
+  ['arcond', 'Ar-condicionado quente e frio', 'Ambiente', 'A bomba de calor tira calor do ar de fora e leva para dentro: aquece o cômodo todo gastando bem menos eletricidade que a resistência.'],
+  ['lareira', 'Lareira', 'Ambiente', 'A lenha, a gás ou a etanol: calor intenso e aconchego. As de lenha e gás precisam de chaminé; todas pedem entrada de ar e cuidado com o monóxido de carbono.'],
+  ['piso', 'Piso aquecido', 'Ambiente', 'Cabos elétricos ou tubos de água quente sob o revestimento aquecem o chão: o calor mais uniforme e confortável, feito na obra.'],
+  ['radiador', 'Radiadores com caldeira', 'Ambiente', 'A caldeira (a gás ou bomba de calor) aquece água que circula em radiadores nas paredes e aquece a casa toda.'],
+];
+function aqInner(k) {
+  const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  const fria = d => `<path class="aq-fria" d="${d}"/>`, quente = d => `<path class="aq-quente" d="${d}"/>`, gas = d => `<path class="aq-gas" d="${d}"/>`;
+  const chama = (x, y, e = 1) => `<path class="aq-chama" transform="translate(${x} ${y}) scale(${e})" d="M0 0c-8-4-8-14 0-22 0 6 6 8 6 14 3-3 3-7 2-10 6 6 6 16-8 18z"/>`;
+  const calor = (x, y, n = 3, h = 30) => Array.from({ length: n }, (_, i) => `<path class="aq-calor" d="M${x + i * 12} ${y}q-5 ${-h / 4} 0 ${-h / 2}t0 ${-h / 2}"/>`).join('');
+  const resist = (x, y, w) => `<path class="aq-res" d="M${x} ${y}${Array.from({ length: Math.floor(w / 8) }, (_, i) => `l4 ${i % 2 ? 6 : -6}l4 ${i % 2 ? -6 : 6}`).join('')}"/>`;
+  const tanque = (x, y, w, h) => `<rect class="aq-corpo" x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(w, h) / 2}"/>`;
+  if (k === 'eletpass') return '<rect class="spk-teto" x="0" y="0" width="160" height="10"/>' + fria('M80 10V30') + '<rect class="aq-corpo" x="56" y="30" width="48" height="34" rx="10"/>' + resist(64, 47, 32) +
+    '<path class="aq-cabo" d="M104 40q20 0 22-30"/>' + Array.from({ length: 7 }, (_, i) => `<path class="aq-jato" d="M${62 + i * 6} 68l${(i - 3) * 4} 50"/>`).join('') + txt(122, 130, '5,5 a 7,5 kW');
+  if (k === 'eletacum') return tanque(14, 34, 132, 58) + resist(30, 66, 96) + fria('M30 110V92') + quente('M130 34V14H150') + txt(80, 58, 'boiler') + txt(32, 128, 'entra fria') + txt(124, 10, 'sai quente');
+  if (k === 'gaspass') return '<rect class="aq-metal" x="70" y="0" width="20" height="30"/>' + '<rect class="aq-corpo" x="48" y="28" width="64" height="70" rx="6"/>' + chama(80, 82, 1.1) +
+    '<rect class="aq-visor" x="68" y="40" width="24" height="14" rx="2"/>' + fria('M60 98V128') + quente('M100 98V128') + gas('M80 98V136') + txt(94, 14, 'exaustão', 'start') + txt(30, 120, 'fria') + txt(130, 120, 'quente');
+  if (k === 'gasacum') return '<rect class="aq-metal" x="72" y="0" width="16" height="22"/>' + tanque(46, 20, 68, 96) + '<path class="aq-metal" d="M76 22V108"/>' + chama(80, 124, .9) + gas('M30 126H70') + fria('M58 20V6H30') + quente('M102 20V6H136');
+  if (k === 'solar') return '<circle class="aq-sol" cx="22" cy="20" r="12"/>' + '<path class="aq-raio" d="M38 30l14 10M22 38v12M8 30L0 36"/>' +
+    '<g transform="rotate(-24 90 104)"><rect class="aq-coletor" x="40" y="86" width="100" height="40" rx="2"/>' + Array.from({ length: 7 }, (_, i) => `<path class="aq-quente" d="M${50 + i * 13} 88v36"/>`).join('') + '</g>' +
+    tanque(92, 30, 62, 30) + quente('M140 60V70') + fria('M100 60V78') + txt(122, 26, 'reservatório');
+  if (k === 'bombacalor') return '<rect class="aq-corpo" x="10" y="54" width="62" height="58" rx="6"/><circle class="aq-ventil" cx="41" cy="83" r="20"/><path class="aq-metal" d="M41 63v40M21 83h40"/>' +
+    tanque(98, 18, 48, 104) + '<path class="aq-calor" d="M72 70h26M72 96h26"/>' + fria('M110 122V136') + quente('M134 18V6') + txt(41, 128, 'ar') + txt(122, 76, 'água');
+  if (k === 'termo') return '<rect class="aq-corpo" x="40" y="44" width="56" height="70" rx="10"/>' + Array.from({ length: 5 }, (_, i) => `<path class="aq-grade" d="M50 ${58 + i * 9}h36"/>`).join('') + resist(52, 104, 32) + calor(104, 98, 3, 40);
+  if (k === 'oleo') return Array.from({ length: 7 }, (_, i) => `<rect class="aq-corpo" x="${28 + i * 15}" y="30" width="12" height="82" rx="6"/>`).join('') + '<rect class="aq-metal" x="26" y="112" width="110" height="6"/><circle class="aq-metal" cx="36" cy="124" r="5"/><circle class="aq-metal" cx="126" cy="124" r="5"/>' + calor(52, 26, 4, 24);
+  if (k === 'infra') return '<rect class="aq-corpo" x="10" y="40" width="40" height="64" rx="6"/><rect class="aq-brasa" x="18" y="48" width="24" height="48" rx="3"/>' +
+    Array.from({ length: 5 }, (_, i) => `<path class="aq-raio" d="M54 ${52 + i * 10}L${110 + i * 3} ${30 + i * 22}"/>`).join('') + '<circle class="aq-pessoa" cx="132" cy="54" r="9"/><path class="aq-pessoa" d="M132 64v34M120 76h24M132 98l-8 24M132 98l8 24"/>';
+  if (k === 'arcond') return '<rect class="spk-teto" x="0" y="0" width="10" height="140"/><rect class="aq-corpo" x="12" y="16" width="100" height="30" rx="8"/><path class="aq-grade" d="M22 40h80"/>' +
+    '<path class="aq-calor" d="M30 52q8 20 4 40M56 52q8 20 4 44M82 52q8 20 4 40"/>' + '<rect class="aq-corpo" x="118" y="90" width="38" height="36" rx="4"/><circle class="aq-ventil" cx="137" cy="108" r="12"/>' + txt(137, 84, 'externa');
+  if (k === 'lareira') return '<rect class="aq-tijolo" x="20" y="34" width="120" height="96"/><rect class="aq-metal" x="60" y="0" width="40" height="34"/><rect class="aq-corpo" x="14" y="32" width="132" height="10" rx="2"/>' +
+    '<path class="aq-boca" d="M44 130V82a36 26 0 0 1 72 0V130Z"/>' + chama(72, 122, 1.2) + chama(90, 124, 1) + '<rect class="aq-lenha" x="58" y="122" width="44" height="6" rx="3"/>' + txt(100, 18, 'chaminé', 'start');
+  if (k === 'piso') return '<rect class="aq-tijolo" x="6" y="58" width="148" height="12"/><rect class="aq-contrapiso" x="6" y="70" width="148" height="34"/><rect class="aq-metal" x="6" y="104" width="148" height="10"/>' +
+    Array.from({ length: 9 }, (_, i) => `<circle class="aq-tubo" cx="${18 + i * 16}" cy="87" r="5"/>`).join('') + calor(36, 52, 6, 36) + txt(80, 132, 'tubos ou cabos sob o piso');
+  // radiadores ligados à caldeira
+  return '<rect class="aq-corpo" x="10" y="54" width="40" height="66" rx="6"/>' + chama(30, 104, .8) + '<rect class="aq-metal" x="24" y="34" width="12" height="20"/>' +
+    `<rect class="aq-corpo" x="76" y="50" width="76" height="48" rx="4"/>` + Array.from({ length: 7 }, (_, i) => `<path class="aq-grade" d="M${84 + i * 10} 56v36"/>`).join('') +
+    quente('M50 70H66V60H76') + fria('M76 90H62V108H50') + calor(92, 46, 4, 30) + txt(30, 134, 'caldeira') + txt(114, 116, 'radiador');
+}
+const aqSVG = k => `<svg viewBox="0 0 160 140" role="img" aria-label="Desenho esquemático: aquecedor ${k}">${aqInner(k)}</svg>`;
+function aqTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Os 13 tipos, em desenho</${h}>
+      <p class="bvt__lead">Os 6 primeiros aquecem a água; os 7 seguintes, o ambiente.</p>
+      <ol class="bvt bvt--aq">${AQ_TIPOS.map(([id, nome, def, txt], i) => `
+        <li class="bvt__item"><figure>${aqSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
+}
+const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML };
 
 // Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
 function cmpTiposHTML(matId, h = 'h4') {

@@ -1,6 +1,16 @@
 // Ferramentas gratuitas na internet (seção Utilidades). Sites conferidos em 17/10/2026.
 // cat = categoria do filtro, tipo = como é oferecida (grátis, software livre, busca grátis…).
 const WEB_TOOLS = [
+  { cat: 'Aquecimento', name: 'Rinnai — Escolha o aquecedor a gás', url: 'https://www.rinnai.com.br/escolha-aquecedor-a-gas/', tipo: 'Grátis',
+    desc: 'Indica o aquecedor a gás de passagem pelo número de duchas usadas ao mesmo tempo, a vazão de cada uma e a região do país.' },
+  { cat: 'Aquecimento', name: 'Rinnai — Dimensionador de bomba de calor', url: 'https://www.rinnai.com.br/dimensionador-bomba-de-calor/', tipo: 'Grátis',
+    desc: 'Bomba de calor para piscina pelo tamanho da piscina e pela temperatura desejada.' },
+  { cat: 'Aquecimento', name: 'Soletrol — Simulador de consumo de água quente', url: 'https://www.soletrol.com.br/extras/simulador-de-consumo-de-agua-quente/', tipo: 'Grátis',
+    desc: 'Consumo diário de água quente da casa pela ABNT NBR 15569, base para escolher o aquecedor solar.' },
+  { cat: 'Aquecimento', name: 'T*SOL online (Valentin)', url: 'https://valentin-software.com/en/?p=4916', tipo: 'Grátis',
+    desc: 'Calculadora de aquecimento solar em inglês: rendimento e fração solar por cidade, coletor e reservatório.' },
+  { cat: 'Aquecimento', name: 'Midea — Calculadora de BTU', url: 'https://www.midea.com.br/calculadora-de-btu', tipo: 'Grátis',
+    desc: 'Capacidade do ar-condicionado pela área, pessoas, aparelhos e sol. Para aquecer, confira a capacidade de aquecimento na ficha do aparelho.' },
   { cat: 'Cálculo hidráulico', name: 'Engineering ToolBox', url: 'https://www.engineeringtoolbox.com/', tipo: 'Grátis',
     desc: 'Tabelas e calculadoras de perda de carga, dimensionamento de tubos, propriedades de fluidos e conversão de unidades.' },
   { cat: 'Cálculo hidráulico', name: 'Pipe Flow Calculations', url: 'https://www.pipeflowcalculations.com/', tipo: 'Grátis',

@@ -1187,7 +1187,7 @@ const MAGAZINES = [
     const pick = (list, textOf, make) => list.filter(x => matchText(textOf(x), terms))
       .map(x => ({ ...make(x), score: matchText(make(x).title, terms) ? 2 : 0 })).sort((a, b) => b.score - a.score);
 
-    add('Comparativos', pick(CMPS, c => [c.titulo, c.tema, c.resumo, ...c.opcoes.map(o => o[0])].join(' '), c => ({ href: '/comparativos/' + c.id, title: c.titulo, sub: c.resumo })));
+    add('Comparativos', pick(CMPS, c => [c.titulo, c.tema, c.resumo, ...c.opcoes.map(o => o[0]), ...(c.chaves || [])].join(' '), c => ({ href: '/comparativos/' + c.id, title: c.titulo, sub: c.resumo })));
     add('Glossário técnico', pick(GLOSSARIO, x => [x.t, x.en, x.def, ...x.auto].join(' '), x => ({ href: '/glossario/' + x.id, title: x.t, sub: x.def })));
     // Guias práticos (guias.js): passo a passo (com as tabelas de cores), erros comuns e vídeos dos fabricantes
     if (typeof GUIAS !== 'undefined') {

@@ -950,6 +950,48 @@
           </div>
           <p class="hint" id="gaHint"></p>
         </div>
+
+        <div class="tool" id="calcAq">
+          <h3>Aquecedor de água — gás, elétrico e solar</h3>
+          <div class="form">
+            <label>Duchas usadas ao mesmo tempo<input type="number" id="aqDuchas" value="2" min="0" step="1"></label>
+            <label>Vazão de cada ducha <span>L/min</span><input type="number" id="aqVd" value="8" min="1" step="0.5"></label>
+            <label>Torneiras quentes ao mesmo tempo<input type="number" id="aqTorn" value="1" min="0" step="1"></label>
+            <label>Vazão de cada torneira <span>L/min</span><input type="number" id="aqVt" value="4" min="1" step="0.5"></label>
+            <label>Água fria no inverno <span>°C</span><input type="number" id="aqTf" value="15" min="0" max="35" step="1"></label>
+            <label>Temperatura do banho <span>°C</span><input type="number" id="aqTq" value="40" min="30" max="60" step="1"></label>
+            <label>Pessoas na casa<input type="number" id="aqPes" value="4" min="1" step="1"></label>
+            <label>Água quente por pessoa <span>L/dia</span><input type="number" id="aqCons" value="50" min="10" step="5"></label>
+          </div>
+          <div class="results">
+            <div><span>Vazão simultânea</span><strong id="aqQ">—</strong></div>
+            <div><span>Potência necessária</span><strong id="aqP">—</strong></div>
+            <div><span>Aquecedor a gás (vazão de etiqueta)</span><strong id="aqGas">—</strong></div>
+            <div><span>Reservatório (boiler ou solar)</span><strong id="aqV">—</strong></div>
+          </div>
+          <p class="hint" id="aqHint"></p>
+        </div>
+
+        <div class="tool" id="calcAmb">
+          <h3>Aquecimento de ambiente — potência estimada</h3>
+          <div class="form">
+            <label>Área do cômodo <span>m²</span><input type="number" id="amA" value="16" min="1" step="0.5"></label>
+            <label>Pé-direito <span>m</span><input type="number" id="amH" value="2.6" min="2" step="0.1"></label>
+            <label>Isolamento
+              <select id="amIso"><option value="30">Bom: paredes, forro e janelas que vedam bem</option><option value="40" selected>Médio: construção comum</option><option value="50">Ruim: sem forro, frestas ou muito vidro</option></select>
+            </label>
+            <label>Clima no inverno
+              <select id="amClima"><option value="0.7">Ameno (Sudeste e Centro-Oeste)</option><option value="1" selected>Frio (Sul e regiões altas)</option><option value="1.25">Muito frio (serras do Sul)</option></select>
+            </label>
+          </div>
+          <div class="results">
+            <div><span>Potência de aquecimento</span><strong id="amP">—</strong></div>
+            <div><span>Em BTU/h</span><strong id="amBtu">—</strong></div>
+            <div><span>Aquecedores portáteis de 2.000 W</span><strong id="amPort">—</strong></div>
+            <div><span>Consumo: resistência × ar-condicionado</span><strong id="amCons">—</strong></div>
+          </div>
+          <p class="hint" id="amHint"></p>
+        </div>
       </div>
 
       <div class="adslot adslot--sponsor" data-ad="basico" data-place="Ferramentas — patrocinador das calculadoras"></div>
