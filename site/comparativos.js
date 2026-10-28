@@ -77,6 +77,12 @@ const CMP_FONTES = {
   hiltiMq: ['Hilti — Sistema de instalação MQ: perfilados, consoles e acessórios modulares (catálogo de instalação)', 'https://www.hilti.es/content/dam/catalogs/spain/ES_Catalogo_Instalacion_2019_COMPLETO.pdf', 'fab'],
   wavinPpr: ['Amanco Wavin — PPR Industrial, ficha técnica: distância máxima entre apoios por diâmetro e temperatura (flecha de 2%)', 'https://eu-assets.contentstack.com/v3/assets/blt573fdbfcb1106c2a/bltb241d8b57144b55e/646567be2eaf843eafd986b4/FTC000060_-_PPR_Industrial.pdf', 'fab'],
   pvcGo: ['Projeto de instalações sanitárias e pluviais (CEASA-GO) — distância máxima entre suportes de PVC série normal: DN 40 0,80 m; DN 50 1,00 m; DN 75 1,50 m; DN 100 1,80 m; DN 150 2,30 m', 'https://goias.gov.br/ceasa/wp-content/uploads/sites/48/2025/10/SANITARIO-E-PLUVIAL-A0-1-1-CEASA.pdf', 'artigo'],
+  doeAr: ['US DOE e Compressed Air Challenge — Improving Compressed Air System Performance: tipos de compressor, controles, eficiência e vazamentos', 'https://www.energy.gov/sites/prod/files/2016/03/f30/Improving%20Compressed%20Air%20Sourcebook%20version%203.pdf', 'estudo'],
+  cacFs8: ['Compressed Air Challenge — Fact Sheet 8: eficiência de compressores pela ISO 1217 e pelas folhas de dados CAGI (potência específica)', 'https://www.compressedairchallenge.org/data/sites/1/media/library/factsheets2026/fact-sheet-8-packaged-compressor-efficiency-ratings_updated2026.pdf', 'estudo'],
+  nbrIso8573: ['ABNT NBR ISO 8573-1 — Ar comprimido: contaminantes e classes de pureza (partículas, água e óleo)', 'https://www.normas.com.br/visualizar/abnt-nbr-nm/32832/nbriso8573-1-ar-comprimido-contaminantes-e-classes-de-pureza', 'norma'],
+  atlasLcc: ['Atlas Copco — Quanto custa um compressor: a energia responde por cerca de 70% do custo ao longo da vida, e a compra por cerca de 20%', 'https://www.atlascopco.com/en-gr/compressors/air-compressor-blog/what-does-a-compressor-cost', 'fab'],
+  nr13: ['NR-13 — Caldeiras, vasos de pressão, tubulações e tanques metálicos (reservatório de ar comprimido)', 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/norma-regulamentadora-no-13-nr-13', 'norma'],
+  schulzLinha: ['Schulz — compressores de pistão lubrificados e isentos de óleo, de parafuso e scroll', 'https://www.schulz.com.br', 'fab'],
   asmePcc1: ['ASME PCC-1 — Montagem de juntas flangeadas aparafusadas: alinhamento, lubrificação, sequência e controle do aperto', 'https://www.asme.org/codes-standards', 'norma'],
   asmeB1201: ['ASME B1.20.1 — Roscas de tubo de uso geral (NPT); no Brasil também se usa a rosca BSP (ABNT NBR NM ISO 7-1)', 'https://www.asme.org/codes-standards', 'norma'],
   dirac: ['Portal Dirac — "Borboleta não é tudo igual por fora": tipos de válvula borboleta e critérios de escolha (LinkedIn, out/2026)', 'https://www.linkedin.com/posts/portal-dirac-836833257_borboleta-n%C3%A3o-%C3%A9-tudo-igual-por-fora-muitas-share-7519781581704753153-2Kk3/', 'artigo'],
@@ -650,6 +656,49 @@ const CMPS = [
     erros: ['Espaçar os apoios do tubo plástico como se fosse aço', 'Prender com força o tubo que precisa dilatar (água quente, vapor)', 'Deixar o peso da tubulação apoiado na bomba ou no equipamento', 'Abraçadeira de aço direto no cobre ou no inox, sem isolamento (corrosão galvânica)', 'Suporte comum em área externa ou corrosiva', 'Esquecer o suporte junto a válvulas, registros e mudanças de direção', 'Fixar no forro ou na alvenaria sem conferir a carga', 'Rede de sprinklers sem contraventamento onde o projeto pede'],
     apps: { casa: 'Presilhas plásticas nos ramais de PEX e PPR; abraçadeira tipo D ou com borracha nos tubos aparentes.', predio: 'Abraçadeiras com borracha nas prumadas e forros; perfilados nos shafts; pendurais tipo pera nos sprinklers.', hospital: 'Abraçadeiras com borracha para cortar ruído; perfilados nos forros técnicos; contraventamento conforme o projeto de incêndio.', industria: 'Abraçadeira U, sapatas, guias e ancoragens no pipe rack; suportes de mola nas linhas quentes.' },
     fontes: ['mssSp58', 'asmeB311', 'nfpa13Sup', 'nbr10897', 'nbr5626', 'nbr8160', 'walraven', 'hiltiMq', 'wavinPpr', 'pvcGo'] },
+  { id: 'compressores', tema: 'Ar comprimido', titulo: 'Compressores de ar: pistão, palhetas, scroll, parafuso, dente ou centrífugo?',
+    tipos: 'compressores',
+    chaves: ['compressor', 'compressor de ar', 'ar comprimido', 'compressor de pistão', 'compressor alternativo', 'compressor de parafuso', 'compressor isento de óleo', 'oil free', 'compressor de palhetas', 'compressor scroll', 'compressor de dente', 'claw', 'compressor centrífugo', 'inversor de frequência', 'VSD', 'ISO 8573-1', 'qualidade do ar', 'pcm', 'NR-13', 'Schulz', 'Chiaperini', 'Atlas Copco', 'Kaeser', 'Ingersoll Rand'],
+    resumo: 'Oficina e uso intermitente: pistão lubrificado. Consultório, laboratório e pouca vazão sem óleo: pistão isento de óleo ou scroll. Uso contínuo de baixa vazão, com pouco ruído: palhetas. Indústria com uso contínuo: parafuso lubrificado, com inversor de frequência se o consumo varia ao longo do dia. Alimentos, bebidas, farmacêutica e eletrônica: parafuso isento de óleo ou dente rotativo. Grandes fábricas com consumo alto e estável: centrífugo.',
+    intro: 'O compressor é a maior conta de energia de uma rede de ar comprimido: ao longo da vida, a eletricidade costuma responder por cerca de 70% do custo total, contra uns 20% da compra {atlasLcc}. Por isso a escolha não é só pelo preço: depende de quanto ar se usa, por quantas horas, em que pressão e com que pureza. Há dois grupos. Os volumétricos (pistão, palhetas, scroll, parafuso e dente) prendem o ar numa câmara e a diminuem; os dinâmicos (centrífugos) aceleram o ar e transformam a velocidade em pressão {doeAr}. A primeira tabela compara pistão, palhetas e scroll, comuns nas instalações pequenas; a segunda, parafuso, dente e centrífugo, que dominam a indústria.',
+    opcoes: [['Pistão lubrificado', 'compressores'], ['Pistão isento de óleo', 'compressores'], ['Palhetas', 'compressores'], ['Scroll', 'compressores'],
+      ['Parafuso lubrificado', 'compressores'], ['Parafuso isento de óleo', 'compressores'], ['Dente rotativo', 'compressores'], ['Centrífugo', 'compressores']],
+    tabelas: [
+      { titulo: 'Pistão, palhetas e scroll', cols: [0, 1, 2, 3], linhas: [
+        ['Como comprime', ['O pistão sobe e desce no cilindro, com válvulas de admissão e descarga; o óleo do cárter lubrifica', 'O mesmo princípio, com anéis autolubrificantes (PTFE) e mancais selados: sem óleo', 'Rotor excêntrico com palhetas que deslizam e encostam na carcaça, formando câmaras que diminuem', 'Uma espiral gira em órbita dentro de outra, fixa, e empurra o ar da borda para o centro']],
+        ['Porte usual', ['Pequeno a médio', 'Pequeno', 'Pequeno a médio', 'Pequeno; módulos em paralelo dão mais vazão']],
+        ['Regime', ['Intermitente: precisa de pausas para esfriar', 'Intermitente', 'Contínuo', 'Contínuo']],
+        ['Ar entregue', ['Com resíduo de óleo: filtros conforme a classe exigida {nbrIso8573}', 'Isento de óleo na compressão', 'Com óleo: filtros {nbrIso8573}', 'Isento de óleo']],
+        ['Ruído', ['Alto, com vibração', 'Alto', 'Baixo a médio', 'O mais baixo']],
+        ['Custo', ['Compra mais barata; gasta mais energia por m³ de ar {doeAr}', 'Barato; os anéis duram menos', 'Médio', 'Médio a alto por vazão']],
+        ['Onde usar', ['Oficinas, borracharias, pintura e uso eventual', 'Odontologia, laboratórios e pequenas aplicações que não aceitam óleo', 'Pequenas indústrias com uso contínuo e pouca vazão', 'Hospitais, laboratórios, eletrônica e alimentos em pequena escala']],
+      ] },
+      { titulo: 'Parafuso, dente e centrífugo', cols: [4, 5, 6, 7], linhas: [
+        ['Como comprime', ['Dois rotores helicoidais engrenados; o óleo injetado veda, lubrifica e resfria', 'Dois rotores helicoidais sem contato, sincronizados por engrenagens; a câmara não recebe óleo', 'Dois rotores em forma de garra giram sem se tocar e comprimem o ar entre eles, sem óleo', 'Um rotor em alta rotação acelera o ar, e o difusor transforma a velocidade em pressão']],
+        ['Porte usual', ['Médio a grande: o mais comum na indústria', 'Médio a grande', 'Médio', 'Muito grande {doeAr}']],
+        ['Regime', ['Contínuo', 'Contínuo', 'Contínuo', 'Contínuo, com carga alta e estável']],
+        ['Ar entregue', ['Com pouco óleo: filtros coalescentes conforme a classe {nbrIso8573}', 'Isento de óleo; há modelos certificados na classe 0 {nbrIso8573}', 'Isento de óleo', 'Isento de óleo']],
+        ['Ruído', ['Médio, em gabinete acústico', 'Médio', 'Médio', 'Alto: pede sala própria']],
+        ['Custo', ['Médio; com inversor, gasta menos quando o consumo varia {doeAr}', 'Alto', 'Médio a alto', 'O mais alto na compra; eficiente em grande vazão {doeAr}']],
+        ['Onde usar', ['Redes de ar de fábricas e indústria em geral', 'Alimentos, bebidas, farmacêutica, eletrônica e têxtil', 'Alimentos, farmacêutica e processos sem óleo de porte médio', 'Química, refinarias, têxtil e grandes fábricas {doeAr}']],
+      ] },
+    ],
+    linhas: [],
+    pros: [
+      [['Barato e simples', 'Fácil de consertar; peças em todo lugar'], ['Ruidoso e com vibração', 'Não foi feito para trabalhar sem parar', 'Ar com óleo']],
+      [['Ar sem óleo a baixo custo'], ['Anéis se desgastam mais rápido', 'Uso intermitente e ruidoso']],
+      [['Trabalho contínuo em baixa rotação', 'Silencioso e durável'], ['Palhetas se desgastam', 'Ar com óleo']],
+      [['O mais silencioso, com pouca vibração', 'Ar isento de óleo'], ['Vazões pequenas', 'Custo maior por m³ de ar']],
+      [['Contínuo, eficiente e compacto', 'Versão com inversor de frequência para consumo variável'], ['Troca de óleo, filtros e elemento separador', 'Óleo residual no ar exige filtros']],
+      [['Ar sem óleo para processos sensíveis', 'Sem risco de contaminar o produto'], ['Compra e manutenção caras', 'Mais complexo']],
+      [['Isento de óleo e robusto', 'Rotores sem contato: pouco desgaste'], ['Custa mais que o parafuso lubrificado', 'Faixa de porte menor']],
+      [['Muita vazão num só equipamento', 'Ar sem óleo e boa eficiência em plena carga'], ['Compra cara: só compensa com consumo grande e estável', 'Operação e manutenção especializadas']],
+    ],
+    criterios: ['Vazão: somar o consumo dos equipamentos, com fator de uso e margem para vazamentos', 'Pressão de trabalho no ponto mais distante, somando as perdas da rede', 'Regime de uso: intermitente (pistão) ou contínuo (rotativos)', 'Qualidade do ar que o processo exige (ISO 8573-1)', 'Consumo variável ao longo do dia: compressor com inversor de frequência', 'Custo ao longo da vida, em que a energia pesa mais que a compra', 'Ruído e local de instalação, com ventilação', 'Reservatório, secador, filtros e drenos; reservatório sob a NR-13'],
+    fecho: 'Escolha pelo perfil de consumo, não pelo compressor maior nem pelo mais barato: compressor sobrando trabalha aliviado e gasta energia sem produzir ar, e compressor faltando derruba a pressão nas pontas. Antes de comprar outro, meça o consumo e corrija os vazamentos, que também são energia paga {doeAr}{atlasLcc}. O reservatório é vaso de pressão e segue a NR-13 {nr13}.',
+    erros: ['Usar compressor de pistão em trabalho contínuo, sem pausa para esfriar', 'Comprar pelo preço e esquecer o custo da energia', 'Superdimensionar: compressor grande trabalhando aliviado gasta sem produzir ar', 'Instalar sem secador e drenos: a água condensada chega às ferramentas e corrói a rede', 'Ar com óleo em alimentos, farmacêutica ou pintura sem a filtragem adequada', 'Sala sem ventilação: ar quente na entrada derruba o rendimento', 'Reservatório sem válvula de segurança e sem as inspeções da NR-13', 'Deixar os vazamentos da rede para depois'],
+    apps: { casa: 'Pistão pequeno, para pintura, pneus e ferramentas de uso eventual.', predio: 'Pistão ou scroll em oficinas, garagens e academias; isento de óleo em clínicas odontológicas.', hospital: 'Ar medicinal com compressores isentos de óleo (scroll, parafuso ou dente), tratamento do ar e redundância {nbr12188}.', industria: 'Parafuso lubrificado com inversor na rede geral; isento de óleo em alimentos e farmacêutica; centrífugo nas grandes plantas.' },
+    fontes: ['atlasLcc', 'doeAr', 'cacFs8', 'nbrIso8573', 'nr13', 'nbr12188', 'schulzLinha'] },
 ];
 
 // Insumo SINAPI do custo de referência: { ins, div } → preço por metro, unidade ou litro no estado escolhido
@@ -1226,7 +1275,81 @@ function supTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
 }
-const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML, vedantes: vedTiposHTML, suportes: supTiposHTML };
+// Compressores de ar: desenhos próprios em corte (160 × 140)
+// [id, nome, grupo, descrição]
+const CPR_TIPOS = [
+  ['pistao', 'Pistão lubrificado', 'Volumétrico', 'O pistão sobe e desce no cilindro, movido por biela e virabrequim, e manda o ar para o reservatório. O óleo do cárter lubrifica. Barato, ruidoso, para uso intermitente.'],
+  ['pistaoseco', 'Pistão isento de óleo', 'Volumétrico', 'Mesmo mecanismo, com anéis autolubrificantes e mancais selados: o ar sai sem óleo. Comum em consultórios e laboratórios.'],
+  ['palhetas', 'Palhetas', 'Volumétrico', 'O rotor gira fora de centro; as palhetas deslizam para fora e fecham câmaras que diminuem até a descarga. Contínuo e silencioso.'],
+  ['scroll', 'Scroll', 'Volumétrico', 'Uma espiral orbita dentro de outra, fixa, e empurra o ar da borda para o centro, cada vez mais comprimido. Sem óleo e muito silencioso.'],
+  ['parafuso', 'Parafuso lubrificado', 'Volumétrico', 'Dois rotores helicoidais engrenados comprimem o ar ao longo do eixo; o óleo injetado veda e resfria. O mais usado na indústria.'],
+  ['parafusoseco', 'Parafuso isento de óleo', 'Volumétrico', 'Rotores sem contato, sincronizados por engrenagens fora da câmara: o ar não toca óleo. Alimentos, bebidas e farmacêutica.'],
+  ['dente', 'Dente rotativo', 'Volumétrico', 'Dois rotores em forma de garra giram sem se tocar e prendem o ar entre eles. Isento de óleo, robusto, de porte médio.'],
+  ['centrifugo', 'Centrífugo', 'Dinâmico', 'O rotor gira em alta rotação e acelera o ar; a voluta transforma a velocidade em pressão. Grandes vazões, sem óleo.'],
+];
+function cprInner(k) {
+  const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  const seta = (d) => `<path class="cpr-ar" d="${d}"/>`;
+  // animações SVG (SMIL): giro em torno de (x, y), vaivém e órbita; pausadas para quem pede menos movimento
+  const gira = (x, y, s, rev) => `<animateTransform attributeName="transform" type="rotate" from="${rev ? 360 : 0} ${x} ${y}" to="${rev ? 0 : 360} ${x} ${y}" dur="${s}s" repeatCount="indefinite"/>`;
+  const vai = (attr, vals, s, tipo) => tipo ? `<animateTransform attributeName="transform" type="${tipo}" values="${vals}" dur="${s}s" repeatCount="indefinite"/>` : `<animate attributeName="${attr}" values="${vals}" dur="${s}s" repeatCount="indefinite"/>`;
+  if (k === 'pistao' || k === 'pistaoseco') {
+    const seco = k === 'pistaoseco', T = 0.9;
+    return '<rect class="cpr-tanque" x="8" y="104" width="144" height="30" rx="15"/>' + '<rect class="cpr-corpo" x="56" y="14" width="44" height="50"/><rect class="cpr-cabeca" x="50" y="8" width="56" height="10" rx="2"/>' +
+      '<rect class="cpr-carter" x="48" y="62" width="60" height="38" rx="6"/>' + (seco ? '' : '<path class="cpr-oleo" d="M52 92h52v6h-52z"/>') + '<circle class="cpr-eixo" cx="78" cy="82" r="11"/>' +
+      `<path class="cpr-biela" d="M78 50L78 90">${vai('d', 'M78 50L78 90;M78 43L70 82;M78 36L78 74;M78 43L86 82;M78 50L78 90', T)}</path>` +
+      `<circle class="cpr-pino" cx="78" cy="90" r="3.5">${vai('cx', '78;70;78;86;78', T)}${vai('cy', '90;82;74;82;90', T)}</circle>` +
+      `<g>${vai('', '0 0;0 -7;0 -14;0 -7;0 0', T, 'translate')}<rect class="${seco ? 'cpr-pistaos' : 'cpr-pistao'}" x="60" y="34" width="36" height="16" rx="2"/><path class="cpr-anel" d="M60 38h36M60 43h36"/></g>` +
+      '<path class="cpr-tubo" d="M100 12H130V104"/>' + seta('M4 12H44M36 7l8 5-8 5') +
+      txt(30, 26, 'ar') + '<text class="cpr-txtb" x="80" y="123" text-anchor="middle">reservatório</text>' + txt(46, 94, seco ? 'sem óleo' : 'óleo', 'end');
+  }
+  if (k === 'palhetas') {
+    // palhetas presas ao rotor (giram com ele) e recortadas pela carcaça: parecem deslizar para fora e para dentro
+    return '<defs><clipPath id="cprClipPal"><circle cx="80" cy="70" r="44"/></clipPath></defs>' +
+      '<circle class="cpr-corpo" cx="80" cy="70" r="50"/><circle class="cpr-camara" cx="80" cy="70" r="44"/>' +
+      `<g clip-path="url(#cprClipPal)"><g>${gira(72, 78, 3)}<circle class="cpr-rotor" cx="72" cy="78" r="28"/>` +
+      [0, 60, 120, 180, 240, 300].map(a => { const r = a * Math.PI / 180; return `<path class="cpr-palheta" d="M${(72 + 12 * Math.cos(r)).toFixed(1)} ${(78 + 12 * Math.sin(r)).toFixed(1)}L${(72 + 62 * Math.cos(r)).toFixed(1)} ${(78 + 62 * Math.sin(r)).toFixed(1)}"/>`; }).join('') +
+      '<circle class="cpr-eixo" cx="72" cy="78" r="6"/></g></g>' + seta('M2 40H30M22 35l8 5-8 5') + seta('M130 104H158M150 99l8 5-8 5') + txt(16, 30, 'entra') + txt(146, 124, 'sai');
+  }
+  if (k === 'scroll') {
+    const esp = rot => { let d = ''; for (let t = 0.6; t <= 5.2 * Math.PI; t += 0.15) { const r = 3.6 * t, a = t + rot; d += (d ? 'L' : 'M') + (80 + r * Math.cos(a)).toFixed(1) + ' ' + (70 + r * Math.sin(a)).toFixed(1); } return d; };
+    return '<circle class="cpr-corpo" cx="80" cy="70" r="64"/><circle class="cpr-camara" cx="80" cy="70" r="60"/>' + `<path class="cpr-espfixa" d="${esp(0)}"/>` +
+      `<path class="cpr-esporb" d="${esp(Math.PI)}">${vai('', '4 0;0 4;-4 0;0 -4;4 0', 1.2, 'translate')}</path>` +
+      `<circle class="cpr-saida" cx="80" cy="70" r="5">${vai('r', '4;6;4', 1.2)}</circle>` + txt(150, 12, 'fixa', 'end') + txt(10, 136, 'orbita', 'start');
+  }
+  if (k === 'parafuso' || k === 'parafusoseco') {
+    const seco = k === 'parafusoseco';
+    // os filetes correm ao longo do rotor, recortados pelo próprio rotor: mostra o ar sendo levado da entrada à saída
+    const rotor = (y, dir, cls, id) => `<defs><clipPath id="${id}"><rect x="34" y="${y}" width="96" height="28" rx="4"/></clipPath></defs><rect class="${cls}" x="34" y="${y}" width="96" height="28" rx="4"/>` +
+      `<g clip-path="url(#${id})"><g>${vai('', '0 0;10 0', 0.5, 'translate')}` + Array.from({ length: 11 }, (_, i) => `<path class="cpr-lobo" d="M${30 + i * 10} ${y + (dir > 0 ? 0 : 28)}l10 ${dir * 28}"/>`).join('') + '</g></g>';
+    return '<rect class="cpr-corpo" x="26" y="30" width="112" height="82" rx="8"/>' + rotor(38, 1, 'cpr-rotor', 'cprClipR1') + rotor(72, -1, 'cpr-rotor2', 'cprClipR2') +
+      (seco ? `<circle class="cpr-engr" cx="14" cy="52" r="10">${gira(14, 52, 1)}</circle><circle class="cpr-engr" cx="14" cy="86" r="10">${gira(14, 86, 1, 1)}</circle><path class="cpr-biela" d="M24 52H34M24 86H34"/>` + txt(2, 112, 'engrenagens', 'start')
+        : Array.from({ length: 4 }, (_, i) => `<circle class="cpr-gota" cx="${56 + i * 18}" cy="26" r="3">${vai('cy', '24;36', 0.8)}${vai('opacity', '1;0', 0.8)}</circle>`).join('') + '<path class="cpr-tubooleo" d="M52 22H118"/>' + txt(84, 16, 'óleo injetado')) +
+      seta('M40 130V112') + seta('M128 112V132') + txt(54, 132, 'entra') + txt(150, 128, 'sai', 'end') + (seco ? txt(84, 22, 'sem óleo na câmara') : '');
+  }
+  if (k === 'dente') {
+    // o rotor da direita é espelhado: a mesma rotação aparece no sentido contrário
+    const garra = (x, s) => `<g transform="translate(${x} 70) scale(${s} 1)"><g>${gira(0, 0, 2)}<circle class="cpr-rotor" r="24"/><path class="cpr-rotor" d="M-6 -22L-4 -40Q10 -40 16 -20Z"/></g><circle class="cpr-eixo" r="5"/></g>`;
+    return '<path class="cpr-corpo" d="M50 22a46 46 0 1 0 0 96h60a46 46 0 1 0 0-96z"/><path class="cpr-camara" d="M52 28a40 40 0 1 0 0 84h56a40 40 0 1 0 0-84z"/>' + garra(54, 1) + garra(106, -1) +
+      seta('M80 2V24M75 16l5 8 5-8') + seta('M80 116V138M75 130l5 8 5-8') + txt(96, 12, 'entra', 'start') + txt(96, 134, 'sai', 'start');
+  }
+  if (k === 'centrifugo') return '<path class="cpr-corpo" d="M80 14a56 56 0 1 1 -50 30L30 14H80z"/><path class="cpr-corpo" d="M30 14H8V44H30"/>' +
+    '<circle class="cpr-camara" cx="84" cy="74" r="44"/><circle class="cpr-rotor" cx="84" cy="74" r="36"/>' +
+    `<g>${gira(84, 74, 0.9)}` + Array.from({ length: 10 }, (_, i) => { const a = i * Math.PI / 5; return `<path class="cpr-lobo" d="M${(84 + 12 * Math.cos(a)).toFixed(1)} ${(74 + 12 * Math.sin(a)).toFixed(1)}Q${(84 + 30 * Math.cos(a + .25)).toFixed(1)} ${(74 + 30 * Math.sin(a + .25)).toFixed(1)} ${(84 + 35 * Math.cos(a + .7)).toFixed(1)} ${(74 + 35 * Math.sin(a + .7)).toFixed(1)}"/>`; }).join('') + '</g>' +
+    '<circle class="cpr-saida" cx="84" cy="74" r="10"/>' + seta('M30 29H2M10 24l-8 5 8 5') + txt(16, 58, 'sai') + txt(84, 134, 'entra pelo centro');
+  return '';
+}
+const cprSVG = k => `<svg viewBox="0 0 160 140" role="img" aria-label="Desenho esquemático em corte: compressor ${k}">${cprInner(k)}</svg>`;
+function cprTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Os 8 tipos, em corte</${h}>
+      <p class="bvt__lead">Os 7 primeiros são volumétricos (prendem o ar e diminuem a câmara); o último é dinâmico (acelera o ar).</p>
+      <ol class="bvt bvt--aq">${CPR_TIPOS.map(([id, nome, def, txt], i) => `
+        <li class="bvt__item"><figure>${cprSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
+}
+const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML, vedantes: vedTiposHTML, suportes: supTiposHTML, compressores: cprTiposHTML };
 
 // Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
 function cmpTiposHTML(matId, h = 'h4') {
@@ -1235,6 +1358,7 @@ function cmpTiposHTML(matId, h = 'h4') {
   if (matId === 'mat-bombas') return H('Qual bomba para cada fluido') + semH(bombaTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/bombas-fluidos">Comparativo completo, com normas e fontes</a></p>`;
   if (matId === 'mat-vedantes' || matId === 'mat-juntas') return H('Vedantes de rosca e juntas, em desenho') + semH(vedTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/vedantes">Comparativo completo dos vedantes, com normas e fontes</a></p>`;
   if (matId === 'mat-suportes') return H('Tipos de suporte, em desenho') + semH(supTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/suportes">Comparativo completo dos suportes, com distâncias, normas e fontes</a></p>`;
+  if (matId === 'mat-compressores') return H('Tipos de compressor, em corte') + semH(cprTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/compressores">Comparativo completo dos compressores, com normas e fontes</a></p>`;
   if (matId === 'mat-esfera') return H('Corpos e esferas, em corte') + semH(esfTiposHTML('h4'));
   if (matId === 'mat-valvula-hidrante') return H('Tipos disponíveis no mercado') + semH(vhTiposHTML('h4'));
   if (matId === 'mat-aco') return H('Extremidades, espessuras e acabamentos') + semH(taTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;

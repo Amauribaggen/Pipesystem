@@ -1216,6 +1216,31 @@ font[style] { background: transparent !important; box-shadow: none !important; }
 .sup-mola { fill: none; stroke: #e8590c; stroke-width: 2.2; }
 .sup-escala { stroke: #4a5563; stroke-width: 1.5; }
 .sup-seta { fill: none; stroke: #0b7285; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.cpr-corpo { fill: #9aa6b2; stroke: #4a5563; stroke-width: 1.5; }
+.cpr-camara { fill: #eef4fb; stroke: #4a5563; stroke-width: 1.2; }
+.cpr-cabeca { fill: #7d8894; stroke: #4a5563; stroke-width: 1.2; }
+.cpr-tanque { fill: #e5534b; stroke: #8e1b1b; stroke-width: 1.5; }
+.cpr-pistao { fill: #c3ccd5; stroke: #3a434d; stroke-width: 1.5; }
+.cpr-pistaos { fill: #dfe7ef; stroke: #3a434d; stroke-width: 1.5; }
+.cpr-anel { stroke: #3a434d; stroke-width: 1.5; }
+.cpr-carter { fill: #b8c2cc; stroke: #4a5563; stroke-width: 1.5; }
+.cpr-eixo { fill: #3a434d; }
+.cpr-pino { fill: #e8a317; stroke: #3a434d; stroke-width: 1; }
+.cpr-biela { fill: none; stroke: #3a434d; stroke-width: 5; stroke-linecap: round; }
+.cpr-oleo { fill: #c98a1e; opacity: .85; }
+.cpr-gota { fill: #c98a1e; }
+.cpr-tubooleo { fill: none; stroke: #c98a1e; stroke-width: 4; stroke-linecap: round; }
+.cpr-tubo { fill: none; stroke: #5d6b7a; stroke-width: 5; stroke-linejoin: round; }
+.cpr-ar { fill: none; stroke: #2f80ed; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.cpr-rotor { fill: #c3ccd5; stroke: #3a434d; stroke-width: 1.5; }
+.cpr-rotor2 { fill: #a3aeb9; stroke: #3a434d; stroke-width: 1.5; }
+.cpr-lobo { fill: none; stroke: #3a434d; stroke-width: 1.6; }
+.cpr-palheta { stroke: #e8590c; stroke-width: 4; stroke-linecap: round; }
+.cpr-espfixa { fill: none; stroke: #4a5563; stroke-width: 3.5; stroke-linecap: round; }
+.cpr-esporb { fill: none; stroke: #0b7285; stroke-width: 3.5; stroke-linecap: round; }
+.cpr-saida { fill: #2f80ed; }
+.cpr-txtb { font: 600 10px var(--font); fill: #fff; }
+.cpr-engr { fill: #e8a317; stroke: #a87b00; stroke-width: 2; stroke-dasharray: 3 2; }
 .aq-tubo { fill: #e5534b; stroke: #8e1b1b; stroke-width: 1.5; }
 .ulinks__lead { margin: 0 0 6px; color: #9fb4cc; font-size: .92rem; max-width: 760px; }
 .ulinks__grupo { margin: 22px 0 10px; font-family: var(--display); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #7ee7f2; }

@@ -253,7 +253,7 @@ const PRODUCTS = [
     ] },
   { id: 'compressores', g: 'equipamentos', name: 'Compressores',
     desc: 'Geram o ar comprimido para ferramentas, automação e processos, formando um sistema único com o tratamento e a rede de ar.',
-    tipos: ['Pistão', 'Parafuso rotativo', 'Palhetas', 'Scroll isento de óleo', 'Centrífugo'],
+    tipos: ['Pistão', 'Parafuso rotativo', 'Palhetas', 'Scroll isento de óleo', 'Centrífugo', 'Parafuso isento de óleo', 'Dente rotativo isento de óleo'],
     escolha: ['Vazão somando o consumo dos pontos, com margem', 'Pressão de trabalho necessária', 'Reservatório, secador e filtros conforme a qualidade de ar', 'Rede em anel com baixa perda de carga e drenos'],
     normas: ['ISO 8573-1', 'NR-13', 'ISO 1217'],
     fotos: [
