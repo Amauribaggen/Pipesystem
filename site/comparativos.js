@@ -1290,7 +1290,7 @@ const CPR_TIPOS = [
 function cprInner(k) {
   const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
   const seta = (d) => `<path class="cpr-ar" d="${d}"/>`;
-  // animações SVG (SMIL): giro em torno de (x, y), vaivém e órbita; pausadas para quem pede menos movimento
+  // animações SVG (SMIL): giro em torno de (x, y), vaivém e órbita; continuam mesmo com "menos movimento" (pedido do cliente)
   const gira = (x, y, s, rev) => `<animateTransform attributeName="transform" type="rotate" from="${rev ? 360 : 0} ${x} ${y}" to="${rev ? 0 : 360} ${x} ${y}" dur="${s}s" repeatCount="indefinite"/>`;
   const vai = (attr, vals, s, tipo) => tipo ? `<animateTransform attributeName="transform" type="${tipo}" values="${vals}" dur="${s}s" repeatCount="indefinite"/>` : `<animate attributeName="${attr}" values="${vals}" dur="${s}s" repeatCount="indefinite"/>`;
   if (k === 'pistao' || k === 'pistaoseco') {

@@ -1640,9 +1640,3 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
 })();
 
 
-// Desenhos animados (SVG): parados para quem pede menos movimento, inclusive os que entram na página depois
-(() => {
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const para = () => document.querySelectorAll('svg').forEach(s => s.pauseAnimations && s.pauseAnimations());
-  para(); new MutationObserver(para).observe(document.documentElement, { childList: true, subtree: true });
-})();
