@@ -118,7 +118,7 @@ const PRODUCTS = [
     ] },
   { id: 'conexoes-forjadas', g: 'conexoes', name: 'Conexões Forjadas',
     desc: 'Conexões de aço forjado para alta pressão em linhas industriais de vapor, óleo, gás e processos.',
-    tipos: ['Encaixe para solda (socket weld)', 'Roscadas NPT', 'Classes 2000, 3000, 6000 e 9000', 'Derivações tipo weldolet, sockolet e thredolet'],
+    tipos: ['Encaixe para solda (socket weld)', 'Roscadas NPT', 'Classes 2000, 3000, 6000 e 9000', 'Derivações tipo weldolet, sockolet e thredolet', 'Luva ponta de tubo / ponta rosca (rosca de um lado, ponta lisa para solda do outro)'],
     escolha: ['Classe compatível com o schedule do tubo', 'Material: aço-carbono ASTM A105 ou ligas ASTM A182', 'Inspeção e rastreabilidade por certificado'],
     normas: ['ASME B16.11', 'MSS SP-97', 'ASTM A105'],
     // Fotos com licença livre (Wikimedia Commons) — crédito obrigatório ao autor
