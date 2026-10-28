@@ -1391,7 +1391,7 @@ const MAGAZINES = [
       group('Revistas especializadas', MAGAZINES.map(m => ({ href: m.edicaoUrl || m.url, ext: true, label: m.nome })), '#revistas') +
       group('', [{ href: '#artigo-envio', label: 'Adicione seu artigo técnico aqui' }]),
     feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira', 'feiras', x => !x.intl), '#feiras-brasil') + group('No exterior', tag('#feiras .fair--intl', 'feira', 'feiras', x => x.intl), '#feiras-exterior') +
-      group('', [{ href: '#links-uteis', label: 'Links úteis: entidades e normas do setor' }]),
+      group('', [{ href: '#associacoes', label: 'Associações e entidades do setor' }]),
     anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano', 'anuncie'), '#planos-banner') +
       group('', [{ href: '#adMap', label: 'Onde os banners aparecem' }]),
     sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor', 'sobre'), '#diretoria') +
