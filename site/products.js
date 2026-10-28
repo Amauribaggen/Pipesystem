@@ -129,7 +129,7 @@ const PRODUCTS = [
     ] },
   { id: 'conexoes-solda', g: 'conexoes', name: 'Conexões Tubulares Solda',
     desc: 'Conexões tubulares para solda de topo (butt weld): curvas, tês, reduções e tampões fabricados a partir de tubo, que formam linhas soldadas contínuas, estanques e sem pontos de rosca, em aço-carbono, inox e ligas.',
-    tipos: ['Curvas de 45°, 90° e 180°, raio longo (1,5 D) e raio curto (1 D)', 'Tês retos e de redução', 'Reduções concêntricas e excêntricas', 'Tampões (caps)', 'Pontas com chanfro para solda (bisel)'],
+    tipos: ['Curvas de 45°, 90° e 180°, raio longo (1,5 D) e raio curto (1 D)', 'Tês retos e de redução', 'Reduções concêntricas e excêntricas', 'Tampões (caps)', 'Pontas com chanfro para solda (bisel)', 'Curvas gomadas (segmentadas) para diâmetros grandes'],
     escolha: ['Mesmo diâmetro e schedule (espessura) do tubo', 'Material compatível: aço-carbono ASTM A234 WPB ou inox ASTM A403', 'Redução excêntrica na sucção de bombas, para evitar bolsas de ar', 'Soldagem por soldador qualificado, com inspeção conforme a norma do projeto'],
     normas: ['ASME B16.9', 'ASME B16.25', 'ASTM A234', 'ASTM A403', 'MSS SP-43'],
     fotos: [
