@@ -64,7 +64,7 @@ const PRODUCTS = [
   // Conexões
   { id: 'conexoes-ferro', g: 'conexoes', name: 'Conexões de Ferro',
     desc: 'Ferro maleável galvanizado ou preto, roscadas, para água, incêndio, gás e ar comprimido.',
-    tipos: ['Cotovelos, tês e cruzetas', 'Luvas, uniões e niples', 'Buchas, bujões e tampões', 'Galvanizadas ou pretas'],
+    tipos: ['Cotovelos, tês e cruzetas', 'Luvas, uniões e niples', 'Buchas, bujões e tampões', 'Galvanizadas ou pretas', 'Conexões NPT de média e alta pressão'],
     escolha: ['Rosca (BSP ou NPT) igual à do tubo', 'Galvanizadas para água; pretas para gás e óleo', 'Classe de pressão compatível', 'Vedante adequado ao fluido'],
     normas: ['NBR 6943', 'NBR 6925', 'ASME B16.3'],
     // Fotos com licença livre (Wikimedia Commons) — crédito obrigatório ao autor
@@ -139,7 +139,7 @@ const PRODUCTS = [
     ] },
   { id: 'conexoes-ranhuradas', g: 'conexoes', name: 'Conexões Ranhuradas',
     desc: 'Uniões por acoplamento mecânico em tubos com ranhura: montagem rápida, sem solda, muito usadas em redes de incêndio.',
-    tipos: ['Acoplamentos rígidos e flexíveis', 'Cotovelos, tês e reduções ranhurados', 'Tês mecânicos para derivações', 'Adaptadores flange-ranhura'],
+    tipos: ['Acoplamentos rígidos e flexíveis', 'Cotovelos, tês e reduções ranhurados', 'Tês mecânicos para derivações', 'Adaptadores flange-ranhura', 'Tê mecânico (derivação sem solda)', 'Tê com saída para sprinkler'],
     escolha: ['Aprovações UL/FM para sistemas de incêndio', 'Ranhura laminada ou usinada conforme a espessura do tubo', 'Junta EPDM para água; nitrílica para óleo'],
     normas: ['AWWA C606', 'UL 213', 'FM 1920'],
     fotos: [
