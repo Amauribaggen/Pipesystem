@@ -14,7 +14,7 @@ const CATALOG = [
     desc: 'Tubos flexíveis, fornecidos em rolos, que permitem trechos contínuos sem conexões intermediárias. São muito usados no sistema "tubo dentro de tubo", com distribuição por coletores (manifolds).',
     specs: [['Material', 'Polietileno reticulado (PE-X)'], ['Diâmetros', '16, 20, 25 e 32 mm (os mais usuais)'], ['Temperatura', 'Água quente e fria, conforme a classe de aplicação do fabricante'], ['União', 'Conexões por crimpagem ou prensagem, com anel'], ['Instalação', 'Coletores de distribuição e tubo-guia corrugado, que permite trocar o tubo']],
     normas: ['NBR 15939', 'ISO 15875', 'NBR 15575-6'] },
-  { id: 'mat-cobre', cat: 'Tubos', name: 'Tubos de cobre', apps: 'Água quente, gás e refrigeração', art: 'pipe', tone: '#d1834e', rel: 'tubos-cobre',
+  { id: 'mat-cobre', chaves: ['corrosão galvânica', 'união dielétrica', 'regra do fluxo'], cat: 'Tubos', name: 'Tubos de cobre', apps: 'Água quente, gás e refrigeração', art: 'pipe', tone: '#d1834e', rel: 'tubos-cobre',
     desc: 'Tubos de cobre rígidos ou flexíveis, duráveis e resistentes a temperatura, para água quente e fria, gás combustível, gases medicinais e refrigeração.',
     specs: [['Material', 'Cobre fosforoso (Cu-DHP)'], ['Diâmetros', '15 a 104 mm (predial)'], ['Classes', 'E (leve), A (média) e I (pesada)'], ['Temperatura', 'Água quente e fria, vapor de baixa pressão e refrigeração'], ['União', 'Solda capilar, brasagem, compressão ou prensagem']],
     normas: ['NBR 13206', 'NBR 15345', 'ASTM B88', 'NBR 15575-6'] },
@@ -66,7 +66,7 @@ const CATALOG = [
     normas: ['ASTM A312', 'ASTM A270', 'ASTM A554'] },
 
   // Conexões
-  { id: 'mat-galv', chaves: ['IPC', 'GIPP', 'IPC Brasil', 'ferro maleável', 'NBR 6943', 'ISO 49', 'tê hidrante', 'união assento cônico', 'niple duplo', 'Tupy', 'TupyBSP', 'TupyNPT', 'NPT média pressão', 'NPT alta pressão', 'união assento plano', 'união assento bronze', 'piscano'], cat: 'Conexões', name: 'Conexões galvanizadas', apps: 'Ferro maleável, rosca BSP e NPT', art: 'fittings', tone: '#b9c3cc', rel: 'conexoes-ferro',
+  { id: 'mat-galv', chaves: ['IPC', 'GIPP', 'IPC Brasil', 'ferro maleável', 'NBR 6943', 'ISO 49', 'tê hidrante', 'união assento cônico', 'niple duplo', 'Tupy', 'TupyBSP', 'TupyNPT', 'NPT média pressão', 'NPT alta pressão', 'união assento plano', 'união assento bronze', 'piscano', 'corrosão galvânica', 'união dielétrica', 'tuberculação'], cat: 'Conexões', name: 'Conexões galvanizadas', apps: 'Ferro maleável, rosca BSP e NPT', art: 'fittings', tone: '#b9c3cc', rel: 'conexoes-ferro',
     desc: 'Conexões roscadas de ferro fundido maleável galvanizado, para redes de água, incêndio, gás e ar comprimido em tubos de aço.',
     specs: [['Material', 'Ferro fundido maleável, galvanizado ou preto'], ['Diâmetros', '1/4" a 6"'], ['Pressão', 'Classe 10 (1,0 MPa) e classe 150 lb'], ['Rosca', 'BSP (NBR NM ISO 7-1) ou NPT (ASME B1.20.1)'], ['Peças', 'Cotovelos, tês, luvas, uniões, niples, buchas, bujões e tampões']],
     normas: ['NBR 6943', 'NBR 6925', 'ASME B16.3'] },
@@ -293,7 +293,7 @@ const CATALOG = [
     normas: ['NBR 5626', 'NBR 12214'],
     tipos: ['Pressurizador de ponto (um chuveiro ou aquecedor)', 'Pressurizador residencial com fluxostato', 'Bomba com pressostato e tanque de pressão', 'Booster com inversor de frequência (prédios)'],
     escolha: ['Vazão e pressão pela soma dos pontos em uso simultâneo', 'Compatibilidade com a água quente, quando houver aquecedor', 'Proteção contra funcionamento a seco', 'Inversor de frequência quando se quer pressão constante e economia de energia'] },
-  { id: 'mat-caldeiras', chaves: ['aquecedor a gás', 'aquecedor de passagem', 'aquecedor de água', 'boiler', 'aquecedor de acumulação', 'chuveiro elétrico', 'caldeira', 'Rinnai', 'Komeco', 'Lorenzetti', 'Bosch'], cat: 'Equipamentos', name: 'Aquecedores e caldeiras', apps: 'Água quente e geração de vapor', art: 'boiler', tone: '#c3cbd3', rel: 'caldeiras',
+  { id: 'mat-caldeiras', chaves: ['aquecedor a gás', 'aquecedor de passagem', 'aquecedor de água', 'boiler', 'aquecedor de acumulação', 'chuveiro elétrico', 'caldeira', 'Rinnai', 'Komeco', 'Lorenzetti', 'Bosch', 'calcário', 'incrustação', 'ânodo de magnésio'], cat: 'Equipamentos', name: 'Aquecedores e caldeiras', apps: 'Água quente e geração de vapor', art: 'boiler', tone: '#c3cbd3', rel: 'caldeiras',
     desc: 'Aquecedores a gás, elétricos e solares para água quente, e caldeiras para geração de vapor ou água quente em processos.',
     specs: [['Aquecedores', 'Passagem (L/min) ou acumulação (litros)'], ['Caldeiras', 'Produção de vapor (kg/h) e pressão de trabalho'], ['Combustível', 'Gás, óleo, lenha, biomassa ou eletricidade'], ['Tipos de caldeira', 'Flamotubular e aquatubular'], ['Segurança', 'Válvula de segurança, controle de nível e NR-13']],
     normas: ['NR-13', 'NBR 13103', 'NBR 15569'] },

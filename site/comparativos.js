@@ -83,6 +83,13 @@ const CMP_FONTES = {
   atlasLcc: ['Atlas Copco — Quanto custa um compressor: a energia responde por cerca de 70% do custo ao longo da vida, e a compra por cerca de 20%', 'https://www.atlascopco.com/en-gr/compressors/air-compressor-blog/what-does-a-compressor-cost', 'fab'],
   nr13: ['NR-13 — Caldeiras, vasos de pressão, tubulações e tanques metálicos (reservatório de ar comprimido)', 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/norma-regulamentadora-no-13-nr-13', 'norma'],
   schulzLinha: ['Schulz — compressores de pistão lubrificados e isentos de óleo, de parafuso e scroll', 'https://www.schulz.com.br', 'fab'],
+  ugaLsi: ['UGA Extension — Água corrosiva ou incrustante: índice de saturação de Langelier; o aquecedor é o ponto mais comum de incrustação na casa', 'https://fieldreport.caes.uga.edu/publications/C858-9/corrosive-or-scaling-water/', 'estudo'],
+  mcwaneTub: ['McWane Ductile — Tuberculação: por que o ferro sem revestimento forma tubérculos de óxido por dentro', 'https://mcwaneductile.com/blog/what-is-tuberculation-and-why-did-it-happen-in-iron-pipe/', 'fab'],
+  legionella: ['Buildings — Como reduzir o risco de Legionella na água quente: manter a rede acima de 50 °C e o aquecedor a 60 °C; biofilme e incrustação protegem a bactéria', 'https://www.buildings.com/safety-security/article/55259903/how-to-reduce-the-risk-of-legionella-in-hot-water-systems', 'artigo'],
+  fogEpa: ['US EPA (NCER) — Depósitos de gordura no esgoto: sabões de cálcio formados por saponificação dos ácidos graxos', 'https://cfpub.epa.gov/ncer_abstracts/index.cfm/fuseaction/display.abstractDetail/abstract_id/8982/report/F', 'estudo'],
+  urinalAu: ['Plumbing Connection — Pesquisa sobre mictórios sem água: a estruvita incrusta e entope o ramal logo após a saída', 'https://plumbingconnection.com.au/waterless-urinals-research', 'artigo'],
+  fliessregel: ['Haustechnikdialog — Regra do fluxo (Fließregel): cobre e ligas de cobre não ficam antes do aço galvanizado no sentido da água', 'https://www.haustechnikdialog.de/SHKwissen/2233/Fliessregel', 'artigo'],
+  galvSeries: ['Série galvânica (ASTM G82): quanto mais distantes os metais na série, maior a tendência à corrosão galvânica', 'https://en.wikipedia.org/wiki/Galvanic_series', 'artigo'],
   asmePcc1: ['ASME PCC-1 — Montagem de juntas flangeadas aparafusadas: alinhamento, lubrificação, sequência e controle do aperto', 'https://www.asme.org/codes-standards', 'norma'],
   asmeB1201: ['ASME B1.20.1 — Roscas de tubo de uso geral (NPT); no Brasil também se usa a rosca BSP (ABNT NBR NM ISO 7-1)', 'https://www.asme.org/codes-standards', 'norma'],
   dirac: ['Portal Dirac — "Borboleta não é tudo igual por fora": tipos de válvula borboleta e critérios de escolha (LinkedIn, out/2026)', 'https://www.linkedin.com/posts/portal-dirac-836833257_borboleta-n%C3%A3o-%C3%A9-tudo-igual-por-fora-muitas-share-7519781581704753153-2Kk3/', 'artigo'],
@@ -699,6 +706,55 @@ const CMPS = [
     erros: ['Usar compressor de pistão em trabalho contínuo, sem pausa para esfriar', 'Comprar pelo preço e esquecer o custo da energia', 'Superdimensionar: compressor grande trabalhando aliviado gasta sem produzir ar', 'Instalar sem secador e drenos: a água condensada chega às ferramentas e corrói a rede', 'Ar com óleo em alimentos, farmacêutica ou pintura sem a filtragem adequada', 'Sala sem ventilação: ar quente na entrada derruba o rendimento', 'Reservatório sem válvula de segurança e sem as inspeções da NR-13', 'Deixar os vazamentos da rede para depois'],
     apps: { casa: 'Pistão pequeno, para pintura, pneus e ferramentas de uso eventual.', predio: 'Pistão ou scroll em oficinas, garagens e academias; isento de óleo em clínicas odontológicas.', hospital: 'Ar medicinal com compressores isentos de óleo (scroll, parafuso ou dente), tratamento do ar e redundância {nbr12188}.', industria: 'Parafuso lubrificado com inversor na rede geral; isento de óleo em alimentos e farmacêutica; centrífugo nas grandes plantas.' },
     fontes: ['atlasLcc', 'doeAr', 'cacFs8', 'nbrIso8573', 'nr13', 'nbr12188', 'schulzLinha'] },
+  { id: 'incrustacoes', tema: 'Incrustação e corrosão', titulo: 'Incrustações e corrosão galvânica: o que entope e corrói cada instalação e como evitar',
+    tipos: 'incrustacoes',
+    chaves: ['incrustação', 'calcário', 'carbonato de cálcio', 'água dura', 'dureza da água', 'abrandador', 'ferrugem', 'tuberculação', 'tubérculos', 'biofilme', 'limo', 'Legionella', 'ferro e manganês', 'água escura', 'gordura no esgoto', 'caixa de gordura', 'incrustação de urina', 'estruvita', 'mictório entupido', 'sedimentos', 'areia na rede', 'sílica', 'torre de resfriamento', 'corrosão galvânica', 'pilha galvânica', 'união dielétrica', 'luva dielétrica', 'regra do fluxo', 'ânodo de sacrifício', 'ânodo de magnésio', 'cobre e galvanizado', 'série galvânica', 'índice de Langelier'],
+    resumo: 'Água quente e água dura: calcário, que se controla com abrandador e limpeza do aquecedor. Ferro e aço antigos: ferrugem em tubérculos, que pede troca do material. Reservatórios e trechos parados: biofilme e Legionella, que se evitam com água quente a 60 °C e sem pontas mortas. Água de poço: ferro e manganês, com aeração e filtro. Esgoto de cozinha: gordura, com caixa de gordura limpa. Mictórios: incrustação de urina, com descargas e manutenção. Metais diferentes na mesma rede: união dielétrica, cobre sempre depois do galvanizado, transição em bronze e ânodo de sacrifício no boiler.',
+    intro: 'Incrustação é tudo o que gruda por dentro do tubo e rouba diâmetro: sais da água, ferrugem, bactérias, gordura, cristais da urina e areia. Cada instalação tem a sua: a água quente sofre com o calcário, a rede velha de ferro com a ferrugem, o esgoto de cozinha com a gordura. A corrosão galvânica é outro problema, mas costuma aparecer junto: dois metais diferentes em contato, com a água fazendo o papel de eletrólito, formam uma pilha, e o metal menos nobre se desgasta {galvSeries}. As duas primeiras tabelas comparam as incrustações mais comuns; a terceira, as formas de evitar a corrosão galvânica.',
+    opcoes: [['Calcário (carbonato de cálcio)', 'caldeiras'], ['Ferrugem em tubérculos', 'galv'], ['Biofilme e Legionella', 'reservatorios'], ['Ferro e manganês', 'filtros'],
+      ['Gordura (sabão de cálcio)', 'pvc-esgoto'], ['Incrustação de urina', 'pvc-esgoto'], ['Areia e sedimentos', 'filtros'], ['Sílica e sais (torres e caldeiras)', 'caldeiras'],
+      ['União ou luva dielétrica', 'cobre'], ['Regra do fluxo', 'galv'], ['Transição em bronze ou latão', 'latao'], ['Ânodo de sacrifício', 'caldeiras'], ['Isolar suportes e fixações', 'suportes']],
+    tabelas: [
+      { titulo: 'Incrustações na água potável e no aquecimento', cols: [0, 1, 2, 3], linhas: [
+        ['O que é', ['Carbonato de cálcio e magnésio que a água dura deposita, mais ainda quando esquenta {ugaLsi}', 'Óxidos de ferro que crescem como calombos dentro do ferro e do aço que corroem {mcwaneTub}', 'Camada viscosa de bactérias e matéria orgânica grudada na parede; abriga a Legionella {legionella}', 'Ferro e manganês dissolvidos na água de poço, que oxidam e viram lodo marrom ou preto']],
+        ['Onde aparece', ['Aquecedores, boilers, resistências, chuveiros, aeradores e trechos de água quente {ugaLsi}', 'Redes antigas de ferro fundido e aço galvanizado, inclusive redes de incêndio paradas', 'Reservatórios, trechos parados, pontas mortas e água morna', 'Instalações abastecidas por poço; manchas em louças e roupas']],
+        ['Efeito', ['Menos vazão e menos troca de calor; queima resistências {ugaLsi}', 'Diâmetro útil menor e mais perda de carga: o coeficiente C cai {mcwaneTub}', 'Risco à saúde, cheiro e gosto; protege as bactérias do cloro {legionella}', 'Água colorida, aeradores e filtros entupidos']],
+        ['Como evitar', ['Abrandador onde a água é dura; aquecedor sem temperatura exagerada; limpeza periódica {ugaLsi}', 'Trocar por material que não enferruja (plástico, cobre, inox) ou revestir; limpeza mecânica', 'Água quente guardada a 60 °C e circulando acima de 50 °C; sem pontas mortas; limpar o reservatório a cada 6 meses {legionella}{nbr5626}', 'Aeração ou oxidação seguida de filtração']],
+      ] },
+      { titulo: 'Incrustações no esgoto e na indústria', cols: [4, 5, 6, 7], linhas: [
+        ['O que é', ['Sabão de cálcio: os ácidos da gordura reagem com o cálcio e endurecem na parede {fogEpa}', 'Estruvita e fosfatos de cálcio que a urina deposita logo depois do mictório {urinalAu}', 'Areia, argila e fragmentos que a água traz da rede ou do poço e que assentam nos trechos lentos', 'Sílica, sulfato de cálcio e sais que se concentram com a evaporação']],
+        ['Onde aparece', ['Ramais de pias de cozinha, caixas de gordura e coletores de restaurantes {fogEpa}', 'Ramais de mictórios, principalmente os sem água ou com pouca descarga {urinalAu}', 'Registros, válvulas redutoras, boias, filtros e fundo de reservatórios', 'Torres de resfriamento, caldeiras e trocadores de calor']],
+        ['Efeito', ['Entupimento e retorno de esgoto {fogEpa}', 'Entupimento e mau cheiro {urinalAu}', 'Desgaste de vedações, válvulas que não fecham e entupimentos', 'Menos troca de calor e corrosão sob o depósito']],
+        ['Como evitar', ['Caixa de gordura bem dimensionada e limpa; não jogar óleo na pia {nbr8160}', 'Descargas regulares e limpeza periódica do ramal {urinalAu}', 'Filtro na entrada, limpeza do reservatório e descarga das pontas da rede', 'Tratamento químico da água e purga controlada']],
+      ] },
+      { titulo: 'Corrosão galvânica: como evitar', cols: [8, 9, 10, 11, 12], linhas: [
+        ['Como funciona', ['Luva ou união com isolante entre os dois metais: corta o circuito elétrico', 'No sentido da água, o cobre fica depois do aço galvanizado, nunca antes {fliessregel}', 'Uma peça de bronze ou latão entre o cobre e o aço diminui a diferença entre os metais', 'Uma barra de magnésio (ou alumínio) corrói no lugar do reservatório de aço', 'Borracha, fita ou luva separa o tubo do suporte de outro metal']],
+        ['Por quê', ['Sem contato elétrico, não se forma a pilha galvânica', 'O cobre que a água arrasta deposita no zinco e abre furos no galvanizado {fliessregel}', 'Quanto mais longe os metais estão na série galvânica, maior a corrosão {galvSeries}', 'O metal menos nobre se sacrifica e protege o mais nobre', 'O contato úmido entre metais diferentes também forma pilha']],
+        ['Onde usar', ['Ligação de aquecedores e boilers; troca de galvanizado por cobre; inox com aço carbono', 'Redes mistas que não podem ser trocadas de uma vez', 'Transições de cobre para galvanizado na água fria', 'Boilers e aquecedores de acumulação de aço', 'Abraçadeiras de aço em tubos de cobre ou inox']],
+        ['Cuidados', ['Se a tubulação faz parte do aterramento, manter a continuidade com cabo de ligação', 'Mesmo com a regra, água parada com cobre ainda ataca o galvanizado: o melhor é não misturar {fliessregel}', 'Continua sendo contato entre metais: inspecionar', 'Inspecionar e trocar o ânodo no prazo do fabricante', 'Evitar peça pequena de metal menos nobre presa a área grande de metal mais nobre (parafuso de aço em chapa de inox)']],
+      ] },
+    ],
+    linhas: [],
+    pros: [
+      [['Fácil de prever pela dureza da água {ugaLsi}'], ['Volta sempre que a água dura esquenta', 'Abrandador tem custo e manutenção']],
+      [['Some com a troca do material'], ['Não tem remédio definitivo no ferro sem revestimento', 'Reduz a vazão aos poucos, sem aviso']],
+      [['Controlado com temperatura, circulação e limpeza'], ['Invisível até virar problema de saúde', 'Água morna e parada favorece']],
+      [['Aeração e filtro resolvem bem'], ['Exige análise da água do poço']],
+      [['Prevenção simples: caixa de gordura e hábito'], ['Endurece e é difícil de remover', 'Caixa sem limpeza não adianta']],
+      [['Descarga regular previne'], ['Mictórios sem água precisam de manutenção mais frequente']],
+      [['Filtro barato na entrada resolve'], ['Danifica válvulas e boias se não for barrado']],
+      [['Tratamento químico controla'], ['Exige acompanhamento técnico constante']],
+      [['Solução simples e barata', 'Resolve a pilha na origem'], ['Interrompe o aterramento pela tubulação', 'A vedação do isolante envelhece']],
+      [['Sem custo extra, só o projeto'], ['Não elimina o risco, só reduz', 'Difícil de garantir em redes com recirculação']],
+      [['Peças comuns no mercado'], ['Reduz, mas não isola, a pilha']],
+      [['Protege o tanque por anos', 'Troca simples'], ['Gasta-se e precisa de inspeção', 'Esquecido, deixa o tanque sem proteção']],
+      [['Barato e evita ruído também'], ['Precisa ser feito em todos os pontos de apoio']],
+    ],
+    criterios: ['Análise da água: dureza, pH, ferro, manganês e índice de Langelier {ugaLsi}', 'Temperatura: água quente incrusta mais', 'Velocidade e trechos parados: onde a água fica lenta, assenta e cria biofilme', 'Tipo de efluente: cozinha, mictórios, indústria', 'Metais da rede: quais se encontram e em que ordem no sentido da água', 'Possibilidade de trocar o material em vez de remediar'],
+    fecho: 'Incrustação se previne com água tratada, temperatura certa, rede sem trechos parados e manutenção periódica de aquecedores, reservatórios, filtros e caixas de gordura. Corrosão galvânica se previne escolhendo um só material para a rede; quando a mistura é inevitável, isole os metais, respeite a ordem no sentido da água e proteja os tanques de aço com ânodo {galvSeries}{fliessregel}.',
+    erros: ['Ligar cobre direto ao galvanizado, sem isolante nem transição', 'Pôr cobre antes do aço galvanizado no sentido da água', 'Deixar o ânodo do boiler se gastar sem inspeção', 'Abraçadeira de aço direto no tubo de cobre ou inox', 'Aquecedor com temperatura acima do necessário em água dura', 'Deixar pontas mortas e trechos sem uso na rede de água quente', 'Jogar óleo de cozinha na pia', 'Instalar sem filtro de entrada onde a água traz areia'],
+    apps: { casa: 'Abrandador ou limpeza do aquecedor onde a água é dura; filtro na entrada; não jogar óleo na pia; não misturar cobre e galvanizado.', predio: 'Limpeza dos reservatórios a cada 6 meses; caixa de gordura limpa; água quente circulando; união dielétrica nas transições.', hospital: 'Controle de Legionella: água quente a 60 °C, circulação e sem pontas mortas; um só material na rede.', industria: 'Tratamento químico em torres e caldeiras; ânodo e isolamento entre metais; inspeção periódica dos depósitos.' },
+    fontes: ['galvSeries', 'fliessregel', 'ugaLsi', 'mcwaneTub', 'legionella', 'fogEpa', 'urinalAu', 'nbr5626', 'nbr8160'] },
 ];
 
 // Insumo SINAPI do custo de referência: { ins, div } → preço por metro, unidade ou litro no estado escolhido
@@ -1349,7 +1405,77 @@ function cprTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
 }
-const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML, vedantes: vedTiposHTML, suportes: supTiposHTML, compressores: cprTiposHTML };
+// Incrustações e corrosão galvânica: desenhos próprios animados (160 × 140)
+// [id, nome, grupo, descrição]
+const INC_TIPOS = [
+  ['calcario', 'Calcário', 'Incrustação', 'A água dura deposita carbonato de cálcio, mais ainda quando esquenta: o diâmetro útil diminui e o aquecedor perde rendimento.'],
+  ['ferrugem', 'Ferrugem em tubérculos', 'Incrustação', 'O ferro e o aço sem revestimento corroem por dentro e formam calombos de óxido que estrangulam a passagem da água.'],
+  ['biofilme', 'Biofilme', 'Incrustação', 'Bactérias grudam na parede e formam uma camada viscosa, onde a Legionella se protege do cloro, sobretudo em água morna e parada.'],
+  ['ferromn', 'Ferro e manganês', 'Incrustação', 'Na água de poço, o ferro e o manganês dissolvidos oxidam e viram lodo marrom ou preto que assenta no fundo.'],
+  ['gordura', 'Gordura', 'Incrustação', 'A gordura da cozinha reage com o cálcio e vira um sabão duro que gruda no alto do tubo de esgoto.'],
+  ['urina', 'Incrustação de urina', 'Incrustação', 'Logo depois do mictório, a urina deposita cristais de estruvita e fosfatos que entopem o ramal.'],
+  ['areia', 'Areia e sedimentos', 'Incrustação', 'Partículas trazidas pela água assentam nos trechos lentos e no fundo de reservatórios e travam válvulas e boias.'],
+  ['silica', 'Sílica e sais', 'Incrustação', 'Em torres e caldeiras, a água evapora e os sais se concentram até cristalizar nas paredes.'],
+  ['dieletrica', 'União dielétrica', 'Galvânica', 'Um anel isolante entre os dois metais corta a corrente da pilha galvânica.'],
+  ['fluxo', 'Regra do fluxo', 'Galvânica', 'No sentido da água, o galvanizado vem antes e o cobre depois. O contrário leva cobre ao zinco e fura o galvanizado.'],
+  ['transicao', 'Transição em bronze', 'Galvânica', 'Uma peça de bronze ou latão entre o cobre e o aço diminui a diferença entre os metais.'],
+  ['anodo', 'Ânodo de sacrifício', 'Galvânica', 'Uma barra de magnésio se desgasta no lugar do tanque de aço do boiler e precisa ser trocada no prazo.'],
+  ['isolar', 'Isolar suportes', 'Galvânica', 'Borracha entre a abraçadeira de aço e o tubo de cobre ou inox evita a pilha no ponto de apoio.'],
+];
+function incInner(k) {
+  const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  // animações SVG (SMIL); continuam mesmo com "menos movimento" (pedido do cliente)
+  const anim = (attr, vals, s) => `<animate attributeName="${attr}" values="${vals}" dur="${s}s" repeatCount="indefinite"/>`;
+  const desloca = (vals, s) => `<animateTransform attributeName="transform" type="translate" values="${vals}" dur="${s}s" repeatCount="indefinite"/>`;
+  const fluxo = (y, x1 = 6, x2 = 154) => `<path class="inc-fluxo" d="M${x1} ${y}H${x2}">${anim('stroke-dashoffset', '12;0', 0.6)}</path>`;
+  const tuboL = (y1, y2, cls = 'inc-tubo') => `<rect class="${cls}" x="0" y="${y1}" width="160" height="${y2 - y1}"/><rect class="inc-agua" x="0" y="${y1 + 7}" width="160" height="${y2 - y1 - 14}"/>`;
+  if (k === 'calcario') return '<circle class="inc-tubo" cx="80" cy="64" r="52"/><circle class="inc-calc" cx="80" cy="64" r="44"/>' +
+    `<circle class="inc-agua" cx="80" cy="64" r="38">${anim('r', '40;24;24;40', 6)}</circle>` + txt(80, 132, 'a camada cresce com o calor');
+  if (k === 'ferrugem') return '<circle class="inc-tubo" cx="80" cy="64" r="52"/><circle class="inc-agua" cx="80" cy="64" r="44"/>' +
+    [20, 75, 130, 185, 240, 300].map((g, i) => { const a = g * Math.PI / 180; return `<circle class="inc-ferr" cx="${(80 + 42 * Math.cos(a)).toFixed(1)}" cy="${(64 + 42 * Math.sin(a)).toFixed(1)}" r="6">${anim('r', `4;${12 + (i % 3) * 2};${12 + (i % 3) * 2};4`, 6)}</circle>`; }).join('') + txt(80, 132, 'tubérculos de óxido de ferro');
+  if (k === 'biofilme') return tuboL(30, 104) + '<path class="inc-bio" d="M0 97Q10 82 22 90T46 86T70 90T94 84T118 90T142 86T160 88V97Z"/><path class="inc-bio" d="M0 37Q14 46 28 40T56 42T84 40T112 43T140 40T160 42V37Z"/>' +
+    fluxo(66) + [[20, 88], [54, 86], [90, 85], [128, 86], [40, 41], [100, 41]].map(([x, y], i) => `<ellipse class="inc-bact" cx="${x}" cy="${y}" rx="3.5" ry="2">${desloca(`0 0;${i % 2 ? 2 : -2} -1;0 0`, 1 + i * 0.2)}</ellipse>`).join('') + txt(80, 126, 'limo e bactérias na parede');
+  if (k === 'ferromn') return tuboL(30, 104) + '<path class="inc-ferro" d="M0 97Q20 88 40 92T80 90T120 91T160 89V97Z"/>' +
+    Array.from({ length: 9 }, (_, i) => `<circle class="inc-ferro" cx="${10 + i * 17}" cy="44" r="2.5">${anim('cy', '42;92', 2 + (i % 4) * 0.5)}${anim('opacity', '1;1;0.3', 2 + (i % 4) * 0.5)}</circle>`).join('') + txt(80, 126, 'oxidam e assentam no fundo');
+  if (k === 'gordura') return tuboL(30, 104) + `<path class="inc-gord" d="M0 37V56Q20 64 40 58T80 60T120 58T160 56V37Z">${anim('d', 'M0 37V44Q20 48 40 45T80 46T120 45T160 44V37Z;M0 37V58Q20 66 40 60T80 62T120 60T160 58V37Z;M0 37V44Q20 48 40 45T80 46T120 45T160 44V37Z', 8)}</path>` +
+    fluxo(80) + [30, 74, 118].map((x, i) => `<circle class="inc-gord" cx="${x}" cy="90" r="4">${anim('cy', '94;58', 2 + i * 0.4)}</circle>`).join('') + txt(80, 126, 'endurece no alto do tubo');
+  if (k === 'urina') return '<path class="inc-louca" d="M10 6h44v20q0 18-22 22q-22-4-22-22z"/><rect class="inc-tubo" x="26" y="46" width="12" height="40"/>' + tuboL(76, 118) +
+    `<g>${anim('opacity', '0.4;1;1;0.4', 6)}<path class="inc-cristal" d="M38 111l6-12 5 8 6-14 5 12 6-9 5 10 7-13 5 13 6-7 4 12z"/></g>` +
+    Array.from({ length: 3 }, (_, i) => `<circle class="inc-urina" cx="32" cy="50" r="2.5">${anim('cy', '30;104', 1.2 + i * 0.3)}</circle>`).join('') + txt(118, 30, 'cristais logo', 'middle') + txt(118, 44, 'após o mictório', 'middle');
+  if (k === 'areia') return tuboL(30, 104) + '<path class="inc-areia" d="M40 97Q60 80 80 82T120 97Z"/>' + fluxo(56, 6, 60) +
+    Array.from({ length: 7 }, (_, i) => `<circle class="inc-areia" cx="${20 + i * 18}" cy="44" r="2.5">${anim('cy', '40;94', 1.6 + (i % 3) * 0.4)}${anim('cx', `${10 + i * 6};${60 + i * 6}`, 1.6 + (i % 3) * 0.4)}</circle>`).join('') + txt(80, 126, 'assenta onde a água fica lenta');
+  if (k === 'silica') return '<path class="inc-tanque" d="M28 40V122H132V40"/><rect class="inc-agua" x="31" y="72" width="98" height="47"/>' +
+    '<rect class="inc-calc" x="31" y="66" width="6" height="53"/><rect class="inc-calc" x="123" y="66" width="6" height="53"/><rect class="inc-calc" x="31" y="114" width="98" height="5"/>' +
+    [50, 80, 110].map((x, i) => `<path class="inc-vapor" d="M${x} 66q-6-10 0-20t0-20">${desloca('0 6;0 -10', 2 + i * 0.4)}${anim('opacity', '1;0', 2 + i * 0.4)}</path>`).join('') + txt(80, 136, 'evapora e deixa os sais');
+  if (k === 'dieletrica') return '<rect class="inc-cobre" x="0" y="56" width="66" height="28"/><rect class="inc-galv" x="94" y="56" width="66" height="28"/>' +
+    '<rect class="inc-latao" x="62" y="46" width="16" height="48" rx="2"/><rect class="inc-latao" x="82" y="46" width="16" height="48" rx="2"/><rect class="inc-isol" x="77" y="42" width="6" height="56" rx="1"/>' +
+    Array.from({ length: 3 }, (_, i) => `<circle class="inc-eletron" cx="10" cy="70" r="3.5"><animate attributeName="cx" values="8;72" dur="1.5s" begin="${i * 0.5}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" dur="1.5s" begin="${i * 0.5}s" repeatCount="indefinite"/></circle>`).join('') +
+    txt(33, 108, 'cobre') + txt(127, 108, 'galvanizado') + txt(80, 30, 'anel isolante');
+  if (k === 'fluxo') {
+    const linha = (y, a, b) => `<rect class="inc-${a}" x="10" y="${y}" width="66" height="18"/><rect class="inc-${b}" x="84" y="${y}" width="66" height="18"/><rect class="inc-latao" x="74" y="${y - 3}" width="12" height="24" rx="2"/>`;
+    return linha(24, 'galv', 'cobre') + fluxo(16, 12, 148) + '<path class="inc-seta" d="M140 11l8 5-8 5"/>' + txt(84, 62, 'galvanizado → cobre: certo') +
+      linha(86, 'cobre', 'galv') + fluxo(78, 12, 148) + '<path class="inc-seta" d="M140 73l8 5-8 5"/>' + txt(84, 124, 'cobre → galvanizado: errado');
+  }
+  if (k === 'transicao') return '<rect class="inc-cobre" x="0" y="58" width="56" height="24"/><path class="inc-latao" d="M52 46h56v48h-56z"/><path class="inc-latao2" d="M60 46v48M100 46v48"/><rect class="inc-galv" x="104" y="58" width="56" height="24"/>' +
+    fluxo(70) + txt(28, 106, 'cobre') + txt(80, 36, 'bronze ou latão') + txt(124, 106, 'galvanizado');
+  if (k === 'anodo') return '<rect class="inc-galv" x="38" y="10" width="84" height="112" rx="24"/><rect class="inc-agua" x="46" y="20" width="68" height="92" rx="18"/>' +
+    `<rect class="inc-mg" x="76" y="6" width="8" height="100" rx="3">${anim('width', '8;3', 8)}${anim('x', '76;78.5', 8)}</rect>` +
+    [[60, 40], [64, 80], [96, 60]].map(([x, y]) => `<circle class="inc-eletron" cx="${x}" cy="${y}" r="3">${anim('cx', `${x};80`, 2)}${anim('cy', `${y};${y}`, 2)}</circle>`).join('') + txt(80, 135, 'o magnésio se gasta');
+  if (k === 'isolar') return '<rect class="spk-teto" x="0" y="0" width="160" height="10"/><path class="sup-tirante" d="M80 10V38"/><circle class="inc-aco" cx="80" cy="76" r="34"/>' +
+    `<circle class="inc-borracha" cx="80" cy="76" r="30">${anim('stroke-width', '5;7;5', 2)}</circle><circle class="inc-cobre" cx="80" cy="76" r="26"/><circle class="inc-agua" cx="80" cy="76" r="20"/>` + txt(80, 128, 'borracha entre o aço e o cobre');
+  return '';
+}
+const incSVG = k => `<svg viewBox="0 0 160 140" role="img" aria-label="Desenho esquemático: ${(INC_TIPOS.find(t => t[0] === k) || [, k])[1]}">${incInner(k)}</svg>`;
+function incTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Os 13 casos, em desenho</${h}>
+      <p class="bvt__lead">Os 8 primeiros são incrustações; os 5 seguintes, as formas de evitar a corrosão galvânica entre metais diferentes.</p>
+      <ol class="bvt bvt--aq">${INC_TIPOS.map(([id, nome, def, txt], i) => `
+        <li class="bvt__item"><figure>${incSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
+}
+const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML, vedantes: vedTiposHTML, suportes: supTiposHTML, compressores: cprTiposHTML, incrustacoes: incTiposHTML };
 
 // Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
 function cmpTiposHTML(matId, h = 'h4') {
