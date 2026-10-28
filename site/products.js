@@ -78,7 +78,7 @@ const PRODUCTS = [
     ] },
   { id: 'conexoes-pvc', g: 'conexoes', name: 'Conexões de PVC',
     desc: 'Complementam as redes de PVC de água fria e esgoto, unidas por solda química, rosca ou junta elástica.',
-    tipos: ['Soldáveis para água fria', 'Roscáveis', 'Esgoto com junta elástica (anel de borracha)', 'Adaptadores e conexões de transição'],
+    tipos: ['Conexões para drywall (com base de fixação)', 'Soldáveis para água fria', 'Roscáveis', 'Esgoto com junta elástica (anel de borracha)', 'Adaptadores e conexões de transição'],
     escolha: ['Mesma linha e bitola do tubo', 'Lixar, limpar e aplicar adesivo corretamente', 'Usar transição com bucha metálica junto a registros'],
     normas: ['NBR 5648', 'NBR 5688'],
     fotos: [
