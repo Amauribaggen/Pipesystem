@@ -260,7 +260,7 @@ export function generate(D, outDir) {
       url, body, wide: !!(p && p.tabelas), reviewed: D.revisaoData(m),
       title: `${m.name} — dados técnicos, tipos, normas e fabricantes | PipeSystem`,
       description: cut(`${plain(m.desc)} Dados técnicos, normas e ${importers ? 'importadores' : 'fabricantes'}.`, 158),
-      image: capa && abs(capa.src), imageAlt: capa && capa.alt, keywords: [m.name, m.cat, ...normas].join(', '),
+      image: capa && abs(capa.src), imageAlt: capa && capa.alt, keywords: [...new Set([m.name, m.cat, ...normas, ...(m.chaves || []), ...fabs.map(f => f[0])])].join(', '),
       crumbs: [{ name: 'Início', url: '/' }, { name: 'Catálogo de produtos e materiais', url: '/materiais' }, { name: m.name, url }],
     }) });
   }
@@ -341,7 +341,7 @@ export function generate(D, outDir) {
       pages.push({ url: u, images: [], html: page({ url: u, body, wide: true, reviewed: D.revisaoData({}),
         title: `${c.titulo} Comparativo | PipeSystem`,
         description: cut(plain(c.resumo.replace(/\{\w+\}/g, '')), 158),
-        keywords: [c.tema, ...c.opcoes.map(o => o[0])].join(', '),
+        keywords: [...new Set([c.tema, ...c.opcoes.map(o => o[0]), ...(c.chaves || [])])].join(', '),
         crumbs: [...cCrumbs, { name: c.titulo, url: u }] }) });
     }
   }
