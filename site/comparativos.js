@@ -70,6 +70,13 @@ const CMP_FONTES = {
   nbr9064: ['ABNT NBR 9064 — Anel de borracha do tipo toroidal para tubulação de PVC rígido para esgoto predial e ventilação', 'https://www.normas.com.br/visualizar/abnt-nbr-nm/7290/abnt-nbr9064-anel-de-borracha-do-tipo-toroidal-para-tubulacao-de-pvc-rigido-para-esgoto-predial-e-ventilacao-dimensoes-e-dureza-padronizacao', 'norma'],
   asmeB1620: ['ASME B16.20 — Juntas metálicas para flanges: espirometálicas, de anel (RTJ) e jaquetadas', 'https://www.asme.org/codes-standards', 'norma'],
   asmeB1621: ['ASME B16.21 — Juntas não metálicas planas para flanges', 'https://www.asme.org/codes-standards', 'norma'],
+  mssSp58: ['MSS SP-58-2018 — Suportes e pendurais de tubulação: materiais, projeto, fabricação, seleção e instalação (reuniu as antigas SP-69, SP-77, SP-89 e SP-90)', 'https://online.standard.no/nb/mss-sp-58-2018', 'norma'],
+  asmeB311: ['ASME B31.1, Tabela 121.5 — Vãos sugeridos entre suportes de tubo de aço com água: 1" 7 ft (2,1 m), 2" 10 ft (3,0 m), 4" 14 ft (4,3 m), 6" 17 ft (5,2 m)', 'https://wermac.org/steel/pipesupports_spacing.html', 'artigo'],
+  nfpa13Sup: ['NFPA 13 — Distância máxima entre pendurais em tubo de aço de sprinklers: 12 ft (3,7 m) em 1" e 1 1/4", 15 ft (4,6 m) de 1 1/2" a 8" (tabela reproduzida pela cidade de Filadélfia)', 'https://www.phila.gov/media/20230502104519/PB_015_F-EZ-Sprinkler-Permit-Commercial-2023.pdf', 'norma'],
+  walraven: ['Walraven — BISMAT 2000, abraçadeira com borracha EPDM: redução de ruído de até 23 dB(A) pela ISO 3822-1 (DIN 4109)', 'https://files.walraven.com/repository/rnd/documents/ES/BISMAT®%202000%20(M8,%20M8%2010)%20-%20A%2005%2016%20(ES).pdf', 'fab'],
+  hiltiMq: ['Hilti — Sistema de instalação MQ: perfilados, consoles e acessórios modulares (catálogo de instalação)', 'https://www.hilti.es/content/dam/catalogs/spain/ES_Catalogo_Instalacion_2019_COMPLETO.pdf', 'fab'],
+  wavinPpr: ['Amanco Wavin — PPR Industrial, ficha técnica: distância máxima entre apoios por diâmetro e temperatura (flecha de 2%)', 'https://eu-assets.contentstack.com/v3/assets/blt573fdbfcb1106c2a/bltb241d8b57144b55e/646567be2eaf843eafd986b4/FTC000060_-_PPR_Industrial.pdf', 'fab'],
+  pvcGo: ['Projeto de instalações sanitárias e pluviais (CEASA-GO) — distância máxima entre suportes de PVC série normal: DN 40 0,80 m; DN 50 1,00 m; DN 75 1,50 m; DN 100 1,80 m; DN 150 2,30 m', 'https://goias.gov.br/ceasa/wp-content/uploads/sites/48/2025/10/SANITARIO-E-PLUVIAL-A0-1-1-CEASA.pdf', 'artigo'],
   asmePcc1: ['ASME PCC-1 — Montagem de juntas flangeadas aparafusadas: alinhamento, lubrificação, sequência e controle do aperto', 'https://www.asme.org/codes-standards', 'norma'],
   asmeB1201: ['ASME B1.20.1 — Roscas de tubo de uso geral (NPT); no Brasil também se usa a rosca BSP (ABNT NBR NM ISO 7-1)', 'https://www.asme.org/codes-standards', 'norma'],
   dirac: ['Portal Dirac — "Borboleta não é tudo igual por fora": tipos de válvula borboleta e critérios de escolha (LinkedIn, out/2026)', 'https://www.linkedin.com/posts/portal-dirac-836833257_borboleta-n%C3%A3o-%C3%A9-tudo-igual-por-fora-muitas-share-7519781581704753153-2Kk3/', 'artigo'],
@@ -599,6 +606,50 @@ const CMPS = [
     erros: ['Usar fita comum de água em instalação de gás', 'Enrolar a fita no sentido contrário ao do aperto (ela desenrola ao rosquear)', 'Exagerar nas voltas em conexão de plástico e rachar a bolsa', 'Usar anaeróbico em rosca de plástico', 'Pôr fita na rosca paralela de flexível ou hidrômetro em vez da arruela', 'Usar cânhamo sem pasta, ou deixar fibra para dentro do tubo', 'Voltar a conexão depois de apertada para acertar a posição', 'Reaproveitar a junta de um flange desmontado'],
     apps: { casa: 'Fita PTFE nas roscas de água; arruela nos flexíveis e no hidrômetro; fita ou fio certificados para gás na rede de gás.', predio: 'Fita ou fio vedante nas roscas de água; anaeróbico nas roscas metálicas da casa de bombas; papelão hidráulico nos flanges de bombas e válvulas.', hospital: 'Só vedantes certificados para água potável e para gases; registrar o produto usado em cada rede.', industria: 'Anaeróbico nas roscas sujeitas a vibração; papelão hidráulico ou PTFE nos flanges de utilidades; espirometálica em vapor e alta pressão.' },
     fontes: ['nbrIso7', 'nbr16368', 'en751', 'loctite55', 'loctite577', 'fermit', 'teadit', 'nbr7673', 'nbr9064', 'asmeB1620', 'asmeB1621', 'asmePcc1', 'nbr15526'] },
+  { id: 'suportes', tema: 'Suportes', titulo: 'Suportes de tubulação: abraçadeira, pendural, perfilado, sapata, ancoragem ou mola?',
+    tipos: 'suportes',
+    chaves: ['suporte', 'suportes de tubulação', 'abraçadeira', 'abraçadeira U', 'abraçadeira tipo D', 'abraçadeira isofônica', 'abraçadeira com borracha', 'presilha', 'pendural', 'pendural tipo pera', 'clevis', 'tirante', 'perfilado', 'trilho', 'mão-francesa', 'console', 'sapata', 'apoio deslizante', 'guia', 'ancoragem', 'ponto fixo', 'suporte de mola', 'contraventamento', 'antissísmico', 'distância entre suportes', 'espaçamento de suportes', 'pipe rack', 'MSS SP-58', 'Hilti', 'Walraven'],
+    resumo: 'Tubo plástico nos ramais: presilha plástica, com apoios próximos. Tubo aparente em prédios: abraçadeira com borracha (isofônica), que corta o ruído. Sprinklers e redes leves suspensas: pendural tipo pera com tirante; linhas maiores e isoladas: pendural clevis. Várias linhas juntas: perfilado. Indústria: abraçadeira U e sapata no pipe rack, ancoragem nos pontos fixos e suporte de mola nas linhas quentes que sobem e descem. Sprinklers em regiões sísmicas: contraventamento.',
+    intro: 'Todo suporte faz uma de quatro coisas: sustenta o peso, guia o tubo, deixa ele dilatar ou trava ele num ponto fixo. A escolha começa pelo material e pela temperatura do tubo e termina na distância entre apoios. Como referência: em aço com água, cerca de 2,1 m para 1", 3,0 m para 2", 4,3 m para 4" e 5,2 m para 6" {asmeB311}; em sprinklers de aço, até 3,7 m em 1" e 1 1/4" e 4,6 m a partir de 1 1/2" {nfpa13Sup}; em PVC de esgoto, de 0,80 m no DN 40 a 1,80 m no DN 100 {pvcGo}; e no PPR o vão encolhe com o calor: no tubo de 20 mm da linha industrial, de 75 cm a 0 °C para 45 cm a 60 °C {wavinPpr}. A primeira tabela compara abraçadeiras e pendurais; a segunda, as estruturas e os suportes com função especial.',
+    opcoes: [['Abraçadeira U', 'suportes'], ['Abraçadeira tipo D', 'suportes'], ['Abraçadeira com borracha (isofônica)', 'suportes'], ['Presilha plástica', 'suportes'], ['Pendural tipo pera', 'suportes'], ['Pendural clevis', 'suportes'],
+      ['Perfilado (trapézio)', 'suportes'], ['Mão-francesa', 'suportes'], ['Sapata (apoio deslizante)', 'suportes'], ['Ancoragem (ponto fixo)', 'suportes'], ['Suporte de mola', 'suportes'], ['Contraventamento', 'suportes']],
+    tabelas: [
+      { titulo: 'Abraçadeiras e pendurais', cols: [0, 1, 2, 3, 4, 5], linhas: [
+        ['Como segura', ['Vergalhão em U roscado nas pontas, preso por porcas a uma viga ou perfil', 'Fita metálica em forma de D, parafusada na parede ou na laje', 'Duas meias-luas de aço forradas de borracha EPDM, com rosca para tirante, base ou perfil {walraven}', 'Presilha de encaixe parafusada na parede', 'Anel em forma de gota, pendurado no teto por tirante roscado', 'Forquilha com pino embaixo, pendurada por tirante; o tubo apoia na forquilha']],
+        ['Diâmetros usuais', ['De 1/2" a 24" ou mais', 'Até cerca de 2"', 'De cerca de 10 a 225 mm {walraven}', 'De 16 a 50 mm (PEX, PPR, multicamada, PVC)', 'De 1/2" a 8"', 'De 1/2" a 30"']],
+        ['Uso típico', ['Pipe rack e suportes industriais', 'Fixação leve em parede e laje', 'Água, esgoto e aquecimento em prédios, onde o ruído incomoda', 'Ramais de água quente e fria', 'Ramais de sprinklers e redes leves suspensas', 'Linhas suspensas maiores e com isolamento térmico']],
+        ['Movimento do tubo', ['Fixa se apertada; guia se ficar com folga', 'Fixa', 'Fixa; alguns modelos deixam deslizar com espaçador {walraven}', 'Deixa deslizar (o plástico dilata muito)', 'Pequeno balanço e dilatação ao longo do tubo', 'Dilatação ao longo do tubo e pequeno balanço']],
+        ['Material', ['Aço galvanizado a fogo ou inox', 'Aço galvanizado', 'Aço zincado com perfil de EPDM {walraven}', 'Polipropileno ou nylon', 'Aço galvanizado', 'Aço galvanizado ou pintado']],
+        ['Normas', ['MSS SP-58 {mssSp58}', 'NBR 5626 · NBR 8160 {nbr5626}{nbr8160}', 'DIN 4109 (ruído) {walraven}', 'Manual do fabricante do tubo {wavinPpr}', 'NFPA 13 · NBR 10897 · MSS SP-58 {nfpa13Sup}{nbr10897}{mssSp58}', 'MSS SP-58 {mssSp58}']],
+      ] },
+      { titulo: 'Estruturas e suportes com função especial', cols: [6, 7, 8, 9, 10, 11], linhas: [
+        ['Função', ['Estrutura modular: um trapézio ou grelha sustenta várias linhas {hiltiMq}', 'Console em L com escora diagonal, preso à parede ou ao pilar', 'Apoio preso ao tubo que escorrega sobre a viga: deixa a linha dilatar', 'Ponto fixo: trava o tubo em todas as direções e divide a rede em trechos de dilatação', 'Mola calibrada que sustenta o peso mesmo quando o tubo sobe ou desce com a temperatura', 'Braço diagonal que impede a rede de balançar para os lados e no sentido do tubo']],
+        ['Onde usar', ['Shafts, forros técnicos e casas de máquinas com várias tubulações', 'Linhas ao longo de paredes e pilares', 'Linhas quentes (vapor, água quente, óleo térmico) no pipe rack', 'Entre juntas de expansão e liras; prumadas a cada pavimento', 'Linhas quentes ligadas a caldeiras, turbinas e bombas', 'Sprinklers em regiões sísmicas e redes sujeitas a golpe de aríete']],
+        ['Carga', ['Média a alta, conforme o perfil e a fixação {hiltiMq}', 'Leve a média', 'O peso da linha', 'A mais alta: recebe o empuxo e as forças da dilatação', 'Calculada para cada ponto', 'Forças horizontais']],
+        ['Montagem', ['Parafusada, sem solda: aceita mudanças na obra {hiltiMq}', 'Chumbador ou parafuso na parede', 'Solda ou abraçadeira no tubo, sobre superfície de deslize (aço ou PTFE)', 'Solda ou abraçadeira com batentes, em estrutura rígida', 'Carga ajustada na obra pela escala da mola', 'Ângulo e fixação conforme o cálculo do projeto']],
+        ['Normas', ['MSS SP-58 {mssSp58}', 'MSS SP-58 {mssSp58}', 'MSS SP-58 · ASME B31.1 {mssSp58}{asmeB311}', 'MSS SP-58 {mssSp58}', 'MSS SP-58 {mssSp58}', 'NFPA 13 · NBR 10897 {nfpa13Sup}{nbr10897}']],
+      ] },
+    ],
+    linhas: [],
+    pros: [
+      [['Simples, barata e muito resistente', 'Serve de guia ou de ponto fixo'], ['Aço com aço: corrosão e ruído', 'Pede proteção em cobre, inox e plástico']],
+      [['Barata e rápida de instalar'], ['Só cargas leves', 'Não isola o ruído']],
+      [['Reduz o ruído que passa para a estrutura {walraven}', 'Aceita tirante, base ou perfil'], ['Custa mais que a abraçadeira simples', 'A borracha tem limite de temperatura']],
+      [['Não risca nem corrói o tubo', 'Encaixe rápido'], ['Só diâmetros pequenos', 'Apoios bem próximos, principalmente na água quente']],
+      [['Rápido, com altura regulada pelo tirante', 'Padrão nos sprinklers'], ['Balança para os lados sem contraventamento', 'Cargas leves a médias']],
+      [['Cargas maiores e tubos isolados', 'Altura ajustável'], ['Mais caro e pesado que a pera']],
+      [['Várias linhas num só suporte', 'Sem solda; aceita mudanças'], ['Pede cálculo da carga e da fixação na laje', 'Custo do sistema']],
+      [['Simples; aproveita paredes e pilares'], ['Depende da resistência da parede', 'Cargas limitadas']],
+      [['Deixa a linha dilatar sem forçar o suporte', 'Protege o isolamento térmico'], ['Precisa de guias e pontos fixos bem colocados']],
+      [['Decide para onde a dilatação vai', 'Protege bombas e equipamentos dos esforços'], ['Exige estrutura forte e cálculo']],
+      [['Mantém o peso apoiado com o tubo em movimento'], ['Cara; exige cálculo, ajuste e inspeção']],
+      [['Evita que a rede balance e se rompa'], ['Cálculo e fixação específicos', 'Mais material e mão de obra']],
+    ],
+    criterios: ['Material do tubo: aço, cobre, ferro fundido ou plástico (o plástico pede apoios mais próximos)', 'Diâmetro e peso do tubo cheio de água, com o isolamento', 'Temperatura: quanto o tubo vai dilatar e onde ficam pontos fixos e guias', 'Ruído e vibração (prédios residenciais, hospitais, casas de máquinas)', 'Ambiente: interno, externo ou corrosivo (galvanizado a fogo ou inox)', 'Onde fixar: laje, viga, parede ou perfil, e quanto peso aguenta', 'Exigência de norma: sprinklers e regiões sísmicas'],
+    fecho: 'O suporte certo depende do que ele precisa fazer: só sustentar o peso, guiar, deixar dilatar ou travar. Respeite a distância máxima entre apoios do material e ponha suportes a mais junto a válvulas, registros, mudanças de direção e equipamentos, onde o peso se concentra {asmeB311}{mssSp58}.',
+    erros: ['Espaçar os apoios do tubo plástico como se fosse aço', 'Prender com força o tubo que precisa dilatar (água quente, vapor)', 'Deixar o peso da tubulação apoiado na bomba ou no equipamento', 'Abraçadeira de aço direto no cobre ou no inox, sem isolamento (corrosão galvânica)', 'Suporte comum em área externa ou corrosiva', 'Esquecer o suporte junto a válvulas, registros e mudanças de direção', 'Fixar no forro ou na alvenaria sem conferir a carga', 'Rede de sprinklers sem contraventamento onde o projeto pede'],
+    apps: { casa: 'Presilhas plásticas nos ramais de PEX e PPR; abraçadeira tipo D ou com borracha nos tubos aparentes.', predio: 'Abraçadeiras com borracha nas prumadas e forros; perfilados nos shafts; pendurais tipo pera nos sprinklers.', hospital: 'Abraçadeiras com borracha para cortar ruído; perfilados nos forros técnicos; contraventamento conforme o projeto de incêndio.', industria: 'Abraçadeira U, sapatas, guias e ancoragens no pipe rack; suportes de mola nas linhas quentes.' },
+    fontes: ['mssSp58', 'asmeB311', 'nfpa13Sup', 'nbr10897', 'nbr5626', 'nbr8160', 'walraven', 'hiltiMq', 'wavinPpr', 'pvcGo'] },
 ];
 
 // Insumo SINAPI do custo de referência: { ins, div } → preço por metro, unidade ou litro no estado escolhido
@@ -1114,7 +1165,68 @@ function vedTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
 }
-const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML, vedantes: vedTiposHTML };
+// Suportes de tubulação: desenhos próprios (160 × 140)
+// [id, nome, grupo, descrição]
+const SUP_TIPOS = [
+  ['u', 'Abraçadeira U', 'Abraçadeira', 'Vergalhão em U com porcas, preso a uma viga ou perfil. Apertada, segura o tubo; com folga, serve de guia. Padrão no pipe rack.'],
+  ['d', 'Abraçadeira tipo D', 'Abraçadeira', 'Fita metálica em D parafusada na parede ou na laje. Barata e rápida para tubos leves e pequenos.'],
+  ['iso', 'Abraçadeira com borracha', 'Abraçadeira', 'Isofônica: meias-luas de aço forradas de EPDM, presas a um tirante. A borracha corta o ruído que o tubo passaria para a laje.'],
+  ['clip', 'Presilha plástica', 'Abraçadeira', 'Encaixa o tubo de PEX, PPR ou multicamada sem riscar e deixa ele deslizar quando dilata. Apoios bem próximos.'],
+  ['pera', 'Pendural tipo pera', 'Pendural', 'Anel em gota pendurado por tirante roscado: altura regulável e montagem rápida. O padrão nos ramais de sprinklers.'],
+  ['clevis', 'Pendural clevis', 'Pendural', 'Forquilha com pino, pendurada por tirante: aguenta tubos maiores e com isolamento e deixa a linha dilatar.'],
+  ['perfil', 'Perfilado (trapézio)', 'Estrutura', 'Perfil com fenda pendurado por dois tirantes: um só suporte leva várias linhas, montado sem solda.'],
+  ['mao', 'Mão-francesa', 'Estrutura', 'Console em L com escora diagonal, chumbado na parede ou no pilar, para linhas que correm junto à parede.'],
+  ['sapata', 'Sapata (apoio deslizante)', 'Função', 'Peça presa embaixo do tubo que escorrega sobre a viga: a linha quente dilata sem arrastar o suporte.'],
+  ['ancora', 'Ancoragem (ponto fixo)', 'Função', 'Batentes soldados no tubo e travados na estrutura: a linha não se move ali, e a dilatação vai para as juntas e liras.'],
+  ['mola', 'Suporte de mola', 'Função', 'Mola calibrada dentro de uma caixa com escala: sustenta o peso mesmo quando a linha quente sobe ou desce.'],
+  ['contra', 'Contraventamento', 'Função', 'Braço diagonal entre o tubo e a laje que impede o balanço da rede de sprinklers num terremoto.'],
+];
+function supInner(k) {
+  const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  const teto = '<rect class="spk-teto" x="0" y="0" width="160" height="10"/>';
+  const tubo = (x, y, r, pl) => `<circle class="${pl ? 'sup-tubopl' : 'sup-tubo'}" cx="${x}" cy="${y}" r="${r}"/><circle class="sup-agua" cx="${x}" cy="${y}" r="${r - 4}"/>`;
+  const tirante = (x, y1, y2) => `<path class="sup-tirante" d="M${x} ${y1}V${y2}"/>`;
+  const porca = (x, y) => `<rect class="sup-porca" x="${x - 6}" y="${y - 4}" width="12" height="8" rx="1"/>`;
+  const parede = '<rect class="sup-parede" x="0" y="0" width="12" height="140"/>';
+  const seta2 = (x1, x2, y) => `<path class="sup-seta" d="M${x1 + 8} ${y - 5}L${x1} ${y}l8 5M${x1} ${y}H${x2}M${x2 - 8} ${y - 5}L${x2} ${y}l-8 5"/>`;
+  if (k === 'u') return '<rect class="sup-viga" x="16" y="94" width="128" height="8"/><rect class="sup-viga" x="76" y="102" width="8" height="24"/><rect class="sup-viga" x="16" y="126" width="128" height="8"/>' +
+    tubo(80, 70, 24) + '<path class="sup-aco" d="M54 112V70a26 26 0 0 1 52 0V112"/>' + porca(54, 90) + porca(106, 90) + porca(54, 108) + porca(106, 108) + txt(80, 26, 'vergalhão em U') + txt(150, 122, 'viga', 'end');
+  if (k === 'd') return parede + tubo(56, 70, 20) + '<path class="sup-aco-fino" d="M12 44H56a26 26 0 0 1 0 52H12"/>' +
+    '<rect class="sup-porca" x="2" y="38" width="22" height="5" rx="1"/><rect class="sup-porca" x="2" y="97" width="22" height="5" rx="1"/>' + txt(108, 40, 'fita em D', 'start') + txt(118, 112, 'parafuso', 'middle');
+  if (k === 'iso') return teto + tirante(80, 10, 40) + '<rect class="sup-porca" x="73" y="36" width="14" height="10" rx="1"/>' + tubo(80, 76, 22) +
+    '<circle class="sup-borracha" cx="80" cy="76" r="25"/><circle class="sup-aco" cx="80" cy="76" r="30"/>' +
+    '<rect class="sup-orelha" x="38" y="72" width="16" height="8"/><rect class="sup-orelha" x="106" y="72" width="16" height="8"/>' + txt(80, 132, 'forro de borracha EPDM');
+  if (k === 'clip') return '<rect class="sup-parede" x="0" y="114" width="160" height="26"/>' + tubo(80, 76, 20, 1) +
+    '<path class="sup-plastico" d="M66 56A24 24 0 1 0 94 56"/><rect class="sup-plbase" x="62" y="98" width="36" height="12" rx="2"/><rect class="sup-porca" x="77" y="106" width="6" height="20"/>' + txt(80, 26, 'encaixe por cima');
+  if (k === 'pera') return teto + tirante(80, 10, 50) + porca(80, 26) + '<path class="sup-aco-fino" d="M80 48C50 68 52 122 80 122C108 122 110 68 80 48Z"/>' + tubo(80, 100, 19) + txt(92, 34, 'tirante', 'start');
+  if (k === 'clevis') return teto + tirante(80, 10, 42) + '<path class="sup-aco" d="M62 66V42H98V66"/><path class="sup-aco" d="M56 62V98a24 24 0 0 0 48 0V62"/>' + tubo(80, 98, 21) +
+    '<path class="sup-tirante" d="M48 64H112"/><circle class="sup-porca" cx="48" cy="64" r="4"/><circle class="sup-porca" cx="112" cy="64" r="4"/>' + txt(124, 56, 'pino', 'start');
+  if (k === 'perfil') return teto + tirante(24, 10, 110) + tirante(136, 10, 110) + '<rect class="sup-perfil" x="12" y="92" width="136" height="14" rx="1"/><path class="sup-fenda" d="M18 99H142"/>' +
+    porca(24, 112) + porca(136, 112) + [[48, 13], [80, 15], [112, 11]].map(([x, r]) => tubo(x, 92 - r - 1, r) + `<path class="sup-aco-fino" d="M${x - r - 2} 92V${91 - r}a${r + 2} ${r + 2} 0 0 1 ${2 * r + 4} 0V92"/>`).join('') + txt(80, 128, 'perfil com fenda');
+  if (k === 'mao') return parede + '<rect class="sup-perfil" x="12" y="66" width="120" height="10"/><path class="sup-aco" d="M14 124L92 76"/>' +
+    tubo(52, 50, 15) + tubo(98, 52, 13) + '<path class="sup-aco-fino" d="M35 66V50a17 17 0 0 1 34 0V66M83 66V52a15 15 0 0 1 30 0V66"/>' + txt(100, 112, 'escora', 'start');
+  if (k === 'sapata') return '<rect class="sup-tubo" x="0" y="34" width="160" height="30"/><rect class="sup-perfil" x="62" y="64" width="8" height="24"/><rect class="sup-perfil" x="90" y="64" width="8" height="24"/><rect class="sup-perfil" x="52" y="88" width="56" height="7"/>' +
+    '<rect class="sup-viga" x="20" y="96" width="120" height="8"/><rect class="sup-viga" x="76" y="104" width="8" height="22"/><rect class="sup-viga" x="20" y="126" width="120" height="8"/>' + seta2(20, 140, 20) + txt(80, 12, 'a linha dilata') + txt(114, 84, 'sapata', 'start');
+  if (k === 'ancora') return '<rect class="sup-tubo" x="0" y="34" width="160" height="30"/><path class="sup-solda" d="M64 64h8l-8 -10zM96 64h-8l8 -10z"/>' +
+    '<rect class="sup-perfil" x="64" y="64" width="32" height="26"/><rect class="sup-viga" x="20" y="90" width="120" height="8"/><rect class="sup-viga" x="76" y="98" width="8" height="28"/><rect class="sup-viga" x="20" y="126" width="120" height="8"/>' +
+    '<path class="sup-seta" d="M12 20H54M46 15l8 5-8 5M148 20H106M114 15l-8 5 8 5"/>' + txt(80, 24, 'fixo') + txt(102, 82, 'batentes', 'start');
+  if (k === 'mola') return teto + tirante(80, 10, 28) + '<rect class="sup-caixa" x="56" y="28" width="48" height="58" rx="3"/><path class="sup-mola" d="M64 36' + Array.from({ length: 6 }, (_, i) => ' l32 4 l-32 4').join('') + '"/>' +
+    '<path class="sup-escala" d="M108 34h6M108 44h6M108 54h6M108 64h6M108 74h6"/><path class="sup-seta" d="M118 50l-6 4 6 4"/>' + tirante(80, 86, 100) + tubo(80, 116, 15) + '<path class="sup-aco-fino" d="M62 100H98M63 100V116a17 17 0 0 0 34 0V100"/>' + txt(122, 38, 'escala', 'start');
+  if (k === 'contra') return teto + tirante(108, 10, 88) + tubo(108, 104, 15) + '<path class="sup-aco-fino" d="M91 92V104a17 17 0 0 0 34 0V92Z"/>' +
+    '<path class="sup-perfil2" d="M22 10L94 96"/><circle class="sup-porca" cx="22" cy="12" r="5"/><circle class="sup-porca" cx="94" cy="96" r="5"/><path class="sup-seta" d="M30 34a26 26 0 0 0 16-24"/>' + txt(50, 34, '45°', 'start') + txt(20, 126, 'braço diagonal', 'start');
+  return '';
+}
+const supSVG = k => `<svg viewBox="0 0 160 140" role="img" aria-label="Desenho esquemático: suporte ${k}">${supInner(k)}</svg>`;
+function supTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Os 12 tipos, em desenho</${h}>
+      <p class="bvt__lead">Os 6 primeiros seguram o tubo; os 6 seguintes são estruturas e suportes com função especial (deslizar, travar, compensar e contraventar).</p>
+      <ol class="bvt bvt--aq">${SUP_TIPOS.map(([id, nome, def, txt], i) => `
+        <li class="bvt__item"><figure>${supSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
+}
+const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML, vedantes: vedTiposHTML, suportes: supTiposHTML };
 
 // Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
 function cmpTiposHTML(matId, h = 'h4') {
@@ -1122,6 +1234,7 @@ function cmpTiposHTML(matId, h = 'h4') {
   if (matId === 'mat-borboleta') return H('Tipos de válvula borboleta') + semH(borbTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/valvulas-borboleta">Comparativo completo dos tipos, com normas e fontes</a></p>`;
   if (matId === 'mat-bombas') return H('Qual bomba para cada fluido') + semH(bombaTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/bombas-fluidos">Comparativo completo, com normas e fontes</a></p>`;
   if (matId === 'mat-vedantes' || matId === 'mat-juntas') return H('Vedantes de rosca e juntas, em desenho') + semH(vedTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/vedantes">Comparativo completo dos vedantes, com normas e fontes</a></p>`;
+  if (matId === 'mat-suportes') return H('Tipos de suporte, em desenho') + semH(supTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/suportes">Comparativo completo dos suportes, com distâncias, normas e fontes</a></p>`;
   if (matId === 'mat-esfera') return H('Corpos e esferas, em corte') + semH(esfTiposHTML('h4'));
   if (matId === 'mat-valvula-hidrante') return H('Tipos disponíveis no mercado') + semH(vhTiposHTML('h4'));
   if (matId === 'mat-aco') return H('Extremidades, espessuras e acabamentos') + semH(taTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;
