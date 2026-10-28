@@ -251,10 +251,17 @@ const CATALOG = [
     desc: 'Compressores de ar para oficinas, indústrias e automação, do modelo de pistão com reservatório ao parafuso rotativo de grande porte.',
     specs: [['Tipos', 'Pistão, parafuso, palhetas e scroll'], ['Vazão', 'Em pcm ou m³/min'], ['Pressão', 'Usual de 7 a 13 bar'], ['Tratamento', 'Secador, filtros e drenos automáticos'], ['Reservatório', 'Vaso de pressão sujeito à NR-13']],
     normas: ['ISO 1217', 'ISO 8573-1', 'NR-13'] },
-  { id: 'mat-sprinklers', cat: 'Equipamentos', name: 'Sprinklers', apps: 'Sistemas de combate a incêndio', art: 'sprinkler', tone: '#d8b45a', rel: 'sprinklers',
+  { id: 'mat-sprinklers', cat: 'Equipamentos', name: 'Sprinklers', apps: 'Sistemas de combate a incêndio', art: 'sprinkler', tone: '#d8b45a', rel: 'sprinklers', veja: 'mat-acessorios-sprinkler',
     desc: 'Chuveiros automáticos que abrem individualmente quando a ampola de vidro se rompe com o calor do fogo.',
-    specs: [['Tipos', 'Pendente, em pé (upright), lateral e ESFR'], ['Fator K', 'K 5,6 (80 métrico) é o mais comum; outros conforme o risco'], ['Ampolas', '57 °C laranja · 68 °C vermelha · 79 °C amarela · 93 °C verde'], ['Resposta', 'Padrão ou rápida'], ['Conexão', 'Rosca 1/2" ou 3/4" NPT']],
-    normas: ['NBR 10897', 'NFPA 13', 'UL 199'] },
+    specs: [['Tipos', 'Pendente, em pé (upright), lateral, oculto, ESFR e de nível intermediário (in-rack), para dentro das estruturas porta-paletes'], ['Fator K', 'K 5,6 (80 métrico) é o mais comum; K 8,0 (115) e K 11,2 (160) em riscos maiores e depósitos; ESFR de K 14 a K 25'], ['Ampolas', '57 °C laranja · 68 °C vermelha · 79 °C amarela · 93 °C verde'], ['Resposta', 'Padrão ou rápida'], ['Conexão', 'Rosca 1/2" (15 mm) ou 3/4" (20 mm) NPT, conforme o fator K'], ['Certificação', 'Conformidade com a ABNT NBR 16400, certificação UL e aprovação FM, conforme o modelo']],
+    normas: ['NBR 10897', 'NBR 16400', 'NFPA 13', 'UL 199'] },
+
+  { id: 'mat-acessorios-sprinkler', cat: 'Acessórios', name: 'Acessórios de sprinkler: canoplas, gaiolas e chaves', apps: 'Acabamento, proteção e instalação dos chuveiros automáticos', art: 'spkacess', tone: '#d8b45a', veja: 'mat-sprinklers',
+    desc: 'Peças que completam a instalação do chuveiro automático: a canopla dá acabamento no furo do forro, a gaiola protege o bulbo contra pancadas e a chave própria aperta o sprinkler sem forçar o bulbo nem o defletor.',
+    specs: [['Canopla', 'Anel de acabamento que cobre o furo do forro nos sprinklers pendentes; lisa (de sobrepor) ou ajustável (embutida, com regulagem de altura)'], ['Gaiola de proteção', 'Grade metálica em volta do sprinkler, onde há risco de pancada: depósitos, quadras, garagens e áreas de carga; precisa ser listada para o modelo do sprinkler'], ['Chave de instalação', 'Encaixa no corpo do sprinkler, sem tocar no bulbo nem no defletor; cada modelo tem a sua'], ['Placa de cobertura', 'No sprinkler oculto, a placa é do mesmo fabricante e modelo e tem temperatura própria de soltura'], ['Sobressalentes', 'Armário com sprinklers de reserva de cada modelo instalado e a chave, junto à válvula de governo; a NFPA 13 pede no mínimo 6, 12 ou 24 unidades, conforme o total de chuveiros']],
+    normas: ['NBR 10897', 'NFPA 13', 'NFPA 25'],
+    tipos: ['Canopla lisa (de sobrepor)', 'Canopla ajustável (embutida)', 'Gaiola de proteção', 'Chave de instalação', 'Placa de cobertura do sprinkler oculto', 'Armário de sprinklers sobressalentes'],
+    escolha: ['Usar canopla, gaiola, placa e chave do mesmo fabricante e listadas para o modelo do sprinkler', 'Gaiola onde há risco de pancada: depósitos, quadras, garagens e áreas de carga', 'Nunca pintar sprinkler, canopla ou placa no local: só o acabamento de fábrica', 'Instalar com a chave própria: chave de boca ou grifo pode trincar o bulbo', 'Manter o armário de sobressalentes completo, com a chave e um de cada modelo instalado'] },
 
   // Acessórios
   { id: 'mat-hidrantes', cat: 'Equipamentos', name: 'Hidrantes, abrigos e acessórios de incêndio', apps: 'Sistemas de hidrantes e mangotinhos de prédios, indústrias e galpões', art: 'hose', tone: '#e5534b',
@@ -597,6 +604,12 @@ const MATERIAL_ART = (() => {
     sifao: () => `<path d="M18 10H182L162 38H38Z" fill="#e8edf2" stroke="${O}" stroke-width="2"/>` + box(86, 34, 28, 10, 2, '#9aa7b8') +
       line('M100 44V70', 12) + line('M116 80H180', 12) + box(178, 66, 12, 28, 2, '#9aa7b8') + `<path d="M190 52V112" stroke="${O}" stroke-width="3" opacity=".5"/>` +
       box(82, 64, 36, 46, 9) + `<rect x="87" y="86" width="26" height="20" rx="5" fill="#2f80ed" opacity=".6"/>` + shine(86, 68, 28, 4),
+    // acessórios de sprinkler: forro, canopla, sprinkler pendente dentro da gaiola de proteção e a chave ao lado
+    spkacess: () => `<rect x="0" y="0" width="200" height="14" fill="#dfe5ec"/>` + line('M100 0V22', 10, '#c62828') +
+      `<ellipse cx="100" cy="16" rx="24" ry="5" fill="var(--m)" stroke="${O}" stroke-width="2"/>` + box(92, 20, 16, 12, 2) +
+      `<path d="M94 32L97 64M106 32L103 64" stroke="${O}" stroke-width="3"/><ellipse cx="100" cy="48" rx="3.5" ry="10" fill="#e53935" stroke="${O}" stroke-width="1.5"/>` + box(80, 63, 40, 5, 1) +
+      `<path d="M68 20V74Q100 92 132 74V20M84 22V84M116 22V84M100 22V88M68 47H132" fill="none" stroke="#6b7683" stroke-width="3" stroke-linejoin="round"/>` +
+      line('M150 108L182 76', 8, '#9aa7b8') + `<circle cx="186" cy="72" r="9" fill="#9aa7b8" stroke="${O}" stroke-width="2"/><circle cx="186" cy="72" r="4" fill="#fff"/>`,
     // válvula angular para hidrante: tubo de incêndio por baixo, corpo de latão, volante vermelho e saída a 45° com adaptador storz
     hydrantvalve: () => line('M70 120V92', 16, '#c62828') + box(56, 54, 52, 42, 14) + shine(62, 58, 40, 5) +
       `<path d="M98 66L134 98" stroke="${O}" stroke-width="26" stroke-linecap="butt"/><path d="M98 66L134 98" stroke="var(--m)" stroke-width="22" stroke-linecap="butt"/>` +
@@ -715,7 +728,8 @@ const MANUFACTURERS = {
   'mat-bombas': [['Schneider Motobombas', 'https://www.schneidermotobombas.com.br', 'N'], ['Dancor', 'https://www.dancor.com.br', 'N'], ['Ebara (Thebe)', 'https://www.ebara.com.br', 'I'], ['KSB', 'https://www.ksb.com', 'I'], ['Grundfos', 'https://www.grundfos.com', 'I']],
   'mat-caldeiras': [['Komeco', 'https://www.komeco.com.br', 'N'], ['Rinnai', 'https://www.rinnai.com.br', 'I'], ['Alfa Laval (ATA)', 'https://www.alfalaval.com.br', 'I'], ['Bosch Industrial', 'https://www.bosch-industrial.com', 'I']],
   'mat-compressores': [['Schulz', 'https://www.schulz.com.br', 'N'], ['Chiaperini', 'https://www.chiaperini.com.br', 'N'], ['Atlas Copco', 'https://www.atlascopco.com', 'I'], ['Kaeser', 'https://www.kaeser.com', 'I'], ['Ingersoll Rand', 'https://www.ingersollrand.com', 'I']],
-  'mat-sprinklers': [['Tyco (Johnson Controls)', 'https://www.tyco-fire.com', 'I'], ['Viking', 'https://www.vikinggroupinc.com', 'I'], ['Reliable', 'https://www.reliablesprinkler.com', 'I'], ['Victaulic', 'https://www.victaulic.com', 'I']],
+  'mat-acessorios-sprinkler': [['Skop', 'https://www.skop.com.br', 'N'], ['Tyco (Johnson Controls)', 'https://www.tyco-fire.com', 'I'], ['Viking', 'https://www.vikinggroupinc.com', 'I'], ['Reliable', 'https://www.reliablesprinkler.com', 'I']],
+  'mat-sprinklers': [['Skop', 'https://www.skop.com.br', 'N'], ['Tyco (Johnson Controls)', 'https://www.tyco-fire.com', 'I'], ['Viking', 'https://www.vikinggroupinc.com', 'I'], ['Reliable', 'https://www.reliablesprinkler.com', 'I'], ['Victaulic', 'https://www.victaulic.com', 'I']],
   'mat-medidores': [['Blukit', 'https://www.blukit.com.br', 'N'], ['WIKA', 'https://www.wika.com', 'I'], ['Nuova Fima', 'https://www.nuovafima.com', 'I'], ['Itron', 'https://www.itron.com', 'I'], ['Endress+Hauser', 'https://www.endress.com', 'I'], ['Siemens', 'https://www.siemens.com', 'I']],
   'mat-mangueiras': [['Bucka', 'https://www.bucka.com.br', 'N'], ['Kidde', 'https://www.kiddelatam.com', 'I'], ['Parker', 'https://www.parker.com', 'I'], ['Gates', 'https://www.gates.com', 'I']],
   'mat-vedantes': [['Tigre', 'https://www.tigre.com.br', 'N'], ['Teadit', 'https://www.teadit.com', 'N'], ['MGA', 'https://www.mga.com.br', 'N'], ['Blukit', 'https://www.blukit.com.br', 'N'], ['Fortlev', 'https://www.fortlev.com.br', 'N'], ['Loctite (Henkel)', 'https://www.loctite.com.br', 'I'], ['Klinger', 'https://www.klinger-international.com', 'I']],

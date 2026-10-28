@@ -272,7 +272,7 @@ const PRODUCTS = [
     ] },
   { id: 'sprinklers', g: 'equipamentos', name: 'Sprinklers',
     desc: 'Chuveiros automáticos que liberam água quando o calor do fogo rompe a ampola ou o elemento fusível.',
-    tipos: ['Pendente, em pé (upright) e lateral', 'Resposta padrão e resposta rápida', 'ESFR para armazenagem', 'Ampolas por cor e temperatura de acionamento'],
+    tipos: ['Pendente, em pé (upright) e lateral', 'Resposta padrão e resposta rápida', 'ESFR para armazenagem', 'Nível intermediário (in-rack), com escudo, para estruturas porta-paletes', 'Fatores K 5,6, 8,0 e 11,2 (15 e 20 mm)', 'Ampolas por cor e temperatura de acionamento', 'Acessórios: canopla, gaiola de proteção e chave de instalação'],
     escolha: ['Classe de risco da ocupação', 'Temperatura de acionamento conforme o ambiente', 'Fator K e área de cobertura', 'Projeto e instalação por profissional habilitado'],
     normas: ['NBR 10897', 'NFPA 13', 'UL 199'],
     fotos: [
