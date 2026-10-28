@@ -59,6 +59,17 @@ const CMP_FONTES = {
   asmeB169: ['ASME B16.9 — Conexões de aço para solda de topo (butt weld)', 'https://www.asme.org/codes-standards/find-codes-standards/b16-9-factory-made-wrought-buttwelding-fittings', 'norma'],
   asmeB165: ['ASME B16.5 — Flanges e conexões flangeadas NPS 1/2 a 24: classes de pressão e tabelas pressão × temperatura', 'https://www.asme.org/codes-standards/find-codes-standards/b16-5-pipe-flanges-flanged-fittings-nps-1-2-nps-24-metric-inch-standard', 'norma'],
   asmeB1611: ['ASME B16.11 — Conexões forjadas de encaixe para solda (socket weld) e roscadas', 'https://www.asme.org/codes-standards/find-codes-standards/b16-11-forged-fittings-socket-welding-threaded', 'norma'],
+  nbr16368: ['ABNT NBR 16368 — Fitas de vedação PTFE não sinterizado: dimensões, características físicas e químicas, requisitos e métodos de ensaio', 'https://www.target.com.br/produtos/normas-tecnicas/43684/nbr16368-fitas-de-vedacao-ptfe-nao-sinterizado-dimensoes-caracteristicas-fisicas-e-quimicas-requisitos-e-metodos-de-ensaio', 'norma'],
+  en751: ['EN 751 — Vedantes para juntas roscadas metálicas em contato com gás e água quente: parte 1 anaeróbicos, parte 2 pastas que não endurecem, parte 3 fitas e fios de PTFE (até 5 bar no gás, de −20 a 125 °C)', 'https://www.evs.ee/en/evs-en-751-3-2022-a1-2023-consolidated', 'norma'],
+  nbrIso7: ['ABNT NBR NM ISO 7-1 — Rosca para tubos onde a junta de vedação sob pressão é feita pela rosca', 'https://www.target.com.br/produtos/normas-tecnicas/37446/nbrnm-iso7-1-rosca-para-tubos-onde-a-junta-de-vedacao-sob-pressao-e-feita-pela-rosca-parte-1-dimensoes-tolerancias-e-designacao', 'norma'],
+  loctite55: ['Henkel — LOCTITE 55, fio vedante para roscas metálicas e plásticas até 4": ficha técnica', 'https://datasheets.tdx.henkel.com/LOCTITE-55-Pipe-Cord-pt_BR.pdf', 'fab'],
+  loctite577: ['Henkel — LOCTITE 577, vedante anaeróbico de roscas metálicas (DVGW, NSF, WRAS)', 'https://henkel-adhesives.com/uk/en/product/thread-sealants/loctite_577.html', 'fab'],
+  fermit: ['Fermit — NEO-FERMIT Universal, pasta para vedação com cânhamo (DVGW, EN 751-2): água potável 16 bar, gás 5 bar', 'https://www.weinmann-schanz.de/de/en/Installation/Pipe-systems/Tool-connection-equipment-and-accessories/Seal-thread/Neo-Fermit/Neo-Fermit-Universal-800g-box-sid702689.html', 'fab'],
+  teadit: ['Teadit — NA 1002, placa de papelão hidráulico sem amianto (aramida e NBR): ficha técnica', 'https://directindustry.com/prod/teadit/product-17427-2696360.html', 'fab'],
+  nbr7673: ['ABNT NBR 7673 — Anéis de borracha para tubulações de PVC rígido para adutoras e redes de água', 'https://normas.com.br/visualizar/abnt-nbr-nm/1006/abnt-nbr7673-aneis-de-borracha-para-tubulacoes-de-pvc-rigido-para-adutores-e-redes-de-agua', 'norma'],
+  nbr9064: ['ABNT NBR 9064 — Anel de borracha do tipo toroidal para tubulação de PVC rígido para esgoto predial e ventilação', 'https://www.normas.com.br/visualizar/abnt-nbr-nm/7290/abnt-nbr9064-anel-de-borracha-do-tipo-toroidal-para-tubulacao-de-pvc-rigido-para-esgoto-predial-e-ventilacao-dimensoes-e-dureza-padronizacao', 'norma'],
+  asmeB1620: ['ASME B16.20 — Juntas metálicas para flanges: espirometálicas, de anel (RTJ) e jaquetadas', 'https://www.asme.org/codes-standards', 'norma'],
+  asmeB1621: ['ASME B16.21 — Juntas não metálicas planas para flanges', 'https://www.asme.org/codes-standards', 'norma'],
   asmePcc1: ['ASME PCC-1 — Montagem de juntas flangeadas aparafusadas: alinhamento, lubrificação, sequência e controle do aperto', 'https://www.asme.org/codes-standards', 'norma'],
   asmeB1201: ['ASME B1.20.1 — Roscas de tubo de uso geral (NPT); no Brasil também se usa a rosca BSP (ABNT NBR NM ISO 7-1)', 'https://www.asme.org/codes-standards', 'norma'],
   dirac: ['Portal Dirac — "Borboleta não é tudo igual por fora": tipos de válvula borboleta e critérios de escolha (LinkedIn, out/2026)', 'https://www.linkedin.com/posts/portal-dirac-836833257_borboleta-n%C3%A3o-%C3%A9-tudo-igual-por-fora-muitas-share-7519781581704753153-2Kk3/', 'artigo'],
@@ -542,6 +553,52 @@ const CMPS = [
     erros: ['Escolher a conexão só pelo custo inicial ou pela facilidade de instalação', 'Apertar flanges sem sequência cruzada e sem controle de torque', 'Reaproveitar a junta de vedação de um flange já desmontado', 'Usar rosca em linhas com vibração ou fluido perigoso sem verificar o código', 'Soldar sem procedimento qualificado e sem inspeção'],
     apps: { casa: 'Rosca nos metais e pequenos diâmetros; flange só em bombas e equipamentos.', predio: 'Flange em bombas, válvulas e medidores da casa de máquinas; rosca em utilidades de pequeno diâmetro; solda ou ranhura nas linhas de aço maiores.', hospital: 'Gases medicinais em cobre com brasagem {nbr12188}; flange nos equipamentos que exigem manutenção.', industria: 'Solda como regra nas linhas de processo; flange nos equipamentos e pontos de manutenção; rosca em pequenos diâmetros de utilidades, quando o código permitir {asmeB313}.' },
     fontes: ['asmeB313', 'asmeB169', 'asmeB1611', 'asmeB165', 'asmePcc1', 'asmeB1201', 'nbr12188'] },
+  { id: 'vedantes', tema: 'Vedação', titulo: 'Vedantes para tubulações: fita PTFE, fio, pasta, anaeróbico, cânhamo ou junta?',
+    tipos: 'vedantes',
+    chaves: ['vedante', 'vedação', 'veda-rosca', 'fita veda-rosca', 'fita teflon', 'fita PTFE', 'fita para gás', 'fita amarela', 'fio vedante', 'fio veda-rosca', 'pasta vedante', 'veda-rosca líquido', 'anaeróbico', 'selante anaeróbico', 'cânhamo', 'linho', 'sisal', 'estopa', 'anel de borracha', 'anel de vedação', 'junta elástica', 'O-ring', 'arruela de vedação', 'papelão hidráulico', 'junta de PTFE', 'junta espirometálica', 'EN 751', 'NBR 16368', 'Loctite', 'Henkel', 'Teadit', 'Fermit'],
+    resumo: 'Água fria e quente em rosca de metal: fita PTFE, a mais barata e comum, ou fio vedante, que aceita ajustar a posição da conexão. Gás: só vedante com certificação para gás (fita de alta densidade, fio ou anaeróbico aprovados). Rosca de plástico: fita ou fio, nunca anaeróbico. Máquinas e linhas com vibração: anaeróbico, que não afrouxa. Cânhamo com pasta: tradicional na Europa, bom em roscas grossas. Nas juntas: anel de borracha na bolsa e ponta, arruela na rosca paralela, e papelão hidráulico, PTFE ou espirometálica nos flanges, conforme pressão, temperatura e fluido.',
+    intro: 'A rosca cônica (BSP da NBR NM ISO 7-1 ou NPT) veda pela própria rosca, mas sempre sobra uma folga entre os filetes, e é ela que o vedante preenche {nbrIso7}. Já a rosca paralela, a união, a bolsa e ponta e o flange vedam por outro elemento: arruela, anel de borracha ou junta. Por isso esta ficha traz duas tabelas: a primeira compara os vedantes de rosca mais usados no Brasil e no exterior; a segunda, os elementos que vedam juntas de encaixe, uniões e flanges.',
+    opcoes: [['Fita PTFE', 'vedantes'], ['Fita PTFE para gás', 'vedantes'], ['Fio vedante', 'vedantes'], ['Pasta vedante', 'vedantes'], ['Anaeróbico', 'vedantes'], ['Cânhamo com pasta', 'vedantes'],
+      ['Anel de borracha (junta elástica)', 'juntas'], ['Arruela ou O-ring (rosca paralela)', 'juntas'], ['Papelão hidráulico', 'juntas'], ['Junta de PTFE', 'juntas'], ['Junta espirometálica', 'juntas']],
+    tabelas: [
+      { titulo: 'Vedantes de rosca', cols: [0, 1, 2, 3, 4, 5], linhas: [
+        ['O que é', ['Fita de PTFE não sinterizado enrolada sobre os filetes {nbr16368}', 'Fita de PTFE mais densa e grossa, em geral amarela, ensaiada para gás {en751}', 'Fio sintético impregnado de vedante que não endurece {loctite55}', 'Pasta que não endurece, muitas vezes com PTFE e fibras', 'Resina líquida que endurece sem ar, entre os metais da rosca já montada {loctite577}', 'Fibra de cânhamo ou linho enrolada na rosca, com pasta vedante por cima {fermit}']],
+        ['Fluidos', ['Água fria e quente, ar comprimido', 'Gás natural e GLP; serve também para água', 'Água potável fria e quente, ar e gás (modelos aprovados) {loctite55}', 'Água, ar e óleos; gás só os modelos aprovados', 'Água, ar, óleos e gás (modelos aprovados) {loctite577}', 'Água potável, aquecimento e gás, com pasta aprovada {fermit}']],
+        ['Roscas', ['Metal e plástico', 'Metal', 'Metal e plástico, até 4" {loctite55}', 'Metal; plástico só se o fabricante indicar', 'Só metal: não serve para plástico', 'Metal, de preferência roscas grossas e grandes']],
+        ['Temperatura', ['O PTFE vai de −197 a 260 °C; vale o limite da instalação {nbr16368}', 'De −20 a 125 °C, na norma para gás {en751}', 'De −20 a 150 °C {loctite55}', 'Varia por produto; confira a ficha', 'De −55 a 150 °C {loctite577}', 'Até 130 °C no aquecimento e 70 °C no gás {fermit}']],
+        ['Pressão', ['Baixa a média: depende das voltas e do aperto', 'Até 5 bar no gás {en751}', 'Conforme a certificação para água e gás {loctite55}', 'Alta em líquidos', 'Alta depois da cura completa; aprovado a 20 bar para gás na Austrália {loctite577}', 'Até 16 bar na água potável e 5 bar no gás {fermit}']],
+        ['Ajustar a posição depois de apertar', ['Não: voltar a conexão abre vazamento', 'Não', 'Sim: aceita pequeno ajuste sem refazer', 'Sim, antes de pressurizar', 'Sim, até começar a cura', 'Sim, pequeno ajuste']],
+        ['Liberar para pressão', ['Na hora', 'Na hora', 'Na hora', 'Na hora em baixa pressão', 'Depois da cura: de minutos (baixa pressão) a 24 h (cura total)', 'Na hora']],
+        ['Desmontar', ['Fácil', 'Fácil', 'Fácil', 'Fácil', 'Com ferramenta; em diâmetros grandes pode exigir aquecer', 'Fácil']],
+        ['Normas', ['NBR 16368 · EN 751-3 {nbr16368}{en751}', 'EN 751-3 {en751}', 'EN 751-2 · NSF/ANSI 61 {en751}{loctite55}', 'EN 751-2 {en751}', 'EN 751-1 {en751}', 'EN 751-2 (a pasta) {en751}{fermit}']],
+      ] },
+      { titulo: 'Juntas de encaixe, uniões e flanges', cols: [6, 7, 8, 9, 10], linhas: [
+        ['Onde veda', ['Bolsa e ponta de tubos de PVC, ferro dúctil e concreto', 'Uniões, flexíveis, hidrômetros e roscas paralelas (ISO 228)', 'Entre flanges de face plana ou com ressalto', 'Entre flanges, quando o fluido ataca outros materiais', 'Entre flanges com ressalto, em alta pressão e temperatura']],
+        ['Material', ['EPDM para água e esgoto; NBR para óleos e gás', 'Borracha (EPDM, NBR), fibra ou PTFE', 'Fibras sem amianto (aramida) ligadas com borracha {teadit}', 'PTFE puro, carregado ou expandido', 'Fita de inox em espiral com enchimento de grafite ou PTFE, e anel externo de centragem {asmeB1620}']],
+        ['Pressão e temperatura', ['A classe do tubo; água fria e esgoto', 'Baixa a média; até a água quente', 'Até cerca de 80 bar e 260 °C, conforme a ficha da placa {teadit}', 'Média; até cerca de 260 °C, com fluência sob aperto', 'As mais altas: vapor, óleo térmico, classes de pressão 150 a 2500 {asmeB1620}']],
+        ['Montagem', ['Limpar, lubrificar com pasta própria e empurrar a ponta até a marca, sem torcer o anel', 'Aperto moderado: quem veda é a arruela; trocá-la a cada desmontagem', 'Aperto cruzado e controlado; nunca reaproveitar {asmePcc1}', 'Aperto controlado e reaperto se o fabricante indicar', 'Torque e sequência controlados, em flange com ressalto {asmePcc1}']],
+        ['Normas', ['NBR 7673 · NBR 9064 · EN 681-1 {nbr7673}{nbr9064}', 'ISO 228-1 (rosca paralela)', 'ASME B16.21 {asmeB1621}', 'ASME B16.21 {asmeB1621}', 'ASME B16.20 {asmeB1620}']],
+      ] },
+    ],
+    linhas: [],
+    pros: [
+      [['A mais barata e fácil de achar', 'Limpa; serve para metal e plástico'], ['Voltas demais racham conexões de plástico; de menos, vaza', 'Não aceita voltar a conexão depois de apertada']],
+      [['Feita e ensaiada para gás', 'Mais grossa: pede menos voltas'], ['Só vale com certificação para gás', 'Também não aceita voltar a conexão']],
+      [['Aceita ajustar a posição sem vazar', 'Pronto para pressão na hora', 'Água potável e gás (modelos aprovados)'], ['Custa mais que a fita', 'Pede atenção ao número de voltas']],
+      [['Lubrifica e preenche roscas irregulares', 'Fácil de desmontar'], ['Suja as mãos e a peça', 'Conferir compatibilidade com plástico e com gás']],
+      [['Não afrouxa com vibração', 'Não deixa fita nem fibra dentro do tubo'], ['Só para metal', 'Esperar a cura antes da pressão', 'Mais difícil de desmontar']],
+      [['Barato e consagrado na Europa', 'Preenche roscas grossas e imperfeitas'], ['Exige prática: fibra demais racha conexões', 'Fibra sem pasta resseca e vaza']],
+      [['Montagem rápida, sem cola nem rosca', 'Absorve dilatação e pequenos desvios'], ['Não segura tração: curvas e tampões precisam de ancoragem', 'Anel torcido ou sem lubrificante vaza']],
+      [['Simples e barata', 'Desmonta e remonta trocando só a arruela'], ['Resseca com o tempo', 'Fita na rosca paralela não substitui a arruela']],
+      [['Barato e versátil para água, vapor e óleos', 'Cortado sob medida'], ['Nunca reaproveitar', 'Limites de pressão e temperatura pela ficha da placa']],
+      [['Resiste a quase todos os produtos químicos', 'Não contamina o fluido'], ['Escoa sob aperto (fluência) e pode pedir reaperto', 'Custa mais que o papelão']],
+      [['Alta pressão e temperatura', 'Acompanha variações térmicas'], ['Exige flange com ressalto e aperto controlado', 'Custo alto']],
+    ],
+    criterios: ['Fluido: água potável, água quente, gás, ar, óleo ou produto químico', 'Material da rosca: metal ou plástico', 'Tipo de rosca: cônica (veda na rosca) ou paralela (veda na arruela)', 'Pressão e temperatura de trabalho', 'Se será preciso ajustar a posição da conexão depois de apertada', 'Vibração e frequência de desmontagem', 'Certificação exigida para gás e para água potável'],
+    fecho: 'O vedante não corrige rosca malfeita nem conexão errada: a base é a rosca cônica no comprimento certo, limpa e sem rebarba. Em gás e água potável, use só produto certificado para esse uso e faça o teste de estanqueidade antes de liberar a rede {nbr15526}{en751}.',
+    erros: ['Usar fita comum de água em instalação de gás', 'Enrolar a fita no sentido contrário ao do aperto (ela desenrola ao rosquear)', 'Exagerar nas voltas em conexão de plástico e rachar a bolsa', 'Usar anaeróbico em rosca de plástico', 'Pôr fita na rosca paralela de flexível ou hidrômetro em vez da arruela', 'Usar cânhamo sem pasta, ou deixar fibra para dentro do tubo', 'Voltar a conexão depois de apertada para acertar a posição', 'Reaproveitar a junta de um flange desmontado'],
+    apps: { casa: 'Fita PTFE nas roscas de água; arruela nos flexíveis e no hidrômetro; fita ou fio certificados para gás na rede de gás.', predio: 'Fita ou fio vedante nas roscas de água; anaeróbico nas roscas metálicas da casa de bombas; papelão hidráulico nos flanges de bombas e válvulas.', hospital: 'Só vedantes certificados para água potável e para gases; registrar o produto usado em cada rede.', industria: 'Anaeróbico nas roscas sujeitas a vibração; papelão hidráulico ou PTFE nos flanges de utilidades; espirometálica em vapor e alta pressão.' },
+    fontes: ['nbrIso7', 'nbr16368', 'en751', 'loctite55', 'loctite577', 'fermit', 'teadit', 'nbr7673', 'nbr9064', 'asmeB1620', 'asmeB1621', 'asmePcc1', 'nbr15526'] },
 ];
 
 // Insumo SINAPI do custo de referência: { ins, div } → preço por metro, unidade ou litro no estado escolhido
@@ -992,13 +1049,79 @@ function aqTiposHTML(h = 'h4') {
       </ol>
       <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
 }
-const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML };
+// Vedantes de rosca e juntas: desenhos próprios (160 × 140)
+// [id, nome, grupo, descrição]
+const VED_TIPOS = [
+  ['fita', 'Fita PTFE', 'Rosca', 'Fita branca enrolada no sentido do aperto, de 3 a 5 voltas sobre os filetes. A mais usada no Brasil para água fria e quente, em metal e em plástico.'],
+  ['fitagas', 'Fita PTFE para gás', 'Rosca', 'Fita mais densa e grossa, em geral amarela, fabricada e ensaiada para gás. Fita comum de água não serve no gás.'],
+  ['fio', 'Fio vedante', 'Rosca', 'Fio sintético com vedante, enrolado na rosca. Permite pequeno ajuste de posição depois de apertado e pode ser pressurizado na hora.'],
+  ['pasta', 'Pasta vedante', 'Rosca', 'Pasta que não endurece, aplicada com pincel nos filetes da rosca macho. Lubrifica o aperto e preenche roscas irregulares.'],
+  ['anaer', 'Anaeróbico', 'Rosca', 'Líquido que endurece quando fica sem ar, entre os metais da rosca montada. Não afrouxa com vibração; só para metal.'],
+  ['canhamo', 'Cânhamo com pasta', 'Rosca', 'Fibra de cânhamo ou linho enrolada na rosca e coberta de pasta. Tradicional na Europa, boa em roscas grossas.'],
+  ['anel', 'Anel de borracha', 'Junta', 'Na junta elástica, o anel fica na canaleta da bolsa e é comprimido pela ponta do tubo. Montagem sem cola, com lubrificante próprio.'],
+  ['arruela', 'Arruela ou O-ring', 'Junta', 'Na rosca paralela (flexível, união, hidrômetro) quem veda é a arruela comprimida entre as faces, não a rosca.'],
+  ['papelao', 'Papelão hidráulico', 'Junta', 'Junta de fibra comprimida cortada no formato do flange, com os furos dos parafusos. Água, vapor e óleos em pressões médias.'],
+  ['ptfe', 'Junta de PTFE', 'Junta', 'Junta de PTFE entre dois flanges, para produtos químicos agressivos e fluidos que não podem ser contaminados.'],
+  ['espiro', 'Espirometálica', 'Junta', 'Fita de inox enrolada em espiral com grafite ou PTFE e anel externo de centragem: alta pressão e temperatura.'],
+];
+function vedInner(k) {
+  const txt = (x, y, t, a = 'middle') => `<text class="spk-txt" x="${x}" y="${y}" text-anchor="${a}">${t}</text>`;
+  const rosca = () => '<rect class="ved-tubo" x="6" y="46" width="96" height="36"/><rect class="ved-rosca" x="100" y="48" width="50" height="32"/>' +
+    Array.from({ length: 8 }, (_, i) => `<path class="ved-filete" d="M${102 + i * 6} 48l4 32"/>`).join('');
+  const faixas = (cls, n = 6, p = 8) => Array.from({ length: n }, (_, i) => `<path class="${cls}-borda" d="M${104 + i * p} 44l6 40"/><path class="${cls}" d="M${104 + i * p} 44l6 40"/>`).join('');
+  const giro = '<path class="ved-seta" d="M106 32q20-14 40 0"/><path class="ved-seta" d="M140 26l6 6-8 2"/>';
+  const flange = (x, w) => `<rect class="ved-flange" x="${x}" y="18" width="${w}" height="104" rx="2"/>`;
+  if (k === 'fita' || k === 'fitagas') {
+    const cls = k === 'fita' ? 'ved-fita' : 'ved-fitagas';
+    return rosca() + faixas(cls) + `<circle class="ved-rolo${k === 'fitagas' ? 'g' : ''}" cx="56" cy="112" r="18"/><circle class="ved-furo" cx="56" cy="112" r="7"/>` +
+      `<path class="${cls}-borda" d="M70 102L114 84"/><path class="${cls}" d="M70 102L114 84"/>` + giro + txt(100, 18, 'sentido do aperto') + txt(118, 126, k === 'fita' ? '3 a 5 voltas' : 'só para gás');
+  }
+  if (k === 'fio') return rosca() + faixas('ved-fio', 8, 6) + '<rect class="ved-frasco" x="24" y="96" width="44" height="34" rx="6"/><rect class="ved-tampa" x="36" y="88" width="20" height="8" rx="2"/>' +
+    '<path class="ved-fio-borda" d="M56 90L112 84"/><path class="ved-fio" d="M56 90L112 84"/>' + giro + txt(100, 18, 'sentido do aperto') + txt(118, 126, 'ajustável');
+  if (k === 'pasta') return rosca() + '<path class="ved-pasta" d="M102 50q6-6 12 0t12 0t12 0t12 0v28q-6 6-12 0t-12 0t-12 0t-12 0z"/>' +
+    '<path class="ved-cabo" d="M52 10L98 30"/><path class="ved-pincel" d="M96 24l16 8-6 12-16-8z"/>' + '<rect class="ved-pote" x="20" y="100" width="48" height="30" rx="4"/><rect class="ved-pasta" x="24" y="96" width="40" height="8" rx="3"/>' + txt(44, 120, 'pasta');
+  if (k === 'anaer') return rosca() + '<rect class="ved-anaer" x="104" y="46" width="16" height="36" rx="3"/>' +
+    '<path class="ved-frasco2" d="M96 2h28v18l-8 8h-12l-8-8z"/><path class="ved-frasco2" d="M106 28h8l-4 8z"/><circle class="ved-gota" cx="110" cy="41" r="3"/>' + txt(56, 108, 'endurece sem ar,') + txt(56, 122, 'dentro da rosca');
+  if (k === 'canhamo') return rosca() + Array.from({ length: 5 }, (_, i) => `<path class="ved-fibra" d="M100 ${51 + i * 7}q12-6 25 0t25 0"/>`).join('') +
+    Array.from({ length: 5 }, (_, i) => `<path class="ved-fibra" d="M${14 + i * 4} 128q18-26 40-16t36-28"/>`).join('') + txt(46, 104, 'fibra') + giro + txt(100, 18, 'sentido do aperto');
+  if (k === 'anel') {
+    const meia = '<rect class="ved-pvc" x="6" y="48" width="104" height="8"/>' +
+      '<path class="ved-pvc" d="M60 30H70L74 24H86L90 30H120L130 48H154V56H125L116 40H90L86 36H74L70 40H60Z"/>' + '<ellipse class="ved-anel" cx="80" cy="42" rx="7" ry="5"/>';
+    return meia + `<g transform="matrix(1 0 0 -1 0 140)">${meia}</g>` + '<path class="ved-agua" d="M14 70H146"/>' + txt(30, 40, 'ponta') + txt(140, 26, 'bolsa') + txt(80, 14, 'anel na canaleta');
+  }
+  if (k === 'arruela') return '<path class="ved-eixo" d="M2 70H158"/><rect class="ved-tubo" x="6" y="52" width="40" height="36"/><rect class="ved-rosca" x="46" y="54" width="28" height="32"/>' +
+    Array.from({ length: 5 }, (_, i) => `<path class="ved-filete" d="M${48 + i * 6} 54v32"/>`).join('') +
+    '<rect class="ved-anel" x="86" y="50" width="7" height="40" rx="2"/><path class="ved-porca" d="M104 36h44v68h-44z"/><path class="ved-furo" d="M104 52h30v36h-30z"/><rect class="ved-flex" x="148" y="58" width="10" height="24"/>' +
+    txt(40, 40, 'rosca paralela') + txt(90, 112, 'arruela') + txt(126, 28, 'porca');
+  if (k === 'papelao') return '<circle class="ved-papelao" cx="80" cy="66" r="54"/><circle class="ved-furo" cx="80" cy="66" r="24"/>' +
+    Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4 + Math.PI / 8; return `<circle class="ved-furo" cx="${(80 + 40 * Math.cos(a)).toFixed(1)}" cy="${(66 + 40 * Math.sin(a)).toFixed(1)}" r="5"/>`; }).join('') + txt(80, 134, 'face plana, com furos');
+  if (k === 'ptfe') return '<rect class="ved-tubo" x="4" y="54" width="54" height="32"/><rect class="ved-tubo" x="102" y="54" width="54" height="32"/>' + flange(52, 18) + flange(90, 18) +
+    '<rect class="ved-ptfe" x="70" y="32" width="20" height="24"/><rect class="ved-ptfe" x="70" y="84" width="20" height="24"/>' +
+    '<rect class="ved-parafuso" x="44" y="24" width="72" height="5" rx="2"/><rect class="ved-parafuso" x="44" y="111" width="72" height="5" rx="2"/>' +
+    '<rect class="ved-porca2" x="40" y="20" width="8" height="13"/><rect class="ved-porca2" x="112" y="20" width="8" height="13"/><rect class="ved-porca2" x="40" y="107" width="8" height="13"/><rect class="ved-porca2" x="112" y="107" width="8" height="13"/>' +
+    '<path class="ved-agua" d="M10 70H150"/>' + txt(80, 12, 'junta') + txt(80, 136, 'flange com flange');
+  if (k === 'espiro') return '<circle class="ved-metal" cx="80" cy="68" r="56"/><circle class="ved-furo" cx="80" cy="68" r="45"/>' +
+    Array.from({ length: 7 }, (_, i) => `<circle class="${i % 2 ? 'ved-esp-g' : 'ved-esp-m'}" cx="80" cy="68" r="${43 - i * 2}"/>`).join('') + '<circle class="ved-furo" cx="80" cy="68" r="29"/>' + txt(80, 136, 'espiral + anel de centragem');
+  return '';
+}
+const vedSVG = k => `<svg viewBox="0 0 160 140" role="img" aria-label="Desenho esquemático: vedante ${k}">${vedInner(k)}</svg>`;
+function vedTiposHTML(h = 'h4') {
+  return `
+      <${h} class="cp-h">Os 11 tipos, em desenho</${h}>
+      <p class="bvt__lead">Os 6 primeiros vedam roscas; os 5 seguintes, juntas de encaixe, uniões e flanges.</p>
+      <ol class="bvt bvt--aq">${VED_TIPOS.map(([id, nome, def, txt], i) => `
+        <li class="bvt__item"><figure>${vedSVG(id)}<figcaption><span class="bvt__n">${i + 1}</span><b>${nome}</b><span class="bvt__def">${def}</span></figcaption></figure><p>${txt}</p></li>`).join('')}
+      </ol>
+      <p class="bvt__note">Desenhos esquemáticos PipeSystem, fora de escala.</p>`;
+}
+const TIPOS_HTML = { borboleta: borbTiposHTML, bombas: bombaTiposHTML, sprinklers: spkTiposHTML, tubosAco: taTiposHTML, esfera: esfTiposHTML, aquecedores: aqTiposHTML, vedantes: vedTiposHTML };
 
 // Bloco dos tipos na ficha do material (válvulas borboleta e bombas)
 function cmpTiposHTML(matId, h = 'h4') {
   const H = t => `<${h}${h === 'h4' ? '' : ' class="page__h"'}>${t}</${h}>`, semH = s => s.replace(/\n\s*<h4 class="cp-h">[^<]*<\/h4>/, '');
   if (matId === 'mat-borboleta') return H('Tipos de válvula borboleta') + semH(borbTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/valvulas-borboleta">Comparativo completo dos tipos, com normas e fontes</a></p>`;
   if (matId === 'mat-bombas') return H('Qual bomba para cada fluido') + semH(bombaTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/bombas-fluidos">Comparativo completo, com normas e fontes</a></p>`;
+  if (matId === 'mat-vedantes' || matId === 'mat-juntas') return H('Vedantes de rosca e juntas, em desenho') + semH(vedTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/vedantes">Comparativo completo dos vedantes, com normas e fontes</a></p>`;
   if (matId === 'mat-esfera') return H('Corpos e esferas, em corte') + semH(esfTiposHTML('h4'));
   if (matId === 'mat-valvula-hidrante') return H('Tipos disponíveis no mercado') + semH(vhTiposHTML('h4'));
   if (matId === 'mat-aco') return H('Extremidades, espessuras e acabamentos') + semH(taTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;

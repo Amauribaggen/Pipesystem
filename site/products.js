@@ -295,7 +295,7 @@ const PRODUCTS = [
     ] },
   { id: 'vedantes', g: 'vedacao', name: 'Vedantes',
     desc: 'Garantem a estanqueidade de juntas roscadas em redes de água, gás, ar comprimido e óleo.',
-    tipos: ['Fita PTFE (veda-rosca)', 'Pastas vedantes', 'Selantes anaeróbicos', 'Fio de vedação'],
+    tipos: ['Fita PTFE (veda-rosca)', 'Pastas vedantes', 'Selantes anaeróbicos', 'Fio de vedação', 'Fita PTFE de alta densidade para gás', 'Cânhamo ou linho com pasta'],
     escolha: ['Compatibilidade com o fluido; em gás, use produto certificado', 'Temperatura e pressão de serviço', 'Roscas cônicas vedam na rosca; paralelas precisam de junta ou anel'],
     normas: ['EN 751', 'NBR 15526'],
     fotos: [

@@ -1158,6 +1158,43 @@ font[style] { background: transparent !important; box-shadow: none !important; }
 .aq-boca { fill: #2f3640; stroke: #1b2027; stroke-width: 2; }
 .aq-lenha { fill: #7a4b2a; }
 .aq-contrapiso { fill: #c3ccd6; stroke: #7d8894; stroke-width: 1.2; }
+.ved-tubo { fill: #b8c2cc; stroke: #4a5563; stroke-width: 1.5; }
+.ved-rosca { fill: #a3aeb9; stroke: #4a5563; stroke-width: 1.5; }
+.ved-filete { stroke: #4a5563; stroke-width: 1.5; }
+.ved-fita, .ved-fitagas { fill: none; stroke: #fff; stroke-width: 6; stroke-linecap: round; }
+.ved-fitagas { stroke: #f2c12e; }
+.ved-fita-borda, .ved-fitagas-borda { fill: none; stroke: #7d8894; stroke-width: 8; stroke-linecap: round; }
+.ved-fitagas-borda { stroke: #a87b00; }
+.ved-fio { fill: none; stroke: #fff6dc; stroke-width: 2.5; stroke-linecap: round; }
+.ved-fio-borda { fill: none; stroke: #8a7a50; stroke-width: 4; stroke-linecap: round; }
+.ved-rolo { fill: #fff; stroke: #7d8894; stroke-width: 2; }
+.ved-rolog { fill: #f2c12e; stroke: #a87b00; stroke-width: 2; }
+.ved-furo { fill: #eef2f6; stroke: #4a5563; stroke-width: 1.5; }
+.ved-frasco { fill: #2f80ed; stroke: #1d4f91; stroke-width: 1.5; }
+.ved-tampa { fill: #4a5563; }
+.ved-frasco2 { fill: #e9edf2; stroke: #4a5563; stroke-width: 1.5; }
+.ved-pasta { fill: #d9c9a8; stroke: #8a7a50; stroke-width: 1.2; opacity: .9; }
+.ved-pote { fill: #e9edf2; stroke: #4a5563; stroke-width: 1.5; }
+.ved-cabo { fill: none; stroke: #7a4b2a; stroke-width: 4; stroke-linecap: round; }
+.ved-pincel { fill: #c98a5e; stroke: #7a4b2a; stroke-width: 1.2; }
+.ved-anaer { fill: #2fa36b; stroke: #17643f; stroke-width: 1.2; opacity: .85; }
+.ved-gota { fill: #2fa36b; }
+.ved-fibra { fill: none; stroke: #b8894a; stroke-width: 2; stroke-linecap: round; }
+.ved-pvc { fill: #e9eef3; stroke: #4a5563; stroke-width: 1.5; }
+.ved-anel { fill: #1f2933; stroke: #000; stroke-width: 1; }
+.ved-agua { fill: none; stroke: #2f80ed; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 6 5; }
+.ved-porca { fill: #c9a34a; stroke: #7a5c12; stroke-width: 1.5; }
+.ved-flex { fill: #7d8894; stroke: #4a5563; stroke-width: 1.2; }
+.ved-eixo { stroke: #7d8894; stroke-width: 1; stroke-dasharray: 4 3; }
+.ved-papelao { fill: #d8c7a3; stroke: #8a7a50; stroke-width: 1.5; }
+.ved-flange { fill: #9aa6b2; stroke: #4a5563; stroke-width: 1.5; }
+.ved-ptfe { fill: #fff; stroke: #4a5563; stroke-width: 1.5; }
+.ved-parafuso { fill: #3a434d; }
+.ved-porca2 { fill: #2f3640; }
+.ved-metal { fill: #c3ccd5; stroke: #4a5563; stroke-width: 1.5; }
+.ved-esp-m { fill: none; stroke: #7d8894; stroke-width: 1.8; }
+.ved-esp-g { fill: none; stroke: #2f3640; stroke-width: 1.8; }
+.ved-seta { fill: none; stroke: #0b7285; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .aq-tubo { fill: #e5534b; stroke: #8e1b1b; stroke-width: 1.5; }
 .ulinks__lead { margin: 0 0 6px; color: #9fb4cc; font-size: .92rem; max-width: 760px; }
 .ulinks__grupo { margin: 22px 0 10px; font-family: var(--display); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #7ee7f2; }
