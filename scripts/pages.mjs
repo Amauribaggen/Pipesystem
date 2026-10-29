@@ -144,7 +144,25 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
     </nav>
   </div>
 </header>
-<script>document.getElementById('pgToggle').addEventListener('click', e => { const n = document.getElementById('pgNav'), b = e.currentTarget, a = n.classList.toggle('open'); b.setAttribute('aria-expanded', a); b.setAttribute('aria-label', a ? 'Fechar menu' : 'Abrir menu'); });</script>
+<script>
+(() => {
+  // O menu nunca passa da tela: se não couber, aperta (pg-tight, pg-tighter) e, por fim, vira o botão de três linhas (pg-collapse)
+  const html = document.documentElement, nav = document.getElementById('pgNav'), btn = document.getElementById('pgToggle');
+  const inner = nav.parentElement, logo = inner.querySelector('.logo');
+  const cabe = () => logo.getBoundingClientRect().width + 24 + nav.scrollWidth <= inner.clientWidth;
+  const ajusta = () => {
+    html.classList.remove('pg-tight', 'pg-tighter', 'pg-collapse');
+    if (cabe()) return;
+    html.classList.add('pg-tight'); if (cabe()) return;
+    html.classList.add('pg-tighter'); if (cabe()) return;
+    html.classList.remove('pg-tight', 'pg-tighter'); html.classList.add('pg-collapse');
+  };
+  ajusta();
+  addEventListener('resize', ajusta);
+  if (document.fonts) document.fonts.ready.then(ajusta);
+  btn.addEventListener('click', () => { const a = nav.classList.toggle('open'); btn.setAttribute('aria-expanded', a); btn.setAttribute('aria-label', a ? 'Fechar menu' : 'Abrir menu'); });
+})();
+</script>
 <main id="conteudo" tabindex="-1" class="pg-main">
   <div class="container">
     <nav class="crumbs" aria-label="Você está em">
