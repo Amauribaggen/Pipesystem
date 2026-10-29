@@ -1387,7 +1387,8 @@ const MAGAZINES = [
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })), '#normas', ` data-norm-mode="${tipo}"`)).join(''),
-    artigos: () => group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema })), '#artList') +
+    artigos: () => group('Notícias do setor', [{ href: '/noticias', label: 'Todas as notícias (atualizadas a cada 5 dias)' }, { href: '#ultimas-noticias', label: 'Últimas notícias' }], '/noticias') +
+      group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema })), '#artList') +
       group('Revistas especializadas', MAGAZINES.map(m => ({ href: m.edicaoUrl || m.url, ext: true, label: m.nome })), '#revistas') +
       group('', [{ href: '#artigo-envio', label: 'Adicione seu artigo técnico aqui' }]),
     feiras: () => group('No Brasil', tag('#feiras .fair:not(.fair--intl)', 'feira', 'feiras', x => !x.intl), '#feiras-brasil') + group('No exterior', tag('#feiras .fair--intl', 'feira', 'feiras', x => x.intl), '#feiras-exterior') +

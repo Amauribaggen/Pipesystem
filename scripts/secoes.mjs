@@ -40,10 +40,10 @@ export const PAGINAS = [
     resumo: 'As normas mais usadas em projeto, instalação e especificação, por aplicação e por produto, com link para o resumo ou a compra.',
     n: D => [new Set(D.NORM_GROUPS.flatMap(g => g.normas.map(x => x.code))).size, 'normas organizadas'],
     links: [['Por aplicação', '/normas'], ['Por produto', '/normas']] },
-  { id: 'artigos', path: '/artigos', nome: 'Artigos e revistas', tag: 'Leituras técnicas', titulo: 'Artigos técnicos e revistas de hidráulica | PipeSystem',
-    resumo: 'Artigos de revistas técnicas e científicas, com acesso gratuito, e as edições digitais das revistas especializadas.',
+  { id: 'artigos', path: '/artigos', nome: 'Notícias, artigos e revistas', tag: 'Notícias e leituras técnicas', titulo: 'Notícias do setor, artigos técnicos e revistas de hidráulica | PipeSystem',
+    resumo: 'As notícias mais recentes do setor (atualizadas a cada 5 dias), artigos de revistas técnicas e científicas com acesso gratuito e as edições digitais das revistas especializadas.',
     n: (D, x) => [x.artigos, 'artigos selecionados'],
-    links: [['Artigos', '/artigos#artList'], ['Revistas', '/artigos#magList'], ['Envie seu artigo', '/artigos#artigo-envio']] },
+    links: [['Notícias', '/noticias'], ['Artigos', '/artigos#artList'], ['Revistas', '/artigos#magList'], ['Envie seu artigo', '/artigos#artigo-envio']] },
   { id: 'feiras', path: '/feiras', nome: 'Feiras e eventos', tag: 'Agenda do setor', titulo: 'Feiras e eventos de hidráulica no Brasil e no exterior | PipeSystem',
     resumo: 'As próximas feiras do setor no Brasil e no exterior, com datas, e as associações e entidades do setor: normalização, fiscalização, instaladores, fabricantes e saneamento.',
     n: (D, x) => [x.itens.feiras?.length, 'feiras na agenda'],
@@ -113,7 +113,7 @@ function contaArtigos(src) {
 // Índice de busca do texto das páginas (busca.json): cada trecho vai de um título (h2 a h4) ao seguinte, com o id
 // mais próximo para o link. A busca da página inicial carrega o arquivo só quando o visitante começa a digitar.
 function indiceBusca(out, secoes) {
-  const extras = [['/politica-editorial', 'Política editorial'], ['/termos', 'Termos de uso'], ['/privacidade', 'Política de privacidade']];
+  const extras = [['/noticias', 'Notícias do setor'], ['/politica-editorial', 'Política editorial'], ['/termos', 'Termos de uso'], ['/privacidade', 'Política de privacidade']];
   for (const [path, nome] of extras) {
     try {
       const h = readFileSync(join(out, path.slice(1) + '.html'), 'utf8');

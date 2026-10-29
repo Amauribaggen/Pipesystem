@@ -3,8 +3,8 @@
 import { cpSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { writeFileSync } from 'node:fs';
-import { BASE, SIZES, loadData, generate, sitemap } from './pages.mjs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { BASE, SIZES, loadData, generate, sitemap, ultimasNoticiasHTML } from './pages.mjs';
 import { imageSizes, minify } from './optimize.mjs';
 import { separar } from './secoes.mjs';
 
@@ -19,6 +19,12 @@ if (!existsSync(join(src, 'index.html'))) {
 
 rmSync(out, { recursive: true, force: true });
 cpSync(src, out, { recursive: true });
+
+// Últimas notícias (site/noticias.json) no alto da seção Notícias, artigos e revistas
+{
+  const f = join(out, 'index.html');
+  writeFileSync(f, readFileSync(f, 'utf8').replace(/<!-- ULTIMAS_NOTICIAS:[^>]*-->/, ultimasNoticiasHTML()));
+}
 
 // Páginas próprias de cada ficha (produtos, sistemas e materiais) + sitemap.xml com todas as URLs
 const D = loadData(src);

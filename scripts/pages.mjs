@@ -3,7 +3,7 @@
 //   /materiais/<id>  — catálogo de produtos e materiais (CATALOG)
 // Os dados vêm dos mesmos arquivos usados pelo site (site/*.js), executados num contexto isolado.
 // Também gera o sitemap.xml com todas as URLs e imagens.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import vm from 'node:vm';
 import { EMPRESA, institutionalPages } from './institucional.mjs';
@@ -346,6 +346,74 @@ export function generate(D, outDir) {
     }
   }
 
+  // Notícias do setor (/noticias): lista curada à mão a cada 5 dias em site/noticias.json, das mais novas para as mais antigas
+  if (existsSync('site/noticias.json')) {
+    const N = JSON.parse(readFileSync('site/noticias.json', 'utf8'));
+    const url = '/noticias';
+    const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+    const br = d => d.split('-').reverse().join('/');
+    const cats = [...new Set(N.itens.map(n => n.categoria))];
+    const ufs = [...new Set(N.itens.map(n => n.uf).filter(Boolean))].sort();
+    const relTitulo = Object.fromEntries(D.CMPS.map(c => ['/comparativos/' + c.id, c.titulo]));
+    // Lotes de 5 dias contados a partir da última atualização
+    const ref = Date.parse(N.atualizado);
+    const lote = d => {
+      const k = Math.max(0, Math.floor((ref - Date.parse(d)) / 864e5 / 5));
+      const fim = new Date(ref - k * 5 * 864e5), ini = new Date(fim - 4 * 864e5);
+      const f = x => `${x.getUTCDate()} ${MES[x.getUTCMonth()]}`;
+      return k === 0 ? `Atualização mais recente · ${f(ini)} a ${f(fim)}` : `${f(ini)} a ${f(fim)} de ${fim.getUTCFullYear()}`;
+    };
+    let atual = '';
+    const lista = N.itens.map(n => {
+      const g = lote(n.data); const cab = g !== atual ? `<li class="nt__lote">${g}</li>` : ''; atual = g;
+      const [a, m, d] = n.data.split('-');
+      return `${cab}<li class="nt__item" data-cat="${esc(n.categoria)}" data-uf="${esc(n.uf || '')}"${n.oportunidade ? ' data-op="1"' : ''}>
+        <time class="nt__data" datetime="${n.data}"><b>${d}</b>${MES[m - 1]} ${a}</time>
+        <div><p class="nt__meta"><span class="nt__tag nt__tag--cat">${esc(n.categoria)}</span>${n.uf ? `<span class="nt__tag">${esc(n.uf)}</span>` : ''}${n.valor ? `<span class="nt__tag nt__tag--valor">${esc(n.valor)}</span>` : ''}${n.oportunidade ? '<span class="nt__tag nt__tag--op">Oportunidade de negócio</span>' : ''}</p>
+        <h2 class="nt__titulo"><a href="${esc(n.link)}" target="_blank" rel="noopener nofollow">${esc(n.titulo)}</a></h2>
+        ${n.resumo ? `<p class="nt__resumo">${esc(n.resumo)}</p>` : ''}
+        <p class="nt__fonte"><span>Fonte: ${esc(n.fonte)}</span>${n.relacionado && relTitulo[n.relacionado] ? `<a href="${n.relacionado}">No portal: ${esc(relTitulo[n.relacionado])} →</a>` : ''}</p></div></li>`;
+    }).join('');
+    const body = `      <div class="nt__hero">
+        <p class="nt__sobre">Portal da Hidráulica</p>
+        <h1 id="sheetTitle" class="nt__h1">Notícias do setor</h1>
+        <p class="nt__lead">Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio. Selecionadas a cada 5 dias, das mais recentes para as mais antigas.</p>
+        <p class="nt__atual"><span>Atualizado em <b>${br(N.atualizado)}</b></span><span>Próxima atualização: <b>${br(N.proxima)}</b></span><span><b id="ntTotal">${N.itens.length}</b> notícias</span></p>
+      </div>
+      <div class="nt__filtros" role="group" aria-label="Filtrar notícias">
+        <div class="nt__chips" id="ntCats"><button type="button" class="nt__chip" aria-pressed="true" data-c="">Todas</button>${cats.map(c => `<button type="button" class="nt__chip" aria-pressed="false" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+        <select id="ntUf" aria-label="Estado"><option value="">Todos os estados</option>${ufs.map(u => `<option>${u}</option>`).join('')}</select>
+        <input id="ntBusca" type="search" placeholder="Buscar: Sanepar, adutora, leilão..." aria-label="Buscar nas notícias">
+        <label class="nt__op"><input type="checkbox" id="ntOp"> Só oportunidades de negócio</label>
+      </div>
+      <ol class="nt" id="ntLista">${lista}</ol>
+      <p class="nt__vazio" id="ntVazio" hidden>Nenhuma notícia com esses filtros.</p>
+      <p class="nt__nota">Os títulos, as datas e os links são das fontes originais; cada notícia abre no site que a publicou. Os resumos são escritos pelo PipeSystem. Viu uma notícia do setor que não está aqui? <a href="${contato('Sugestão de notícia', 'Link da notícia: ')}">Envie para nós</a>.</p>
+      <script>
+      (() => {
+        const $ = id => document.getElementById(id), itens = [...document.querySelectorAll('#ntLista .nt__item')], lotes = [...document.querySelectorAll('#ntLista .nt__lote')];
+        let cat = '';
+        const filtra = () => {
+          const u = $('ntUf').value, q = $('ntBusca').value.trim().toLowerCase(), op = $('ntOp').checked;
+          let n = 0;
+          for (const li of itens) { const ok = (!cat || li.dataset.cat === cat) && (!u || li.dataset.uf === u) && (!op || li.dataset.op) && (!q || li.textContent.toLowerCase().includes(q)); li.hidden = !ok; n += ok ? 1 : 0; }
+          for (const l of lotes) { let x = l.nextElementSibling, vis = false; while (x && !x.classList.contains('nt__lote')) { vis ||= !x.hidden; x = x.nextElementSibling; } l.hidden = !vis; }
+          $('ntTotal').textContent = n; $('ntVazio').hidden = n > 0;
+        };
+        $('ntCats').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; cat = b.dataset.c; $('ntCats').querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b)); filtra(); });
+        ['ntUf', 'ntBusca', 'ntOp'].forEach(id => $(id).addEventListener('input', filtra));
+      })();
+      </script>`;
+    pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
+      title: 'Notícias do setor: hidráulica, saneamento, gás e construção | PipeSystem',
+      description: cut('Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio, selecionados a cada 5 dias.', 158),
+      keywords: ['notícias', 'saneamento', 'hidráulica', 'construção', 'leilão', 'investimento', 'lançamento', ...cats].join(', '),
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Notícias', url }],
+      ld: [{ '@type': 'ItemList', '@id': BASE + url + '#lista', itemListOrder: 'https://schema.org/ItemListOrderDescending', numberOfItems: N.itens.length,
+        itemListElement: N.itens.slice(0, 50).map((n, i) => ({ '@type': 'ListItem', position: i + 1, url: n.link, name: n.titulo })) }],
+    }) });
+  }
+
   // Política de Privacidade e Termos de Uso
   for (const p of institutionalPages()) {
     pages.push({ url: p.url, images: [], html: page({ url: p.url, title: p.title, description: p.description, body: p.body,
@@ -358,6 +426,21 @@ export function generate(D, outDir) {
     writeFileSync(file, p.html);
   }
   return pages;
+}
+
+// ---------- últimas notícias na página inicial (seção Notícias, artigos e revistas) ----------
+export function ultimasNoticiasHTML(qtd = 6) {
+  if (!existsSync('site/noticias.json')) return '';
+  const N = JSON.parse(readFileSync('site/noticias.json', 'utf8'));
+  const br = d => d.split('-').reverse().join('/');
+  const itens = N.itens.slice(0, qtd).map(n => `<li class="ntc__item"><time datetime="${n.data}">${br(n.data).slice(0, 5)}</time><div>
+          <span class="nt__tag nt__tag--cat">${esc(n.categoria)}</span>${n.oportunidade ? ' <span class="nt__tag nt__tag--op">Oportunidade</span>' : ''}
+          <a href="${esc(n.link)}" target="_blank" rel="noopener nofollow">${esc(n.titulo)}</a><small>${esc(n.fonte)}</small></div></li>`).join('');
+  return `<div class="ntc" id="ultimas-noticias">
+        <div class="ntc__head"><h3 class="mags__title">Notícias do setor</h3><a class="btn btn--sm" href="/noticias">Ver todas as notícias</a></div>
+        <ol class="ntc__lista">${itens}</ol>
+        <p class="ntc__nota">Atualizado em ${br(N.atualizado)}. Novas notícias a cada 5 dias: investimentos, obras, leilões, lançamentos, normas e feiras.</p>
+      </div>`;
 }
 
 // ---------- sitemap ----------
