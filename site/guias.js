@@ -1,6 +1,6 @@
 // ===== Guias práticos: passo a passo, vídeos dos fabricantes, erros e patologias e checklist de entrega =====
 // Vídeos de canais oficiais, conferidos em 23/10/2026 (oEmbed do YouTube). Conteúdo revisado pela Equipe Técnica PipeSystem.
-const GP_TEMAS = ['Água fria e quente', 'Esgoto', 'Gás', 'Reservatórios', 'Metais sanitários', 'Testes e entrega', 'Identificação'];
+const GP_TEMAS = ['Água fria e quente', 'Esgoto', 'Gás', 'Reservatórios', 'Metais sanitários', 'Testes e entrega', 'Identificação', 'Indústria'];
 
 const VIDEOS = {
   pvc: { id: 'p_fwj2fG9_Y', t: 'Como instalar PVC soldável', canal: 'Tigre', dur: '2:10', tema: 'Água fria e quente', d: 'Corte, lixamento, limpeza e solda de tubos e conexões de PVC marrom.' },
@@ -127,6 +127,7 @@ const GUIAS = [
       '<b>Confira vazamentos</b>: água escorrendo na louça sem acionar indica reparo mal assentado.'],
     atencao: ['Sujeira da obra é a principal causa de válvula que não fecha: lave a rede antes de instalar o reparo.', 'Bacias de 6 litros exigem válvula ou caixa compatível.'],
     videos: ['valvula', 'valvulaMan', 'descargaTigre'], mats: [['Registros', 'registros']] },
+  // fig: desenho (SVG) · quadros: tabelas comuns ({ titulo, cols, linhas, nota }) · calc: calculadora do guia ('api570')
   // tabelas: amostras de cor (as cores na tela são aproximadas; o padrão Munsell está na norma) · refs: fontes do guia
   { id: 'cores-tubulacoes', tema: 'Identificação', tema2: ['Gás'], titulo: 'Identificação de tubulações por cores (NBR 6493)', resumo: 'Qual cor usar em cada fluido, como pintar ou aplicar faixas, setas de sentido e rótulos.',
     tempo: 'Consulta', nivel: 'Projetista e instalador', norma: 'NBR 6493',
@@ -165,6 +166,66 @@ const GUIAS = [
     atencao: ['A cor não substitui o rótulo: em plantas com muitas linhas da mesma cor, só o nome do fluido evita a manobra errada.', 'Não pinte sobre válvulas de alívio, placas de identificação, visores, roscas de união e elementos de sprinkler.', 'Tubos plásticos coloridos de fábrica (ex.: PPR azul para ar comprimido, vermelho para incêndio, cinza para vácuo) já atendem à norma: aplique só setas e rótulos.', 'A NR-26 manda usar as cores das normas técnicas e no menor número possível, para não confundir.'],
     refs: [['ABNT NBR 6493 — Emprego de cores para identificação de tubulações industriais (3ª edição, 2019)', 'https://www.abntcatalogo.com.br/'], ['Resumo da NBR 6493: cores, fluidos e faixas de 40 cm', 'https://segurancadotrabalhoacz.com.br/nbr-6493/'], ['NR-26 — Sinalização e identificação de segurança (Portaria MTP 2.770/2022)', 'https://engenharia360.com/o-que-significam-as-cores-das-tubulacoes-nos-processos-industriais/'], ['CBMGO — Orientação Técnica 03/2020: gás aparente em amarelo 5Y 8/12 e palavra "GÁS" a cada 2 m (NBR 15526, item 7.9)', 'https://www.bombeiros.go.gov.br/wp-content/uploads/2014/11/Orientacao_Tecnica_03_2020_-_Tubos_Multicamada.pdf'], ['ASME A13.1 — Esquema de cores para identificação de tubulações (resumo)', 'https://jjkellercompliancenetwork.com/institute/pipe-marking-elements-format-color-schemes-and-location']],
     videos: [], mats: [['Tubos de aço-carbono e galvanizado', 'aco'], ['Tubos e conexões de PPR', 'ppr'], ['Isolamento térmico de tubulações', 'isolamento']] },
+  { id: 'inspecao-api570', tema: 'Indústria', titulo: 'Inspeção de tubulações em serviço (API 570)', resumo: 'Como planejar e fazer a inspeção periódica de tubulações industriais em operação: classes, pontos de medição de espessura, taxa de corrosão, vida remanescente e próxima inspeção.',
+    tempo: 'Planejamento e campo', nivel: 'Inspetor e engenheiro', norma: 'API 570 · API 574 · NR-13',
+    chaves: ['API 570', 'inspeção de tubulação', 'integridade mecânica', 'medição de espessura', 'ultrassom', 'taxa de corrosão', 'vida remanescente', 'espessura mínima', 'CML', 'corrosão sob isolamento', 'CUI', 'ponto morto', 'NR-13', 'API 574', 'API 579', 'API RP 571', 'ASME B31.3', 'tubulação industrial'],
+    fig: `<figure class="gpfig"><svg viewBox="0 0 640 230" role="img" aria-label="Desenho: inspetor mede a espessura da parede da tubulação com ultrassom nos pontos de monitoramento (CML): sob o isolamento, no trecho afinado pela corrosão, no ponto morto e na curva">
+<defs><pattern id="gpIsol" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#e9edf2"/><path d="M0 0V10" stroke="#b8c2cc" stroke-width="4"/></pattern></defs>
+<rect x="20" y="110" width="520" height="44" fill="#9aa6b2" stroke="#4a5563" stroke-width="1.5"/>
+<path d="M28 118H540V146H28Z" fill="#bcdcf5"/>
+<path d="M240 146Q290 158 340 146Z" fill="#bcdcf5"/><path d="M240 146Q290 158 340 146" fill="none" stroke="#c0392b" stroke-width="2"/>
+<rect x="400" y="50" width="44" height="60" fill="#9aa6b2" stroke="#4a5563" stroke-width="1.5"/><rect x="408" y="50" width="28" height="68" fill="#cfe3f3"/>
+<rect x="394" y="38" width="56" height="14" rx="3" fill="#6b7682" stroke="#4a5563"/>
+<path d="M540 110H560A24 24 0 0 1 584 134V220H540Z" fill="#9aa6b2" stroke="#4a5563" stroke-width="1.5"/><path d="M540 118H556A20 20 0 0 1 576 138V220H548V146H540Z" fill="#bcdcf5"/>
+<path d="M24 132H550Q562 132 562 144V224" fill="none" stroke="#2f80ed" stroke-width="3" stroke-linecap="round" stroke-dasharray="14 12" opacity=".75"><animate attributeName="stroke-dashoffset" values="52;0" dur="1.2s" repeatCount="indefinite"/></path>
+<path d="M24 124H550M24 140H550" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="6 18" opacity=".8"><animate attributeName="stroke-dashoffset" values="48;0" dur="1.6s" repeatCount="indefinite"/></path>
+<circle r="3.5" fill="#fff" opacity=".85"><animateMotion dur="3.6s" begin="0s" repeatCount="indefinite" path="M24 138H550Q562 138 562 150V224"/></circle><circle r="2.5" fill="#fff" opacity=".85"><animateMotion dur="3.6s" begin="0.9s" repeatCount="indefinite" path="M24 126H550Q562 126 562 150V224"/></circle><circle r="3.5" fill="#fff" opacity=".85"><animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite" path="M24 138H550Q562 138 562 150V224"/></circle><circle r="2.5" fill="#fff" opacity=".85"><animateMotion dur="3.6s" begin="2.7s" repeatCount="indefinite" path="M24 126H550Q562 126 562 150V224"/></circle>
+<path d="M200 96h46m-8-5 8 5-8 5" fill="none" stroke="#2f80ed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="223" y="90" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="10" font-weight="700" fill="#2f80ed">fluxo</text>
+<text x="486" y="80" font-family="system-ui,Segoe UI,Arial" font-size="10" fill="#5b6b80">(fluido parado)</text>
+<rect x="40" y="100" width="150" height="64" rx="6" fill="url(#gpIsol)" stroke="#7d8894"/>
+<rect x="88" y="100" width="44" height="64" fill="#9aa6b2" stroke="#7d8894"/><rect x="88" y="110" width="44" height="44" fill="#9aa6b2"/>
+<circle cx="98" cy="128" r="3" fill="#c0392b"/><circle cx="110" cy="138" r="4" fill="#c0392b"/><circle cx="121" cy="124" r="2.5" fill="#c0392b"/>
+<g font-family="system-ui,Segoe UI,Arial" font-size="11" font-weight="700" fill="#fff">
+<circle cx="110" cy="182" r="11" fill="#0b7285"/><text x="110" y="186" text-anchor="middle">1</text>
+<circle cx="290" cy="182" r="11" fill="#0b7285"/><text x="290" y="186" text-anchor="middle">2</text>
+<circle cx="470" cy="62" r="11" fill="#0b7285"/><text x="470" y="66" text-anchor="middle">3</text>
+<circle cx="612" cy="132" r="11" fill="#0b7285"/><text x="612" y="136" text-anchor="middle">4</text></g>
+<g font-family="system-ui,Segoe UI,Arial" font-size="11" fill="#5b6b80">
+<text x="110" y="208" text-anchor="middle">sob o isolamento (CUI)</text><text x="290" y="208" text-anchor="middle">parede afinada</text>
+<text x="486" y="66">ponto morto</text><text x="596" y="160">curva</text></g>
+<g><animateTransform attributeName="transform" type="translate" values="110 0;110 0;290 0;290 0;422 -72;422 -72;556 0;556 0;110 0" keyTimes="0;0.2;0.25;0.45;0.5;0.7;0.75;0.95;1" dur="10s" repeatCount="indefinite"/>
+<rect x="-9" y="84" width="18" height="22" rx="3" fill="#2f3640"/><rect x="-6" y="104" width="12" height="6" fill="#e8a317"/>
+<path d="M0 84C0 60 -40 50 -60 40" fill="none" stroke="#2f3640" stroke-width="2"/></g>
+<g font-family="system-ui,Segoe UI,Arial" font-size="13" font-weight="700">
+<rect x="20" y="8" width="176" height="46" rx="8" fill="#0b1a2c"/>
+<text x="32" y="26" fill="#9fb4cc" font-size="10" font-weight="600">MEDIDOR ULTRASSÔNICO</text>
+<text x="32" y="45" fill="#7ee7f2" opacity="0">t = 6,9 mm · CML 1<animate attributeName="opacity" values="1;1;0;0;0" keyTimes="0;0.22;0.23;0.99;1" dur="10s" repeatCount="indefinite"/></text>
+<text x="32" y="45" fill="#ffb4a8" opacity="0">t = 5,8 mm · CML 2<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.25;0.26;0.47;0.48;1" dur="10s" repeatCount="indefinite"/></text>
+<text x="32" y="45" fill="#7ee7f2" opacity="0">t = 6,4 mm · CML 3<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.5;0.51;0.72;0.73;1" dur="10s" repeatCount="indefinite"/></text>
+<text x="32" y="45" fill="#7ee7f2" opacity="0">t = 7,0 mm · CML 4<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.75;0.76;0.97;1" dur="10s" repeatCount="indefinite"/></text></g>
+</svg><figcaption>Os pontos de monitoramento (CML, na sigla em inglês) ficam onde a corrosão costuma ser maior: sob o isolamento, nos trechos já afinados, nos pontos mortos (trechos sem fluxo) e nas curvas. Desenho esquemático PipeSystem.</figcaption></figure>`,
+    quadros: [
+      { titulo: 'Classes de tubulação e intervalos máximos de inspeção (API 570)', cols: ['Classe', 'O que entra', 'Medição de espessura', 'Visual externa'], linhas: [
+        ['1 · Alto risco', 'Vazamento pode causar emergência imediata: fluidos que vaporizam ao vazar, hidrocarbonetos acima da autoignição, H₂S, HCl anidro, HF, linhas sobre ou junto à água', '5 anos', '5 anos'],
+        ['2 · Risco moderado', 'A maior parte da tubulação de processo: hidrocarbonetos abaixo da autoignição, hidrogênio, gás combustível, ácidos e soda cáustica, vapor de alta pressão', '10 anos', '5 anos'],
+        ['3 · Baixo risco', 'Inflamáveis ou tóxicos em condições de baixo risco: óleos pesados e lubrificantes bem abaixo do ponto de fulgor, linhas afastadas de pessoas', '10 anos', '10 anos'],
+        ['4 · Utilidades', 'Não inflamáveis e não tóxicos: água de resfriamento, de incêndio e potável, água de caldeira, vapor de baixa pressão, condensado, ar e nitrogênio de utilidades', 'A critério do usuário', 'A critério do usuário'],
+      ], nota: 'A medição de espessura também não pode passar da metade da vida remanescente calculada: vale o menor dos dois prazos. Confira os valores na edição vigente da API 570.' },
+    ],
+    calc: 'api570',
+    separar: ['Projeto, isométricos e histórico da linha (espessura original, materiais, fluido, pressão e temperatura)', 'Lista dos pontos de medição (CML) marcados em campo e no isométrico', 'Medidor de espessura por ultrassom calibrado, bloco-padrão e acoplante', 'Escova ou lixa para limpar o ponto e marcador', 'Permissão de trabalho, EPIs e acesso seguro (andaime, plataforma)', 'Planilha ou sistema para registrar as medições'],
+    passos: ['<b>Classifique cada circuito.</b> Separe a tubulação em circuitos de mesmo fluido, material e condição de operação, e dê a cada um a classe 1, 2, 3 ou 4, pela consequência de um vazamento. A classe define os intervalos máximos de inspeção.',
+      '<b>Escolha os pontos de medição (CML).</b> Concentre os pontos onde a corrosão é maior: curvas, tês e reduções, pontos mortos (trechos sem fluxo), pontos de injeção e de mistura, trechos sob isolamento e a passagem do solo para o ar. Numere e marque cada ponto no isométrico e na tubulação.',
+      '<b>Identifique os mecanismos de dano.</b> Para cada circuito, liste o que pode atacar a linha: corrosão interna geral ou localizada, erosão, corrosão sob isolamento (CUI), ataque na interface solo-ar, fadiga por vibração. A API RP 571 descreve esses mecanismos.',
+      '<b>Faça a inspeção visual externa.</b> Percorra a linha procurando vazamentos, pintura e isolamento danificados, suportes soltos ou corroídos, vibração, desalinhamento e flanges com sinal de vazamento.',
+      '<b>Meça a espessura nos CML.</b> Use ultrassom no mesmo ponto marcado de cada vez, para comparar com as medições anteriores. Registre a data, o ponto e a menor leitura.',
+      '<b>Calcule a taxa de corrosão.</b> A de longo prazo compara a espessura original com a atual; a de curto prazo compara a medição anterior com a atual. Use a maior das duas.',
+      '<b>Calcule a vida remanescente.</b> Vida = (espessura atual − espessura mínima) ÷ taxa de corrosão. A espessura mínima vem do cálculo de pressão do código de projeto (ASME B31.3) ou do mínimo estrutural, o que for maior. O ponto com menor vida define a vida do circuito.',
+      '<b>Defina a próxima inspeção.</b> O prazo é o menor entre a metade da vida remanescente e o intervalo máximo da classe. Use a calculadora deste guia.',
+      '<b>Avalie, decida e registre.</b> Abaixo da espessura mínima, a linha precisa de avaliação de aptidão ao serviço (API 579), reparo ou troca, sempre com procedimento aprovado. Guarde as medições, os cálculos e as decisões na documentação da instalação, como pede a NR-13.'],
+    atencao: ['A corrosão sob isolamento é a falha escondida mais comum: retire o isolamento nos pontos de maior risco em vez de medir só por fora.', 'Pontos mortos e pontos de injeção corroem muito mais rápido que o resto da linha: monitore com mais pontos e mais frequência.', 'Nunca use só a taxa de longo prazo: uma aceleração recente da corrosão aparece apenas na taxa de curto prazo.', 'Reparos e alterações exigem autorização do inspetor responsável, procedimento de soldagem qualificado e, quando aplicável, teste de pressão.', 'No Brasil, as tubulações ligadas a caldeiras e vasos de pressão seguem a NR-13: o plano e os prazos são definidos por profissional habilitado.'],
+    refs: [['API 570 — Piping Inspection Code: inspeção, reparo, alteração e reclassificação de tubulações em serviço (edição 2024)', 'https://hydrocarbonprocessing.com/news/2024/02/api-strengthens-piping-inspection-standards-with-new-updates/'], ['API 570: código de inspeção de tubulação (artigo técnico)', 'https://www.normas.com.br/visualizar/artigo-tecnico/4915/api-570-codigo-de-inspecao-de-tubulacao'], ['Intervalos de inspeção das API 510, 570 e 653', 'https://reliamag.com/guides/api-510-570-653-inspection-intervals/'], ['Classes de tubulação da API 570 (1 a 4)', 'https://open-exam-prep.com/study-guides/api-570/inspection-intervals-extent-of-inspection/piping-classifications'], ['Taxa de corrosão, vida remanescente e espessura mínima (API 570)', 'https://open-exam-prep.com/study-guides/api-570/calculations-remaining-life/remaining-life-retirement'], ['NR-13 — Caldeiras, vasos de pressão, tubulações e tanques metálicos', 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/norma-regulamentadora-no-13-nr-13']],
+    videos: [], mats: [['Tubos de aço', 'aco'], ['Conexões para solda', 'conexoes-solda'], ['Flanges', 'flanges'], ['Isolamento térmico', 'isolamento']] },
 ];
 
 // ---------- erros comuns e patologias ----------
@@ -203,6 +264,34 @@ const CHECK = [
       <button type="button" class="gpvideo__thumb" data-yt="${v.id}" aria-label="Assistir: ${v.t}"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span class="gpvideo__dur">${v.dur}</span></button>
       <div class="gpvideo__info"><h3>${v.t}</h3><p>${v.d}</p><span class="gpvideo__src">Canal oficial: <b class="notranslate" translate="no">${v.canal}</b></span></div>
     </article>`;
+  // Calculadora do guia API 570: taxas de corrosão, vida remanescente e próxima inspeção
+  const CALC570 = `
+        <div class="gpcalc" data-calc="api570">
+          <h4>Calculadora: taxa de corrosão, vida remanescente e próxima inspeção</h4>
+          <div class="gpcalc__grid">
+            <label>Espessura original (mm)<input type="number" step="0.01" min="0" data-k="t0" value="7.11"></label>
+            <label>Espessura na medição anterior (mm)<input type="number" step="0.01" min="0" data-k="tp" value="6.60"></label>
+            <label>Espessura atual (mm)<input type="number" step="0.01" min="0" data-k="ta" value="6.20"></label>
+            <label>Espessura mínima exigida (mm)<input type="number" step="0.01" min="0" data-k="tm" value="3.40"></label>
+            <label>Anos desde a instalação<input type="number" step="0.1" min="0" data-k="alt" value="12"></label>
+            <label>Anos desde a medição anterior<input type="number" step="0.1" min="0" data-k="ast" value="4"></label>
+            <label>Classe da tubulação<select data-k="cl"><option value="5">Classe 1 (máx. 5 anos)</option><option value="10" selected>Classe 2 (máx. 10 anos)</option><option value="10">Classe 3 (máx. 10 anos)</option></select></label>
+          </div>
+          <output class="gpcalc__out" aria-live="polite"></output>
+          <p class="gpquadro__nota">Ferramenta de apoio: a decisão final é do inspetor ou do profissional habilitado, com os dados e a edição vigente da norma.</p>
+        </div>`;
+  const calc570 = box => {
+    const v = k => parseFloat(box.querySelector(`[data-k="${k}"]`).value.replace(',', '.'));
+    const [t0, tp, ta, tm, alt, ast, cl] = ['t0', 'tp', 'ta', 'tm', 'alt', 'ast', 'cl'].map(v);
+    const out = box.querySelector('.gpcalc__out'), n = (x, d = 3) => x.toLocaleString('pt-BR', { maximumFractionDigits: d });
+    if ([t0, tp, ta, tm, alt, ast, cl].some(x => !isFinite(x)) || alt <= 0 || ast <= 0) { out.innerHTML = 'Preencha todos os campos com números maiores que zero.'; return; }
+    if (ta <= tm) { out.innerHTML = '<b class="gpcalc__alerta">A espessura atual já está na espessura mínima ou abaixo dela.</b> A linha precisa de avaliação de aptidão ao serviço (API 579), reparo ou troca antes de continuar operando.'; return; }
+    const lt = Math.max(0, (t0 - ta) / alt), st = Math.max(0, (tp - ta) / ast), cr = Math.max(lt, st);
+    const vida = cr > 0 ? (ta - tm) / cr : Infinity, prox = Math.min(vida / 2, cl);
+    out.innerHTML = `<span>Taxa de longo prazo: <b>${n(lt)} mm/ano</b></span><span>Taxa de curto prazo: <b>${n(st)} mm/ano</b></span><span>Taxa adotada (a maior): <b>${n(cr)} mm/ano</b></span>` +
+      `<span>Vida remanescente: <b>${isFinite(vida) ? n(vida, 1) + ' anos' : 'sem corrosão medida'}</b></span>` +
+      `<span class="gpcalc__prox">Próxima medição de espessura: <b>em até ${n(prox, 1)} anos</b> (${prox === cl ? 'intervalo máximo da classe' : 'metade da vida remanescente'})</span>`;
+  };
   const guiaHTML = g => `
     <details class="gpguide" id="${g.id}" data-tema="${[g.tema, ...(g.tema2 || [])].join('|')}">
       <summary>
@@ -210,7 +299,8 @@ const CHECK = [
         <p>${g.resumo}</p>
         <span class="gpguide__meta"><span class="gppill gppill--tema">${g.tema}</span><span class="gppill">⏱ ${g.tempo}</span><span class="gppill">${g.nivel}</span><span class="gppill">${g.norma}</span></span>
       </summary>
-      <div class="gpguide__body">${(g.tabelas || []).map(t => `
+      <div class="gpguide__body">${g.fig || ''}${(g.quadros || []).map(q => `
+        <div class="gpquadro"><h4>${q.titulo}</h4><div class="gpquadro__wrap"><table><thead><tr>${q.cols.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${q.linhas.map(l => `<tr>${l.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${q.nota ? `<p class="gpquadro__nota">${q.nota}</p>` : ''}</div>`).join('')}${g.calc === 'api570' ? CALC570 : ''}${(g.tabelas || []).map(t => `
         <div class="gpcores"><h4>${t.titulo}</h4><ul>${t.linhas.map(([hex, cor, uso]) => `<li><span class="gpcor" style="--c:${hex}" aria-hidden="true"></span><b>${cor}</b><span>${uso}</span></li>`).join('')}</ul></div>`).join('')}${g.tabelas ? `
         <p class="gpcores__nota">Cores na tela aproximadas; o padrão de cada cor (código Munsell) está na norma.</p>` : ''}
         <ol class="gpsteps">${g.passos.map(p => `<li>${p}</li>`).join('')}</ol>
@@ -233,6 +323,7 @@ const CHECK = [
     </article>`;
 
   $('gpGuias').innerHTML = GUIAS.map(guiaHTML).join('');
+  $('gpGuias').querySelectorAll('[data-calc="api570"]').forEach(box => { calc570(box); box.addEventListener('input', () => calc570(box)); });
   $('gpVideos').innerHTML = Object.values(VIDEOS).map(videoCard).join('');
   $('gpPats').innerHTML = PATS.map(patHTML).join('');
   $('gpCheck').innerHTML = CHECK.map(([t, itens]) => `<div><h3>${t}</h3>${itens.map(i => `<label><input type="checkbox"> <span>${i}</span></label>`).join('')}</div>`).join('') +
