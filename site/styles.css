@@ -1864,7 +1864,7 @@ a.gl:hover { color: var(--teal-d); }
 @media (max-width: 560px) { .nt__item { grid-template-columns: 1fr; } .nt__data { border-right: 0; border-bottom: 1px solid var(--line); padding: 0 0 6px; text-align: left; } .nt__data b { display: inline; font-size: 1rem; margin-right: 6px; } .nt__hero { padding: 20px 16px 16px; } }
 /* Últimas notícias no alto da seção Notícias, artigos e revistas (página inicial e /artigos) */
 .ntc { margin: 0 0 36px; }
-.ntc__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.ntc__head { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
 .ntc__head .mags__title { margin: 0; }
 .ntc__lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
 .ntc__item { display: grid; grid-template-columns: 48px 1fr; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
