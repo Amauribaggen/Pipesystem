@@ -407,7 +407,7 @@ export function generate(D, outDir) {
         <h1 id="sheetTitle" class="nt__h1">Notícias do setor</h1>
         <p class="nt__lead">Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio. Selecionadas a cada 5 dias, das mais recentes para as mais antigas.</p>
         <p class="nt__atual"><span>Atualizado em <b>${br(N.atualizado)}</b></span><span>Próxima atualização: <b>${br(N.proxima)}</b></span><span><b id="ntTotal">${N.itens.length}</b> notícias</span></p>
-        <p class="nt__abas"><a href="#ntLista">Notícias do setor</a><a href="#cursos">Cursos, treinamentos e eventos</a></p>
+        <p class="nt__abas"><a href="#ntLista">Notícias do setor</a><a href="#cursos">Cursos, treinamentos e eventos</a><a href="#vagas">Vagas do setor</a></p>
       </div>
       <div class="nt__filtros" role="group" aria-label="Filtrar notícias">
         <div class="nt__chips" id="ntCats"><button type="button" class="nt__chip" aria-pressed="true" data-c="">Todas</button>${cats.map(c => `<button type="button" class="nt__chip" aria-pressed="false" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
@@ -433,12 +433,14 @@ export function generate(D, outDir) {
         ['ntUf', 'ntBusca', 'ntOp'].forEach(id => $(id).addEventListener('input', filtra));
       })();
       </script>
-      ${cursosHTML()}`;
+      ${cursosHTML()}
+      ${vagasHTML()}`;
     pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
       title: 'Notícias do setor: hidráulica, saneamento, gás e construção | PipeSystem',
       description: cut('Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio, selecionados a cada 5 dias.', 158),
       keywords: ['notícias', 'saneamento', 'hidráulica', 'construção', 'leilão', 'investimento', 'lançamento', ...cats,
-        'cursos', 'treinamentos', 'eventos', 'feiras', 'capacitação', 'curso de instalador hidráulico', 'curso de encanador', 'NBR 5626', 'sprinklers', 'bombas'].join(', '),
+        'cursos', 'treinamentos', 'eventos', 'feiras', 'capacitação', 'curso de instalador hidráulico', 'curso de encanador', 'NBR 5626', 'sprinklers', 'bombas',
+        'vagas', 'emprego', 'vaga de encanador', 'bombeiro hidráulico', 'projetista hidráulico', 'tubulação industrial', 'operador de ETA'].join(', '),
       crumbs: [{ name: 'Início', url: '/' }, { name: 'Notícias', url }],
       ld: [{ '@type': 'ItemList', '@id': BASE + url + '#lista', itemListOrder: 'https://schema.org/ItemListOrderDescending', numberOfItems: N.itens.length,
         itemListElement: N.itens.slice(0, 50).map((n, i) => ({ '@type': 'ListItem', position: i + 1, url: n.link, name: n.titulo })) }],
@@ -493,6 +495,42 @@ function cursosHTML() {
           const box = document.getElementById('curPub'), itens = [...document.querySelectorAll('#cursos .cur__item')];
           box.addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (!b) return; box.querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b));
             itens.forEach(li => { li.hidden = !!b.dataset.p && !li.dataset.p.split(' ').includes(b.dataset.p); }); });
+        })();
+        </script>
+      </section>`;
+}
+
+// ---------- vagas do setor (site/vagas.json, curado à mão junto com as notícias) ----------
+// Cada vaga sai sozinha no build depois do prazo (`ate`) ou, sem prazo, depois de `validadePadrao` dias da publicação
+const VAGA_AREA = { predial: 'Instalações prediais', industrial: 'Tubulação industrial e caldeiraria', bombas: 'Manutenção e bombas',
+  incendio: 'Combate a incêndio', saneamento: 'Saneamento', projeto: 'Projeto', vendas: 'Vendas técnicas' };
+function vagasData() {
+  if (!existsSync('site/vagas.json')) return null;
+  const V = JSON.parse(readFileSync('site/vagas.json', 'utf8')), hoje = new Date().toISOString().slice(0, 10);
+  const fim = v => v.ate || new Date(Date.parse(v.publicada) + (V.validadePadrao || 30) * 864e5).toISOString().slice(0, 10);
+  return { ...V, itens: V.itens.filter(v => fim(v) >= hoje).sort((a, b) => b.publicada.localeCompare(a.publicada)) };
+}
+function vagasHTML() {
+  const V = vagasData();
+  if (!V || !V.itens.length) return '';
+  const br = d => d.split('-').reverse().join('/');
+  const areas = Object.keys(VAGA_AREA).filter(k => V.itens.some(v => v.area === k));
+  const item = v => `<li class="cur__item" data-a="${v.area}">
+          <div class="cur__quando"><b>${br(v.publicada)}</b><small>publicação${v.ate ? ` · inscrições até ${br(v.ate)}` : ''}</small></div>
+          <div><p class="nt__meta"><span class="nt__tag nt__tag--cat">${VAGA_AREA[v.area]}</span></p>
+          <h4 class="cur__titulo" id="vaga-${curSlug(v.titulo + '-' + v.local)}"><a href="${esc(v.link)}" target="_blank" rel="noopener nofollow">${esc(v.titulo)}</a></h4>
+          <p class="cur__meta"><b>${esc(v.empresa)}</b> · ${esc(v.local)} · ${esc(v.contrato)}</p>${v.obs ? `<p class="cur__meta">${esc(v.obs)}</p>` : ''}</div></li>`;
+  return `<section class="cur" id="vagas">
+        <h2 class="cur__h2">Vagas do setor</h2>
+        <p class="cur__lead">Vagas de emprego para encanadores, bombeiros hidráulicos, tubulação industrial, manutenção e bombas, combate a incêndio, saneamento, projeto e vendas técnicas de materiais hidráulicos, publicadas em portais de emprego e empresas. Da mais recente para a mais antiga. Atualizado em <b>${br(V.atualizado)}</b>, junto com as notícias.</p>
+        <div class="nt__chips" id="vagaArea" role="group" aria-label="Filtrar vagas por área"><button type="button" class="nt__chip" aria-pressed="true" data-a="">Todas (${V.itens.length})</button>${areas.map(k => `<button type="button" class="nt__chip" aria-pressed="false" data-a="${k}">${VAGA_AREA[k]} (${V.itens.filter(v => v.area === k).length})</button>`).join('')}</div>
+        <ol class="cur__lista">${V.itens.map(item).join('')}</ol>
+        <p class="nt__nota">A candidatura é feita no site que publicou a vaga. O PipeSystem não participa da seleção. As vagas saem da lista depois do prazo ou cerca de 30 dias após a publicação; confirme na página da vaga se ela continua aberta. Sua empresa tem uma vaga no setor? <a href="${contato('Divulgação de vaga', 'Cargo, cidade, contrato e link da vaga: ')}">Envie para nós</a>.</p>
+        <script>
+        (() => {
+          const box = document.getElementById('vagaArea'), itens = [...document.querySelectorAll('#vagas .cur__item')];
+          box.addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (!b) return; box.querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b));
+            itens.forEach(li => { li.hidden = !!b.dataset.a && li.dataset.a !== b.dataset.a; }); });
         })();
         </script>
       </section>`;
