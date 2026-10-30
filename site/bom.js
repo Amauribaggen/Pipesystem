@@ -64,7 +64,7 @@
       return syncTipo();
     }
     const casa = isCasa();
-    $('lmPav').value = casa ? 2 : 8; $('lmPe').value = casa ? 3 : 2.88; $('lmCist').value = casa ? 'sem' : 'com';
+    $('lmPav').value = casa ? 2 : 8; $('lmPe').value = casa ? 3 : 2.88; $('lmCist').value = casa ? 'sem' : 'com'; $('lmHres').value = casa ? 1 : 2.5;
     if (casa && $('lmGas').value === 'gn') $('lmGas').value = 'p13';
     syncTipo();
   });
@@ -85,6 +85,76 @@
     return list[i < 0 ? list.length - 1 : i];
   };
   const tankSizes = [500, 1000, 1500, 2000, 3000, 5000, 10000];
+
+  // ---------- Perda de carga e pressão no ponto mais desfavorável (NBR 5626) ----------
+  // Comprimentos equivalentes de tubos lisos (m), na ordem das bitolas de dimPipes (20 a 110 mm)
+  const LEQ = {
+    j: [1.1, 1.2, 1.5, 2.0, 3.2, 3.4, 3.7, 3.9, 4.3],            // joelho 90°
+    td: [0.7, 0.8, 0.9, 1.5, 2.2, 2.3, 2.4, 2.5, 2.6],           // tê, passagem direta
+    tl: [2.3, 2.4, 3.1, 4.6, 7.3, 7.6, 7.8, 8.0, 8.3],           // tê, saída lateral
+    rg: [0.1, 0.2, 0.3, 0.4, 0.7, 0.8, 0.9, 0.9, 1.0],           // registro de gaveta aberto
+    rp: [11.1, 11.4, 15.0, 22.0, 35.8, 37.9, 38.0, 40.0, 42.3],  // registro de pressão (como registro de globo aberto)
+    en: [0.3, 0.4, 0.5, 0.6, 1.0, 1.5, 1.6, 2.0, 2.2],           // entrada normal (saída do reservatório)
+  };
+  const PMIN = 1;    // pressão dinâmica mínima no ponto de utilização: 10 kPa ≈ 1 mca
+  const PMAX = 40;   // pressão estática máxima: 400 kPa ≈ 40 mca
+  // trecho: { nome, mat, i (bitola em dimPipes), Q (L/s), L (m de tubo), pecas ({ j: 3, tl: 1 }), fixo (bitola da lista não muda) }
+  const trecho = (nome, mat, i, Q, L, pecas, fixo = false) => ({ nome, mat, i, i0: i, Q, L, pecas, fixo });
+  const perdaTrecho = t => {
+    const D = dimPipes[t.mat][t.i][1];
+    const Le = Object.entries(t.pecas).reduce((s, [k, n]) => s + n * LEQ[k][Math.min(t.i, 8)], 0);
+    return { Le, hf: dimJ(t.mat, t.Q, D) / 9.81 * (t.L + Le), v: 4 * t.Q / 1000 / (Math.PI * (D / 1000) ** 2) };
+  };
+  const idxPipe = (mat, Q, vmax) => dimPipes[mat].indexOf(pickPipe(mat, Q, vmax));
+  // Pressão no fim de cada caminho (desnível menos as perdas); enquanto o pior caminho fica abaixo do mínimo,
+  // aumenta a bitola do trecho em que a troca dá mais ganho por metro e milímetro de tubo (até 3 bitolas acima da
+  // escolhida pela velocidade). Se nem as bitolas maiores bastam, o caminho desce de andar em andar (passo = pé-direito):
+  // os andares de cima ficam com pressurizador (nf) e o dimensionamento vale para o mais alto que atende por gravidade.
+  function verificaPressao(caminhos, passo = 0, nmax = 0) {
+    const pressao = c => c.carga - (c.extra || 0) - c.trechos.reduce((s, t) => s + perdaTrecho(t).hf, 0);
+    const sobe = t => !t.fixo && t.i < dimPipes[t.mat].length - 1 && t.i < t.i0 + 3;
+    const todos = [...new Set(caminhos.flatMap(c => c.trechos))];
+    todos.forEach(t => { t.i = Math.min(dimPipes[t.mat].length - 1, t.fixo ? t.i0 : t.i0 + 3); });
+    caminhos.forEach(c => { c.nf = 0; if (passo) while (pressao(c) < PMIN && c.nf < nmax) { c.nf++; c.carga += passo; } });
+    const alvo = caminhos.filter(c => pressao(c) >= PMIN);   // os outros não atendem nem assim: pressurizador
+    todos.forEach(t => { t.i = t.i0; });
+    for (let k = 0; k < 60 && alvo.length; k++) {
+      const pior = alvo.reduce((a, c) => pressao(c) < pressao(a) ? c : a);
+      if (pressao(pior) >= PMIN) break;
+      let best = null, ganho = 0;
+      for (const t of pior.trechos) {
+        if (!sobe(t)) continue;
+        const h0 = perdaTrecho(t).hf, d0 = dimPipes[t.mat][t.i][1]; t.i++;
+        const g = (h0 - perdaTrecho(t).hf) / (t.L * (dimPipes[t.mat][t.i][1] - d0)); t.i--;
+        if (g > ganho) { ganho = g; best = t; }
+      }
+      if (!best) break;
+      best.i++;
+    }
+    caminhos.forEach(c => { c.p = pressao(c); });
+    return caminhos.reduce((a, c) => c.nf > a.nf || (c.nf === a.nf && c.p < a.p) ? c : a);
+  }
+  // Quadro da verificação: trechos do caminho mais desfavorável, perdas e pressão final
+  const quadroPressao = (c, ponto, origem, extraNome) => ({
+    ponto, origem, carga: c.carga, p: c.p, ok: c.p >= PMIN, nf: c.nf || 0,
+    rows: [...c.trechos.map(t => {
+      const r = perdaTrecho(t);
+      return [t.nome, dimPipes[t.mat][t.i][0], t.Q, r.v, t.L + r.Le, r.hf, t.i > t.i0 ? dimPipes[t.mat][t.i0][0] : ''];
+    }), ...(c.extra ? [[extraNome, '—', null, null, null, c.extra, '']] : [])],
+  });
+  // Altura manométrica do recalque: desnível + perdas no recalque e na sucção (aço galvanizado, peças em diâmetros equivalentes)
+  const hmanRecalque = (Hg, Qls, iRec, iSuc, Lrec) => {
+    const Dr = dimPipes.aco[iRec][1], Ds = dimPipes.aco[iSuc][1];
+    const hr = dimJ('aco', Qls, Dr) / 9.81 * (Lrec + 386 * Dr / 1000);   // retenção, 2 gavetas, 6 joelhos, tê e saída
+    const hs = dimJ('aco', Qls, Ds) / 9.81 * (6 + 290 * Ds / 1000);      // válvula de pé com crivo, joelho e gaveta
+    return { Hg, hr, hs, H: Hg + hr + hs };
+  };
+  // Hidrômetro: perda (kPa) = (36 Q)² / Qmáx², Q em L/s e Qmáx em m³/h; o menor que perde até 30 kPa
+  const HIDROS = [[1.5, 3, '3/4"'], [2.5, 5, '3/4"'], [3.5, 7, '1"'], [5, 10, '1"'], [10, 20, '1 1/2"']];
+  const hidrometro = Q => {
+    const h = HIDROS.find(([, qm]) => (36 * Q) ** 2 / qm ** 2 <= 30) || HIDROS[HIDROS.length - 1];
+    return { qn: h[0], rosca: h[2], hf: (36 * Q) ** 2 / h[1] ** 2 / 9.81 };
+  };
 
   // ---------- Cálculo ----------
   function compute() {
@@ -187,14 +257,25 @@
       let cons = F * tur * 70 + pEsc * 50 + refeicoes * (ref === 'cozinha' ? 25 : 10) + pub * 15 + mot * 6 * 50 + docas * 20;
 
       // Vestiários e sanitários
-      af(V_, '32 mm (1") — distribuição dos vestiários e sanitários', nucleos * 15);
+      // Verificação de pressão: fundo do castelo d'água 2 m acima do pé-direito → rede geral → vestiário mais distante → chuveiro
+      const qG = 0.3 * Math.sqrt(peso), qN = 0.3 * Math.sqrt(Math.max(0.3, (peso - torn * 0.4) / nucleos));
+      const iRamG = dimPipes[matAF].findIndex(([n]) => n.startsWith('25 mm'));
+      const redeT = trecho("Rede geral (castelo d'água ao núcleo mais distante)", matAF, idxPipe(matAF, qG, 2), qG, Lg + 20 + peG + 2, { en: 1, rg: 2, j: 6, td: nucleos, tl: 1 });
+      const vestT = trecho('Distribuição do vestiário', matAF, Math.max(2, idxPipe(matAF, qN, 2)), qN, 15, { rg: 1, j: 4, tl: 1, td: 3 });
+      const piorG = verificaPressao([{ carga: peG, trechos: [redeT, vestT, trecho('Sub-ramal do chuveiro', matAF, iRamG, 0.3 * Math.sqrt(hot ? 0.4 : 0.1), 2.5, { rp: 1, j: 2, tl: 1 }, true)] }]);
+      const pres = quadroPressao(piorG, 'chuveiro do vestiário mais distante', `Fundo do castelo d'água a ${num(peG + 2, 1)} m do piso`);
+      if (piorG.p < PMIN) {
+        add(V_, 'Pressurizador (2 bombas) para os vestiários', 1, 'cj', { loss: false, note: `Pressão calculada no chuveiro: ${num(piorG.p, 1)} mca (mínimo 1 mca)` });
+        warn.push(`Pressão: o chuveiro do vestiário mais distante fica com ${num(piorG.p, 1)} mca, abaixo do mínimo de 1 mca (10 kPa, NBR 5626), mesmo com as bitolas aumentadas. A lista inclui um pressurizador; outra saída é elevar o castelo d'água.`);
+      }
+      af(V_, `${dimPipes[matAF][vestT.i][0]} — distribuição dos vestiários e sanitários`, nucleos * 15);
       af(V_, '25 mm (3/4") — ramais dos aparelhos', (nBac + nLav + nMic + nChu + beb) * 2.5);
       add(V_, AF.bucha, nLav + nChu + beb + nucleos, 'un', { note: 'Saída para os pontos de utilização' });
       plug(V_, nLav + nChu + beb + nucleos);
       add(V_, 'Registro de gaveta 3/4" com acabamento', nucleos * 3, 'un', { loss: false, note: 'Um por ambiente molhado' });
       add(V_, 'Registro de pressão 3/4" com acabamento', nChu, 'un', { loss: false, note: 'Chuveiros' });
       threads += (nLav + nChu + beb) * 2;
-      const [dMain] = pickPipe(matAF, 0.3 * Math.sqrt(peso), 2);
+      const dMain = dimPipes[matAF][redeT.i][0];   // bitola pela velocidade, aumentada se faltou pressão
       af(B_, `${dMain} — rede geral (reservatório até os núcleos sanitários)`, Lg + 20 * nucleos);
       add(B_, `Registro de gaveta ${dMain}`, nucleos + 2, 'un', { loss: false });
       horizontal += Lg + 20 * nucleos;
@@ -467,7 +548,9 @@
         add(R_, `Conexões galvanizadas ${rec} (joelhos, tês, uniões)`, 14);
         add(R_, `Válvula de retenção vertical ${rec}`, 2, 'un', { loss: false });
         add(R_, `Registro de gaveta ${rec}`, 4, 'un', { loss: false });
-        add(R_, `Conjunto motobomba de recalque (Q ≈ ${num(Qr * 3600, 1)} m³/h, Hman ≈ ${num(H + 8, 0)} mca)`, 2, 'un', { loss: false, note: '1 em operação e 1 reserva' });
+        // Hman: do nível mínimo da cisterna (1,5 m abaixo da bomba) à entrada do castelo d'água
+        pres.recalque = { ...hmanRecalque(H + 1.5, Qr * 1000, ri, Math.min(ri + 1, dimPipes.aco.length - 1), H + 20), Q: Qr * 3600, rec, suc };
+        add(R_, `Conjunto motobomba de recalque (Q ≈ ${num(Qr * 3600, 1)} m³/h, Hman ≈ ${num(Math.ceil(pres.recalque.H), 0)} mca)`, 2, 'un', { loss: false, note: '1 em operação e 1 reserva · Hman com as perdas do recalque e da sucção' });
         add(R_, 'Chave-boia / controle de nível', 2, 'un', { loss: false });
         add(R_, 'Torneira de boia (alimentação do reservatório inferior)', 1, 'un', { loss: false });
         vertical += H + 20;
@@ -533,7 +616,8 @@
       if (rti) stats.push(['Reserva de incêndio estimada', `${num(rti, 0)} m³`]);
       if (cam) stats.push(['Câmaras frias', `${int(cam)} m² · ${cong ? 'congelado' : 'resfriado'}`]);
       if (docas) stats.push(['Docas', int(docas)]);
-      return { rows: build(), stats, warn, casa: false, pav: 1, units: 0, titulo: NOMES[gt], subtitulo: ` · ${int(A)} m², ${int(F)} funcionários por turno` };
+      stats.push(['Pressão no ponto crítico', `${num(pres.p, 1)} mca`]);
+      return { rows: build(), stats, warn, casa: false, pav: 1, units: 0, pres, titulo: NOMES[gt], subtitulo: ` · ${int(A)} m², ${int(F)} funcionários por turno` };
     }
 
     const tp = types.filter(t => t.n > 0);
@@ -541,7 +625,42 @@
 
     let aptArea = 0, nChurVar = 0, nBicos = 0;
     let units = 0, unitsPerFloor = 0, pop = 0, ptF = 0, ptQ = 0, ptG = 0, pesoTot = 0, uhc = 0, plate = 0, nTQ = 0, nCoz = 0, nVar = 0;
-    const A_ = 'Água fria — unidades', Q_ = 'Água quente', G_ = 'Gás', E_ = 'Esgoto sanitário', L_ = 'Louças e metais';
+    const A_ = 'Água fria — unidades', B_ = 'Água fria — colunas e barrilete', Q_ = 'Água quente', G_ = 'Gás', E_ = 'Esgoto sanitário', L_ = 'Louças e metais';
+
+    // Água fria: pesos, colunas e barrilete calculados antes da lista, para a verificação de pressão.
+    // Caminho crítico: fundo do reservatório superior → barrilete → coluna → distribuição → chuveiro do último pavimento
+    const pesoDe = t => Math.round(t.ban) * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + Math.round(t.lav) * 0.6 + 0.7 + 1 + 0.7 + 1 + (t.varanda ? 0.7 : 0);
+    const hRes = Math.max(0, parseFloat($('lmHres').value) || 0);   // fundo do reservatório superior acima da laje de cobertura
+    const cargaAF = pe + hRes - 2;                                  // até a saída do chuveiro, a 2 m do piso do último pavimento
+    const iRam = dimPipes[matAF].findIndex(([n]) => n.startsWith('25 mm')), qChu = 0.3 * Math.sqrt(hot ? 0.4 : 0.1);
+    const upf = tp.reduce((s, t) => s + t.n, 0), pesoAll = tp.reduce((s, t) => s + pesoDe(t) * (casa ? t.n : t.n * pav), 0);
+    const nPrum = casa ? 0 : med ? Math.ceil(upf / 4) : upf * 2;
+    const lBar = casa ? 0 : 2 * Math.sqrt(tp.reduce((s, t) => s + t.n * t.area * 1.2, 0)) + 4 * nPrum;
+    const qBar = 0.3 * Math.sqrt(pesoAll), qCol = casa ? 0 : 0.3 * Math.sqrt(pesoAll / nPrum);
+    const barT = casa ? null : trecho('Barrilete', matAF, idxPipe(matAF, qBar, 2.5), qBar, lBar / 2 + 2, { en: 1, rg: 1, j: 3, td: Math.ceil(nPrum / 2), tl: 1 });
+    const colT = casa ? null : trecho('Coluna (barrilete ao último andar)', matAF, idxPipe(matAF, qCol, 2.5), qCol, pe + hRes, { rg: 1, tl: 1, j: 1 });
+    const distAF = new Map(), barAF = new Map(), hidAF = new Map();
+    const caminhos = tp.map(t => {
+      const sq = Math.sqrt(Math.max(20, t.area)), Qu = 0.3 * Math.sqrt(pesoDe(t));
+      // distribuição com a vazão da unidade até o banheiro; dali, o ramal do banheiro (25 mm) com a vazão de um banheiro
+      const d = trecho(casa ? 'Distribuição da casa (até o banheiro)' : med ? 'Ramal de andar e distribuição (até o banheiro)' : 'Distribuição da unidade (até o banheiro)',
+        matAF, idxPipe(matAF, Qu, 2), Qu, 0.6 * (sq + 3) + (casa ? cargaAF : med ? 3 : 0), { j: 3, td: 2 });
+      const rb = trecho('Ramal do banheiro', matAF, iRam, Math.min(Qu, 0.3 * Math.sqrt(0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4)), 0.4 * (sq + 3), { rg: 1, j: 2, tl: 1 }, true);
+      distAF.set(t, d);
+      const tr = [];
+      if (casa) {
+        const b = trecho("Barrilete da caixa d'água", matAF, Math.max(2, idxPipe(matAF, Qu, 2.5)), Qu, 4, { en: 1, rg: 1, j: 2, tl: 1 });
+        barAF.set(t, b); tr.push(b);
+      } else tr.push(barT, colT);
+      tr.push(d, rb, trecho('Sub-ramal do chuveiro', matAF, iRam, qChu, 2.5, { rp: 1, j: 2, tl: 1 }, true));
+      let extra = 0;
+      if (med) { const h = hidrometro(Qu); hidAF.set(t, h); extra = h.hf; }
+      return { t, carga: cargaAF, trechos: tr, extra };
+    });
+    const piorAF = verificaPressao(caminhos, casa ? 0 : pe, casa ? 0 : pav - 1);
+    const pres = quadroPressao(piorAF, casa ? 'chuveiro do pavimento superior' : piorAF.nf ? `chuveiro do ${pav - piorAF.nf}º andar, o mais alto sem pressurizador` : 'chuveiro do último andar',
+      `${casa ? "Fundo da caixa d'água" : 'Fundo do reservatório superior'} a ${num(hRes, 1)} m acima da laje de cobertura`, 'Hidrômetro individual');
+
     for (const t of tp) {
       const U = casa ? t.n : t.n * pav, ban = Math.round(t.ban), lav = Math.round(t.lav), vr = t.varanda ? 1 : 0;
       const sq = Math.sqrt(Math.max(20, t.area));
@@ -552,14 +671,14 @@
       const fria = ban * 4 + lav * 2 + 2 + 2 + vr;    // bacia, lavatório, chuveiro, ducha | bacia, lavatório | pia, lava-louça | tanque, máquina | pia
       const qAreas = hot ? ban + 1 : 0, quente = hot ? ban * 2 + 1 : 0;
       const gPts = hasGas ? 1 + (aq === 'gas' ? 1 : 0) + (chur === 'gas' ? vr : 0) : 0;
-      const peso = ban * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + lav * 0.6 + 0.7 + 1 + 0.7 + 1 + vr * 0.7;
+      const peso = pesoDe(t);
       ptF += fria * U; ptQ += quente * U; ptG += gPts * U; pesoTot += peso * U;
       uhc += U * (ban * (6 + 1 + 2) + lav * 7 + 3 + 2 + 3 + 3 + vr * 3);
       nTQ += (casa ? (pav > 1 ? ban + lav : 0) : ban + lav) * t.n; nCoz += t.n; nVar += vr * t.n;
       aptArea += t.area * U; if (chur !== 'nenhuma') nChurVar += vr * U;
 
       // Água fria
-      const [dName] = pickPipe(matAF, 0.3 * Math.sqrt(peso), 2);
+      const dName = dimPipes[matAF][distAF.get(t).i][0];   // bitola pela velocidade, aumentada se faltou pressão
       const lDist = areas * (0.5 * sq + 2) + (casa ? 3 * (pav - 1) : 0), lSub = fria * 2.5;
       af(A_, `${dName} — distribuição interna`, lDist * U);
       af(A_, '25 mm (3/4") — ramais e sub-ramais', lSub * U);
@@ -568,8 +687,10 @@
       add(A_, 'Registro de gaveta 3/4" com acabamento', (areas - vr) * U, 'un', { loss: false, note: 'Um por ambiente molhado' });
       add(A_, 'Registro de pressão 3/4" com acabamento', ban * U, 'un', { loss: false, note: 'Chuveiros' });
       if (med) {
-        add(A_, 'Hidrômetro individual 3/4" (modelo aceito pela concessionária)', U, 'un', { loss: false });
-        add(A_, 'Kit cavalete para hidrômetro 3/4" com registro de esfera', U, 'un', { loss: false });
+        const h = hidAF.get(t);
+        add(A_, `Hidrômetro individual ${h.rosca} Qn ${num(h.qn, 1)} m³/h (modelo aceito pela concessionária)`, U, 'un', { loss: false, note: `Perda de ${num(h.hf, 1)} mca na vazão da unidade` });
+        add(A_, `Kit cavalete para hidrômetro ${h.rosca} com registro de esfera`, U, 'un', { loss: false });
+        af(B_, `${dName} — ramais de andar até os hidrômetros`, U * 3);
       }
       if (!ppr) joints += fria * U; threads += (fria + areas + ban) * U;
 
@@ -644,7 +765,7 @@
     }
 
     const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (casa ? 150 : 200); // L/dia
-    const R_ = 'Reservação e recalque', B_ = 'Água fria — colunas e barrilete', P_ = 'Águas pluviais', I_ = 'Combate a incêndio', C_ = 'Áreas comuns', F_ = 'Consumíveis e fixação';
+    const R_ = 'Reservação e recalque', P_ = 'Águas pluviais', I_ = 'Combate a incêndio', C_ = 'Áreas comuns', F_ = 'Consumíveis e fixação';
     let vertical = 0, horizontal = 0;
 
     if (casa) {
@@ -664,10 +785,18 @@
         add(R_, 'Válvula de retenção vertical 3/4"', nCasas, 'un', { loss: false });
         add(R_, 'Chave-boia / controle de nível', nCasas * 2, 'un', { loss: false });
       }
-      add(R_, "Adaptador soldável com flange para caixa d'água 32 mm", nCasas * (cist ? 5 : 3));
       add(R_, 'Torneira de boia 3/4"', nCasas, 'un', { loss: false });
-      af(R_, '32 mm (1") — barrilete e extravasor', nCasas * 8);
-      add(R_, 'Registro de gaveta 1" com acabamento', nCasas * 2, 'un', { loss: false });
+      for (const t of tp) {   // barrilete na bitola da verificação de pressão (mínimo 32 mm)
+        const bName = dimPipes[matAF][barAF.get(t).i][0], pol = (bName.match(/\((.+)\)/) || [, bName])[1];
+        add(R_, `Adaptador soldável com flange para caixa d'água ${parseInt(bName, 10)} mm`, t.n * (cist ? 5 : 3));
+        af(R_, `${bName} — barrilete e extravasor`, t.n * 8);
+        add(R_, `Registro de gaveta ${pol} com acabamento`, t.n * 2, 'un', { loss: false });
+      }
+      const semP = caminhos.filter(c => c.p < PMIN).reduce((s, c) => s + c.t.n, 0);
+      if (semP) {
+        add(R_, "Pressurizador (bomba de reforço) na saída da caixa d'água", semP, 'un', { loss: false, note: `Pressão calculada no chuveiro de cima: ${num(piorAF.p, 1)} mca (mínimo 1 mca)` });
+        warn.push(`Pressão: com a caixa d'água ${num(hRes, 1)} m acima da laje, o chuveiro do pavimento superior fica com ${num(piorAF.p, 1)} mca, abaixo do mínimo de 1 mca (10 kPa, NBR 5626), mesmo com as bitolas aumentadas. A lista inclui um pressurizador; outra saída é elevar a caixa d'água.`);
+      }
       add(R_, 'Padrão de entrada de água (cavalete, conforme concessionária)', nCasas, 'cj', { loss: false });
       for (const t of tp) {
         const sq = Math.sqrt(Math.max(20, t.area));
@@ -708,7 +837,9 @@
       add(R_, `Conexões galvanizadas ${rec} (joelhos, tês, uniões)`, 14);
       add(R_, `Válvula de retenção vertical ${rec}`, 2, 'un', { loss: false });
       add(R_, `Registro de gaveta ${rec}`, 4, 'un', { loss: false });
-      add(R_, `Conjunto motobomba de recalque (Q ≈ ${num(Qr * 3600, 1)} m³/h, Hman ≈ ${num(H + 8, 0)} mca)`, 2, 'un', { loss: false, note: '1 em operação e 1 reserva' });
+      // Hman: do nível mínimo da cisterna (1,5 m abaixo da bomba) à entrada do reservatório superior (2 m acima do fundo)
+      pres.recalque = { ...hmanRecalque(H + hRes + 2 + 1.5, Qr * 1000, ri, Math.min(ri + 1, dimPipes.aco.length - 1), H + 10), Q: Qr * 3600, rec, suc };
+      add(R_, `Conjunto motobomba de recalque (Q ≈ ${num(Qr * 3600, 1)} m³/h, Hman ≈ ${num(Math.ceil(pres.recalque.H), 0)} mca)`, 2, 'un', { loss: false, note: '1 em operação e 1 reserva · Hman com as perdas do recalque e da sucção' });
       add(R_, 'Chave-boia / controle de nível', 2, 'un', { loss: false });
       add(R_, 'Torneira de boia (alimentação do reservatório inferior)', 1, 'un', { loss: false });
       add(R_, 'Hidrômetro geral e cavalete (conforme concessionária)', 1, 'cj', { loss: false });
@@ -716,17 +847,26 @@
       }
 
       // Colunas e barrilete
-      const nPrum = med ? Math.ceil(unitsPerFloor / 4) : unitsPerFloor * 2;
-      const [pName] = pickPipe(matAF, 0.3 * Math.sqrt(pesoTot / nPrum), 2.5), [bName] = pickPipe(matAF, qTot, 2.5);
-      const lBar = 2 * Math.sqrt(plate) + 4 * nPrum;
+      const pName = dimPipes[matAF][colT.i][0], bName = dimPipes[matAF][barT.i][0];   // bitolas da verificação de pressão
       af(B_, `${pName} — colunas de distribuição`, nPrum * (H + 3));
       af(B_, `${bName} — barrilete`, lBar);
       add(B_, `Registro de gaveta ${pName} (topo das colunas)`, nPrum, 'un', { loss: false });
       add(B_, `Registro de gaveta ${bName} (saídas do reservatório)`, 2, 'un', { loss: false });
       add(B_, `${AF.t} ${bName}`, nPrum);
       add(B_, `${AF.t} ${pName} (derivações dos andares)`, nPrum * pav);
-      if (med) af(B_, '25 mm (3/4") — ramais de andar até os hidrômetros', units * 3);
-      if (pav > 12) warn.push('Edifício alto: preveja válvulas redutoras de pressão nas colunas (pressão estática máxima de 40 mca nos pontos, NBR 5626). Elas não estão na lista.');
+      const nf = piorAF.nf || (piorAF.p < PMIN ? pav : 0);   // andares de cima que não chegam ao mínimo por gravidade
+      if (nf) {
+        const qual = nf === 1 ? 'o último andar' : `os ${nf} últimos andares`;
+        add(B_, `Pressurizador com 2 bombas e coluna exclusiva para ${qual}`, 1, 'cj', { loss: false, note: `Por gravidade, o último andar ficaria com ${num(piorAF.p - nf * pe, 1)} mca (mínimo 1 mca)` });
+        warn.push(`Pressão: com o reservatório ${num(hRes, 1)} m acima da laje, ${qual} não ${nf === 1 ? 'chega' : 'chegam'} ao mínimo de 1 mca (10 kPa, NBR 5626) por gravidade, mesmo com bitolas maiores. A lista inclui um pressurizador para ${qual}${nf < pav ? `; do ${pav - nf}º andar para baixo a pressão é de ${num(piorAF.p, 1)} mca ou mais` : ''}. Outra saída é elevar o reservatório.`);
+      }
+      // Pressão estática máxima de 40 mca: nível máximo do reservatório (1,5 m acima do fundo) ao ponto mais baixo (0,3 m do piso)
+      const zMax = H + hRes + 1.5, pEst = zMax - (pe + 0.3), nk = Math.max(0, Math.min(pav, Math.ceil((zMax - 0.3 - PMAX) / pe) - 1));
+      pres.estatica = { p: pEst, nk };
+      if (nk) {
+        add(B_, `Válvula redutora de pressão ${pName} (colunas dos ${nk} andares inferiores)`, nPrum * 2, 'un', { loss: false, note: '2 em paralelo por coluna, uma de reserva, com manômetros e registros' });
+        warn.push(`Pressão estática: chega a ${num(pEst, 0)} mca no 1º andar, acima do máximo de 40 mca (400 kPa, NBR 5626). A lista inclui válvulas redutoras de pressão para os ${nk} andares inferiores.`);
+      }
       vertical += nPrum * (H + 3); horizontal += lBar; if (!ppr) joints += nPrum * (pav + 1);
 
       // Esgoto: colunas, ventilação e coletor
@@ -1009,7 +1149,8 @@
     if (vagas) stats.push(['Área de garagem', `${int(vagas * 25)} m²`]);
     if (nBicos) stats.push(['Bicos de sprinkler', int(nBicos)]);
     if (piscA) stats.push(['Volume da piscina', `${num(piscA * 1.4, 0)} m³`]);
-    return { rows, stats, warn, casa, pav, units };
+    stats.push(['Pressão no ponto crítico', `${num(pres.p, 1)} mca`]);
+    return { rows, stats, warn, casa, pav, units, pres };
   }
 
   // ---------- Saída ----------
@@ -1023,6 +1164,7 @@
     $('lmOutTitle').textContent = last.titulo ? (nome || last.titulo) + last.subtitulo : (nome || (last.casa ? 'Conjunto de casas' : 'Edifício residencial')) +
       (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo, ${int(last.units)} unidades`);
     $('lmStats').innerHTML = last.stats.map(([k, v]) => `<div><span>${k}</span><strong>${v}</strong></div>`).join('');
+    $('lmPres').innerHTML = presHTML(last.pres);
     $('lmWarn').innerHTML = last.warn.map(w => `<p class="hint warn">${esc(w)}</p>`).join('');
     // colunas de preço e subtotais por grupo: só aparecem no Imprimir / PDF, em branco para preencher
     const pc = '<td class="lmat__pc"></td><td class="lmat__pc"></td>';
@@ -1036,8 +1178,28 @@
     renderSinapi();
     if (window.lmatEsquema) window.lmatEsquema();   // redesenha o esquema aberto (esquema.js)
   }
+  // Quadro da verificação de pressão, com a observação do que o pré-dimensionamento considera
+  const PRES_OBS = 'Incluídos neste pré-dimensionamento: perda de carga distribuída nos tubos (Fair-Whipple-Hsiao, NBR 5626) e localizada nas conexões e registros (comprimentos equivalentes), da saída do reservatório até o ponto mais desfavorável; bitolas aumentadas quando a pressão dinâmica fica abaixo de 10 kPa (1 mca); perda nos hidrômetros individuais; altura manométrica das bombas com as perdas do recalque e da sucção; e pressão estática máxima de 400 kPa (40 mca). Os comprimentos são estimados pela área e pela altura informadas: o projeto confirma com o traçado real.';
+  const presResumo = pr => `Desnível disponível ${num(pr.carga, 2)} m − perdas ${num(pr.carga - pr.p, 2)} mca = ${num(pr.p, 2)} mca no ${pr.ponto} (mínimo 1,0 mca)`;
+  function presHTML(pr) {
+    if (!pr) return '';
+    const f = (x, d) => x == null ? '—' : num(x, d);
+    const body = pr.rows.map(([nome, bit, Q, v, L, hf, de]) => `<tr><td>${esc(nome)}</td><td>${esc(bit)}${de ? `<small>aumentada de ${esc(de.split(' ')[0])} mm pela perda de carga</small>` : ''}</td><td class="num">${f(Q, 2)}</td><td class="num">${f(v, 2)}</td><td class="num">${f(L, 1)}</td><td class="num">${f(hf, 2)}</td></tr>`).join('');
+    const rc = pr.recalque, ex = pr.estatica;
+    return `<h5>Verificação de pressão e perda de carga</h5>
+      <p class="lmat__presobs">${PRES_OBS}</p>
+      <div class="lmat__presw"><table class="lmat__prest">
+        <thead><tr><th>Trecho do caminho crítico</th><th>Bitola</th><th>Vazão (L/s)</th><th>Velocidade (m/s)</th><th>Real + equivalente (m)</th><th>Perda (mca)</th></tr></thead>
+        <tbody>${body}</tbody>
+        <tfoot><tr><td colspan="5">Perda total até o ${esc(pr.ponto)}</td><td class="num">${f(pr.carga - pr.p, 2)}</td></tr></tfoot>
+      </table></div>
+      <p class="hint${pr.ok ? '' : ' warn'}">${esc(pr.origem)}. ${esc(presResumo(pr))}${pr.ok ? ': atende.' : ': não atende; veja o pressurizador na lista.'}${pr.nf ? ` Acima dele, ${pr.nf === 1 ? 'o último andar fica' : `os ${pr.nf} últimos andares ficam`} com pressurizador (na lista).` : ''}</p>
+      ${rc ? `<p class="hint">Recalque: desnível ${num(rc.Hg, 1)} m + perdas no recalque ${num(rc.hr, 2)} mca (aço ${esc(rc.rec)}) e na sucção ${num(rc.hs, 2)} mca (aço ${esc(rc.suc)}) = altura manométrica ${num(rc.H, 1)} mca, com ${num(rc.Q, 1)} m³/h.</p>` : ''}
+      ${ex ? `<p class="hint${ex.nk ? ' warn' : ''}">Pressão estática no ponto mais baixo das unidades: ${num(ex.p, 1)} mca (máximo 40 mca)${ex.nk ? `; válvulas redutoras para os ${ex.nk} andares inferiores incluídas na lista.` : ': atende.'}</p>` : ''}`;
+  }
   function asText(short) {
     const lines = [$('lmOutTitle').textContent, ...last.stats.map(([k, v]) => `${k}: ${v}`), ''];
+    if (last.pres) lines.splice(lines.length - 1, 0, `Verificação de pressão: ${presResumo(last.pres)}${last.pres.ok ? ' (atende)' : ' (não atende: pressurizador incluído)'}`, PRES_OBS);
     // cada item com espaço para o preço unitário e o total; subtotal por grupo e total geral no fim
     const blank = 'R$ ________';
     const qty = r => r.un === 'm³' ? num(r.qty, 1) : int(r.qty);

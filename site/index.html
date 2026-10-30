@@ -378,7 +378,7 @@
 
       <div class="tool lmat" id="lmatTool">
         <h3 class="lmat__title">Dimensionamento Inteligente</h3>
-        <p class="lmat__intro">Informe as características do prédio, das casas ou do galpão (logístico, industrial, comercial, cross-docking ou refrigerado) e receba uma lista orientativa de tubos, conexões, registros e equipamentos das instalações de água fria, água quente, gás, esgoto, águas pluviais, incêndio, sprinklers, piscina e aproveitamento de água de chuva, com quantidades e metragens. Ferramenta desenvolvida pela equipe PipeSystem com apoio de inteligência artificial. Serve para estimar custos e pedir cotações. Não substitui o projeto hidráulico.</p>
+        <p class="lmat__intro">Informe as características do prédio, das casas ou do galpão (logístico, industrial, comercial, cross-docking ou refrigerado) e receba uma lista orientativa de tubos, conexões, registros e equipamentos das instalações de água fria, água quente, gás, esgoto, águas pluviais, incêndio, sprinklers, piscina e aproveitamento de água de chuva, com quantidades e metragens. As bitolas de água fria levam em conta a perda de carga até o ponto mais desfavorável, a pressão mínima e máxima da NBR 5626 e a altura manométrica das bombas. Ferramenta desenvolvida pela equipe PipeSystem com apoio de inteligência artificial. Serve para estimar custos e pedir cotações. Não substitui o projeto hidráulico.</p>
         <form class="lmat__form" id="lmatForm" novalidate>
           <fieldset class="lmat__box">
             <legend>1. Empreendimento</legend>
@@ -537,6 +537,7 @@
             </div>
             <div class="form form--3">
               <label>Margem para perdas e cortes <span>%</span><input type="number" id="lmPerda" value="10" min="0" max="50" step="1"></label>
+              <label data-res>Fundo do reservatório superior <span>m acima da laje de cobertura</span><input type="number" id="lmHres" value="2.5" min="0" max="15" step="0.1"></label>
             </div>
           </fieldset>
 
@@ -626,6 +627,7 @@
               </div>
             </div>
             <div class="lmat__stats" id="lmStats"></div>
+            <div class="lmat__pres" id="lmPres"></div>
             <div class="lmat__esq" id="lmEsq" hidden>
               <div class="lmat__esqhead">
                 <h5>Desenho esquemático da instalação</h5>

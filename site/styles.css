@@ -396,6 +396,18 @@ a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
 .lmat__sintab tfoot th { color: var(--accent); font: 700 1rem var(--display); border-top: 2px solid rgba(242, 160, 61, .5); padding-top: 10px; text-transform: none; letter-spacing: 0; }
 .lmat__sin .hint { margin-top: 10px; }
 #lmSinXlsx, #lmValXlsx { margin-top: 12px; }
+.lmat__pres { margin: 18px 0 8px; padding: 16px 18px; border: 1.5px solid var(--box-line-dark); border-radius: 14px; background: rgba(255, 255, 255, .03); }
+.lmat__pres:empty { display: none; }
+.lmat__pres h5 { margin: 0 0 6px; color: #fff; font: 700 1rem var(--display); }
+.lmat__presobs { margin: 0 0 12px; padding: 10px 12px; border-left: 3px solid var(--teal); background: rgba(31, 182, 201, .08); border-radius: 0 8px 8px 0; font-size: .86rem; line-height: 1.5; color: #dbe7f4; }
+.lmat__presw { overflow-x: auto; }
+.lmat__prest { width: 100%; border-collapse: collapse; font-size: .86rem; color: #dbe7f4; }
+.lmat__prest th, .lmat__prest td { padding: 7px 10px; border: 1px solid var(--box-line-dark); text-align: left; vertical-align: top; }
+.lmat__prest th { color: #9fb4cc; font-size: .76rem; font-weight: 600; }
+.lmat__prest td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lmat__prest td small { display: block; color: #f2a03d; font-size: .74rem; }
+.lmat__prest tfoot td { font-weight: 700; color: #fff; }
+.lmat__pres .hint { margin-top: 10px; }
 .lmat__esq { margin: 18px 0 8px; padding: 16px; border: 1px solid rgba(31, 182, 201, .4); border-radius: 14px; background: rgba(31, 182, 201, .05); }
 .lmat__esqhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
 .lmat__esqhead h5 { color: #fff; font: 700 1.05rem var(--display); margin: 0; }
@@ -436,6 +448,8 @@ a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
   html.print-lmat .lmat__esqsvg svg { min-width: 0; }
   html.print-lmat .lmat__stats div { border-color: #999 !important; }
   html.print-lmat .lmat__table td, html.print-lmat .lmat__table th { border-bottom-color: #ccc !important; }
+  html.print-lmat .lmat__pres, html.print-lmat .lmat__prest th, html.print-lmat .lmat__prest td { border-color: #bbb !important; color: #000 !important; background: none !important; }
+  html.print-lmat .lmat__pres h5, html.print-lmat .lmat__presobs { color: #000 !important; background: none !important; }
   html.print-lmat .lmat__tablewrap { overflow: visible; }
   html.print-lmat .lmat__table { font-size: 9pt; }
   html.print-lmat .lmat__pc { display: table-cell; width: 24mm; }
