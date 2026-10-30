@@ -407,6 +407,7 @@ export function generate(D, outDir) {
         <h1 id="sheetTitle" class="nt__h1">Notícias do setor</h1>
         <p class="nt__lead">Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio. Selecionadas a cada 5 dias, das mais recentes para as mais antigas.</p>
         <p class="nt__atual"><span>Atualizado em <b>${br(N.atualizado)}</b></span><span>Próxima atualização: <b>${br(N.proxima)}</b></span><span><b id="ntTotal">${N.itens.length}</b> notícias</span></p>
+        <p class="nt__abas"><a href="#ntLista">Notícias do setor</a><a href="#cursos">Cursos, treinamentos e eventos</a></p>
       </div>
       <div class="nt__filtros" role="group" aria-label="Filtrar notícias">
         <div class="nt__chips" id="ntCats"><button type="button" class="nt__chip" aria-pressed="true" data-c="">Todas</button>${cats.map(c => `<button type="button" class="nt__chip" aria-pressed="false" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
@@ -431,11 +432,13 @@ export function generate(D, outDir) {
         $('ntCats').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; cat = b.dataset.c; $('ntCats').querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b)); filtra(); });
         ['ntUf', 'ntBusca', 'ntOp'].forEach(id => $(id).addEventListener('input', filtra));
       })();
-      </script>`;
+      </script>
+      ${cursosHTML()}`;
     pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
       title: 'Notícias do setor: hidráulica, saneamento, gás e construção | PipeSystem',
       description: cut('Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio, selecionados a cada 5 dias.', 158),
-      keywords: ['notícias', 'saneamento', 'hidráulica', 'construção', 'leilão', 'investimento', 'lançamento', ...cats].join(', '),
+      keywords: ['notícias', 'saneamento', 'hidráulica', 'construção', 'leilão', 'investimento', 'lançamento', ...cats,
+        'cursos', 'treinamentos', 'eventos', 'feiras', 'capacitação', 'curso de instalador hidráulico', 'curso de encanador', 'NBR 5626', 'sprinklers', 'bombas'].join(', '),
       crumbs: [{ name: 'Início', url: '/' }, { name: 'Notícias', url }],
       ld: [{ '@type': 'ItemList', '@id': BASE + url + '#lista', itemListOrder: 'https://schema.org/ItemListOrderDescending', numberOfItems: N.itens.length,
         itemListElement: N.itens.slice(0, 50).map((n, i) => ({ '@type': 'ListItem', position: i + 1, url: n.link, name: n.titulo })) }],
@@ -456,6 +459,45 @@ export function generate(D, outDir) {
   return pages;
 }
 
+// ---------- cursos, treinamentos e eventos (site/cursos.json, curado à mão junto com as notícias) ----------
+// Itens com data saem sozinhos depois do fim; os sem data (programas contínuos, turmas a anunciar) ficam até serem retirados
+const curSlug = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+const CUR_PUB = { instalador: 'Instaladores', projeto: 'Projetistas e engenheiros', industrial: 'Industrial e tubulações', bombas: 'Bombas',
+  incendio: 'Incêndio e sprinklers', clima: 'Água quente e climatização', evento: 'Feiras e eventos' };
+function cursosData() {
+  if (!existsSync('site/cursos.json')) return null;
+  const C = JSON.parse(readFileSync('site/cursos.json', 'utf8')), hoje = new Date().toISOString().slice(0, 10);
+  const datados = C.itens.filter(c => c.inicio && (c.fim || c.inicio) >= hoje).sort((a, b) => a.inicio.localeCompare(b.inicio));
+  return { ...C, datados, continuos: C.itens.filter(c => !c.inicio) };
+}
+function cursosHTML() {
+  const C = cursosData();
+  if (!C) return '';
+  const br = d => d.split('-').reverse().join('/');
+  const item = c => `<li class="cur__item" data-p="${c.publico.join(' ')}">
+          <div class="cur__quando"><b>${esc(c.quando)}</b>${c.detalhe ? `<small>${esc(c.detalhe)}</small>` : ''}</div>
+          <div><p class="nt__meta"><span class="nt__tag nt__tag--cat">${esc(c.tipo)}</span>${c.publico.map(p => `<span class="nt__tag">${CUR_PUB[p]}</span>`).join('')}${c.situacao === 'ok' ? '' : '<span class="nt__tag nt__tag--valor">Confirmar data</span>'}</p>
+          <h4 class="cur__titulo" id="curso-${curSlug(c.titulo + (c.inicio ? '-' + c.inicio : ''))}"><a href="${esc(c.link)}" target="_blank" rel="noopener nofollow">${esc(c.titulo)}</a></h4>
+          <p class="cur__meta"><b>${esc(c.entidade)}</b> · ${esc(c.local)} · ${esc(c.carga)}</p>${c.obs ? `<p class="cur__obs">${esc(c.obs)}</p>` : ''}</div></li>`;
+  return `<section class="cur" id="cursos">
+        <h2 class="cur__h2">Cursos, treinamentos e eventos</h2>
+        <p class="cur__lead">Capacitação de fabricantes, associações, escolas e entidades para instaladores, projetistas e engenheiros de instalações hidráulicas prediais, comerciais e industriais. Em ordem de data, da mais próxima para a mais distante. Atualizado em <b>${br(C.atualizado)}</b>, junto com as notícias.</p>
+        <div class="nt__chips" id="curPub" role="group" aria-label="Filtrar cursos por público"><button type="button" class="nt__chip" aria-pressed="true" data-p="">Todos</button>${Object.entries(CUR_PUB).map(([k, v]) => `<button type="button" class="nt__chip" aria-pressed="false" data-p="${k}">${v}</button>`).join('')}</div>
+        <h3 class="cur__sub">Próximos, com data</h3>
+        <ol class="cur__lista">${C.datados.map(item).join('')}</ol>
+        <h3 class="cur__sub">Programas contínuos e turmas a anunciar</h3>
+        <ol class="cur__lista">${C.continuos.map(item).join('')}</ol>
+        <p class="nt__nota">"Confirmar data": a data veio de notícia ou de agenda de terceiros, ou a página do organizador não mostra o ano. Confirme sempre com o organizador. Promove um curso, treinamento ou evento do setor? <a href="${contato('Divulgação de curso ou evento', 'Nome, data, local e link do curso ou evento: ')}">Envie para nós</a>.</p>
+        <script>
+        (() => {
+          const box = document.getElementById('curPub'), itens = [...document.querySelectorAll('#cursos .cur__item')];
+          box.addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (!b) return; box.querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b));
+            itens.forEach(li => { li.hidden = !!b.dataset.p && !li.dataset.p.split(' ').includes(b.dataset.p); }); });
+        })();
+        </script>
+      </section>`;
+}
+
 // ---------- últimas notícias na página inicial (seção Notícias, artigos e revistas) ----------
 export function ultimasNoticiasHTML(qtd = 6) {
   if (!existsSync('site/noticias.json')) return '';
@@ -466,9 +508,20 @@ export function ultimasNoticiasHTML(qtd = 6) {
           <a href="${esc(n.link)}" target="_blank" rel="noopener nofollow">${esc(n.titulo)}</a><small>${esc(n.fonte)}</small></div></li>`).join('');
   return `<div class="ntc" id="ultimas-noticias">
         <div class="ntc__head"><h3 class="mags__title">Notícias do setor</h3><a class="btn btn--sm" href="/noticias">Ver todas as notícias</a></div>
-        <ol class="ntc__lista">${itens}</ol>
+        <ol class="ntc__lista">${itens}</ol>${proximosCursos()}
         <p class="ntc__nota">Atualizado em ${br(N.atualizado)}. Novas notícias a cada 5 dias: investimentos, obras, leilões, lançamentos, normas e feiras.</p>
       </div>`;
+}
+
+// próximos 3 cursos ou eventos com data, abaixo das últimas notícias da página inicial
+function proximosCursos(qtd = 3) {
+  const C = cursosData();
+  if (!C || !C.datados.length) return '';
+  return `
+        <h4 class="ntc__sub">Próximos cursos e eventos <a href="/noticias#cursos">Ver todos</a></h4>
+        <ol class="ntc__lista">${C.datados.slice(0, qtd).map(c => `<li class="ntc__item ntc__item--cur"><time datetime="${c.inicio}">${c.inicio.slice(8, 10)}/${c.inicio.slice(5, 7)}</time><div>
+          <span class="nt__tag nt__tag--cat">${esc(c.tipo)}</span>
+          <a href="${esc(c.link)}" target="_blank" rel="noopener nofollow">${esc(c.titulo)}</a><small>${esc(c.entidade)} · ${esc(c.local.replace(/^Presencial · /, ''))}</small></div></li>`).join('')}</ol>`;
 }
 
 // ---------- sitemap ----------
