@@ -1378,7 +1378,8 @@ const MAGAZINES = [
     sistemas: () => group('Áreas de aplicação', SYSTEMS.map(s => ({ href: '/sistemas/' + s.id.slice(4), label: s.name, attrs: ` data-sheet="${s.id}"` })), '#systems'),
     materiais: () => [...new Set(CATALOG.map(m => m.cat))].map(cat =>
       group(cat, CATALOG.filter(m => m.cat === cat).map(m => ({ href: '/materiais/' + m.id.slice(4), label: m.name, attrs: ` data-sheet="${m.id}"` })), '#catalog', ` data-cat-filtro="${cat}"`)).join(''),
-    ferramentas: () => group('Calculadoras', tag('#ferramentas .tool', 'calc', 'ferramentas'), '#ferramentas') +
+    ferramentas: () => group('', [{ href: '#lmatTool', label: 'Dimensionamento Inteligente' }]) +
+      group(`Calculadoras online (${CALCS.length})`, CALCS.map(([id, nome]) => ({ href: '#' + id, label: nome })), '#calculadoras') +
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }], '#webtools'),
     bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS), '#bimGrid') + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS), '#bimPlats'),
     guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo })), '#comparativos') +
@@ -1399,7 +1400,7 @@ const MAGAZINES = [
       group('', [{ href: '#contato', label: 'Consultoria técnica & comercial', attrs: ' data-subject="Consultoria técnica & comercial e pesquisa de mercado"' },
         { href: '#contato', label: 'Fale conosco' }]),
   };
-  const WIDE = { materiais: 'dd__menu--mega', normas: 'dd__menu--cols2', sistemas: 'dd__menu--cols2' };
+  const WIDE = { materiais: 'dd__menu--mega', normas: 'dd__menu--cols2', sistemas: 'dd__menu--cols2', ferramentas: 'dd__menu--cols2' };
 
   // Transforma cada link do menu em item com submenu (o clique no nome continua levando à seção)
   links.querySelectorAll(':scope > a[href^="#"]:not(.btn)').forEach(a => {
@@ -1599,6 +1600,8 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   const sectionOf = id => SECTION_PATHS[id] ? id : document.getElementById(id)?.closest('section[id]')?.id;
   const go = (id, how = 'push', smooth = true) => {
     const el = document.getElementById(id), sec = sectionOf(id); if (!el || !SECTION_PATHS[sec]) return;
+    // calculadora guardada (Calculadoras online): abre na ficha, em vez de rolar até ela
+    if (el.closest('.tools--fichas') && window.abreCalc) { window.abreCalc(id); return; }
     if (needsTools(el)) loadTools();
     el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
     if (sec !== id && !el.matches('dialog')) { el.classList.remove('search-flash'); void el.offsetWidth; el.classList.add('search-flash'); }   // destaca o cartão escolhido no submenu

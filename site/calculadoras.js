@@ -1,5 +1,7 @@
 // Calculadoras de projeto (seção Dimensionamento): esgoto (NBR 8160), calhas e condutores (NBR 10844),
-// gás (NBR 15526), bombas (altura manométrica e NPSH), comprimentos equivalentes e golpe de aríete.
+// gás (NBR 15526), bombas (altura manométrica e NPSH), comprimentos equivalentes, golpe de aríete, aquecimento,
+// velocidade, Darcy-Weisbach, dilatação, reservatório (NBR 5626), vaso de expansão, água de chuva (NBR 15527),
+// tanque séptico (NBR 7229) e espessura de parede (ASME B31.3).
 // Resultados indicativos: o projeto final segue as normas completas e o cálculo do projetista.
 (() => {
   const $ = id => document.getElementById(id);
@@ -212,4 +214,128 @@
     hint('amHint', `Volume de ${n(vol, 1)} m³. Estimativa pela regra prática de potência por volume: serve para comparar opções, não substitui o cálculo de carga térmica. No ar-condicionado, escolha o modelo pela capacidade de aquecimento informada na etiqueta, que costuma ser diferente da de resfriamento. Lareiras e aquecedores a gás exigem chaminé e entrada de ar (NBR 13103).`, false);
   }
   on('calcAmb', calcAmb);
+
+  // ---------- 9. Velocidade e diâmetro: Q = v × A ----------
+  function calcVel() {
+    const Q = v('velQ') * parseFloat($('velU').value) / 1000, D = v('velD') / 1000, vmax = v('velVmax');   // m³/s, m
+    if (!(Q > 0 && D > 0 && vmax > 0)) { ['velV', 'velDmin', 'velQmax'].forEach(id => set(id, '—')); return; }
+    const A = Math.PI * D * D / 4, vel = Q / A, Dmin = Math.sqrt(4 * Q / (Math.PI * vmax)) * 1000, Qmax = vmax * A * 1000;
+    set('velV', `${n(vel, 2)} m/s`);
+    set('velDmin', `${n(Dmin, 1)} mm`);
+    set('velQmax', `${n(Qmax, 2)} L/s (${n(Qmax * 3.6, 1)} m³/h)`);
+    hint('velHint', vel > vmax ? `A ${n(vel, 2)} m/s a velocidade passa do limite escolhido: aumente o diâmetro para pelo menos ${n(Dmin, 1)} mm internos. Velocidade alta causa ruído, golpe de aríete e desgaste.`
+      : `Velocidade dentro do limite escolhido. Na água predial a NBR 5626 limita a 3 m/s; em recalque e sucção, velocidades menores reduzem a perda de carga e protegem a bomba.`, vel > vmax);
+  }
+  on('calcVel', calcVel);
+  $('velApp').addEventListener('change', () => { $('velVmax').value = $('velApp').value; calcVel(); });
+
+  // ---------- 10. Darcy-Weisbach com fator de atrito de Swamee-Jain (turbulento) ou 64/Re (laminar) ----------
+  function calcDarcy() {
+    const [nu, rho] = $('dwFl').value.split('|').map(Number), eps = parseFloat($('dwEps').value) / 1000;
+    const Q = v('dwQ') / 1000, D = v('dwD') / 1000, L = v('dwL'), K = v('dwK');
+    if (!(Q > 0 && D > 0)) { ['dwV', 'dwRe', 'dwF', 'dwH'].forEach(id => set(id, '—')); return; }
+    const vel = Q / (Math.PI * D * D / 4), Re = vel * D / nu;
+    const f = Re < 2300 ? 64 / Re : 0.25 / Math.pow(Math.log10(eps / (3.7 * D) + 5.74 / Math.pow(Re, 0.9)), 2);
+    const hd = f * (L / D) * vel * vel / 19.62, hl = K * vel * vel / 19.62, h = hd + hl;
+    set('dwV', `${n(vel, 2)} m/s`);
+    set('dwRe', `${n(Re, 0)} (${Re < 2300 ? 'laminar' : Re < 4000 ? 'transição' : 'turbulento'})`);
+    set('dwF', n(f, 4));
+    set('dwH', `${n(h, 2)} m (${n(h * rho * 9.81 / 1000, 1)} kPa)`);
+    hint('dwHint', `Na tubulação: ${n(hd, 2)} m (${n(L > 0 ? hd / L * 100 : 0, 2)} m por 100 m); nas peças: ${n(hl, 2)} m. ` +
+      (Re >= 2300 && Re < 4000 ? 'Regime de transição: o resultado é incerto. ' : '') + 'Fator de atrito pela equação de Swamee-Jain (aproximação da de Colebrook). Rugosidades de tubos novos; tubos velhos e incrustados perdem mais.', Re >= 2300 && Re < 4000);
+  }
+  on('calcDarcy', calcDarcy);
+
+  // ---------- 11. Dilatação térmica: ΔL = α × L × ΔT ----------
+  function calcDil() {
+    const a = parseFloat($('dlMat').value), L = v('dlL'), dT = v('dlTo') - v('dlTi');
+    if (!(L > 0)) { ['dlDT', 'dlDL', 'dl10'].forEach(id => set(id, '—')); return; }
+    const dL = a * L * Math.abs(dT);
+    set('dlDT', `${n(dT, 0)} °C`);
+    set('dlDL', `${n(dL, 1)} mm`);
+    set('dl10', `${n(a * 10 * Math.abs(dT), 1)} mm`);
+    hint('dlHint', dL > 10 ? `Dilatação de ${n(dL, 0)} mm: preveja liras, braços de dilatação ou juntas, com pontos fixos e guias. O comprimento do braço sai da tabela ou fórmula do fabricante do tubo.`
+      : 'Dilatação pequena: costuma ser absorvida pelas mudanças de direção do traçado, desde que o tubo não fique preso entre dois pontos fixos.', dL > 10);
+  }
+  on('calcDil', calcDil);
+
+  // ---------- 12. Reservatório: consumo diário × dias de reservação (NBR 5626) ----------
+  const CAIXAS = [500, 1000, 1500, 2000, 3000, 5000, 7500, 10000, 15000, 20000];
+  const caixas = L => { if (L <= 0) return '—'; const c = CAIXAS.find(x => x >= L); return c ? `1 de ${n(c, 0)} L` : `${Math.ceil(L / 20000)} de 20.000 L`; };
+  function calcRes() {
+    const dia = v('rsN') * v('rsC'), tot = dia * v('rsDias'), inf = tot * v('rsInf') / 100, sup = tot - inf, rti = v('rsRti');
+    if (!(dia > 0)) { ['rsDia', 'rsTot', 'rsVinf', 'rsVsup'].forEach(id => set(id, '—')); return; }
+    set('rsDia', `${n(dia, 0)} L`);
+    set('rsTot', `${n(tot, 0)} L`);
+    set('rsVinf', `${n(inf, 0)} L · ${caixas(inf)}`);
+    set('rsVsup', `${n(sup + rti, 0)} L${rti ? ' (com a reserva de incêndio)' : ''} · ${caixas(sup + rti)}`);
+    hint('rsHint', 'Consumos por pessoa são valores usuais de referência da literatura técnica; use dados reais quando houver. A NBR 5626 pede reservação de pelo menos um dia de consumo; na prática usa-se de 1 a 2 dias, com cerca de 60% no inferior e 40% no superior. A reserva de incêndio segue a instrução técnica do Corpo de Bombeiros do estado.');
+  }
+  on('calcRes', calcRes);
+  $('rsTipo').addEventListener('change', () => { $('rsC').value = $('rsTipo').value; calcRes(); });
+
+  // ---------- 13. Vaso de expansão: Vn = e × V / (1 − Pi/Pf), pressões absolutas ----------
+  // massa específica da água (kg/m³) por temperatura (°C), para o coeficiente de expansão
+  const RHO = [[4, 1000], [10, 999.7], [20, 998.2], [30, 995.7], [40, 992.2], [50, 988.0], [60, 983.2], [70, 977.8], [80, 971.8], [90, 965.3], [95, 961.9]];
+  const rho = t => { for (let i = 1; i < RHO.length; i++) if (t <= RHO[i][0]) { const [t0, r0] = RHO[i - 1], [t1, r1] = RHO[i]; return r0 + (r1 - r0) * (t - t0) / (t1 - t0); } return RHO[RHO.length - 1][1]; };
+  const VASOS = [2, 5, 8, 12, 18, 24, 35, 50, 60, 80, 100, 150, 200, 300, 500];
+  function calcVexp() {
+    const V = v('veV'), tf = v('veTf'), tq = v('veTq'), Pi = v('vePi') + 1, Pf = v('vePs') - 0.5 + 1;
+    if (!(V > 0 && tq > tf)) { ['veE', 'veVe', 'veVn', 'veCom'].forEach(id => set(id, '—')); hint('veHint', 'Informe o volume e uma temperatura quente maior que a fria.', true); return; }
+    if (Pf <= Pi) { ['veVn', 'veCom'].forEach(id => set(id, '—')); hint('veHint', 'A válvula de segurança precisa abrir acima da pressão da rede (com folga de 0,5 bar). Se a rede tem pressão alta, use válvula redutora de pressão antes do aquecedor.', true); return; }
+    const e = rho(tf) / rho(tq) - 1, Ve = e * V, Vn = Ve / (1 - Pi / Pf);
+    set('veE', `${n(e * 100, 2)}%`);
+    set('veVe', `${n(Ve, 1)} L`);
+    set('veVn', `${n(Vn, 1)} L`);
+    set('veCom', `${n(VASOS.find(x => x >= Vn) || Math.ceil(Vn), 0)} L`);
+    hint('veHint', `Pré-carga do vaso igual à pressão da rede (${n(Pi - 1, 1)} bar), ajustada com o vaso vazio. Pressões em valor absoluto (+1 bar) e pressão final 0,5 bar abaixo do ajuste da válvula de segurança, como recomendam os fabricantes. Use vaso próprio para água potável (membrana atóxica).`);
+  }
+  on('calcVexp', calcVexp);
+
+  // ---------- 14. Água de chuva: V = P × A × C × η; reservatório pelo método prático alemão (6% do menor) ----------
+  function calcChuva() {
+    const A = v('chA'), P = v('chP'), C = parseFloat($('chC').value), eta = v('chEta'), dem = v('chDem');
+    if (!(A > 0 && P > 0)) { ['chVano', 'chVmes', 'chAtend', 'chRes'].forEach(id => set(id, '—')); return; }
+    const ano = P * A * C * eta / 1000, consAno = dem * 365 / 1000, res = 0.06 * Math.min(ano, consAno || ano);
+    set('chVano', `${n(ano, 1)} m³ (${n(ano * 1000, 0)} L)`);
+    set('chVmes', `${n(ano / 12, 1)} m³`);
+    set('chAtend', consAno > 0 ? `${n(Math.min(100, ano / consAno * 100), 0)}% do consumo anual` : '—');
+    set('chRes', `${n(res, 1)} m³ (${n(res * 1000, 0)} L)`);
+    hint('chHint', 'Volume aproveitável = chuva × área × coeficiente de escoamento × eficiência. O reservatório pelo método prático alemão da NBR 15527 é 6% do menor valor entre a água aproveitável e o consumo do ano. Água de chuva só para usos não potáveis, com rede separada e identificada. A NBR 15527 também traz métodos com dados de chuva mensais (Rippl e simulação), mais precisos.');
+  }
+  on('calcChuva', calcChuva);
+
+  // ---------- 15. Tanque séptico: V = 1000 + N × (C × T + K × Lf) (NBR 7229) ----------
+  const DETENCAO = [[1500, 1.00, 24], [3000, 0.92, 22], [4500, 0.83, 20], [6000, 0.75, 18], [7500, 0.67, 16], [9000, 0.58, 14], [Infinity, 0.50, 12]];
+  const KLODO = [[94, 65, 57], [134, 105, 97], [174, 145, 137], [214, 185, 177], [254, 225, 217]];   // intervalo 1 a 5 anos × temperatura
+  function calcFossa() {
+    const [C, Lf] = $('fsTipo').value.split('|').map(Number), N = v('fsN');
+    if (!(N > 0)) { ['fsCd', 'fsTd', 'fsV', 'fsH'].forEach(id => set(id, '—')); return; }
+    const cd = N * C, [, T, horas] = DETENCAO.find(x => cd <= x[0]), K = KLODO[+$('fsInt').value][+$('fsT').value];
+    const V = 1000 + N * (C * T + K * Lf), m3 = V / 1000;
+    const [hmin, hmax] = m3 <= 6 ? [1.2, 2.2] : m3 <= 10 ? [1.5, 2.5] : [1.8, 2.8];
+    set('fsCd', `${n(cd, 0)} L/dia`);
+    set('fsTd', `${n(T, 2)} dia (${horas} h)`);
+    set('fsV', `${n(V, 0)} L (${n(m3, 2)} m³)`);
+    set('fsH', `${n(hmin, 2)} a ${n(hmax, 2)} m`);
+    const larg = Math.max(0.8, Math.sqrt(m3 / hmin / 2)), comp = m3 / hmin / larg;
+    hint('fsHint', `Taxa de acumulação de lodo K = ${K} dias. Tanque retangular com profundidade útil de ${n(hmin, 2)} m: cerca de ${n(larg, 2)} m de largura por ${n(comp, 2)} m de comprimento (relação comprimento/largura entre 2 e 4, largura mínima de 0,80 m). Distâncias mínimas: 1,5 m de construções e divisas, 3 m de árvores e da rede de água e 15 m de poços e cursos d'água. O efluente segue para filtro anaeróbio, sumidouro ou vala de infiltração (NBR 13969).`);
+  }
+  on('calcFossa', calcFossa);
+
+  // ---------- 16. Espessura de parede: t = P·D / 2(S·E·W + P·Y) (ASME B31.3, Y = 0,4, W = 1) ----------
+  // espessuras de parede Sch 40 e Sch 80 (ASME B36.10) por diâmetro externo
+  const SCH = { 21.3: [2.77, 3.73], 26.7: [2.87, 3.91], 33.4: [3.38, 4.55], 42.2: [3.56, 4.85], 48.3: [3.68, 5.08], 60.3: [3.91, 5.54], 73: [5.16, 7.01],
+    88.9: [5.49, 7.62], 114.3: [6.02, 8.56], 168.3: [7.11, 10.97], 219.1: [8.18, 12.70], 273: [9.27, 15.09], 323.8: [10.31, 17.48] };
+  function calcEsp() {
+    const D = parseFloat($('epNps').value), P = v('epP') / 10, S = v('epS'), E = parseFloat($('epE').value), c = v('epC'), tol = v('epTol') / 100;
+    if (!(P > 0 && S > 0)) { ['epT', 'epTm', 'epTn', 'epSch'].forEach(id => set(id, '—')); return; }
+    const t = P * D / (2 * (S * E + P * 0.4)), tm = t + c, tn = tm / (1 - tol), [s40, s80] = SCH[D];
+    set('epT', `${n(t, 2)} mm`);
+    set('epTm', `${n(tm, 2)} mm`);
+    set('epTn', `${n(tn, 2)} mm`);
+    set('epSch', tn <= s40 ? `Sch 40 (${n(s40, 2)} mm)` : tn <= s80 ? `Sch 80 (${n(s80, 2)} mm)` : `acima do Sch 80 (${n(s80, 2)} mm)`);
+    hint('epHint', 'A tensão admissível S depende do material e da temperatura de projeto: confira na Tabela A-1 da ASME B31.3 (aço-carbono A106 Gr. B e A53 Gr. B ficam em torno de 138 MPa até cerca de 200 °C). Fórmula para t < D/6; acima disso, ou com cargas externas, vácuo e flexão, o cálculo é mais completo. Verificação de apoio, não substitui o projeto.', tn > s80);
+  }
+  on('calcEsp', calcEsp);
 })();

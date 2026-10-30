@@ -689,7 +689,21 @@
         </div>
       </div>
 
-      <div class="tools">
+      <div class="calcs" id="calculadoras">
+        <header class="calcs__head">
+          <h3>Calculadoras online</h3>
+          <p>Escolha uma calculadora: ela abre numa ficha por cima da página, e você fecha no X quando terminar. Resultados de apoio ao projeto, com a norma ou a base de cálculo de cada uma.</p>
+        </header>
+        <div class="calcs__chips" id="calcChips" role="group" aria-label="Filtrar calculadoras por assunto"></div>
+        <ul class="calcs__list" id="calcList"></ul>
+        <dialog class="calcdlg" id="calcDlg" aria-label="Calculadora">
+          <div class="calcdlg__top"><span class="calcdlg__cat" id="calcDlgCat"></span><button type="button" class="calcdlg__x" aria-label="Fechar a calculadora">×</button></div>
+          <div class="calcdlg__body" id="calcDlgBody"></div>
+        </dialog>
+      </div>
+
+      <!-- As calculadoras ficam guardadas aqui (escondidas) e abrem na ficha acima (calcfichas.js) -->
+      <div class="tools tools--fichas" id="calcStore">
         <div class="tool" id="hwTool">
           <h3>Perda de carga — Hazen-Williams</h3>
           <div class="form">
@@ -714,7 +728,7 @@
           <p class="hint" id="hwHint"></p>
         </div>
 
-        <div class="tool">
+        <div class="tool" id="calcConv">
           <h3>Conversão de unidades</h3>
           <div class="seg" id="convTabs">
             <button class="is-on" data-k="pressao">Pressão</button>
@@ -728,7 +742,7 @@
           <ul class="convList" id="convOut"></ul>
         </div>
 
-        <div class="tool">
+        <div class="tool" id="calcBitolas">
           <h3>Bitolas — polegada × DN</h3>
           <table class="table">
             <thead><tr><th>Rosca (BSP/NPT)</th><th>DN</th><th>Ø ext. aço (mm)</th></tr></thead>
@@ -794,11 +808,7 @@
         </div>
       </div>
 
-      <header class="calcs__head">
-        <h3>Calculadoras de projeto</h3>
-        <p>As contas do dia a dia do projetista, com as tabelas das normas. Resultados indicativos: confirme sempre com a norma completa.</p>
-      </header>
-      <div class="tools tools--calc">
+      <div class="tools tools--calc tools--fichas">
 
         <div class="tool" id="calcEsg">
           <h3>Esgoto sanitário — unidades Hunter (NBR 8160)</h3>
@@ -991,6 +1001,240 @@
             <div><span>Consumo: resistência × ar-condicionado</span><strong id="amCons">—</strong></div>
           </div>
           <p class="hint" id="amHint"></p>
+        </div>
+
+        <div class="tool" id="calcVel">
+          <h3>Velocidade e diâmetro da tubulação</h3>
+          <div class="form">
+            <label>Aplicação
+              <select id="velApp">
+                <option value="3">Água fria e quente predial (máx. 3 m/s)</option>
+                <option value="2">Recalque de bombas (1 a 2 m/s)</option>
+                <option value="1.5">Sucção de bombas (até 1,5 m/s)</option>
+                <option value="2.5">Adutora e rede de água (até 2,5 m/s)</option>
+                <option value="3.5">Combate a incêndio (até 3,5 m/s)</option>
+                <option value="8">Ar comprimido (6 a 10 m/s)</option>
+                <option value="30">Vapor saturado (20 a 40 m/s)</option>
+              </select>
+            </label>
+            <label>Vazão<input type="number" id="velQ" value="2" min="0" step="0.1"></label>
+            <label>Unidade da vazão
+              <select id="velU"><option value="1">L/s</option><option value="0.2777778">m³/h</option><option value="0.0166667">L/min</option></select>
+            </label>
+            <label>Diâmetro interno <span>mm</span><input type="number" id="velD" value="40" min="1" step="1"></label>
+            <label>Velocidade máxima <span>m/s</span><input type="number" id="velVmax" value="3" min="0.1" step="0.1"></label>
+          </div>
+          <div class="results">
+            <div><span>Velocidade no diâmetro informado</span><strong id="velV">—</strong></div>
+            <div><span>Diâmetro interno mínimo</span><strong id="velDmin">—</strong></div>
+            <div><span>Vazão máxima nesse diâmetro</span><strong id="velQmax">—</strong></div>
+          </div>
+          <p class="hint" id="velHint"></p>
+        </div>
+
+        <div class="tool" id="calcDarcy">
+          <h3>Perda de carga — Darcy-Weisbach (qualquer fluido)</h3>
+          <div class="form">
+            <label>Fluido
+              <select id="dwFl">
+                <option value="1.004e-6|998">Água a 20 °C</option>
+                <option value="0.474e-6|983">Água a 60 °C</option>
+                <option value="0.365e-6|972">Água a 80 °C</option>
+                <option value="2.0e-6|1040">Água com 30% de etilenoglicol (20 °C)</option>
+                <option value="3.0e-6|840">Óleo diesel (20 °C)</option>
+              </select>
+            </label>
+            <label>Material (rugosidade)
+              <select id="dwEps">
+                <option value="0.0015">PVC, CPVC, PPR, PEAD, PEX</option>
+                <option value="0.0015">Cobre e latão</option>
+                <option value="0.015">Aço inox</option>
+                <option value="0.045" selected>Aço-carbono comercial</option>
+                <option value="0.15">Aço galvanizado</option>
+                <option value="0.26">Ferro fundido</option>
+                <option value="0.3">Concreto</option>
+              </select>
+            </label>
+            <label>Vazão <span>L/s</span><input type="number" id="dwQ" value="5" min="0" step="0.1"></label>
+            <label>Diâmetro interno <span>mm</span><input type="number" id="dwD" value="77.9" min="1" step="0.1"></label>
+            <label>Comprimento <span>m</span><input type="number" id="dwL" value="100" min="0" step="1"></label>
+            <label>Soma dos coeficientes K <span>perdas localizadas</span><input type="number" id="dwK" value="0" min="0" step="0.1"></label>
+          </div>
+          <div class="results">
+            <div><span>Velocidade</span><strong id="dwV">—</strong></div>
+            <div><span>Número de Reynolds</span><strong id="dwRe">—</strong></div>
+            <div><span>Fator de atrito (f)</span><strong id="dwF">—</strong></div>
+            <div><span>Perda de carga total</span><strong id="dwH">—</strong></div>
+          </div>
+          <p class="hint" id="dwHint"></p>
+        </div>
+
+        <div class="tool" id="calcDil">
+          <h3>Dilatação térmica de tubos</h3>
+          <div class="form">
+            <label>Material <span>coeficiente em mm/m·°C</span>
+              <select id="dlMat">
+                <option value="0.15">PPR (0,15)</option>
+                <option value="0.035">PPR com fibra (0,035)</option>
+                <option value="0.06">CPVC (0,06)</option>
+                <option value="0.15">PEX (0,15)</option>
+                <option value="0.026">Multicamada PEX-AL-PEX (0,026)</option>
+                <option value="0.07">PVC (0,07)</option>
+                <option value="0.017">Cobre (0,017)</option>
+                <option value="0.012">Aço-carbono (0,012)</option>
+                <option value="0.016">Aço inox (0,016)</option>
+              </select>
+            </label>
+            <label>Comprimento do trecho reto <span>m</span><input type="number" id="dlL" value="20" min="0" step="0.5"></label>
+            <label>Temperatura na instalação <span>°C</span><input type="number" id="dlTi" value="20" step="1"></label>
+            <label>Temperatura máxima de operação <span>°C</span><input type="number" id="dlTo" value="70" step="1"></label>
+          </div>
+          <div class="results">
+            <div><span>Variação de temperatura</span><strong id="dlDT">—</strong></div>
+            <div><span>Dilatação do trecho</span><strong id="dlDL">—</strong></div>
+            <div><span>Por 10 m de tubo</span><strong id="dl10">—</strong></div>
+          </div>
+          <p class="hint" id="dlHint"></p>
+        </div>
+
+        <div class="tool" id="calcRes">
+          <h3>Reservatório de água — volume de reservação</h3>
+          <div class="form">
+            <label>Tipo de edificação <span>consumo de referência</span>
+              <select id="rsTipo">
+                <option value="200">Residência ou apartamento (200 L/pessoa·dia)</option>
+                <option value="150">Residência popular (150 L/pessoa·dia)</option>
+                <option value="50">Escritório (50 L/pessoa·dia)</option>
+                <option value="50">Escola externato (50 L/aluno·dia)</option>
+                <option value="150">Escola internato (150 L/aluno·dia)</option>
+                <option value="120">Hotel (120 L/hóspede·dia)</option>
+                <option value="250">Hospital (250 L/leito·dia)</option>
+                <option value="25">Restaurante (25 L/refeição)</option>
+                <option value="70">Indústria, uso pessoal (70 L/operário·dia)</option>
+              </select>
+            </label>
+            <label>Pessoas ou unidades<input type="number" id="rsN" value="40" min="0" step="1"></label>
+            <label>Consumo por pessoa ou unidade <span>L/dia</span><input type="number" id="rsC" value="200" min="0" step="5"></label>
+            <label>Dias de reservação<input type="number" id="rsDias" value="2" min="1" max="3" step="0.5"></label>
+            <label>Parte no reservatório inferior <span>%</span><input type="number" id="rsInf" value="60" min="0" max="100" step="5"></label>
+            <label>Reserva de incêndio <span>L, 0 se não houver</span><input type="number" id="rsRti" value="0" min="0" step="500"></label>
+          </div>
+          <div class="results">
+            <div><span>Consumo diário</span><strong id="rsDia">—</strong></div>
+            <div><span>Reservação total de consumo</span><strong id="rsTot">—</strong></div>
+            <div><span>Reservatório inferior</span><strong id="rsVinf">—</strong></div>
+            <div><span>Reservatório superior</span><strong id="rsVsup">—</strong></div>
+          </div>
+          <p class="hint" id="rsHint"></p>
+        </div>
+
+        <div class="tool" id="calcVexp">
+          <h3>Vaso de expansão — água quente</h3>
+          <div class="form">
+            <label>Volume de água aquecida <span>L (boiler + tubulação)</span><input type="number" id="veV" value="300" min="0" step="10"></label>
+            <label>Temperatura da água fria <span>°C</span><input type="number" id="veTf" value="10" min="4" max="40" step="1"></label>
+            <label>Temperatura máxima da água quente <span>°C</span><input type="number" id="veTq" value="70" min="20" max="95" step="1"></label>
+            <label>Pressão da rede de água fria <span>bar</span><input type="number" id="vePi" value="3" min="0" step="0.1"></label>
+            <label>Ajuste da válvula de segurança <span>bar</span><input type="number" id="vePs" value="6" min="0.5" step="0.5"></label>
+          </div>
+          <div class="results">
+            <div><span>Coeficiente de expansão da água</span><strong id="veE">—</strong></div>
+            <div><span>Volume de expansão</span><strong id="veVe">—</strong></div>
+            <div><span>Volume mínimo do vaso</span><strong id="veVn">—</strong></div>
+            <div><span>Vaso comercial</span><strong id="veCom">—</strong></div>
+          </div>
+          <p class="hint" id="veHint"></p>
+        </div>
+
+        <div class="tool" id="calcChuva">
+          <h3>Aproveitamento de água de chuva (NBR 15527)</h3>
+          <div class="form">
+            <label>Área de captação (telhado) <span>m²</span><input type="number" id="chA" value="150" min="0" step="5"></label>
+            <label>Chuva média anual da cidade <span>mm</span><input type="number" id="chP" value="1500" min="0" step="50"></label>
+            <label>Cobertura <span>coeficiente de escoamento</span>
+              <select id="chC">
+                <option value="0.8">Telha cerâmica (0,80)</option>
+                <option value="0.9">Telha metálica (0,90)</option>
+                <option value="0.8">Fibrocimento (0,80)</option>
+                <option value="0.85">Laje impermeabilizada (0,85)</option>
+                <option value="0.5">Telhado verde (0,50)</option>
+              </select>
+            </label>
+            <label>Eficiência do filtro e do descarte <span>0 a 1</span><input type="number" id="chEta" value="0.85" min="0" max="1" step="0.05"></label>
+            <label>Consumo não potável <span>L/dia (bacias, rega, lavagem)</span><input type="number" id="chDem" value="300" min="0" step="10"></label>
+          </div>
+          <div class="results">
+            <div><span>Água aproveitável por ano</span><strong id="chVano">—</strong></div>
+            <div><span>Média por mês</span><strong id="chVmes">—</strong></div>
+            <div><span>Consumo não potável atendido</span><strong id="chAtend">—</strong></div>
+            <div><span>Reservatório (método prático alemão)</span><strong id="chRes">—</strong></div>
+          </div>
+          <p class="hint" id="chHint"></p>
+        </div>
+
+        <div class="tool" id="calcFossa">
+          <h3>Tanque séptico (NBR 7229)</h3>
+          <div class="form">
+            <label>Tipo de ocupação <span>contribuição C e lodo fresco Lf</span>
+              <select id="fsTipo">
+                <option value="160|1">Residência padrão alto (160 L; 1 L)</option>
+                <option value="130|1" selected>Residência padrão médio (130 L; 1 L)</option>
+                <option value="100|1">Residência padrão baixo (100 L; 1 L)</option>
+                <option value="100|1">Hotel, exceto lavanderia e cozinha (100 L; 1 L)</option>
+                <option value="80|1">Alojamento provisório (80 L; 1 L)</option>
+                <option value="70|0.3">Fábrica em geral (70 L; 0,30 L)</option>
+                <option value="50|0.2">Escritório (50 L; 0,20 L)</option>
+                <option value="50|0.2">Edifícios públicos ou comerciais (50 L; 0,20 L)</option>
+                <option value="50|0.2">Escolas e locais de longa permanência (50 L; 0,20 L)</option>
+                <option value="6|0.1">Bares (6 L; 0,10 L)</option>
+                <option value="25|0.1">Restaurantes, por refeição (25 L; 0,10 L)</option>
+                <option value="2|0.02">Cinemas e teatros, por lugar (2 L; 0,02 L)</option>
+                <option value="480|4">Sanitários públicos, por bacia (480 L; 4 L)</option>
+              </select>
+            </label>
+            <label>Pessoas ou unidades (N)<input type="number" id="fsN" value="5" min="1" step="1"></label>
+            <label>Intervalo entre limpezas <span>anos</span>
+              <select id="fsInt"><option value="0">1 ano</option><option value="1">2 anos</option><option value="2">3 anos</option><option value="3">4 anos</option><option value="4">5 anos</option></select>
+            </label>
+            <label>Temperatura média do mês mais frio
+              <select id="fsT"><option value="0">Até 10 °C</option><option value="1" selected>De 10 a 20 °C</option><option value="2">Acima de 20 °C</option></select>
+            </label>
+          </div>
+          <div class="results">
+            <div><span>Contribuição diária de esgoto</span><strong id="fsCd">—</strong></div>
+            <div><span>Período de detenção</span><strong id="fsTd">—</strong></div>
+            <div><span>Volume útil</span><strong id="fsV">—</strong></div>
+            <div><span>Profundidade útil (mín.–máx.)</span><strong id="fsH">—</strong></div>
+          </div>
+          <p class="hint" id="fsHint"></p>
+        </div>
+
+        <div class="tool" id="calcEsp">
+          <h3>Espessura de parede de tubo de aço (ASME B31.3)</h3>
+          <div class="form">
+            <label>Diâmetro nominal <span>diâmetro externo</span>
+              <select id="epNps">
+                <option value="21.3">1/2" (21,3 mm)</option><option value="26.7">3/4" (26,7 mm)</option><option value="33.4">1" (33,4 mm)</option>
+                <option value="42.2">1 1/4" (42,2 mm)</option><option value="48.3">1 1/2" (48,3 mm)</option><option value="60.3">2" (60,3 mm)</option>
+                <option value="73">2 1/2" (73,0 mm)</option><option value="88.9">3" (88,9 mm)</option><option value="114.3" selected>4" (114,3 mm)</option>
+                <option value="168.3">6" (168,3 mm)</option><option value="219.1">8" (219,1 mm)</option><option value="273">10" (273,0 mm)</option><option value="323.8">12" (323,8 mm)</option>
+              </select>
+            </label>
+            <label>Pressão de projeto <span>bar</span><input type="number" id="epP" value="40" min="0" step="1"></label>
+            <label>Tensão admissível S <span>MPa, na temperatura de projeto</span><input type="number" id="epS" value="138" min="1" step="1"></label>
+            <label>Fator de qualidade da junta E
+              <select id="epE"><option value="1">1,00 — tubo sem costura</option><option value="0.85">0,85 — com costura (ERW)</option></select>
+            </label>
+            <label>Sobrespessura de corrosão <span>mm</span><input type="number" id="epC" value="1.5" min="0" step="0.1"></label>
+            <label>Tolerância de fabricação <span>%</span><input type="number" id="epTol" value="12.5" min="0" max="30" step="0.5"></label>
+          </div>
+          <div class="results">
+            <div><span>Espessura de pressão (t)</span><strong id="epT">—</strong></div>
+            <div><span>Espessura mínima com corrosão</span><strong id="epTm">—</strong></div>
+            <div><span>Espessura nominal mínima</span><strong id="epTn">—</strong></div>
+            <div><span>Schedule que atende</span><strong id="epSch">—</strong></div>
+          </div>
+          <p class="hint" id="epHint"></p>
         </div>
       </div>
 
@@ -1643,6 +1887,7 @@
 <script src="glossario.js"></script>
 <script src="comparativos.js"></script>
 <script src="guias.js"></script>
+<script src="calcfichas.js"></script>
 <script src="script.js"></script>
 <!-- Medição de audiência sem cookies (Vercel Web Analytics): dados agregados e anônimos -->
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
