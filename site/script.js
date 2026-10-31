@@ -230,13 +230,13 @@ function renderMaterial(m) {
   sheetBody.innerHTML = `
     <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${m.cat}</p><h3 id="sheetTitle">${m.name}</h3></div></div>
     ${revisaoHTML(m)}
-    ${p && p.fotos ? fotosHTML(p.fotos) : m.fotos ? fotosHTML(m.fotos) : foto ? `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar foto: ${foto.legenda}" data-legenda="${foto.legenda}">
+    ${foto && foto.fab ? '' : p && p.fotos ? fotosHTML(p.fotos) : m.fotos ? fotosHTML(m.fotos) : ''}${(foto && foto.fab) || !(p && p.fotos || m.fotos) ? (foto ? `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar foto: ${foto.legenda}" data-legenda="${foto.legenda}">
       <img src="${imgUrl(foto.src)}" alt="${foto.alt}"${imgDims(foto.src)}${foto.inteira ? ' class="inteira"' : ''}>
       <figcaption>${foto.legenda} · Foto: <a href="${foto.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${foto.autor}</a>${foto.fab ? ' (imagem de divulgação do fabricante)' : ` (<a href="${foto.licUrl}" target="_blank" rel="noopener noreferrer">${foto.licenca}</a>), via Wikimedia Commons`}</figcaption>
     </figure>` : `<figure class="matfig" style="--m:${m.tone}">
       <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${m.name}">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
       <figcaption>Ilustração representativa</figcaption>
-    </figure>`}
+    </figure>`) : ''}
     <p class="sheet__desc">${linkNorms(m.desc)}</p>
     ${p ? tabelasHTML(p.tabelas) : ''}
     <h4>Dados técnicos</h4>

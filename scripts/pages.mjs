@@ -242,7 +242,8 @@ export function generate(D, outDir) {
     const url = pathOf.material(m.id); const foto = materialPhoto(D, m);
     const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [], fotos: m.fotos } : null); const veja = materialById[m.veja]; const fabs = D.MANUFACTURERS[m.id] || [];
     const normas = [...new Set([...m.normas, ...(p ? p.normas : [])])]; const sist = systemsUsing(m);
-    const fotos = p && p.fotos && p.fotos.length ? p.fotos : m.fotos && m.fotos.length ? m.fotos : null;
+    // a foto de divulgação do fabricante (fab) vale mais que as fotos genéricas do guia técnico
+    const fotos = foto && foto.fab ? null : p && p.fotos && p.fotos.length ? p.fotos : m.fotos && m.fotos.length ? m.fotos : null;
     const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); const misto = fabs.some(f => f[2] === 'M');
     const mesmos = D.CATALOG.filter(x => x.cat === m.cat && x.id !== m.id);
     const fig = fotos ? fotosHTML(fotos) : foto ? `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar foto: ${esc(plain(foto.legenda))}" data-legenda="${esc(plain(foto.legenda))}">
