@@ -1184,8 +1184,10 @@ const MAGAZINES = [
       const g = groups.find(x => x.name === name);
       g ? g.items.push(...items) : groups.push({ name, items, more });
     };
+    // ordem: termo no título, depois termo no texto como está (sem juntar palavras: "mapres" não vale por "máxima pressão")
+    const literal = t => { const s = norm(t); return terms.every(w => s.includes(w)); };
     const pick = (list, textOf, make) => list.filter(x => matchText(textOf(x), terms))
-      .map(x => ({ ...make(x), score: matchText(make(x).title, terms) ? 2 : 0 })).sort((a, b) => b.score - a.score);
+      .map(x => ({ ...make(x), score: matchText(make(x).title, terms) ? 2 : literal(textOf(x)) ? 1 : 0 })).sort((a, b) => b.score - a.score);
 
     add('Comparativos', pick(CMPS, c => [c.titulo, c.tema, c.resumo, ...c.opcoes.map(o => o[0]), ...(c.chaves || [])].join(' '), c => ({ href: '/comparativos/' + c.id, title: c.titulo, sub: c.resumo })));
     add('Glossário técnico', pick(GLOSSARIO, x => [x.t, x.en, x.def, ...x.auto].join(' '), x => ({ href: '/glossario/' + x.id, title: x.t, sub: x.def })));
