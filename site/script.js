@@ -1388,7 +1388,8 @@ const MAGAZINES = [
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })), '#normas', ` data-norm-mode="${tipo}"`)).join(''),
-    artigos: () => group('Notícias do setor', [{ href: '/noticias', label: 'Todas as notícias (atualizadas a cada 5 dias)' }, { href: '#ultimas-noticias', label: 'Últimas notícias' }], '/noticias') +
+    artigos: () => group('Notícias do setor', [{ href: '/noticias', label: 'Todas as notícias (atualizadas a cada 5 dias)' }, { href: '#ultimas-noticias', label: 'Últimas notícias' },
+      { href: '/noticias#cursos', label: 'Cursos, treinamentos e eventos' }, { href: '/noticias#vagas', label: 'Vagas do setor' }], '/noticias') +
       group('Artigos publicados', ARTICLES.map(a => ({ href: a.url, ext: true, label: a.tema })), '#artList') +
       group('Revistas especializadas', MAGAZINES.map(m => ({ href: m.edicaoUrl || m.url, ext: true, label: m.nome })), '#revistas') +
       group('', [{ href: '#artigo-envio', label: 'Adicione seu artigo técnico aqui' }]),

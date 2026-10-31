@@ -406,7 +406,6 @@ export function generate(D, outDir) {
         <p class="nt__sobre">Portal da Hidráulica</p>
         <h1 id="sheetTitle" class="nt__h1">Notícias do setor</h1>
         <p class="nt__lead">Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio. Selecionadas a cada 5 dias, das mais recentes para as mais antigas.</p>
-        <p class="nt__atual"><span>Atualizado em <b>${br(N.atualizado)}</b></span><span>Próxima atualização: <b>${br(N.proxima)}</b></span><span><b id="ntTotal">${N.itens.length}</b> notícias</span></p>
         <p class="nt__abas"><a href="#ntLista">Notícias do setor</a><a href="#cursos">Cursos, treinamentos e eventos</a><a href="#vagas">Vagas do setor</a></p>
       </div>
       <div class="nt__filtros" role="group" aria-label="Filtrar notícias">
@@ -427,7 +426,7 @@ export function generate(D, outDir) {
           let n = 0;
           for (const li of itens) { const ok = (!cat || li.dataset.cat === cat) && (!u || li.dataset.uf === u) && (!op || li.dataset.op) && (!q || li.textContent.toLowerCase().includes(q)); li.hidden = !ok; n += ok ? 1 : 0; }
           for (const l of lotes) { let x = l.nextElementSibling, vis = false; while (x && !x.classList.contains('nt__lote')) { vis ||= !x.hidden; x = x.nextElementSibling; } l.hidden = !vis; }
-          $('ntTotal').textContent = n; $('ntVazio').hidden = n > 0;
+          $('ntVazio').hidden = n > 0;
         };
         $('ntCats').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; cat = b.dataset.c; $('ntCats').querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b)); filtra(); });
         ['ntUf', 'ntBusca', 'ntOp'].forEach(id => $(id).addEventListener('input', filtra));
@@ -545,9 +544,9 @@ export function ultimasNoticiasHTML(qtd = 6) {
           <span class="nt__tag nt__tag--cat">${esc(n.categoria)}</span>${n.oportunidade ? ' <span class="nt__tag nt__tag--op">Oportunidade</span>' : ''}
           <a href="${esc(n.link)}" target="_blank" rel="noopener nofollow">${esc(n.titulo)}</a><small>${esc(n.fonte)}</small></div></li>`).join('');
   return `<div class="ntc" id="ultimas-noticias">
-        <div class="ntc__head"><h3 class="mags__title">Notícias do setor</h3><a class="btn btn--sm" href="/noticias">Ver todas as notícias</a></div>
+        <div class="ntc__head"><h3 class="mags__title">Notícias do setor</h3><div class="ntc__botoes"><a class="btn btn--sm" href="/noticias">Ver todas as notícias</a><a class="btn btn--sm" href="/noticias#cursos">Cursos, treinamentos e eventos</a><a class="btn btn--sm" href="/noticias#vagas">Vagas do setor</a></div></div>
         <ol class="ntc__lista">${itens}</ol>${proximosCursos()}
-        <p class="ntc__nota">Atualizado em ${br(N.atualizado)}. Novas notícias a cada 5 dias: investimentos, obras, leilões, lançamentos, normas e feiras.</p>
+        <p class="ntc__nota">Novas notícias a cada 5 dias: investimentos, obras, leilões, lançamentos, normas e feiras.</p>
       </div>`;
 }
 
