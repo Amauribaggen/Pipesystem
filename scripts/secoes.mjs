@@ -235,7 +235,7 @@ export function separar(out, D, src) {
         <span class="apres__btn" aria-hidden="true"></span>
       </button>
     </div>
-    <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'VideoObject', name: 'PipeSystem — um passeio pelo portal', description: 'Apresentação do PipeSystem, o 1º portal da hidráulica e condução de fluidos: cotações, sistemas, materiais, Dimensionamento Inteligente, BIM/CAD, guias práticos, normas, artigos e feiras.', thumbnailUrl: 'https://www.pipesystem.com.br/img/video-apresentacao.jpg', uploadDate: '2026-10-26', duration: 'PT2M1S', embedUrl: `https://www.youtube-nocookie.com/embed/${YT}`, contentUrl: `https://www.youtube.com/watch?v=${YT}` })}</script>
+    <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'VideoObject', name: 'PipeSystem — um passeio pelo portal', description: 'Apresentação do PipeSystem, o 1º portal da hidráulica e condução de fluidos: cotações, sistemas, materiais, Dimensionamento Inteligente, BIM/CAD, guias práticos, normas, artigos e feiras.', thumbnailUrl: 'https://www.pipesystem.com.br/img/video-apresentacao.jpg', uploadDate: '2026-10-26T12:00:00-03:00', duration: 'PT2M1S', embedUrl: `https://www.youtube-nocookie.com/embed/${YT}`, contentUrl: `https://www.youtube.com/watch?v=${YT}` })}</script>
   </section>`;
   const fica = id => !PAGINAS.some(p => p.id === id);
   const home = [];
