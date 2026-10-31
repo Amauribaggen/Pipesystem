@@ -247,7 +247,7 @@ export function generate(D, outDir) {
     const mesmos = D.CATALOG.filter(x => x.cat === m.cat && x.id !== m.id);
     const fig = fotos ? fotosHTML(fotos) : foto ? `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar foto: ${esc(plain(foto.legenda))}" data-legenda="${esc(plain(foto.legenda))}">
         <img src="${esc(rel(foto.src))}" alt="${esc(foto.alt)}"${dims(foto.src)}${foto.inteira ? ' class="inteira"' : ''} decoding="async">
-        <figcaption>${foto.legenda} · Foto: <a href="${esc(foto.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(foto.autor)}</a> (<a href="${esc(foto.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(foto.licenca)}</a>), via Wikimedia Commons</figcaption>
+        <figcaption>${foto.legenda} · Foto: <a href="${esc(foto.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(foto.autor)}</a>${foto.fab ? ' (imagem de divulgação do fabricante)' : ` (<a href="${esc(foto.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(foto.licenca)}</a>), via Wikimedia Commons`}</figcaption>
       </figure>` : `<figure class="matfig" style="--m:${m.tone}">
         <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${esc(m.name)}">${D.MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
         <figcaption>Ilustração representativa</figcaption>
