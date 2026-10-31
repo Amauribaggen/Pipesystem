@@ -482,7 +482,7 @@ function cursosHTML() {
           <p class="cur__meta"><b>${esc(c.entidade)}</b> · ${esc(c.local)} · ${esc(c.carga)}</p>${c.obs ? `<p class="cur__obs">${esc(c.obs)}</p>` : ''}</div></li>`;
   return `<section class="cur" id="cursos">
         <h2 class="cur__h2">Cursos, treinamentos e eventos</h2>
-        <p class="cur__lead">Capacitação de fabricantes, associações, escolas e entidades para instaladores, projetistas e engenheiros de instalações hidráulicas prediais, comerciais e industriais. Em ordem de data, da mais próxima para a mais distante. Atualizado em <b>${br(C.atualizado)}</b>, junto com as notícias.</p>
+        <p class="cur__lead">Capacitação de fabricantes, associações, escolas e entidades para instaladores, projetistas e engenheiros de instalações hidráulicas prediais, comerciais e industriais. Em ordem de data, da mais próxima para a mais distante.</p>
         <div class="nt__chips" id="curPub" role="group" aria-label="Filtrar cursos por público"><button type="button" class="nt__chip" aria-pressed="true" data-p="">Todos</button>${Object.entries(CUR_PUB).map(([k, v]) => `<button type="button" class="nt__chip" aria-pressed="false" data-p="${k}">${v}</button>`).join('')}</div>
         <h3 class="cur__sub">Próximos, com data</h3>
         <ol class="cur__lista">${C.datados.map(item).join('')}</ol>
@@ -521,7 +521,7 @@ function vagasHTML() {
           <p class="cur__meta"><b>${esc(v.empresa)}</b> · ${esc(v.local)} · ${esc(v.contrato)}</p>${v.obs ? `<p class="cur__meta">${esc(v.obs)}</p>` : ''}</div></li>`;
   return `<section class="cur" id="vagas">
         <h2 class="cur__h2">Vagas do setor</h2>
-        <p class="cur__lead">Vagas de emprego para encanadores, bombeiros hidráulicos, tubulação industrial, manutenção e bombas, combate a incêndio, saneamento, projeto e vendas técnicas de materiais hidráulicos, publicadas em portais de emprego e empresas. Da mais recente para a mais antiga. Atualizado em <b>${br(V.atualizado)}</b>, junto com as notícias.</p>
+        <p class="cur__lead">Vagas de emprego para encanadores, bombeiros hidráulicos, tubulação industrial, manutenção e bombas, combate a incêndio, saneamento, projeto e vendas técnicas de materiais hidráulicos, publicadas em portais de emprego e empresas. Da mais recente para a mais antiga.</p>
         <div class="nt__chips" id="vagaArea" role="group" aria-label="Filtrar vagas por área"><button type="button" class="nt__chip" aria-pressed="true" data-a="">Todas (${V.itens.length})</button>${areas.map(k => `<button type="button" class="nt__chip" aria-pressed="false" data-a="${k}">${VAGA_AREA[k]} (${V.itens.filter(v => v.area === k).length})</button>`).join('')}</div>
         <ol class="cur__lista">${V.itens.map(item).join('')}</ol>
         <p class="nt__nota">A candidatura é feita no site que publicou a vaga. O PipeSystem não participa da seleção. As vagas saem da lista depois do prazo ou cerca de 30 dias após a publicação; confirme na página da vaga se ela continua aberta. Sua empresa tem uma vaga no setor? <a href="${contato('Divulgação de vaga', 'Cargo, cidade, contrato e link da vaga: ')}">Envie para nós</a>.</p>
