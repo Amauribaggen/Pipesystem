@@ -106,7 +106,7 @@ function renderCatalog() {
   if (!catEl) return;   // catálogo só na página de Materiais
   const terms = queryTerms(searchEl.value);
   const items = CATALOG.filter(m => (activeCat === 'Todos' || m.cat === activeCat) &&
-    matchText([m.cat, m.name, m.apps, m.desc, ...m.normas, ...m.specs.flat()].join(' '), terms));
+    matchText([m.cat, m.name, m.apps, m.desc, ...m.normas, ...m.specs.flat(), ...(m.chaves || []), ...(MANUFACTURERS[m.id] || []).map(f => f[0])].join(' '), terms));
   catEl.innerHTML = items.map(m => {
     const f = materialPhoto(m);
     return `<a class="item" href="/materiais/${m.id.slice(4)}" data-sheet="${m.id}">
