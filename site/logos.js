@@ -1,6 +1,7 @@
 // ===== Logomarcas das empresas citadas nas fichas (arquivos em img/logos): site da empresa -> arquivo =====
 // Gerado a partir da revisão de 01/11/2026. A aba de logos em estudos/avisos-fotos-fabricantes.xlsx lista a origem de cada uma.
 const LOGOS_FAB = {
+  'ramo.ind.br': 'ramo.png',
   'mipel.com.br': 'mipel.png',
   'valmicro.com.br': 'valmicro.png',
   '3m.com.br': '3m.png',
