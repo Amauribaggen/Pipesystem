@@ -28,6 +28,7 @@
     { "source": "/produtos/conexoes-solda", "destination": "/materiais/conexoes-solda", "permanent": true },
     { "source": "/produtos/conexoes-ranhuradas", "destination": "/materiais/grooved", "permanent": true },
     { "source": "/produtos/flanges", "destination": "/materiais/flanges", "permanent": true },
+    { "source": "/materiais/esfera", "destination": "/materiais/esfera-monobloco", "permanent": true },
     { "source": "/produtos/valvulas", "destination": "/materiais/valvulas", "permanent": true },
     { "source": "/produtos/registros-latao", "destination": "/materiais/registros", "permanent": true },
     { "source": "/produtos/purgadores", "destination": "/materiais/purgadores", "permanent": true },

@@ -308,7 +308,7 @@ const CMPS = [
 
   { id: 'valvulas', tema: 'Válvulas', titulo: 'Válvula de bloqueio: gaveta, esfera, borboleta ou globo?',
     resumo: 'Esfera para abrir e fechar rápido em diâmetros pequenos; gaveta onde se quer passagem plena e manobra lenta; borboleta em diâmetros grandes; globo quando é preciso regular a vazão.',
-    opcoes: [['Gaveta', 'gaveta'], ['Esfera', 'esfera'], ['Borboleta', 'borboleta'], ['Globo', 'globo']],
+    opcoes: [['Gaveta', 'gaveta'], ['Esfera', 'esfera-monobloco'], ['Borboleta', 'borboleta'], ['Globo', 'globo']],
     linhas: [
       ['Função', ['Bloqueio (aberta ou fechada)', 'Bloqueio rápido (1/4 de volta)', 'Bloqueio e regulagem grosseira', 'Regulagem de vazão']],
       ['Perda de carga aberta', ['Muito baixa', 'Muito baixa (passagem plena)', 'Baixa a média (disco no fluxo)', 'Alta']],
@@ -368,7 +368,7 @@ const CMPS = [
     tipos: 'esfera',
     resumo: 'Monobloco para utilidades e pequenos diâmetros, quando é mais barato trocar que consertar; bipartida para uso geral, em diâmetros maiores e flangeada; tripartida quando é preciso trocar sedes sem tirar a válvula da linha; wafer onde falta espaço; forjada para pressões altas. Esfera flutuante até diâmetros médios; trunnion em grandes diâmetros, altas pressões e dutos; três vias para desviar ou misturar o fluxo; entrada por cima (top entry) em dutos soldados; dupla esfera para bloqueio duplo com dreno num só corpo {wikiEsfera}{pmFlutTrun}{micromazzaLinhas}.',
     intro: 'Toda válvula esfera abre e fecha com 1/4 de volta: uma esfera furada gira entre duas sedes. O que muda de um tipo para outro são duas escolhas independentes, por isso a comparação vem em duas tabelas: o corpo, que define como a válvula é feita, montada e consertada, e a forma de apoio da esfera, que define até que diâmetro e pressão ela trabalha bem. Uma tripartida, por exemplo, quase sempre tem esfera flutuante; uma trunnion costuma ter corpo bipartido ou soldado {wikiEsfera}{pmFlutTrun}.',
-    opcoes: [['Monobloco', 'esfera'], ['Bipartida', 'esfera'], ['Tripartida', 'esfera'], ['Wafer', 'esfera'], ['Forjada (alta pressão)', 'esfera'], ['Esfera flutuante', 'esfera'], ['Esfera trunnion', 'esfera'], ['Três vias (diversora)', 'esfera'], ['Entrada por cima (top entry)', 'esfera'], ['Dupla esfera (bloqueio duplo)', 'duplo-bloqueio']],
+    opcoes: [['Monobloco', 'esfera-monobloco'], ['Bipartida', ''], ['Tripartida', 'esfera-tripartida'], ['Wafer', ''], ['Forjada (alta pressão)', 'esfera-tripartida'], ['Esfera flutuante', 'esfera-monobloco'], ['Esfera trunnion', 'esfera-tripartida'], ['Três vias (diversora)', ''], ['Entrada por cima (top entry)', ''], ['Dupla esfera (bloqueio duplo)', 'duplo-bloqueio']],
     tabelas: [
       { titulo: 'Corpo: como a válvula é feita e montada', cols: [0, 1, 2, 3, 4], linhas: [
         ['Construção', ['Corpo de uma peça; a esfera entra pela ponta e fica presa por um anel roscado {wikiEsfera}', 'Corpo em duas partes, unidas por rosca ou parafusos; cabe uma esfera maior {wikiEsfera}', 'Corpo central (esfera e sedes) preso entre duas pontas por parafusos {wikiEsfera}{pm23}', 'Corpo curto, montado entre dois flanges da linha e preso pelos parafusos deles', 'Corpo de aço forjado, de parede grossa, para pressões altas']],
@@ -786,14 +786,14 @@ function comparativoHTML(c, o = {}) {
   // uma ficha por material; quando várias opções levam à mesma ficha, o botão usa o nome da ficha
   const repet = m => c.opcoes.filter(o => o[1] === m).length > 1;
   const nomeFicha = (m, n) => repet(m) && typeof CATALOG !== 'undefined' ? (CATALOG.find(x => x.id === 'mat-' + m) || {}).name || n : n;
-  const fichas = [...new Map(c.opcoes.map(([n, m]) => [m, nomeFicha(m, n)])).entries()];
+  const fichas = [...new Map(c.opcoes.filter(o => o[1]).map(([n, m]) => [m, nomeFicha(m, n)])).entries()];
   return `${c.intro ? `
       <p class="cp-intro">${refs(c.intro)}</p>` : ''}
       <p class="cp-oneline"><b>Quando usar cada um:</b> ${refs(c.resumo)}</p>${c.tipos ? TIPOS_HTML[c.tipos](h) : ''}
       <${h} class="cp-h">Lado a lado</${h}>${tabelas.map(t => `${t.titulo ? `
       <p class="cp-tabtit">${t.titulo}</p>` : ''}
       <div class="cp-tablewrap"><table class="cp-table">
-        <thead><tr><th scope="col">Critério</th>${t.cols.map(i => c.opcoes[i]).map(([n, m]) => `<th scope="col">${n}<a href="/materiais/${m}" data-sheet="mat-${m}">ver ficha</a></th>`).join('')}</tr></thead>
+        <thead><tr><th scope="col">Critério</th>${t.cols.map(i => c.opcoes[i]).map(([n, m]) => `<th scope="col">${n}${m ? `<a href="/materiais/${m}" data-sheet="mat-${m}">ver ficha</a>` : ''}</th>`).join('')}</tr></thead>
         <tbody>${t.linhas.map(([k, vals]) => `<tr><th scope="row">${k}${/^Custo de referência/.test(k) ? ` <span class="cp-uf">${uf}</span>` : ''}</th>${vals.map(v => `<td>${/^Custo de referência/.test(k) ? custo(v) : refs(v)}</td>`).join('')}</tr>`).join('')}</tbody>
       </table></div>`).join('')}
       ${temCusto ? `<p class="cp-note">Custo: só o material, SINAPI ${typeof SINAPI_PRECOS !== 'undefined' ? SINAPI_PRECOS.ref : ''}, ${uf}, sem desoneração. Não inclui conexões, mão de obra, BDI e frete.</p>` : ''}
@@ -1485,7 +1485,6 @@ function cmpTiposHTML(matId, h = 'h4') {
   if (matId === 'mat-vedantes' || matId === 'mat-juntas') return H('Vedantes de rosca e juntas, em desenho') + semH(vedTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/vedantes">Comparativo completo dos vedantes, com normas e fontes</a></p>`;
   if (matId === 'mat-suportes') return H('Tipos de suporte, em desenho') + semH(supTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/suportes">Comparativo completo dos suportes, com distâncias, normas e fontes</a></p>`;
   if (matId === 'mat-compressores') return H('Tipos de compressor, em corte') + semH(cprTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/compressores">Comparativo completo dos compressores, com normas e fontes</a></p>`;
-  if (matId === 'mat-esfera') return H('Corpos e esferas, em corte') + semH(esfTiposHTML('h4'));
   if (matId === 'mat-esfera-monobloco' || matId === 'mat-esfera-tripartida') return H('Monobloco, bipartida, tripartida: em corte') + semH(esfTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/valvulas-esfera">Comparativo completo dos tipos de válvula esfera →</a></p>`;
   if (matId === 'mat-valvula-hidrante') return H('Tipos disponíveis no mercado') + semH(vhTiposHTML('h4'));
   if (matId === 'mat-aco') return H('Extremidades, espessuras e acabamentos') + semH(taTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;

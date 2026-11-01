@@ -303,7 +303,7 @@ const SYSTEMS = [
     componentes: ['Ralos de fundo com grelha anti-aprisionamento', 'Skimmers e tomada de aspiração', 'Motobomba com pré-filtro', 'Filtro de areia ou de cartucho com válvula seletora', 'Aquecimento solar, bomba de calor ou trocador', 'Dosagem ou geração de cloro', 'Dispositivos de retorno'],
     cuidados: ['Proteção contra sucção: grelhas anti-aprisionamento e mais de uma tomada por bomba', 'Recirculação dimensionada pelo volume e pelo uso da piscina', 'Bomba abaixo do nível da água ou autoescorvante', 'Equipotencialização e proteção elétrica da casa de máquinas', 'Controle diário de pH e cloro'],
     normas: ['NBR 10339', 'NBR 5410'],
-    produtos: ['mat-bombas', 'mat-filtros', 'mat-pvc', 'mat-conexoes-pvc', 'mat-esfera', 'mat-retencao', 'mat-solar'],
+    produtos: ['mat-bombas', 'mat-filtros', 'mat-pvc', 'mat-conexoes-pvc', 'mat-esfera-monobloco', 'mat-esfera-tripartida', 'mat-retencao', 'mat-solar'],
     svg: `<path class="b" d="M10 40H170V120Q170 130 160 130H20Q10 130 10 120Z"/><path class="b dash" d="M18 58H162"/><text x="90" y="96">Piscina</text>
       <rect class="b" x="80" y="124" width="20" height="8" rx="2"/><text x="90" y="150">Ralo de fundo</text>
       <path class="p" d="M90 132V140H196V110"/><circle class="b" cx="196" cy="100" r="10"/><text x="196" y="80">Bomba</text>
