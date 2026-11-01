@@ -1096,7 +1096,7 @@ font[style] { background: transparent !important; box-shadow: none !important; }
 @media (prefers-reduced-motion: reduce) { .qcall__ico svg, .qcall__ico::after { animation: none; } }
 /* Chamada "Quero me tornar um Consultor PipeSystem" (abaixo do botão do card) */
 .svc__cta + .qcall { margin-top: 16px; }
-.qcall--consultor .qcall__ico svg { animation: none; }
+.qcall--consultor .qcall__ico svg, .qcall--leilao .qcall__ico svg { animation: none; }
 /* Passos "Como funciona": texto com negrito em linha normal */
 .svc__steps li { display: block; position: relative; padding-left: 34px; min-height: 24px; }
 .svc__steps li::before { position: absolute; left: 0; top: -1px; }
