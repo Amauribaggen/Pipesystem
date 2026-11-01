@@ -413,6 +413,7 @@ const BIM_LOGOS = {
   'Bürkert': 'burkert.png',
   'Bermad': 'bermad.svg',
   'GRAF': 'graf.svg',
+  'Krausz': 'krausz.png',
 };
 // Logos brancas: precisam de fundo escuro
 const BIM_LOGOS_CLARAS = new Set(['Tigre', 'Grundfos', 'Bermad', 'Krona', 'Tupy', 'Fortlev', 'Victaulic', 'KSB', 'Spirax Sarco', 'Swagelok', 'Xylem', 'Rain Bird']);
