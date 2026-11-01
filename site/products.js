@@ -121,11 +121,9 @@ const PRODUCTS = [
     tipos: ['Encaixe para solda (socket weld)', 'Roscadas NPT', 'Classes 2000, 3000, 6000 e 9000', 'Derivações tipo weldolet, sockolet e thredolet', 'Luva ponta de tubo / ponta rosca (rosca de um lado, ponta lisa para solda do outro)'],
     escolha: ['Classe compatível com o schedule do tubo', 'Material: aço-carbono ASTM A105 ou ligas ASTM A182', 'Inspeção e rastreabilidade por certificado'],
     normas: ['ASME B16.11', 'MSS SP-97', 'ASTM A105'],
-    // Fotos com licença livre (Wikimedia Commons) — crédito obrigatório ao autor
     fotos: [
-      { src: 'img/produtos/conexoes-forjadas-1.webp', alt: 'Niples roscados de aço-carbono para conexões de alta pressão', legenda: 'Niples roscados', autor: 'Ghasemimoshref', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Plumbing_fittings.jpg' },
-      { src: 'img/produtos/conexoes-forjadas-2.webp', alt: 'Niple de aço-carbono com rosca externa', legenda: 'Niple de aço com rosca', autor: 'Ghasemimoshref', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Plumbing_gear_connections.jpg' },
-      { src: 'img/produtos/conexoes-forjadas-3.webp', alt: 'Adaptador sextavado de aço inoxidável com rosca macho', legenda: 'Adaptador sextavado', autor: 'Kees08', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:BSPP_Male_Straight_Thread.png' },
+      { src: 'img/produtos/conexoes-forjadas-tecnoluva-solda.webp', alt: 'Tê de aço forjado com três encaixes lisos para solda', legenda: 'Conexão forjada para solda (encaixe)', autor: 'Tecnoluva', licenca: 'Divulgação', licUrl: 'https://www.tecnoluva.com.br/tee-aco.php', fonte: 'https://www.tecnoluva.com.br/tee-aco.php', divulgacao: true },
+      { src: 'img/produtos/conexoes-forjadas-tecnoluva-rosca.webp', alt: 'Cotovelo de 90 graus de aço forjado com rosca interna', legenda: 'Conexão forjada com rosca', autor: 'Tecnoluva', licenca: 'Divulgação', licUrl: 'https://www.tecnoluva.com.br/cotovelos-em-aco-carbono.php', fonte: 'https://www.tecnoluva.com.br/cotovelos-em-aco-carbono.php', divulgacao: true },
     ] },
   { id: 'conexoes-solda', g: 'conexoes', name: 'Conexões Tubulares Solda',
     desc: 'Conexões tubulares para solda de topo (butt weld): curvas, tês, reduções e tampões fabricados a partir de tubo, que formam linhas soldadas contínuas, estanques e sem pontos de rosca, em aço-carbono, inox e ligas.',
