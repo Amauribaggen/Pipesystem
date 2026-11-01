@@ -1501,6 +1501,9 @@ html.pg-collapse .pg-top__nav .btn { margin-top: 8px; text-align: center; }
 .bimcard h3 { margin: 0; font-size: 1.15rem; color: var(--navy); }
 .bimcard p { margin: 0; font-size: .92rem; color: #33445a; }
 .bimcard .fabs__tag { flex: none; }
+.bimcard__head h3 { flex: 1; min-width: 0; }
+.bimcard__logo { flex: none; height: 28px; width: auto; max-width: 84px; object-fit: contain; }
+.bimcard__logo--clara { background: var(--navy); padding: 4px 7px; border-radius: 6px; box-sizing: content-box; height: 20px; }
 .bimcard__meta { font-size: .8rem !important; color: var(--muted) !important; }
 .bimcard__mats { display: flex; flex-wrap: wrap; gap: 5px; }
 .bimcard__mats a { font-size: .78rem; text-decoration: none; border: 1.5px solid var(--box-line); border-radius: 999px; padding: 2px 9px; color: var(--teal-d); }
