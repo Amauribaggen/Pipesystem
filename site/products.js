@@ -277,9 +277,9 @@ const PRODUCTS = [
     escolha: ['Classe de risco da ocupação', 'Temperatura de acionamento conforme o ambiente', 'Fator K e área de cobertura', 'Projeto e instalação por profissional habilitado'],
     normas: ['NBR 10897', 'NFPA 13', 'UL 199'],
     fotos: [
-      { src: 'img/produtos/sprinklers-1.webp', alt: 'Sprinkler pendente com ampola em tubulação vermelha', legenda: 'Sprinkler pendente', autor: 'Dirk.heldmaier', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:MV_Logos_II_IMG_7018.jpg' },
-      { src: 'img/produtos/sprinklers-2.webp', alt: 'Detalhe de sprinkler com ampola', legenda: 'Detalhe da ampola', autor: 'Dirk.heldmaier', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:MV_Logos_II_IMG_7016.jpg' },
-      { src: 'img/produtos/sprinklers-3.webp', alt: 'Sprinkler instalado em forro de madeira', legenda: 'Sprinkler no forro', autor: 'Darklanlan', licenca: 'CC BY 4.0', licUrl: 'https://creativecommons.org/licenses/by/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Sidewall_fire_sprinkler_head_and_detector.jpg' },
+      { src: 'img/produtos/sprinklers-reliable-pendente.webp', alt: 'Sprinkler pendente de ampola vermelha, cromado', legenda: 'Sprinkler pendente', autor: 'Reliable', licenca: 'Divulgação', licUrl: 'https://www.reliablesprinkler.com/products/sprinklers/', fonte: 'https://www.reliablesprinkler.com/products/sprinklers/', divulgacao: true },
+      { src: 'img/produtos/sprinklers-reliable-upright.webp', alt: 'Sprinkler upright de latão com ampola vermelha, com o defletor para cima', legenda: 'Sprinkler upright', autor: 'Reliable', licenca: 'Divulgação', licUrl: 'https://www.reliablesprinkler.com/products/sprinklers/', fonte: 'https://www.reliablesprinkler.com/products/sprinklers/', divulgacao: true },
+      { src: 'img/produtos/sprinklers-reliable-oculto.webp', alt: 'Sprinkler oculto em copo metálico para embutir no forro', legenda: 'Sprinkler oculto (no forro)', autor: 'Reliable', licenca: 'Divulgação', licUrl: 'https://www.reliablesprinkler.com/products/sprinklers/', fonte: 'https://www.reliablesprinkler.com/products/sprinklers/', divulgacao: true },
     ] },
 
   // Fixação e vedação

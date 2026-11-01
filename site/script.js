@@ -162,7 +162,7 @@ function fotosHTML(fotos, titulo = '', zoom = true) {
   if (!fotos) return '';
   return `<figure class="pfotos${zoom ? ' pfotos--zoom' : ''}">${titulo ? `<h4>${titulo}</h4>` : ''}
       <div class="pfotos__grid">${fotos.map(f => `<div class="pfotos__item"${zoom ? ' tabindex="0" role="button" aria-label="Ampliar foto: ' + f.legenda + '"' : ''}><img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} loading="lazy"><span>${f.legenda}</span></div>`).join('')}</div>
-      <figcaption>Fotos: ${fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i).map(f => `<a href="${f.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${f.autor}</a> (<a href="${f.licUrl}" target="_blank" rel="noopener noreferrer">${f.licenca}</a>)`).join(', ')}, via Wikimedia Commons</figcaption>
+      <figcaption>Fotos: ${fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i).map(f => `<a href="${f.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${f.autor}</a> (<a href="${f.licUrl}" target="_blank" rel="noopener noreferrer">${f.licenca}</a>)`).join(', ')}${fotos.every(f => f.divulgacao) ? ', imagens de divulgação do fabricante' : ', via Wikimedia Commons'}</figcaption>
     </figure>`;
 }
 

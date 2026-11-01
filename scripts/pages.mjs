@@ -42,7 +42,7 @@ function fotosHTML(fotos, titulo = '', zoom = true) {
     .map(f => `<a href="${esc(f.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(f.autor)}</a> (<a href="${esc(f.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(f.licenca)}</a>)`).join(', ');
   return `<figure class="pfotos${zoom ? ' pfotos--zoom' : ''}">${titulo ? `<h2 class="page__h">${titulo}</h2>` : ''}
       <div class="pfotos__grid">${fotos.map((f, i) => `<div class="pfotos__item"${zoom ? ' tabindex="0" role="button" aria-label="Ampliar foto: ' + esc(plain(f.legenda)) + '"' : ''}><img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)}${i ? ' loading="lazy"' : ''} decoding="async"><span>${f.legenda}</span></div>`).join('')}</div>
-      <figcaption>Fotos: ${credits}, via Wikimedia Commons</figcaption>
+      <figcaption>Fotos: ${credits}${fotos.every(f => f.divulgacao) ? ', imagens de divulgação do fabricante' : ', via Wikimedia Commons'}</figcaption>
     </figure>`;
 }
 function tabelasHTML(tabelas, linkNorms) {
