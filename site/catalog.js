@@ -66,7 +66,7 @@ const CATALOG = [
     normas: ['ASTM A312', 'ASTM A270', 'ASTM A554'] },
 
   // Conexões
-  { id: 'mat-galv', chaves: ['IPC', 'GIPP', 'IPC Brasil', 'ferro maleável', 'NBR 6943', 'ISO 49', 'tê hidrante', 'união assento cônico', 'niple duplo', 'Tupy', 'TupyBSP', 'TupyNPT', 'NPT média pressão', 'NPT alta pressão', 'união assento plano', 'união assento bronze', 'piscano', 'corrosão galvânica', 'união dielétrica', 'tuberculação'], cat: 'Conexões', name: 'Conexões galvanizadas', apps: 'Ferro maleável, rosca BSP e NPT', art: 'fittings', tone: '#b9c3cc', rel: 'conexoes-ferro',
+  { id: 'mat-galv', chaves: ['certificado INMETRO', 'certificação INMETRO', 'INMETRO', 'ferro maleável certificado', 'NBR 6943', 'IPC', 'GIPP', 'IPC Brasil', 'ferro maleável', 'NBR 6943', 'ISO 49', 'tê hidrante', 'união assento cônico', 'niple duplo', 'Tupy', 'TupyBSP', 'TupyNPT', 'NPT média pressão', 'NPT alta pressão', 'união assento plano', 'união assento bronze', 'piscano', 'corrosão galvânica', 'união dielétrica', 'tuberculação'], cat: 'Conexões', name: 'Conexões galvanizadas', apps: 'Ferro maleável, rosca BSP e NPT', art: 'fittings', tone: '#b9c3cc', rel: 'conexoes-ferro',
     desc: 'Conexões roscadas de ferro fundido maleável galvanizado, para redes de água, incêndio, gás e ar comprimido em tubos de aço.',
     specs: [['Material', 'Ferro fundido maleável, galvanizado ou preto'], ['Diâmetros', '1/4" a 6"'], ['Pressão', 'Classe 10 (1,0 MPa) e classe 150 lb'], ['Rosca', 'BSP (NBR NM ISO 7-1) ou NPT (ASME B1.20.1)'], ['Peças', 'Cotovelos, tês, luvas, uniões, niples, buchas, bujões e tampões']],
     normas: ['NBR 6943', 'NBR 6925', 'ASME B16.3'] },

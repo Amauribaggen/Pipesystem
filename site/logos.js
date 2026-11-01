@@ -216,9 +216,11 @@ const logoFab = url => {
 };
 
 // ===== Chamada "Certificado INMETRO" nas fichas: ficha -> programa e empresa -> um registro ativo de exemplo =====
-// Só entra quem tem certificado na consulta oficial (registro.inmetro.gov.br/consulta), no programa do produto da ficha. Conferido em novembro de 2026.
+// Só entra quem tem certificado na consulta oficial (registro.inmetro.gov.br/consulta), no programa do produto da ficha; conexões de ferro maleável não estão nessa consulta e usam link e nota próprios. Conferido em novembro de 2026.
 // Bombas têm registro com certificado "Não aplicável" (sem certificação): por isso não entram aqui.
 const CERT_INMETRO = {
+  'mat-galv': { prog: 'conexões de ferro fundido maleável', fab: { 'Tupy': 'https://www.legisweb.com.br/legislacao/?id=201054', 'IPC/GIPP': 'https://www.ipcbrasil.ind.br/qualidade/' },
+    nota: 'as conexões de ferro fundido maleável têm certificação compulsória do Inmetro (Portaria 160/2007 e atualizações). A IPC/GIPP informa a certificação no próprio site, e a da Tupy foi informada à PipeSystem. Peça o certificado ao fabricante para confirmar a linha escolhida.' },
   'mat-solar': { prog: 'coletores solares e reservatórios térmicos', fab: { 'Soletrol': '003660/2019', 'Heliotek': '004900/2016', 'Komeco': '007612/2016' } },
   'mat-caldeiras': { prog: 'aquecedores de água a gás', fab: { 'Rinnai': '008495/2013', 'Komeco': '009950/2013' } },
   'mat-compressores': { prog: 'vasos de pressão (reservatório do compressor)', fab: { 'Schulz': '001245/2018', 'Chiaperini': '002496/2018', 'Atlas Copco': '003377/2019', 'Kaeser': '002699/2020', 'Ingersoll Rand': '005716/2023' } },
@@ -227,6 +229,6 @@ const CERT_INMETRO = {
 };
 const certFab = (matId, nome) => {
   const c = CERT_INMETRO[matId], reg = c && c.fab[nome];
-  return reg ? `<a class="fabs__cert" href="https://registro.inmetro.gov.br/consulta/detalhe.aspx?pag=1&amp;NumeroRegistro=${reg}" target="_blank" rel="noopener noreferrer" title="Ver o registro no Inmetro">Certificado INMETRO</a>` : '';
+  return reg ? `<a class="fabs__cert" href="${/^http/.test(reg) ? reg : `https://registro.inmetro.gov.br/consulta/detalhe.aspx?pag=1&amp;NumeroRegistro=${reg}`}" target="_blank" rel="noopener noreferrer" title="${/^http/.test(reg) ? 'Ver a referência da certificação' : 'Ver o registro no Inmetro'}">Certificado INMETRO</a>` : '';
 };
-const certNota = matId => CERT_INMETRO[matId] ? `<p class="fabs__note"><b>Certificado INMETRO:</b> a empresa tem modelos com certificado ativo em ${CERT_INMETRO[matId].prog}, conforme a consulta pública do Inmetro em novembro de 2026. Confirme o modelo escolhido no link da chamada.</p>` : '';
+const certNota = matId => CERT_INMETRO[matId] ? `<p class="fabs__note"><b>Certificado INMETRO:</b> ${CERT_INMETRO[matId].nota || `a empresa tem modelos com certificado ativo em ${CERT_INMETRO[matId].prog}, conforme a consulta pública do Inmetro em novembro de 2026. Confirme o modelo escolhido no link da chamada.`}</p>` : '';
