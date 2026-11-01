@@ -329,6 +329,30 @@
           </div>
         </article>
       </div>
+      <aside class="leiloes" id="leiloes" aria-labelledby="leiloesTitulo">
+        <div class="leiloes__txt">
+          <p class="leiloes__tag">Oportunidades</p>
+          <h3 id="leiloesTitulo">Pesquise leilões de materiais hidráulicos</h3>
+          <p>Lotes de válvulas, tubos, conexões e bombas, novos e usados, em plataformas de leilão. A busca abre no site de cada leiloeiro.</p>
+        </div>
+        <div class="leiloes__busca">
+          <label for="leilaoTermo">O que você procura?</label>
+          <input id="leilaoTermo" type="search" value="válvulas" maxlength="60" autocomplete="off">
+          <div class="leiloes__chips">
+            <button type="button" data-termo="válvulas">Válvulas</button>
+            <button type="button" data-termo="tubos">Tubos</button>
+            <button type="button" data-termo="conexões">Conexões</button>
+            <button type="button" data-termo="bombas">Bombas</button>
+          </div>
+          <div class="leiloes__sites">
+            <a data-leilao="https://www.sold.com.br/busca/{t}" href="https://www.sold.com.br/busca/v%C3%A1lvulas" target="_blank" rel="noopener nofollow">Buscar na Sold ↗</a>
+            <a data-leilao="https://www.superbid.net/busca/{t}" href="https://www.superbid.net/busca/v%C3%A1lvulas" target="_blank" rel="noopener nofollow">Buscar na Superbid ↗</a>
+            <a data-leilao="https://www.deseulance.com/pesquisar/lot-search/searchbox-action?text={t}" href="https://www.deseulance.com/pesquisar/lot-search/searchbox-action?text=v%C3%A1lvulas" target="_blank" rel="noopener nofollow">Buscar na Deseulance ↗</a>
+            <a href="https://petrobras.com.br/negocios/leiloes" target="_blank" rel="noopener nofollow">Leilões da Petrobras ↗</a>
+          </div>
+          <p class="leiloes__nota">O PipeSystem não é leiloeiro e não participa desses leilões. Confira o edital, o estado do lote e as taxas no site de cada plataforma.</p>
+        </div>
+      </aside>
       <div class="adslot" data-ad="padrao" data-place="Serviços — após os cartões"></div>
     </div>
   </section>

@@ -1650,4 +1650,15 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   window.addEventListener('hashchange', () => { const id = location.hash.slice(1); if (id && SECTION_PATHS[sectionOf(id)] && !sheet.open) go(id, 'replace'); });
 })();
 
-
+// Banner de leilões: leva o termo digitado para a busca de cada plataforma
+(() => {
+  const campo = document.getElementById('leilaoTermo');
+  if (!campo) return;
+  const links = document.querySelectorAll('[data-leilao]');
+  const aplica = () => {
+    const termo = encodeURIComponent(campo.value.trim() || 'válvulas');
+    links.forEach(a => { a.href = a.dataset.leilao.replace('{t}', termo); });
+  };
+  campo.addEventListener('input', aplica);
+  document.querySelectorAll('.leiloes__chips [data-termo]').forEach(b => b.addEventListener('click', () => { campo.value = b.dataset.termo; aplica(); }));
+})();

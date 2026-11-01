@@ -2012,3 +2012,18 @@ a.gl:hover { color: var(--teal-d); }
   .preco__prod { grid-column: 1 / -1; }
   .preco__valor { text-align: left; }
 }
+
+/* Banner de busca de leilões (seção Serviços) */
+.leiloes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 28px; margin-top: 28px; padding: 28px; border-radius: 22px; background: linear-gradient(135deg, #fff1d6, #ffe0b0); border: 1.5px solid #f2a03d; color: var(--ink); scroll-margin-top: 96px; }
+.leiloes__tag { margin: 0 0 6px; font: 800 .78rem var(--display); letter-spacing: .08em; text-transform: uppercase; color: #a85c00; }
+.leiloes h3 { margin: 0 0 8px; color: var(--navy); }
+.leiloes p { color: #44505f; }
+.leiloes__busca label { display: block; margin-bottom: 6px; font-weight: 700; color: var(--navy); }
+.leiloes__busca input { width: 100%; padding: .65em 1em; border: 1.5px solid var(--box-line); border-radius: 999px; background: #fff; font: 500 1rem var(--font); color: var(--ink); }
+.leiloes__chips, .leiloes__sites { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.leiloes__chips button { padding: .35em .9em; border: 1.5px solid #c98a35; border-radius: 999px; background: #fff; font: 600 .85rem var(--font); color: var(--navy); cursor: pointer; }
+.leiloes__chips button:hover, .leiloes__chips button:focus-visible { background: var(--navy); color: #fff; }
+.leiloes__sites a { padding: .6em 1.1em; border-radius: 999px; background: var(--navy); font-weight: 700; font-size: .9rem; color: #fff; text-decoration: none; }
+.leiloes__sites a:hover, .leiloes__sites a:focus-visible { background: #e5534b; }
+.leiloes__nota { margin: 12px 0 0; font-size: .82rem; }
+@media (max-width: 760px) { .leiloes { grid-template-columns: 1fr; padding: 20px; gap: 16px; } }
