@@ -187,6 +187,7 @@ const LOGOS_FAB = {
   'uniforja.com.br': 'uniforja.png',
   'uponor.com': 'uponor.png',
   'vallourec.com': 'vallourec.svg',
+  'brazil.vallourec.com': 'vallourec.svg',
   'valves.co.uk': 'oliver-valves.png',
   'varem.com': 'varem.svg',
   'velan.com': 'velan.svg',
