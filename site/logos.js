@@ -214,3 +214,19 @@ const logoFab = url => {
   const a = LOGOS_FAB[new URL(url).hostname.replace(/^www\./, '')];
   return a ? `<img class="fabs__logo${LOGOS_CLARAS.has(a) ? ' fabs__logo--clara' : ''}" src="/img/logos/${a}" alt="" loading="lazy">` : '';
 };
+
+// ===== Chamada "Certificado INMETRO" nas fichas: ficha -> programa e empresa -> um registro ativo de exemplo =====
+// Só entra quem tem certificado na consulta oficial (registro.inmetro.gov.br/consulta), no programa do produto da ficha. Conferido em novembro de 2026.
+// Bombas têm registro com certificado "Não aplicável" (sem certificação): por isso não entram aqui.
+const CERT_INMETRO = {
+  'mat-solar': { prog: 'coletores solares e reservatórios térmicos', fab: { 'Soletrol': '003660/2019', 'Heliotek': '004900/2016', 'Komeco': '007612/2016' } },
+  'mat-caldeiras': { prog: 'aquecedores de água a gás', fab: { 'Rinnai': '008495/2013', 'Komeco': '009950/2013' } },
+  'mat-compressores': { prog: 'vasos de pressão (reservatório do compressor)', fab: { 'Schulz': '001245/2018', 'Chiaperini': '002496/2018', 'Atlas Copco': '003377/2019', 'Kaeser': '002699/2020', 'Ingersoll Rand': '005716/2023' } },
+  'mat-reguladores': { prog: 'reguladores de baixa pressão para GLP', fab: { 'Aliança Metalúrgica': '004193/2015', 'Blukit': '000561/2020' } },
+  'mat-aco': { prog: 'tubos de aço-carbono', fab: { 'Tubos Apolo': '001697/2019', 'Vallourec': '002185/2018' } },
+};
+const certFab = (matId, nome) => {
+  const c = CERT_INMETRO[matId], reg = c && c.fab[nome];
+  return reg ? `<a class="fabs__cert" href="https://registro.inmetro.gov.br/consulta/detalhe.aspx?pag=1&amp;NumeroRegistro=${reg}" target="_blank" rel="noopener noreferrer" title="Ver o registro no Inmetro">Certificado INMETRO</a>` : '';
+};
+const certNota = matId => CERT_INMETRO[matId] ? `<p class="fabs__note"><b>Certificado INMETRO:</b> a empresa tem modelos com certificado ativo em ${CERT_INMETRO[matId].prog}, conforme a consulta pública do Inmetro em novembro de 2026. Confirme o modelo escolhido no link da chamada.</p>` : '';

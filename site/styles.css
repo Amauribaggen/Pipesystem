@@ -665,6 +665,9 @@ body { background: #071a31; }
 .fabs a, .fabs__nolink { align-items: center; }
 .fabs__logo { height: 22px; width: auto; max-width: 96px; object-fit: contain; flex: none; }
 .fabs__logo--clara { background: var(--navy); padding: 3px 6px; border-radius: 5px; box-sizing: content-box; height: 16px; }
+.fabs a.fabs__cert { flex: none; display: inline-block; font-size: .7rem; font-weight: 700; padding: .2em .7em; border-radius: 999px; background: #0a2240; color: #fff; text-decoration: none; white-space: nowrap; }
+.fabs a.fabs__cert:hover { background: #0e8fa1; }
+@media (max-width: 560px) { .fabs li { flex-wrap: wrap; } .fabs li > a:first-child, .fabs li > .fabs__nolink { flex-basis: 100%; } }
 .fabs__note { font-size: .8rem; color: var(--muted); margin: 0 0 18px; }
 .fabs__note a { color: var(--teal-d); font-weight: 600; }
 
