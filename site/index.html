@@ -1351,6 +1351,19 @@
         <p class="gplead">Para fechar a obra com tudo testado e documentado, como pedem a NBR 15575-6 (desempenho) e a NBR 14037 (manual de uso e manutenção). Marque e imprima.</p>
         <div class="gpcheck" id="gpCheck"></div>
       </div>
+      <div class="gppanel" id="gp-precos" role="tabpanel" hidden>
+        <h3 class="preco__titulo">Comparativo de Preços: e-commerce nacional x SINAPI</h3>
+        <p class="gplead">Exemplo de preços disponíveis no e-commerce nacional comparados ao SINAPI. Os preços vão do menor para o maior, e o percentual mostra quanto cada um está acima do menor encontrado. Clique em uma linha para abrir a página de origem.</p>
+        <div class="bim__filters preco__filtros" role="search">
+          <input type="search" id="precoBusca" placeholder="Filtrar: produto, marca ou loja (tubo, caixa d'água, Tigre)" aria-label="Filtrar os itens do comparativo">
+          <label class="preco__uf">Estado do SINAPI
+            <select id="precoUf"><option value="SP" selected>SP</option></select>
+          </label>
+        </div>
+        <p class="bim__count" id="precoCount" aria-live="polite"></p>
+        <div class="preco__grid" id="precoGrid"></div>
+        <p class="preco__nota"><b>Como ler:</b> é um exemplo, com preços vistos nas páginas das lojas na data da coleta, sem frete. Podem mudar a qualquer momento e variar por região, estoque e vendedor; confirme na loja. Marcas e modelos diferem entre as linhas, e o SINAPI é uma referência de custo de material, sem marca e sem venda ao público. <span id="precoRef"></span></p>
+      </div>
       <div class="gppanel" id="gp-glossario" role="tabpanel" hidden>
         <p class="gplead">Os termos usados em projeto, obra, compra e manutenção, com o termo em inglês, a fórmula quando houver, a norma e o caminho para a ficha, a calculadora ou o guia. Cada termo tem também uma <a href="/glossario">página própria</a>.</p>
         <div class="bim__filters" role="search">
@@ -1886,6 +1899,7 @@
 <script src="img-sizes.js"></script>
 <script src="lightbox.js"></script>
 <script src="bim.js"></script>
+<script src="precos.js"></script>
 <script src="glossario.js"></script>
 <script src="comparativos.js"></script>
 <script src="guias.js"></script>

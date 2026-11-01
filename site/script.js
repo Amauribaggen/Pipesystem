@@ -26,7 +26,7 @@ const PAGINA = document.body.dataset.pagina || '';
 const ehFicha = id => [PRODUCTS, SYSTEMS, CATALOG].some(l => l.some(x => x.id === id));   // fichas abrem em qualquer página
 function paginaDe(id) {
   if (ehFicha(id)) return null;
-  const p = (window.ID_PAGINA || {})[id] || (/^(cmp|gl|gp|cp)-/.test(id) ? '/guias-praticos' : /^bim-/.test(id) ? '/bim-cad' : '/');
+  const p = (window.ID_PAGINA || {})[id] || (/^(cmp|gl|gp|cp|preco)-/.test(id) ? '/guias-praticos' : /^bim-/.test(id) ? '/bim-cad' : '/');
   return p && p !== location.pathname && !(p === '/' && !PAGINA) ? p : null;
 }
 document.addEventListener('click', e => {
@@ -1207,6 +1207,10 @@ const MAGAZINES = [
     add('Produtos e materiais', pick(CATALOG, matText, m => ({ href: '/materiais/' + m.id.slice(4), sheet: m.id, title: m.name, sub: snippet(matText(m), terms, m.apps) })),
       { label: 'Ver no catálogo', run: () => { searchCatalog(q); goTo('materiais'); } });
 
+    const precoText = i => ['comparativo de preços', 'preço', i.nome, i.cat, ...i.chaves, ...i.ofertas.map(o => o[1] + ' ' + LOJAS_PRECOS[o[0]])].join(' ');
+    add('Comparativo de Preços', pick(PRECOS.itens, precoText, i => ({ href: '/guias-praticos#preco-' + i.id, title: i.nome,
+      sub: `${i.ofertas.length} preços em lojas on-line e a referência SINAPI` })));
+
     const seen = new Set(), norms = [];
     NORM_GROUPS.forEach(g => g.normas.forEach(n => { if (!seen.has(n.code)) { seen.add(n.code); norms.push({ ...n, grupo: g.name }); } }));
     add('Normas técnicas', pick(norms, n => [n.code, n.title, n.note || '', n.grupo].join(' '),
@@ -1386,7 +1390,7 @@ const MAGAZINES = [
     bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS), '#bimGrid') + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS), '#bimPlats'),
     guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo })), '#comparativos') +
       group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo })), '#gp-guias') +
-      group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-check', label: 'Checklist de entrega' }, { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
+      group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-precos', label: 'Comparativo de preços: e-commerce x SINAPI' }, { href: '#gp-check', label: 'Checklist de entrega' }, { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })), '#normas', ` data-norm-mode="${tipo}"`)).join(''),

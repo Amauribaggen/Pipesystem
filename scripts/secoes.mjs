@@ -31,7 +31,7 @@ export const PAGINAS = [
   { id: 'guias', path: '/guias-praticos', nome: 'Guias práticos', tag: 'Como fazer', titulo: 'Guias práticos de instalações hidráulicas | PipeSystem',
     resumo: 'Comparativos entre materiais, passo a passo de instalação e teste, vídeos, erros comuns, checklist de entrega e glossário.',
     n: D => [D.CMPS.length, 'comparativos com fontes'],
-    links: [['Comparativos', '/guias-praticos#comparativos'], ['Passo a passo', '/guias-praticos#gp-guias'], ['Glossário', '/guias-praticos#gp-glossario']],
+    links: [['Comparativos', '/guias-praticos#comparativos'], ['Passo a passo', '/guias-praticos#gp-guias'], ['Preços', '/guias-praticos#gp-precos'], ['Glossário', '/guias-praticos#gp-glossario']],
     // a seção começa pelo bloco de comparativos: a página ganha um título geral antes dele
     head: `<p class="eyebrow">Guias práticos</p>
         <h2>Guias práticos de instalações hidráulicas</h2>
