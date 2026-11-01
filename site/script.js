@@ -222,7 +222,7 @@ const materialById = Object.fromEntries(CATALOG.map(m => [m.id, m]));
 function renderMaterial(m) {
   // ficha técnica completa (fotos, tipos, como escolher, tabelas): do antigo guia (products.js) ou do próprio item do catálogo
   const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [], fotos: m.fotos } : null);
-  const veja = materialById[m.veja];   // item principal que traz a visão geral (ex.: comparativo de válvulas)
+  const vejas = [].concat(m.veja || []).map(id => materialById[id]).filter(Boolean);   // item principal que traz a visão geral (ex.: comparativo de válvulas)
   const normas = [...new Set([...m.normas, ...(p ? p.normas : [])])];
   const fabs = MANUFACTURERS[m.id] || [];
   const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); // lista só de importadores
@@ -249,7 +249,7 @@ function renderMaterial(m) {
     <h4>Normas de referência</h4>
     <p class="tags tags--links">${normTags(normas)}</p>
     <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
-    ${veja ? `<p class="relprod"><a href="/materiais/${veja.id.slice(4)}" data-sheet="${veja.id}">Veja também: ${veja.name} →</a></p>` : ''}
+    ${vejas.map(veja => `<p class="relprod"><a href="/materiais/${veja.id.slice(4)}" data-sheet="${veja.id}">Veja também: ${veja.name} →</a></p>`).join('')}
     ${fabs.length ? `<h4>${importers ? 'Importadores' : fabs.some(f => f[2] === 'M') ? 'Fabricantes e importadores' : 'Fabricantes'}</h4>
     <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${u}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span>${logoFab(u)}</a>`

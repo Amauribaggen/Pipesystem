@@ -240,7 +240,7 @@ export function generate(D, outDir) {
   // Catálogo de materiais
   for (const m of D.CATALOG) {
     const url = pathOf.material(m.id); const foto = materialPhoto(D, m);
-    const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [], fotos: m.fotos } : null); const veja = materialById[m.veja]; const fabs = D.MANUFACTURERS[m.id] || [];
+    const p = productById[m.rel] || (m.tipos ? { tipos: m.tipos, escolha: m.escolha || [], normas: [], fotos: m.fotos } : null); const vejas = [].concat(m.veja || []).map(id => materialById[id]).filter(Boolean); const fabs = D.MANUFACTURERS[m.id] || [];
     const normas = [...new Set([...m.normas, ...(p ? p.normas : [])])]; const sist = systemsUsing(m);
     // a foto de divulgação do fabricante (fab) vale mais que as fotos genéricas do guia técnico
     const fotos = foto && foto.fab ? null : p && p.fotos && p.fotos.length ? p.fotos : m.fotos && m.fotos.length ? m.fotos : null;
@@ -267,7 +267,7 @@ export function generate(D, outDir) {
       <h2 class="page__h">Aplicações</h2><p class="sheet__desc">${linkNorms(m.apps)}.</p>
       <h2 class="page__h">Normas de referência</h2>
       <p class="tags tags--links">${normTags(normas)}</p>${normNote}
-      ${veja ? `<p class="relprod"><a href="${pathOf.material(veja.id)}">Veja também: ${esc(veja.name)} →</a></p>` : ''}
+      ${vejas.map(veja => `<p class="relprod"><a href="${pathOf.material(veja.id)}">Veja também: ${esc(veja.name)} →</a></p>`).join('')}
       ${sist.length ? `<h2 class="page__h">Onde é usado</h2>${links(sist.map(x => [pathOf.sistema(x.id), x.name]))}` : ''}
       ${fabs.length ? `<h2 class="page__h">${importers ? 'Importadores' : misto ? 'Fabricantes e importadores' : 'Fabricantes'}</h2>
       <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">
