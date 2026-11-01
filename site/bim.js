@@ -427,7 +427,7 @@ function bimBoxHTML(matId, h = 'h4') {
   const cls = h === 'h4' ? '' : ' class="page__h"';
   return `<${h}${cls}>Arquivos BIM/CAD</${h}>
     <ul class="bimbox">${libs.map(b => `<li><a href="${b.links[0][1]}" target="_blank" rel="noopener noreferrer">
-      <span class="fabs__name notranslate" translate="no">${b.nome}</span>${bimFmts(b.fmts)}<span class="bimbox__dl">Baixar ↗</span></a></li>`).join('')}</ul>
+      <span class="fabs__name notranslate" translate="no">${b.nome}</span>${BIM_LOGOS[b.nome] ? `<img class="fabs__logo${BIM_LOGOS_CLARAS.has(b.nome) ? ' fabs__logo--clara' : ''}" src="/img/logos/${BIM_LOGOS[b.nome]}" alt="" loading="lazy">` : ''}${bimFmts(b.fmts)}<span class="bimbox__dl">Baixar ↗</span></a></li>`).join('')}</ul>
     <p class="fabs__note">Arquivos oficiais do fabricante (Revit, IFC, DWG ou plugin). Veja todas as bibliotecas na seção <a href="/bim-cad">BIM/CAD</a>.</p>`;
 }
 

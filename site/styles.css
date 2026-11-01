@@ -662,6 +662,9 @@ body { background: #071a31; }
 .fabs__tag--N { background: #e3f6ea; color: #1d7a45; }
 .fabs__tag--I { background: #e7eefb; color: #2f55a4; }
 .fabs__tag--M { background: #fff1d6; color: #9a5a0a; }
+.fabs a, .fabs__nolink { align-items: center; }
+.fabs__logo { height: 22px; width: auto; max-width: 96px; object-fit: contain; flex: none; }
+.fabs__logo--clara { background: var(--navy); padding: 3px 6px; border-radius: 5px; box-sizing: content-box; height: 16px; }
 .fabs__note { font-size: .8rem; color: var(--muted); margin: 0 0 18px; }
 .fabs__note a { color: var(--teal-d); font-weight: 600; }
 
