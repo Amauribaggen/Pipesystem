@@ -1953,6 +1953,14 @@ a.gl:hover { color: var(--teal-d); }
 .gpcalc__out { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: .9rem; }
 .gpcalc__prox { flex-basis: 100%; color: var(--teal-d); }
 .gpcalc__alerta { color: #b42318; }
+.gpcalc__res { display: block; margin-top: 12px; font-size: .9rem; }
+.gpcalc__res h5 { margin: 12px 0 4px; font-size: .9rem; }
+.gpcalc__res ul { margin: 0; padding-left: 18px; }
+.gpcalc__res li { margin: 3px 0; }
+.gpfossa__top { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+.gpfossa__top span { padding: 8px 10px; border: 1px solid #b9e3ea; border-radius: 8px; background: #fff; font-size: .78rem; color: var(--muted); }
+.gpfossa__top b { display: block; font-size: 1rem; color: var(--navy); }
+.gpfossa__alertas li { color: #b42318; }
 
 /* ===== Calculadoras online (Dimensionamento): lista e ficha que abre cada calculadora ===== */
 .tools--fichas { display: none; }

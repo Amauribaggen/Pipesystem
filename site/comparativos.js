@@ -1489,6 +1489,7 @@ function cmpTiposHTML(matId, h = 'h4') {
   if (matId === 'mat-valvula-hidrante') return H('Tipos disponíveis no mercado') + semH(vhTiposHTML('h4'));
   if (matId === 'mat-aco') return H('Extremidades, espessuras e acabamentos') + semH(taTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;
   if (matId === 'mat-aco-sem-costura') return `<p class="relprod"><a href="/comparativos/tubos-aco">Comparativo dos tubos de aço por norma (NBR 5580, NBR 5590, ASTM A106, API 5L, ASTM A795 e inox)</a></p>`;
+  if (matId === 'mat-fossa') return `<p class="relprod"><a href="/guias-praticos#fossa-fortlev">Guia: escolha o modelo pelo número de pessoas e veja a instalação completa →</a></p>`;
   if (matId === 'mat-sprinklers') return H('Tipos de sprinkler') + semH(spkTiposHTML('h4')) + `<p class="relprod"><a href="/comparativos/sprinklers-tipos">Comparativo completo dos tipos, com normas e fontes</a></p>`;
   return '';
 }

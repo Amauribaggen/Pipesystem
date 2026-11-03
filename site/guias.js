@@ -166,6 +166,45 @@ const GUIAS = [
     atencao: ['A cor não substitui o rótulo: em plantas com muitas linhas da mesma cor, só o nome do fluido evita a manobra errada.', 'Não pinte sobre válvulas de alívio, placas de identificação, visores, roscas de união e elementos de sprinkler.', 'Tubos plásticos coloridos de fábrica (ex.: PPR azul para ar comprimido, vermelho para incêndio, cinza para vácuo) já atendem à norma: aplique só setas e rótulos.', 'A NR-26 manda usar as cores das normas técnicas e no menor número possível, para não confundir.'],
     refs: [['ABNT NBR 6493 — Emprego de cores para identificação de tubulações industriais (3ª edição, 2019)', 'https://www.abntcatalogo.com.br/'], ['Resumo da NBR 6493: cores, fluidos e faixas de 40 cm', 'https://segurancadotrabalhoacz.com.br/nbr-6493/'], ['NR-26 — Sinalização e identificação de segurança (Portaria MTP 2.770/2022)', 'https://engenharia360.com/o-que-significam-as-cores-das-tubulacoes-nos-processos-industriais/'], ['CBMGO — Orientação Técnica 03/2020: gás aparente em amarelo 5Y 8/12 e palavra "GÁS" a cada 2 m (NBR 15526, item 7.9)', 'https://www.bombeiros.go.gov.br/wp-content/uploads/2014/11/Orientacao_Tecnica_03_2020_-_Tubos_Multicamada.pdf'], ['ASME A13.1 — Esquema de cores para identificação de tubulações (resumo)', 'https://jjkellercompliancenetwork.com/institute/pipe-marking-elements-format-color-schemes-and-location']],
     videos: [], mats: [['Tubos de aço-carbono e galvanizado', 'aco'], ['Tubos e conexões de PPR', 'ppr'], ['Isolamento térmico de tubulações', 'isolamento']] },
+  { id: 'fossa-fortlev', tema: 'Esgoto', tema2: ['Testes e entrega'], titulo: 'Fossa séptica e biodigestor Fortlev: escolha e instalação completa', resumo: 'Informe pessoas, tipo de imóvel, destino do esgoto e local: o guia indica modelo, acessórios e materiais, e mostra a instalação passo a passo.',
+    tempo: 'Alguns dias de obra', nivel: 'Instalador e responsável técnico', norma: 'NBR 17076 · NBR 8160',
+    chaves: ['fossa séptica', 'fossa', 'fossa Fortlev', 'fossa séptica Fortlev', 'instalar fossa', 'instalação de fossa', 'tamanho de fossa', 'fossa para quantas pessoas', 'biodigestor', 'biodigestor Fortlev', 'Biodigestor MAX', 'tanque séptico', 'sumidouro', 'vala de infiltração', 'Vala Fortlev', 'leito de secagem', 'caixa de gordura', 'esgoto sem rede', 'tratamento de esgoto', 'esgoto rural', 'filtro anaeróbio', 'clorador', 'pastilha de cloro', 'lodo', 'laje de fechamento', '700 L/dia', '1.500 L/dia', 'NBR 17076', 'NBR 7229', 'NBR 13969', 'Fortlev'],
+    fig: `<figure class="gpfig gpfig--golpe"><svg viewBox="0 0 420 300" role="img" font-family="inherit" aria-label="Esquema em corte: o esgoto da casa passa pela caixa de gordura quando vem da cozinha, chega à fossa enterrada, sai tratado para a vala de infiltração ou o sumidouro; o lodo vai para o leito de secagem e o gás sai por um tubo acima do telhado."><rect x="0" y="118" width="420" height="182" fill="#efe4d3"/><path d="M0 118H420" stroke="#7b6a52" stroke-width="2"/><path d="M14 118V70L48 44L82 70V118Z" fill="#fff" stroke="#3d4a58" stroke-width="2"/><text x="48" y="96" font-size="13" text-anchor="middle" fill="#1b2a3a">Casa</text><path d="M48 118V132H100" fill="none" stroke="#6b7682" stroke-width="5"/><rect x="88" y="112" width="30" height="30" fill="#d6dde4" stroke="#3d4a58"/><text x="103" y="158" font-size="13" text-anchor="middle" fill="#1b2a3a">Caixa de</text><text x="103" y="174" font-size="13" text-anchor="middle" fill="#1b2a3a">gordura</text><path d="M118 132H160" stroke="#6b7682" stroke-width="5"/><path d="M160 118H224V236Q224 262 192 262Q160 262 160 236Z" fill="#bcdcf5" stroke="#1b2a3a" stroke-width="2"/><rect x="176" y="110" width="32" height="8" rx="2" fill="#2d7fd3"/><rect x="164" y="154" width="56" height="28" fill="#8fb4d6" opacity=".7"/><text x="192" y="173" font-size="12" text-anchor="middle" fill="#0a2240">Filtro</text><text x="192" y="206" font-size="13" text-anchor="middle" fill="#0a2240">Fossa ou</text><text x="192" y="222" font-size="12" text-anchor="middle" fill="#0a2240">biodigestor</text><rect x="134" y="262" width="116" height="10" fill="#9aa6b2" stroke="#4a5563"/><text x="124" y="280" font-size="13" text-anchor="middle" fill="#3d4a58">Base de concreto</text><path d="M198 110V30H150" fill="none" stroke="#7a8794" stroke-width="3"/><text x="146" y="27" font-size="13" text-anchor="end" fill="#1b2a3a">Saída do gás</text><text x="146" y="42" font-size="12" text-anchor="end" fill="#3d4a58">acima do telhado</text><path d="M224 140H292" stroke="#6b7682" stroke-width="5"/><path d="M292 160Q292 132 340 132Q388 132 388 160V172H292Z" fill="#dfeaf3" stroke="#1b2a3a" stroke-width="2"/><rect x="284" y="172" width="112" height="14" fill="#a6a39b"/><text x="340" y="112" font-size="13" text-anchor="middle" fill="#1b2a3a">Vala de infiltração</text><text x="340" y="200" font-size="12" text-anchor="middle" fill="#3d4a58">ou sumidouro (com brita)</text><path d="M224 246H270" stroke="#6b7682" stroke-width="4"/><rect x="270" y="222" width="70" height="44" fill="#d9cfbd" stroke="#1b2a3a" stroke-width="2"/><circle cx="278" cy="246" r="5" fill="#c0392b"/><text x="352" y="240" font-size="13" fill="#1b2a3a">Leito de</text><text x="352" y="256" font-size="13" fill="#1b2a3a">secagem</text><text x="305" y="284" font-size="12" text-anchor="middle" fill="#3d4a58">lodo, com registro dentro</text></svg><figcaption>Esquema simplificado PipeSystem, sem escala, com base nos manuais da Fortlev. A cozinha passa pela caixa de gordura; o tubo de lodo segue reto até o registro, sem curvas.</figcaption></figure>`,
+    calc: 'fossa',
+    quadros: [
+      { titulo: 'Quantas pessoas cada modelo atende (manuais Fortlev)', cols: ['Tipo de ocupação', 'Esgoto (L/pessoa/dia)', '700 L/dia', '1.500 L/dia'], linhas: [
+        ['Residência de alto consumo', '160', '4', '9'],
+        ['Residência de médio consumo', '130', '5', '11'],
+        ['Residência de baixo consumo', '100', '7', '15'],
+        ['Hotel (sem lavanderia e cozinha)', '100', '7', '15'],
+        ['Alojamento provisório', '80', '8', '18'],
+        ['Fábrica em geral', '70', '10', '21'],
+        ['Escritório', '50', '14', '30'],
+        ['Edifício público ou comercial', '50', '14', '30'],
+      ], nota: 'Vale para a Fossa Séptica e para o Biodigestor MAX. Acima de 1.500 L/dia, a Fortlev orienta instalar equipamentos em paralelo.' },
+      { titulo: 'Medidas de instalação (manuais Fortlev)', cols: ['Modelo', 'Altura (m)', 'Corpo (m)', 'Cava sem laje', 'Cava com laje', 'Base: Ø mínimo', 'Leito: volume'], linhas: [
+        ['Fossa Séptica 700 L/dia', '1,74', '0,89', '1,84 m', '2,04 m', '0,44 m', '140 L'],
+        ['Fossa Séptica 1.500 L/dia', '1,96', '1,23', '2,06 m', '2,26 m', '0,54 m', '300 L'],
+        ['Biodigestor MAX 700 L/dia', '1,47', '0,95', '1,57 m', '1,77 m', '1,55 m', '140 L'],
+        ['Biodigestor MAX 1.500 L/dia', '1,78', '1,30', '1,88 m', '2,08 m', '1,55 m', '300 L'],
+      ], nota: 'A base de concreto tem pelo menos 0,10 m de espessura, já incluída na profundidade da cava. Deixe pelo menos 0,30 m livres em volta do equipamento. Volume do leito de secagem medido entre o registro e o fundo. Confira sempre o manual da revisão do seu produto.' },
+    ],
+    separar: ['Responsável técnico da obra e a orientação do órgão ambiental sobre o destino do esgoto tratado', 'Levantamento de redes de água, luz e gás no local da escavação', 'Sondagem do lençol freático e teste de percolação, se o esgoto for para o solo', 'Equipamento, leito de secagem e, se houver cozinha, caixa de gordura', 'Tubos e conexões de esgoto DN 100, tubo soldável de 60 mm para o lodo e tubo para o gás', 'Concreto e malha de aço para a base; cimento e terra peneirada, areia ou pó de brita para o aterro; brita', 'Serra-copo de 64 mm para o leito Fortlev, nível, soquete manual e água para o teste'],
+    passos: ['<b>Defina o destino do esgoto tratado.</b> As opções citadas pela Fortlev são vala de infiltração, canteiro de infiltração, galeria de águas pluviais, corpo d\'água, sumidouro, reuso ou rede coletora. Quem decide é o órgão ambiental municipal; se não houver, procure o estadual ou a prefeitura.',
+      '<b>Escolha o local.</b> O responsável técnico avalia o solo, o lençol freático e a permeabilidade. Recomenda-se ficar a 3 m da casa. O manual, citando a NBR 7229, pede 1,5 m de construções, ramal de água, divisas, sumidouros e valas; 3 m de árvores e da rede pública de água; 15 m de poços e corpos d\'água. O manual da Vala Fortlev pede 3 m do equipamento até a vala.',
+      '<b>Escave.</b> Verifique antes as redes enterradas. Faça o talude com a inclinação definida pelo responsável técnico e use a profundidade da tabela. Em garagem ou passagem constante, escave 20 cm a mais para a laje de fechamento.',
+      '<b>Faça a base.</b> Concreto com malha de aço, superfície lisa e nivelada, com pelo menos 0,10 m de espessura e o diâmetro da tabela.',
+      '<b>Posicione o equipamento.</b> Desça pelas alças até o centro da base. Nunca role, arraste ou segure pelas tubulações.',
+      '<b>Ligue o leito de secagem.</b> Construa a 30 cm do equipamento. O tubo de lodo não pode ter curva, joelho ou redução, e o registro fica dentro do leito. No leito Fortlev, fure com serra-copo de 64 mm na marca do modelo, faça cava de 0,8 m de profundidade (1 m com laje) e 1,11 m de diâmetro, com 5 cm de terra aparente ou brita no fundo.',
+      '<b>Instale o tubo de gás.</b> Leve a saída de gás com tubo, e não com mangueira, até acima do telhado ou para longe da circulação de pessoas. Use ralos sifonados e sifões e vede bem o vaso sanitário para evitar cheiro.',
+      '<b>Aterre em etapas.</b> Use mistura seca de 1 parte de cimento para 10 de terra peneirada, areia ou pó de brita. Encha até o início do corpo cilíndrico. Coloque água até a metade do equipamento e aterre até essa altura, compactando à mão em camadas de 25 cm, sem impactos.',
+      '<b>Teste a estanqueidade.</b> Encha com água até a saída e aguarde 24 horas. Verifique se o nível variou ou se há vazamento. Só então ligue o esgoto e conclua o aterro até cobrir o tubo de entrada, sem enterrar a tampa.',
+      '<b>Faça o destino final.</b> Vala Fortlev: no mínimo 2 módulos por equipamento, fundo a pelo menos 1,5 m do nível máximo do lençol, 10 cm de brita no fundo e nas laterais, no máximo 30 m por linha, sem tráfego de veículos e com tubo de exaustão telado. Sumidouro: a Fortlev não lista esse produto; ele é executado na obra e dimensionado pelo teste de percolação, conforme a NBR 17076.',
+      '<b>Coloque em operação.</b> Para iniciar, basta o esgoto: não jogue produto químico ou biológico. No biodigestor, coloque 1 pastilha de cloro de 200 g no clorador a cada 15 dias.',
+      '<b>Retire o lodo a cada 6 meses.</b> Abra o registro no leito, feche quando o lodo parar de sair e voltar a sair líquido claro. No biodigestor, lave o interior com jato de água a cada 3 extrações, sem tirar o material filtrante. Seco, o lodo vai para aterro sanitário ou, neutralizado com cal, pode ter uso agrícola nas condições da legislação indicada no manual.'],
+    atencao: ['O equipamento precisa ficar totalmente enterrado, só com a tampa aparente.', 'Em área com lençol freático, procure o departamento técnico da Fortlev antes de comprar e instalar.', 'Vala de infiltração não pode ficar em lençol raso nem sob tráfego de veículos.', 'Nunca ligue equipamentos em série: use caixa de passagem e divida o esgoto igualmente, em paralelo.', 'Laje de fechamento: o projeto é do responsável técnico, com tampa de inspeção e sem acúmulo de chuva sobre a tampa.', 'Não jogue absorventes, embalagens ou restos de comida. Evite desinfetante, detergente e desodorizador nos vasos sanitários.', 'Nunca retire o elemento filtrante.', 'Frio intenso e uso intermitente podem reduzir a eficiência do tratamento.', 'Esgoto tratado não é água potável: nunca beba.', 'Poço ou fossa aberta oferece risco de gases e queda: não entre sem procedimento de segurança.'],
+    refs: [['Manual técnico da Fossa Séptica Fortlev (ago/2024)', 'https://www.fortlev.com.br/wp-content/uploads/2024/08/manual_tecnico_fortlev_fossa-septica.pdf.pdf'], ['Manual do Biodigestor MAX 700 L/dia (set/2026)', 'https://www.fortlev.com.br/wp-content/uploads/2026/10/Manual-Biodigestor-Fortlev-700L_Rev_Set26.pdf'], ['Manual do Biodigestor MAX 1.500 L/dia (set/2026)', 'https://www.fortlev.com.br/wp-content/uploads/2026/10/Manual-Biodigestor-Fortlev-1.500L_Rev_Set26.pdf'], ['Manual da Vala de Infiltração Fortlev (jan/2024)', 'https://www.fortlev.com.br/wp-content/uploads/2024/06/9000003325_Manual_Vala_Infiltracao_148x210mm_digital.pdf'], ['Leito de Secagem Fortlev', 'https://www.fortlev.com.br/produtos/meio-ambiente/leito-de-secagem-fortlev/']],
+    videos: [], mats: [['Tanques sépticos, filtros e biodigestores', 'fossa'], ['Tubos e conexões de PVC para esgoto', 'pvc-esgoto'], ['Caixas de inspeção e gordura', 'caixas-inspecao']] },
   { id: 'golpe-ariete', tema: 'Água fria e quente', tema2: ['Indústria'], titulo: 'Golpe de aríete: como funciona na prática', resumo: 'Desenho animado da onda de pressão, o que faz a pancada na tubulação, um exemplo com números e como evitar.',
     tempo: 'Consulta', nivel: 'Instalador e projetista', norma: 'NBR 5626 · NBR 12215',
     chaves: ['golpe de aríete', 'golpe de ariete', 'water hammer', 'martelo hidráulico', 'pancada na tubulação', 'barulho no cano', 'batida no cano', 'sobrepressão', 'subpressão', 'transiente hidráulico', 'onda de pressão', 'celeridade', 'Joukowsky', 'Michaud', 'período crítico', '2L/a', 'fechamento rápido', 'fechamento lento', 'amortecedor de golpe', 'válvula antecipadora', 'separação de coluna', 'parada de bomba', 'demonstrativo animado', 'animação golpe de aríete', 'NBR 12215'],
@@ -287,6 +326,73 @@ const CHECK = [
       <button type="button" class="gpvideo__thumb" data-yt="${v.id}" aria-label="Assistir: ${v.t}"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span class="gpvideo__dur">${v.dur}</span></button>
       <div class="gpvideo__info"><h3>${v.t}</h3><p>${v.d}</p><span class="gpvideo__src">Canal oficial: <b class="notranslate" translate="no">${v.canal}</b></span></div>
     </article>`;
+  // Seletor do guia de fossa e biodigestor Fortlev: dados dos manuais do fabricante
+  const CALCFOSSA = `
+        <div class="gpcalc" data-calc="fossa">
+          <h4>Monte o seu sistema: modelo, acessórios e materiais</h4>
+          <div class="gpcalc__grid">
+            <label>Pessoas no imóvel<input type="number" min="1" step="1" data-k="n" value="5"></label>
+            <label>Tipo e consumo de água<select data-k="c"><option value="160">Residência de alto consumo</option><option value="130" selected>Residência de médio consumo</option><option value="100">Residência de baixo consumo</option><option value="100">Hotel (sem lavanderia e cozinha)</option><option value="80">Alojamento provisório</option><option value="70">Fábrica em geral</option><option value="50">Escritório</option><option value="50">Edifício público ou comercial</option></select></label>
+            <label>Destino do esgoto tratado<select data-k="d"><option value="vala">Vala de infiltração no solo</option><option value="sum">Sumidouro</option><option value="outro">Rio, galeria, reuso ou rede coletora</option></select></label>
+            <label>Equipamento<select data-k="e"><option value="auto">Sugerir para mim</option><option value="fossa">Fossa Séptica (fossa e filtro)</option><option value="bio">Biodigestor MAX (com filtro e clorador)</option></select></label>
+            <label>Onde será instalado<select data-k="l"><option value="livre">Jardim ou área sem carga</option><option value="laje">Garagem ou passagem constante</option></select></label>
+            <label>Lençol freático<select data-k="f"><option value="fundo">Profundo (confirmado)</option><option value="raso">Raso ou com água na cava</option><option value="nao">Ainda não sei</option></select></label>
+            <label>Retirada do lodo<select data-k="s"><option value="leito">Leito de Secagem Fortlev</option><option value="alv">Leito de alvenaria</option><option value="cam">Caminhão limpa-fossa</option></select></label>
+            <label>Tem pia de cozinha?<select data-k="g"><option value="s">Sim</option><option value="n">Não</option></select></label>
+            <label>Distância da casa ao equipamento (m)<input type="number" min="0" step="0.5" data-k="x" value="3"></label>
+            <label>Taxa de aplicação do solo (L/m²·dia)<input type="number" min="0" step="1" data-k="t" placeholder="do teste de percolação"></label>
+          </div>
+          <output class="gpcalc__res" aria-live="polite"></output>
+          <p class="gpquadro__nota">Pré-seleção de apoio com os limites e medidas dos manuais Fortlev. Volumes aproximados, sem contar o talude. A sugestão entre fossa e biodigestor é orientação do PipeSystem, não do fabricante. A decisão final é do responsável técnico e do órgão ambiental.</p>
+        </div>`;
+  const FOSSA_MOD = { fossa: { nome: 'Fossa Séptica', url: { 700: 'fossa-septica-700-l-de-esgoto-por-dia', 1500: 'fossa-septica-1-500-l-de-esgoto-por-dia' }, 700: { h: 1.74, d: 0.89, c: 1.84, b: 0.44, v: 140 }, 1500: { h: 1.96, d: 1.23, c: 2.06, b: 0.54, v: 300 } },
+    bio: { nome: 'Biodigestor MAX', url: { 700: 'biodigestor-700l-esgoto-por-dia', 1500: 'biodigestor-1500l-esgoto-dia' }, 700: { h: 1.47, d: 0.95, c: 1.57, b: 1.55, v: 140 }, 1500: { h: 1.78, d: 1.30, c: 1.88, b: 1.55, v: 300 } } };
+  const calcFossa = box => {
+    const k = c => box.querySelector(`[data-k="${c}"]`).value, out = box.querySelector('.gpcalc__res');
+    const n = (x, d = 1) => x.toLocaleString('pt-BR', { maximumFractionDigits: d, minimumFractionDigits: d });
+    const N = Math.floor(+k('n')), C = +k('c');
+    if (!(N > 0)) { out.innerHTML = '<b class="gpcalc__alerta">Informe o número de pessoas.</b>'; return; }
+    const Q = N * C, tipo = k('e') === 'auto' ? (k('d') === 'outro' ? 'bio' : 'fossa') : k('e'), M = FOSSA_MOD[tipo];
+    let de1500 = Math.floor(Q / 1500), de700 = 0; const resto = Q - de1500 * 1500;
+    if (resto > 700) de1500++; else if (resto > 0) de700 = 1;
+    if (!de1500 && !de700) de700 = 1;
+    const un = de1500 + de700, lista = [...Array(de1500).fill(1500), ...Array(de700).fill(700)], cap = de1500 * 1500 + de700 * 700, laje = k('l') === 'laje' ? 0.2 : 0;
+    const nomeMod = m => `<a href="https://www.fortlev.com.br/produtos/meio-ambiente/${M.url[m]}/" target="_blank" rel="noopener noreferrer">${M.nome} ${m === 1500 ? '1.500' : '700'} L/dia</a>`;
+    const modelos = [de1500 ? `${de1500} × ${nomeMod(1500)}` : '', de700 ? `${de700} × ${nomeMod(700)}` : ''].filter(Boolean).join(' + ');
+    const area = d => Math.PI * d * d / 4;
+    let cava = 0, base = 0, aterro = 0; lista.forEach(m => { const s = M[m], h = s.c + laje, D = s.d + 0.6; cava += area(D) * h; base += area(s.b) * 0.1; aterro += area(D) * h - area(s.d) * s.h - area(s.b) * 0.1; });
+    const cim = Math.ceil(aterro / 11 / 0.036), tubos = Math.ceil((Math.max(+k('x') || 0, 0) + 3 * un + (un > 1 ? 2 * un : 0)) / 3);
+    const mat = [`<b>${modelos}</b> (acompanha registro de esfera soldável de 60 mm)`];
+    if (un > 1) mat.push('1 caixa de passagem para dividir o esgoto igualmente, com um tubo DN 100 para cada equipamento (nunca em série)');
+    if (k('g') === 's') mat.push('Caixa de gordura na saída da cozinha, antes do equipamento');
+    mat.push(`Cerca de ${tubos} tubos de esgoto DN 100 de 3 m, mais joelhos e junções do traçado`, 'Caixa com grelha antes do equipamento (recomendada, para reter descartes acidentais)', 'Tubo para o gás até acima do telhado, sem mangueira');
+    if (k('s') === 'leito') mat.push(`${un} Leito de Secagem Fortlev (podem ser separados), 1 tubo soldável de 60 mm reto e cerca de ${n(un * area(0.81) * 0.05 * 1000, 0)} L de brita ou terra no fundo`);
+    if (k('s') === 'alv') mat.push(`Leito de alvenaria sem revestimento, com fundo de terra ou brita e tampa de inspeção: ${lista.map(m => M[m].v + ' L').join(' e ')} entre o registro e o fundo; tubo soldável de 60 mm reto`);
+    if (k('s') === 'cam') mat.push('Sem leito: o caminhão limpa-fossa succiona o lodo pelo tubo guia DN 100; mantenha acesso para ele');
+    mat.push(`Base: cerca de ${n(base, 2)} m³ de concreto com malha de aço`, `Aterro: cerca de ${n(aterro)} m³ de mistura seca (1 de cimento para 10 de terra peneirada, areia ou pó de brita), com ${cim} sacos de 50 kg de cimento`);
+    if (laje) mat.push('Laje de fechamento com tampa de inspeção, projetada pelo responsável técnico');
+    if (tipo === 'bio') mat.push('Pastilhas de cloro de 200 g: 1 a cada 15 dias, cerca de 24 por ano em cada equipamento');
+    const avisos = [], Ta = +k('t'), Ai = Ta > 0 ? Q / Ta : 0;
+    if (k('d') === 'vala') {
+      const minimo = 2 * un, mods = Ai ? Math.max(minimo, Math.ceil(Ai / (0.88 * 1.77))) : minimo;
+      mat.push(`Vala de Infiltração Fortlev: ${Ai ? `cerca de ${mods} módulos para ${n(Ai)} m² de área de fundo` : `no mínimo ${minimo} módulos; a quantidade final sai do teste de percolação`}, brita e tubo de exaustão com tela`);
+      if (k('l') === 'laje') avisos.push('A vala não pode ficar sob tráfego de veículos: coloque-a fora da garagem.');
+      if (k('f') === 'raso') avisos.push('Com lençol raso, o manual proíbe a vala de infiltração: o fundo precisa ficar a pelo menos 1,5 m do nível máximo do lençol.');
+    }
+    if (k('d') === 'sum') {
+      if (Ai) { const D = 1.5, h = (Ai - area(D)) / (Math.PI * D); mat.push(`Sumidouro executado na obra (a Fortlev não lista esse produto): ${n(Ai)} m² de área de infiltração; com Ø 1,50 m, cerca de ${n(Math.max(h, 0.5), 2)} m de altura útil, contando fundo e parede. Anéis perfurados ou alvenaria, brita e tampa, conforme o projeto`); if (h > 3) avisos.push('Sumidouro muito profundo: avalie dividir em mais de uma unidade e confira a distância até o lençol.'); }
+      else mat.push('Sumidouro executado na obra (a Fortlev não lista esse produto): informe a taxa de aplicação do teste de percolação para estimar a área');
+      if (k('f') === 'raso') avisos.push('Com lençol raso, o sumidouro é desaconselhado: confira a solução com o responsável técnico e o órgão ambiental.');
+    }
+    if (k('d') === 'outro') avisos.push('Lançar em rio, galeria, reuso ou rede depende de autorização e dos padrões do órgão ambiental. Confirme antes de comprar.');
+    if (k('f') === 'raso') avisos.push('Com lençol freático, a Fortlev pede contato com o departamento técnico antes da instalação.');
+    if (k('f') === 'nao') avisos.push('Descubra a profundidade do lençol antes de comprar: ela pode mudar o destino do esgoto e a instalação.');
+    if (+k('x') < 3) avisos.push('A Fortlev recomenda instalar a pelo menos 3 m da residência.');
+    if (un > 1) avisos.push('Mais de um equipamento: a Fortlev orienta ligação em paralelo. Tire dúvidas com o fabricante.');
+    const m0 = M[lista[0]];
+    out.innerHTML = `<div class="gpfossa__top"><span>Esgoto estimado<b>${n(Q, 0)} L/dia</b></span><span>Capacidade indicada<b>${n(cap, 0)} L/dia</b></span><span>Folga<b>${n((1 - Q / cap) * 100, 0)}%</b></span><span>Cava${un > 1 ? ' do maior' : ''}<b>${n(m0.c + laje, 2)} m × Ø ${n(m0.d + 0.6, 2)} m</b></span></div>
+      <h5>O que comprar e separar</h5><ul>${mat.map(x => `<li>${x}</li>`).join('')}</ul>${avisos.length ? `<h5>Atenção neste caso</h5><ul class="gpfossa__alertas">${avisos.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}`;
+  };
   // Calculadora do guia API 570: taxas de corrosão, vida remanescente e próxima inspeção
   const CALC570 = `
         <div class="gpcalc" data-calc="api570">
@@ -322,7 +428,7 @@ const CHECK = [
         <p>${g.resumo}</p>
         <span class="gpguide__meta"><span class="gppill gppill--tema">${g.tema}</span><span class="gppill">⏱ ${g.tempo}</span><span class="gppill">${g.nivel}</span><span class="gppill">${g.norma}</span></span>
       </summary>
-      <div class="gpguide__body">${g.fig || ''}${(g.quadros || []).map(q => `
+      <div class="gpguide__body">${g.fig || ''}${g.calc === 'fossa' ? CALCFOSSA : ''}${(g.quadros || []).map(q => `
         <div class="gpquadro"><h4>${q.titulo}</h4><div class="gpquadro__wrap"><table><thead><tr>${q.cols.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${q.linhas.map(l => `<tr>${l.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${q.nota ? `<p class="gpquadro__nota">${q.nota}</p>` : ''}</div>`).join('')}${g.calc === 'api570' ? CALC570 : ''}${(g.tabelas || []).map(t => `
         <div class="gpcores"><h4>${t.titulo}</h4><ul>${t.linhas.map(([hex, cor, uso]) => `<li><span class="gpcor" style="--c:${hex}" aria-hidden="true"></span><b>${cor}</b><span>${uso}</span></li>`).join('')}</ul></div>`).join('')}${g.tabelas ? `
         <p class="gpcores__nota">Cores na tela aproximadas; o padrão de cada cor (código Munsell) está na norma.</p>` : ''}
@@ -347,6 +453,7 @@ const CHECK = [
 
   $('gpGuias').innerHTML = GUIAS.map(guiaHTML).join('');
   $('gpGuias').querySelectorAll('[data-calc="api570"]').forEach(box => { calc570(box); box.addEventListener('input', () => calc570(box)); });
+  $('gpGuias').querySelectorAll('[data-calc="fossa"]').forEach(box => { calcFossa(box); box.addEventListener('input', () => calcFossa(box)); });
   $('gpVideos').innerHTML = Object.values(VIDEOS).map(videoCard).join('');
   $('gpPats').innerHTML = PATS.map(patHTML).join('');
   $('gpCheck').innerHTML = CHECK.map(([t, itens]) => `<div><h3>${t}</h3>${itens.map(i => `<label><input type="checkbox"> <span>${i}</span></label>`).join('')}</div>`).join('') +
