@@ -1367,6 +1367,9 @@ main:focus { outline: none; }
 .pg-top__nav .pg-top__hot { color: #1b1203; background: #f2a03d; font-weight: 700; padding: .3em .75em; border-radius: 999px; border: 1.5px solid #f2a03d; }
 .pg-top__nav .pg-top__hot:hover { color: #1b1203; background: #ffb95e; border-color: #ffb95e; }
 .pg-top__nav .btn--sm { padding: .5em .95em; }
+.pg-top .lang { flex: none; margin: 0; }
+html.pg-collapse .pg-top .lang { order: 1; margin-left: auto; }
+html.pg-collapse .pg-top__toggle { order: 2; }
 html.pg-tight .pg-top__nav { gap: .5rem; font-size: .8rem; }
 html.pg-tight .pg-top__nav .btn--sm { padding: .4em .7em; font-size: .8rem; }
 html.pg-tighter .pg-top__nav { gap: .42rem; font-size: .74rem; }

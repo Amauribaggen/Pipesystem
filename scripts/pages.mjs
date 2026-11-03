@@ -10,6 +10,10 @@ import { EMPRESA, institutionalPages } from './institucional.mjs';
 
 export const BASE = 'https://www.pipesystem.com.br';
 
+// Botão PT/EN: o mesmo da página inicial, para a tradução funcionar em todas as páginas
+const IDIOMA = readFileSync(new URL('../site/index.html', import.meta.url), 'utf8')
+  .match(/<div class="lang notranslate"[\s\S]*?<div id="google_translate_element" hidden><\/div>/)[0];
+
 // ---------- dados ----------
 export function loadData(siteDir) {
   const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js', 'bim.js', 'glossario.js', 'sinapi-precos.js', 'comparativos.js', 'logos.js'];
@@ -142,14 +146,15 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
     <nav class="pg-top__nav" id="pgNav" aria-label="Seções do portal">
       ${MENU.map(([href, nome, cls]) => `<a href="${href}"${cls ? ` class="${cls}"` : ''}${href === secaoAtual(url) ? ' aria-current="page"' : ''}>${nome}</a>`).join('')}
     </nav>
+    ${IDIOMA}
   </div>
 </header>
 <script>
 (() => {
   // O menu nunca passa da tela: se não couber, aperta (pg-tight, pg-tighter) e, por fim, vira o botão de três linhas (pg-collapse)
   const html = document.documentElement, nav = document.getElementById('pgNav'), btn = document.getElementById('pgToggle');
-  const inner = nav.parentElement, logo = inner.querySelector('.logo');
-  const cabe = () => logo.getBoundingClientRect().width + 24 + nav.scrollWidth <= inner.clientWidth;
+  const inner = nav.parentElement, logo = inner.querySelector('.logo'), lang = inner.querySelector('.lang');
+  const cabe = () => logo.getBoundingClientRect().width + 24 + nav.scrollWidth + 16 + lang.offsetWidth <= inner.clientWidth;
   const ajusta = () => {
     html.classList.remove('pg-tight', 'pg-tighter', 'pg-collapse');
     if (cabe()) return;
@@ -180,6 +185,7 @@ ${body}
     <p class="pg-foot__copy">© ${new Date().getFullYear()} ${[EMPRESA.razao, EMPRESA.cnpj && 'CNPJ ' + EMPRESA.cnpj, EMPRESA.endereco].filter(Boolean).join(' · ')} · <a href="/politica-editorial">Política Editorial</a> · <a href="/privacidade">Política de Privacidade</a> · <a href="/termos">Termos de Uso</a></p>
   </div>
 </footer>
+<script src="/idioma.js" defer></script>
 <script src="/lightbox.js" defer></script>
 <script src="/glossario.js" defer></script>
 <!-- Medição de audiência sem cookies (Vercel Web Analytics): dados agregados e anônimos -->
