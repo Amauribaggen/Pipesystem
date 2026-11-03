@@ -353,9 +353,8 @@ const CHECK = [
     const N = Math.floor(+k('n')), C = +k('c');
     if (!(N > 0)) { out.innerHTML = '<b class="gpcalc__alerta">Informe o número de pessoas.</b>'; return; }
     const Q = N * C, tipo = k('e') === 'auto' ? (k('d') === 'outro' ? 'bio' : 'fossa') : k('e'), M = FOSSA_MOD[tipo];
-    let de1500 = Math.floor(Q / 1500), de700 = 0; const resto = Q - de1500 * 1500;
-    if (resto > 700) de1500++; else if (resto > 0) de700 = 1;
-    if (!de1500 && !de700) de700 = 1;
+    // Em paralelo o esgoto se divide em partes iguais: todos os equipamentos precisam ser do mesmo modelo
+    const de700 = Q <= 700 ? 1 : 0, de1500 = de700 ? 0 : Math.ceil(Q / 1500);
     const un = de1500 + de700, lista = [...Array(de1500).fill(1500), ...Array(de700).fill(700)], cap = de1500 * 1500 + de700 * 700, laje = k('l') === 'laje' ? 0.2 : 0;
     const nomeMod = m => `<a href="https://www.fortlev.com.br/produtos/meio-ambiente/${M.url[m]}/" target="_blank" rel="noopener noreferrer">${M.nome} ${m === 1500 ? '1.500' : '700'} L/dia</a>`;
     const modelos = [de1500 ? `${de1500} × ${nomeMod(1500)}` : '', de700 ? `${de700} × ${nomeMod(700)}` : ''].filter(Boolean).join(' + ');
@@ -388,7 +387,7 @@ const CHECK = [
     if (k('f') === 'raso') avisos.push('Com lençol freático, a Fortlev pede contato com o departamento técnico antes da instalação.');
     if (k('f') === 'nao') avisos.push('Descubra a profundidade do lençol antes de comprar: ela pode mudar o destino do esgoto e a instalação.');
     if (+k('x') < 3) avisos.push('A Fortlev recomenda instalar a pelo menos 3 m da residência.');
-    if (un > 1) avisos.push('Mais de um equipamento: a Fortlev orienta ligação em paralelo. Tire dúvidas com o fabricante.');
+    if (un > 1) avisos.push('Mais de um equipamento: a Fortlev orienta ligação em paralelo, com o esgoto dividido em partes iguais. Tire dúvidas com o fabricante.');
     const m0 = M[lista[0]];
     out.innerHTML = `<div class="gpfossa__top"><span>Esgoto estimado<b>${n(Q, 0)} L/dia</b></span><span>Capacidade indicada<b>${n(cap, 0)} L/dia</b></span><span>Folga<b>${n((1 - Q / cap) * 100, 0)}%</b></span><span>Cava${un > 1 ? ' do maior' : ''}<b>${n(m0.c + laje, 2)} m × Ø ${n(m0.d + 0.6, 2)} m</b></span></div>
       <h5>O que comprar e separar</h5><ul>${mat.map(x => `<li>${x}</li>`).join('')}</ul>${avisos.length ? `<h5>Atenção neste caso</h5><ul class="gpfossa__alertas">${avisos.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}`;
