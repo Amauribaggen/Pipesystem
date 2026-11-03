@@ -603,7 +603,7 @@ function toast(msg) {
 // Animação de entrada
 const revealObs = new IntersectionObserver(entries => entries.forEach(en => {
   if (en.isIntersecting) { en.target.classList.add('in'); revealObs.unobserve(en.target); }
-}), { threshold: .12 });
+}), { threshold: 0, rootMargin: '0px 0px -8% 0px' }); // sem exigir % da altura: bloco alto (formulário no celular) nunca caberia na tela e ficaria invisível
 document.querySelectorAll('.section__head, .card, .sys, .tool, .plan, .audience > div, .person, .fair').forEach(el => {
   el.classList.add('reveal'); revealObs.observe(el);
 });
