@@ -102,9 +102,9 @@ const PRODUCTS = [
     escolha: ['Mesma liga do tubo (304 ou 316)', 'Acabamento superficial exigido pelo processo', 'Sistema de união compatível com a manutenção'],
     normas: ['ASME B16.9', 'ASME B16.11', 'DIN 32676'],
     fotos: [
-      { src: 'img/produtos/conexoes-inox-1.webp', alt: 'Cotovelo de aço inoxidável para sistema de prensar', legenda: 'Cotovelo de prensar', autor: 'Mchage', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:GDPRESS_Edelstahl_Pressfittings_M_Swiss_Fittings.jpg' },
-      { src: 'img/produtos/conexoes-inox-2.webp', alt: 'Adaptador de aço inoxidável com rosca', legenda: 'Adaptador roscado', autor: 'Kees08', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:BSPP_Male_Straight_Thread.png' },
-      { src: 'img/produtos/conexoes-inox-3.webp', alt: 'Niple espigão de aço inoxidável com rosca', legenda: 'Niple espigão', autor: 'Ted Lariviere', licenca: 'Public domain', licUrl: 'https://commons.wikimedia.org/wiki/Commons:Licensing#Public_domain', fonte: 'https://commons.wikimedia.org/wiki/File:Laserengravingonsteel.jpg' },
+      { src: 'img/produtos/conexoes-inox-swagelok-cotovelo.webp', alt: 'Cotovelo de 90 graus de aço inox com rosca fêmea NPT nas duas pontas', legenda: 'Cotovelo roscado', autor: 'Swagelok', licenca: 'Divulgação', licUrl: 'https://products.swagelok.com/en/c/90-degree-elbows/p/SS-16-E', fonte: 'https://products.swagelok.com/en/c/90-degree-elbows/p/SS-16-E', divulgacao: true },
+      { src: 'img/produtos/conexoes-inox-swagelok-te.webp', alt: 'Tê de aço inox com rosca fêmea NPT nas três pontas', legenda: 'Tê roscado', autor: 'Swagelok', licenca: 'Divulgação', licUrl: 'https://products.swagelok.com/en/c/tees/p/SS-16-T', fonte: 'https://products.swagelok.com/en/c/tees/p/SS-16-T', divulgacao: true },
+      { src: 'img/produtos/conexoes-inox-micromazza-sanitaria.webp', alt: 'Abraçadeiras sanitárias e luva de aço inox polido', legenda: 'Abraçadeiras e luva sanitárias', autor: 'Micromazza', licenca: 'Divulgação', licUrl: 'https://micromazza.com.br/produtos/linha-sanitaria/acessorios/acessorios', fonte: 'https://micromazza.com.br/produtos/linha-sanitaria/acessorios/acessorios', divulgacao: true },
     ] },
   { id: 'conexoes-cobre', g: 'conexoes', name: 'Conexões de Cobre',
     desc: 'Conexões de cobre, latão e bronze para redes de cobre de água, gás e refrigeração.',
