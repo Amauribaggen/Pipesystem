@@ -1,6 +1,7 @@
 // ===== Logomarcas das empresas citadas nas fichas (arquivos em img/logos): site da empresa -> arquivo =====
 // Gerado a partir da revisão de 01/11/2026. A aba de logos em estudos/avisos-fotos-fabricantes.xlsx lista a origem de cada uma.
 const LOGOS_FAB = {
+  'ari-armaturen.com': 'ari-armaturen-logo.svg',
   'cherneind.com': 'cherne.svg',
   'musthane.com': 'musthane.webp',
   'corrplastik.com.br': 'corr-plastik.svg',
@@ -216,7 +217,7 @@ const LOGOS_FAB = {
   'zilmet.it': 'zilmet.png',
 };
 // Logos brancas: precisam de fundo escuro
-const LOGOS_CLARAS = new Set(['musthane.webp', 'spartan-tool.png', 'amiantit-flowtite.png', 'bermad.svg', 'cadence.svg', 'coester.svg', 'e-h-wachs.png', 'esbe.png', 'fabrimar.png', 'fortlev.svg', 'gestra.png', 'grundfos.svg', 'heliotek.png', 'hidroreader.svg', 'kanaflex.svg', 'krona.png', 'ksb.svg', 'metalcasty.png', 'paranapanema-eluma.png', 'pietro-fiorentini.svg', 'polysoude.png', 'rain-bird.png', 'renova-medicao.png', 'romac.png', 'rotork.svg', 'spirax-sarco.png', 'sumig.png', 'swagelok.png', 't-d-williamson.png', 'tigre.svg', 'tupy.svg', 'victaulic.png', 'xylem.svg']);
+const LOGOS_CLARAS = new Set(['ari-armaturen-logo.svg', 'musthane.webp', 'spartan-tool.png', 'amiantit-flowtite.png', 'bermad.svg', 'cadence.svg', 'coester.svg', 'e-h-wachs.png', 'esbe.png', 'fabrimar.png', 'fortlev.svg', 'gestra.png', 'grundfos.svg', 'heliotek.png', 'hidroreader.svg', 'kanaflex.svg', 'krona.png', 'ksb.svg', 'metalcasty.png', 'paranapanema-eluma.png', 'pietro-fiorentini.svg', 'polysoude.png', 'rain-bird.png', 'renova-medicao.png', 'romac.png', 'rotork.svg', 'spirax-sarco.png', 'sumig.png', 'swagelok.png', 't-d-williamson.png', 'tigre.svg', 'tupy.svg', 'victaulic.png', 'xylem.svg']);
 const logoFab = url => {
   if (!url) return '';
   const a = LOGOS_FAB[new URL(url).hostname.replace(/^www\./, '')];
