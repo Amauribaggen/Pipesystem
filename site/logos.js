@@ -97,6 +97,7 @@ const LOGOS_FAB = {
   'hawsco.com': 'haws.png',
   'heliotek.com.br': 'heliotek.png',
   'henco.be': 'henco.png',
+  'hidraulicapotenza.com.br': 'potenza.png',
   'hidroreader.com.br': 'hidroreader.svg',
   'hilti.com.br': 'hilti.svg',
   'hobas.com': 'hobas.png',
