@@ -313,7 +313,7 @@ const SYSTEMS = [
     desc: 'As águas cinzas de chuveiros, lavatórios e máquinas de lavar seguem por rede separada até o tratamento (filtração, tratamento biológico ou físico-químico e desinfecção) e voltam para descargas, rega e lavagem de pisos. Água de chuva e a condensada do ar-condicionado podem se somar ao sistema.',
     componentes: ['Rede de coleta separada das águas cinzas', 'Gradeamento e tanque de equalização', 'Tratamento: filtro, reator biológico ou membrana', 'Desinfecção (cloro ou UV)', 'Reservatório e bomba da água de reúso', 'Rede de distribuição identificada', 'Reposição de água potável com separação atmosférica'],
     cuidados: ['Rede não potável identificada e sem ligação com a rede potável', 'Qualidade monitorada conforme o uso previsto', 'Torneiras de uso restrito, com aviso', 'Reposição potável sempre com separação atmosférica', 'Manutenção do tratamento com registro'],
-    normas: ['NBR 16783', 'NBR 13969', 'NBR 5626'],
+    normas: ['NBR 16783', 'NBR 17076', 'NBR 5626'],
     produtos: ['mat-pvc-esgoto', 'mat-filtros', 'mat-bombas', 'mat-reservatorios', 'mat-agua-chuva', 'mat-fossa'],
     svg: `<rect class="b" x="14" y="20" width="70" height="120"/><path class="b" d="M14 60H84M14 100H84"/><text x="49" y="44">Chuveiro</text><text x="49" y="84">Lavatório</text><text x="49" y="124">Descarga</text>
       <path class="pe" d="M84 50H110V140H140"/><rect class="b" x="140" y="120" width="56" height="34" rx="3"/><text x="168" y="141">Tratamento</text>
@@ -347,7 +347,7 @@ const SYSTEMS = [
     desc: 'Antes de chegar à rede pública ou a um rio, o esgoto sanitário e os efluentes industriais passam por tratamento preliminar (gradeamento, desarenação e separação de óleo), tratamento biológico (reator anaeróbio, lodo ativado ou filtro) e, quando a licença exige, por tratamento físico-químico e desinfecção.',
     componentes: ['Gradeamento e caixa de areia', 'Separador de água e óleo', 'Tanque de equalização', 'Reator anaeróbio, lodo ativado ou filtro biológico', 'Decantador e tratamento do lodo', 'Dosagem química (pH, coagulante, desinfetante)', 'Medição de vazão e ponto de amostragem'],
     cuidados: ['Atender aos padrões de lançamento da licença ambiental', 'Materiais resistentes aos produtos químicos: PP, PVC, PEAD ou inox', 'Destino licenciado para o lodo', 'Monitoramento periódico com laudo', 'Operação por equipe treinada'],
-    normas: ['Resolução CONAMA 430', 'NBR 12209', 'NBR 13969'],
+    normas: ['Resolução CONAMA 430', 'NBR 12209', 'NBR 17076'],
     produtos: ['mat-fossa', 'mat-separador', 'mat-bombas', 'mat-pe', 'mat-pvc', 'mat-medidores', 'mat-valvulas'],
     svg: `<path class="pe" d="M8 90H30"/><rect class="b" x="30" y="72" width="44" height="36" rx="3"/><text x="52" y="64">Grade</text>
       <path class="pe" d="M74 90H92"/><rect class="b" x="92" y="72" width="50" height="36" rx="3"/><text x="117" y="64">Equalização</text>

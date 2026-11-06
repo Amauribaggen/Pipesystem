@@ -3,7 +3,7 @@
 // janela da ficha e, ao fechar no X, volta para o lugar. CALCS também alimenta o submenu de Dimensionamento.
 // [id da calculadora, nome, categoria, para que serve, norma ou base de cálculo]
 const CALCS = [
-  ['dimTool', 'Dimensionamento hidráulico — água fria', 'Água fria e quente', 'Vazão de projeto por pesos e diâmetro dos trechos de água fria.', 'NBR 5626'],
+  ['dimTool', 'Dimensionamento hidráulico — água fria', 'Água fria e quente', 'Vazão de projeto por pesos e diâmetro dos trechos de água fria.', 'NBR 5626 (método de 1998)'],
   ['calcRes', 'Reservatório de água — volume de reservação', 'Água fria e quente', 'Consumo diário, reservação total e divisão entre reservatórios inferior e superior.', 'NBR 5626'],
   ['calcAq', 'Aquecedor de água — gás, elétrico e solar', 'Água fria e quente', 'Vazão simultânea, potência, aquecedor a gás e volume do boiler.', 'NBR 5626 · NBR 15569'],
   ['calcVexp', 'Vaso de expansão — água quente', 'Água fria e quente', 'Volume de expansão e vaso mínimo para boilers e sistemas fechados.', 'Coeficiente de expansão da água'],
@@ -11,7 +11,7 @@ const CALCS = [
   ['calcEsg', 'Esgoto sanitário — unidades Hunter', 'Esgoto e águas pluviais', 'Diâmetros de ramais, tubos de queda e coletores pelas unidades de contribuição.', 'NBR 8160'],
   ['calcCalha', 'Calhas e condutores', 'Esgoto e águas pluviais', 'Vazão de chuva, calha e condutores verticais e horizontais.', 'NBR 10844'],
   ['calcChuva', 'Aproveitamento de água de chuva', 'Esgoto e águas pluviais', 'Água aproveitável por ano e volume da cisterna.', 'NBR 15527'],
-  ['calcFossa', 'Tanque séptico', 'Esgoto e águas pluviais', 'Volume útil, período de detenção e profundidade do tanque séptico.', 'NBR 7229'],
+  ['calcFossa', 'Tanque séptico', 'Esgoto e águas pluviais', 'Volume útil, período de detenção e profundidade do tanque séptico.', 'Método da NBR 7229 · conferir com a NBR 17076'],
   ['calcGas', 'Dimensionamento de gás', 'Gás', 'Potência, vazão e diâmetro da rede interna de gás natural ou GLP.', 'NBR 15526'],
   ['hwTool', 'Perda de carga — Hazen-Williams', 'Tubulações e bombas', 'Perda de carga e velocidade na água, pelo coeficiente C do material.', 'Hazen-Williams'],
   ['calcDarcy', 'Perda de carga — Darcy-Weisbach', 'Tubulações e bombas', 'Perda de carga para água quente, água com glicol e óleo, com rugosidade e Reynolds.', 'Darcy-Weisbach · Swamee-Jain'],

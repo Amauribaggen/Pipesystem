@@ -305,7 +305,7 @@
   }
   on('calcChuva', calcChuva);
 
-  // ---------- 15. Tanque séptico: V = 1000 + N × (C × T + K × Lf) (NBR 7229) ----------
+  // ---------- 15. Tanque séptico: V = 1000 + N × (C × T + K × Lf) (método da NBR 7229, cancelada em 2024 e substituída pela NBR 17076) ----------
   const DETENCAO = [[1500, 1.00, 24], [3000, 0.92, 22], [4500, 0.83, 20], [6000, 0.75, 18], [7500, 0.67, 16], [9000, 0.58, 14], [Infinity, 0.50, 12]];
   const KLODO = [[94, 65, 57], [134, 105, 97], [174, 145, 137], [214, 185, 177], [254, 225, 217]];   // intervalo 1 a 5 anos × temperatura
   function calcFossa() {
@@ -319,7 +319,7 @@
     set('fsV', `${n(V, 0)} L (${n(m3, 2)} m³)`);
     set('fsH', `${n(hmin, 2)} a ${n(hmax, 2)} m`);
     const larg = Math.max(0.8, Math.sqrt(m3 / hmin / 2)), comp = m3 / hmin / larg;
-    hint('fsHint', `Taxa de acumulação de lodo K = ${K} dias. Tanque retangular com profundidade útil de ${n(hmin, 2)} m: cerca de ${n(larg, 2)} m de largura por ${n(comp, 2)} m de comprimento (relação comprimento/largura entre 2 e 4, largura mínima de 0,80 m). Distâncias mínimas: 1,5 m de construções e divisas, 3 m de árvores e da rede de água e 15 m de poços e cursos d'água. O efluente segue para filtro anaeróbio, sumidouro ou vala de infiltração (NBR 13969).`);
+    hint('fsHint', `Taxa de acumulação de lodo K = ${K} dias. Tanque retangular com profundidade útil de ${n(hmin, 2)} m: cerca de ${n(larg, 2)} m de largura por ${n(comp, 2)} m de comprimento (relação comprimento/largura entre 2 e 4, largura mínima de 0,80 m). Distâncias mínimas: 1,5 m de construções e divisas, 3 m de árvores e da rede de água e 15 m de poços e cursos d'água. O efluente segue para filtro anaeróbio, sumidouro ou vala de infiltração (NBR 17076).`);
   }
   on('calcFossa', calcFossa);
 

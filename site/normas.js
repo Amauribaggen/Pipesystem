@@ -56,12 +56,14 @@ const NORM_GROUPS = [
     { code: 'NBR 15097-1', org: 'ABNT', title: 'Aparelhos sanitários de material cerâmico — Parte 1: Requisitos e métodos de ensaios', note: 'Confira no ABNT Catálogo a edição vigente.' },
     { code: 'NBR 10339', org: 'ABNT', title: 'Piscina — Projeto, execução e manutenção' },
     { code: 'NBR 9050', org: 'ABNT', title: 'Acessibilidade a edificações, mobiliário, espaços e equipamentos urbanos', note: 'Sanitários acessíveis, barras de apoio e alturas de louças e metais.' },
+    { code: 'NBR 15345', org: 'ABNT', title: 'Instalação predial de tubos e conexões de cobre e ligas de cobre — Procedimento' },
   ]},
   { id: 'esgoto', tipo: 'aplicacao', name: 'Esgoto, águas pluviais e tratamento', normas: [
     { code: 'NBR 8160', org: 'ABNT', title: 'Sistemas prediais de esgoto sanitário — Projeto e execução', note: 'Declividades, ventilação, caixas sifonadas e dimensionamento de ramais e tubos de queda.' },
     { code: 'NBR 10844', org: 'ABNT', title: 'Instalações prediais de águas pluviais — Procedimento' },
     { code: 'NBR 15527', org: 'ABNT', title: 'Aproveitamento de água de chuva de coberturas para fins não potáveis — Requisitos' },
     { code: 'NBR 17076', org: 'ABNT', title: 'Projeto de sistema de tratamento de esgoto de menor porte — Requisitos', note: 'Substitui as NBR 7229 (tanques sépticos) e NBR 13969, canceladas em 2024.' },
+    { code: 'NBR 16783', org: 'ABNT', title: 'Uso de fontes alternativas de água não potável em edificações', note: 'Reúso de águas cinzas, água de chuva e outras fontes: tratamento, qualidade por uso e separação total da rede potável.' },
   ]},
   { id: 'gas', tipo: 'aplicacao', name: 'Gás combustível (GN e GLP)', normas: [
     { code: 'NBR 15526', org: 'ABNT', title: 'Redes de distribuição interna para gases combustíveis em instalações residenciais — Projeto e execução' },
@@ -110,6 +112,14 @@ const NORM_GROUPS = [
     { code: 'ASME B31.8', org: 'ASME', title: 'Gas Transmission and Distribution Piping Systems — dutos de gás' },
     { code: 'NBR 17505-1', org: 'ABNT', title: 'Armazenamento de líquidos inflamáveis e combustíveis — Parte 1: Disposições gerais' },
     { code: 'API 650', org: 'API', title: 'Welded Tanks for Oil Storage — tanques soldados de armazenamento' },
+    { code: 'NBR 6493', org: 'ABNT', title: 'Emprego de cores para identificação de tubulações industriais', note: 'Cor de cada fluido, faixas de identificação e setas de sentido do fluxo.' },
+    { code: 'NR-26', org: 'NR', title: 'Sinalização e identificação de segurança', note: 'Manda usar as cores das normas técnicas na identificação de tubulações e equipamentos.' },
+  ]},
+
+  { id: 'seguranca', tipo: 'aplicacao', name: 'Segurança na obra e na manutenção', normas: [
+    { code: 'NR-18', org: 'NR', title: 'Segurança e saúde no trabalho na indústria da construção', note: 'Canteiro, escavações, andaimes e trabalhos a quente na execução das instalações.' },
+    { code: 'NR-35', org: 'NR', title: 'Trabalho em altura', note: 'Prumadas, barriletes, reservatórios elevados e redes junto ao teto: acima de 2 m do piso.' },
+    { code: 'NR-33', org: 'NR', title: 'Segurança e saúde nos trabalhos em espaços confinados', note: 'Limpeza e manutenção de cisternas e reservatórios, poços de visita, caixas profundas e tanques sépticos.' },
   ]},
 
   // ---------- Por produto ----------

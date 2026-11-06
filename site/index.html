@@ -194,7 +194,7 @@
         <li><a href="/materiais"><strong data-count="159" data-prefix="" data-num="fichas">159</strong><span>fichas técnicas de materiais</span></a></li>
         <li><a href="/materiais"><strong data-count="240" data-prefix="" data-num="fabricantes">240</strong><span>fabricantes citados</span></a></li>
         <li><a href="/materiais"><strong data-count="234" data-prefix="" data-num="fotos">234</strong><span>fotos de produtos</span></a></li>
-        <li><a href="/normas"><strong data-count="135" data-prefix="" data-num="normas">135</strong><span>normas técnicas resumidas</span></a></li>
+        <li><a href="/normas"><strong data-count="104" data-prefix="" data-num="normas">104</strong><span>normas técnicas resumidas</span></a></li>
         <li><a href="/sistemas"><strong data-count="29" data-prefix="" data-num="sistemas">29</strong><span>sistemas de aplicação</span></a></li>
         <li><a href="/dimensionamento#calculadoras"><strong data-count="20" data-prefix="" data-num="calculadoras">20</strong><span>calculadoras de dimensionamento</span></a></li>
         <li><a href="/guias-praticos#gp-guias"><strong data-count="13" data-prefix="" data-num="guias">13</strong><span>guias práticos passo a passo</span></a></li>
@@ -806,6 +806,7 @@
 
         <div class="tool tool--wide" id="dimTool">
           <h3>Dimensionamento hidráulico — água fria</h3>
+          <p class="hint">Método dos pesos dos aparelhos (Q = 0,3 √ΣP) e perda de carga por Fair-Whipple-Hsiao, como na edição de 1998 da NBR 5626. Confira os parâmetros com a edição vigente, de 2020, antes de usar no projeto. Calcula um trecho por vez; para o prédio inteiro, use o Dimensionamento Inteligente.</p>
           <div class="dim">
             <div>
               <div class="seg" id="dimTabs">
@@ -1216,7 +1217,8 @@
         </div>
 
         <div class="tool" id="calcFossa">
-          <h3>Tanque séptico (NBR 7229)</h3>
+          <h3>Tanque séptico (método da NBR 7229)</h3>
+          <p class="hint warn">A NBR 7229 foi cancelada em 2024 e substituída pela NBR 17076. Esta calculadora usa a fórmula e as tabelas da NBR 7229: confira o volume com a NBR 17076 antes de usar no projeto.</p>
           <div class="form">
             <label>Tipo de ocupação <span>contribuição C e lodo fresco Lf</span>
               <select id="fsTipo">

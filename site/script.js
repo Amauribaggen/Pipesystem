@@ -57,7 +57,7 @@ if (document.querySelector('[data-num]')) {
     fichas: CATALOG.length,
     fabricantes: new Set(Object.values(MANUFACTURERS).flat().map(f => f[0].replace(/ \(.*/, ''))).size,
     fotos: Object.keys(MATERIAL_PHOTOS).length + CATALOG.reduce((s, m) => s + (m.fotos || []).length, 0),
-    normas: typeof NORM_GROUPS !== 'undefined' ? NORM_GROUPS.reduce((s, g) => s + g.normas.length, 0) : 0,
+    normas: typeof NORM_GROUPS !== 'undefined' ? new Set(NORM_GROUPS.flatMap(g => g.normas.map(n => n.code))).size : 0,   // a mesma norma aparece em vários grupos
     sistemas: typeof SYSTEMS !== 'undefined' ? SYSTEMS.length : 0,
     calculadoras: typeof CALCS !== 'undefined' ? CALCS.length : 0,
     guias: typeof GUIAS !== 'undefined' ? GUIAS.length : 0,
