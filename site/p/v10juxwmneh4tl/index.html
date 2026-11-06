@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel – Notas fiscais de acessórios de ferro fundido (NCM 7307)</title>
+<style>
+.viz-root{
+  color-scheme:light;
+  --page:#f9f9f7;--surface-1:#fcfcfb;--text-primary:#0b0b0b;--text-secondary:#52514e;--muted:#6f6d68;
+  --grid:#e1e0d9;--axis:#c3c2b7;--border:rgba(11,11,11,.10);--wash:rgba(42,120,214,.08);
+  --series-1:#2a78d6;--series-dim:#b7d3f6;--series-strong:#184f95;--critical:#d03b3b;
+}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .viz-root{
+    color-scheme:dark;
+    --page:#0d0d0d;--surface-1:#1a1a19;--text-primary:#f0efec;--text-secondary:#c3c2b7;--muted:#9a988f;
+    --grid:#2c2c2a;--axis:#383835;--border:rgba(255,255,255,.10);--wash:rgba(57,135,229,.14);
+    --series-1:#3987e5;--series-dim:#1c3f6b;--series-strong:#86b6ef;
+  }
+}
+:root[data-theme="dark"] .viz-root{
+  color-scheme:dark;
+  --page:#0d0d0d;--surface-1:#1a1a19;--text-primary:#f0efec;--text-secondary:#c3c2b7;--muted:#9a988f;
+  --grid:#2c2c2a;--axis:#383835;--border:rgba(255,255,255,.10);--wash:rgba(57,135,229,.14);
+  --series-1:#3987e5;--series-dim:#1c3f6b;--series-strong:#86b6ef;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.viz-root{background:var(--page);color:var(--text-primary);min-height:100vh;padding:24px clamp(12px,3vw,32px) 48px}
+h1{font-size:22px;margin:0 0 4px;font-weight:650}
+.sub{color:var(--text-secondary);font-size:13px;margin:0 0 18px;line-height:1.5}
+.sub a{color:var(--series-1)}
+.filters{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.filters label{font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
+select,input[type=search]{font:inherit;font-size:13px;color:var(--text-primary);background:var(--page);border:1px solid var(--border);border-radius:8px;padding:6px 8px;min-height:32px}
+input[type=search]{width:240px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--page);color:var(--text-secondary);border-radius:999px;padding:5px 11px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--series-1);border-color:var(--series-1);color:#fff}
+.btn{font:inherit;font-size:13px;border:1px solid var(--border);background:var(--page);color:var(--text-primary);border-radius:8px;padding:6px 12px;cursor:pointer;min-height:32px}
+.btn:hover{background:var(--wash)}
+.active{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:28px;margin-bottom:12px;font-size:12px;color:var(--text-secondary)}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--wash);color:var(--text-primary);border-radius:999px;padding:4px 6px 4px 10px;font-size:12px}
+.tag button{border:0;background:var(--series-1);color:#fff;border-radius:50%;width:18px;height:18px;line-height:16px;cursor:pointer;font-size:12px;padding:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:12px}
+.kpi{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.kpi .l{font-size:12px;color:var(--text-secondary)}
+.kpi .v{font-size:26px;font-weight:650;margin-top:4px;letter-spacing:-.01em}
+.kpi .h{font-size:12px;color:var(--muted);margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:14px 16px;min-width:0}
+.card.wide{grid-column:1/-1}
+.card h2{font-size:14px;margin:0 0 2px;font-weight:650}
+.card .hint{font-size:12px;color:var(--muted);margin:0 0 10px}
+.bars{display:flex;flex-direction:column;gap:2px}
+.bar{display:grid;grid-template-columns:minmax(0,44%) 1fr auto;align-items:center;gap:10px;padding:4px 6px;border-radius:6px;cursor:pointer;border:0;background:none;font:inherit;color:inherit;text-align:left;width:100%}
+.bar:hover,.bar:focus-visible{background:var(--wash);outline:none}
+.bar .lab{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-primary)}
+.bar .lab small{color:var(--muted)}
+.bar .track{height:14px;position:relative}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--series-1);border-radius:0 4px 4px 0;min-width:2px}
+.bar.dim .fill{background:var(--series-dim)}
+.bar.sel .fill{background:var(--series-strong)}
+.bar.sel .lab{font-weight:650}
+.bar .val{font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums;min-width:74px;text-align:right}
+.empty{font-size:13px;color:var(--muted);padding:12px 4px}
+#month svg{width:100%;height:auto;display:block}
+#month .col{cursor:pointer}
+.tbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.twrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--axis);padding:8px 8px;white-space:nowrap;cursor:pointer;user-select:none}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+td{border-bottom:1px solid var(--grid);padding:7px 8px;vertical-align:top}
+tr:hover td{background:var(--wash)}
+td .lnk{border:0;background:none;padding:0;font:inherit;color:var(--text-primary);cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:var(--axis);text-underline-offset:3px}
+td .lnk:hover{text-decoration-color:var(--series-1)}
+td .meta{color:var(--muted);font-size:11.5px}
+.pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px;font-size:12px;color:var(--text-secondary)}
+#tip{position:fixed;pointer-events:none;z-index:10;background:var(--surface-1);color:var(--text-primary);border:1px solid var(--border);box-shadow:0 4px 18px rgba(0,0,0,.14);border-radius:8px;padding:8px 10px;font-size:12px;max-width:320px;opacity:0;transition:opacity .08s}
+#tip b{display:block;margin-bottom:3px}
+#tip .r{display:flex;justify-content:space-between;gap:16px;color:var(--text-secondary)}
+#tip .r span:last-child{color:var(--text-primary);font-variant-numeric:tabular-nums}
+.toast{font-size:12px;color:var(--text-secondary);margin-left:6px}
+.foot{font-size:12px;color:var(--muted);margin-top:18px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="viz-root">
+  <h1>Notas fiscais – acessórios de ferro fundido para tubos</h1>
+  <p class="sub">NCM 73071990 e 73071910 · fornecedores de ES, MG, PR, RJ, RS, SC e SP · emissão de 01/11/2025 a 01/11/2026 · fonte:
+    <a href="https://portaldatransparencia.gov.br/notas-fiscais/consulta?paginacaoSimples=true&de=01%2F11%2F2025&ate=01%2F11%2F2026&ufFornecedor=ES%2CMG%2CPR%2CRJ%2CRS%2CSC%2CSP&ncm=73071990%2C73071910">Portal da Transparência</a> (dados extraídos em 06/11/2026).
+    Clique em qualquer barra, mês, fornecedor ou órgão para filtrar.</p>
+
+  <div class="filters">
+    <label>Buscar <input type="search" id="q" placeholder="fornecedor, órgão ou cidade"></label>
+    <label>Órgão superior <select id="selSup"></select></label>
+    <label>UF do fornecedor <span class="chips" id="ufChips"></span></label>
+    <button class="btn" id="reset">Limpar filtros</button>
+  </div>
+  <div class="active" id="active"></div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="grid">
+    <div class="card wide"><h2>Valor por mês de emissão</h2><p class="hint">Clique num mês para filtrar; clique de novo para remover.</p><div id="month"></div></div>
+    <div class="card"><h2>Órgão superior comprador</h2><p class="hint">Valor total das notas</p><div class="bars" id="cSup"></div></div>
+    <div class="card"><h2>Órgão destinatário (top 12)</h2><p class="hint">Unidade que recebeu a nota</p><div class="bars" id="cOrg"></div></div>
+    <div class="card"><h2>Fornecedores (top 15)</h2><p class="hint">Valor total faturado</p><div class="bars" id="cForn"></div></div>
+    <div class="card"><h2>UF do fornecedor</h2><p class="hint">Valor total por estado de origem</p><div class="bars" id="cUf"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="tbar">
+      <div><h2>Notas fiscais: fornecedor → órgão comprador</h2><p class="hint" id="tcount" style="margin:2px 0 0"></p></div>
+      <div><button class="btn" id="copy">Copiar tabela (CSV)</button><span class="toast" id="toast"></span></div>
+    </div>
+    <div class="twrap"><table>
+      <thead><tr>
+        <th data-k="date">Emissão</th><th data-k="forn">Fornecedor</th><th data-k="sup">Órgão superior</th><th data-k="org">Órgão destinatário</th><th data-k="v" class="num">Valor</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table></div>
+    <div class="pager"><button class="btn" id="prev">‹ Anterior</button><span id="pinfo"></span><button class="btn" id="next">Próxima ›</button></div>
+  </div>
+  <p class="foot">O portal não expõe CNPJ nem número da nota nesta consulta; para esses dados, abra o detalhamento da nota no Portal da Transparência. "Sem informação" = órgão não identificado na base.</p>
+</div>
+<div id="tip"></div>
+<script>
+const D = {"F":["COMERCIAL SPONCHIADO LTDA|FREDERICO WESTPHALEN|RS","SAZE MANUTENCAO E SERVICOS LTDA|RIO DE JANEIRO|RJ","60.273.841 - SILVIO RICARDO DE ALMEIDA|SAO PAULO|SP","LUTHOR COMERCIO LTDA|RIO DE JANEIRO|RJ","BLUFIRE PREVENCAO E COMBATE A INCENDIO LTDA|BLUMENAU|SC","VIRTUAL FONE SISTEMAS DE SEGURANCA E COMUNICACAO LTDA|PATO BRANCO|PR","55593835 NATALIA DE FATIMA SIQUEIRA MELO|GUARAREMA|SP","C.E. MACEDO-COMERCIO DE MATERIAIS HIDRAULICOS LTDA|CURITIBA|PR","MAKTUB DISTRIBUIDORA LTDA|RIO DE JANEIRO|RJ","SE7E COMERCIAL E SERVICOS LTDA|NITEROI|RJ","SEGURIMAX INDUSTRIA, IMPORTADORA E EXPORTADORA LTDA (CD)|GASPAR|SC","AM1 NEGOCIOS E SERVICOS - LTDA|BARRINHA|SP","VRM COMERCIO E SERVICOS LTDA|ANGRA DOS REIS|RJ","EQS ENGENHARIA S.A.|SAO JOSE|SC","HOPE RIO DISTRIBUIDORA LTDA|RIO DE JANEIRO|RJ","CONSIGAZ DISTRIBUIDORA DE GAS LTDA|CANOAS|RS","OBRAMAIS ATACADO DE MATERIAIS DE CONSTRUCAO LTDA ME|RIO DE JANEIRO|RJ","AGILE EMPREENDIMENTOS E SERVICOS LTDA|BELO HORIZONTE|MG","TERMSUL ENGENHARIA E SERVICOS LTDA|CURITIBA|PR","GP COMERCIO DE MAQUINAS E EQUIPAMENTOS LTDA|PIRACICABA|SP","CRV  CENTRO DE RECUPERACAO DE VEICULOS LTDA|MONTES CLAROS|MG","SOUL DISTRIBUIDORA DE PRODUTOS E EQUIPAMENTOS INDU|BLUMENAU|SC","FGS COMERCIAL LTDA|JOINVILLE|SC","WEBDECOR COMERCIO E SERVICOS LTDA EPP|RIO DE JANEIRO|RJ","BEST HYDRO COMERCIAL LTDA|BLUMENAU|SC","CONEHIDRO COMERCIO DE TUBOS E CONEXOES LTDA|TAMBAU|SP","ACEMAQ ENGENHARIA E MANUTENCAO LTDA|CAXIAS DO SUL|RS","FX COMERCIO E DISTRIBUIDORA LTDA|NOVA UNIAO|MG","HLM MANUTENCAO E SERVICOS INDUSTRIAIS EIRELI|RIO DE JANEIRO|RJ","COMERCIAL VANGUARDEIRA LTDA|BLUMENAU|SC","CACULA MATERIAIS PARA CONSTRUCAO LTDA|PORTO ALEGRE|RS","GENTILEZA COMERCIO DE MATERIAIS E SERVICOS|RIO DE JANEIRO|RJ","A C P DA SILVA QUINOY COMERCIO E SERVIÇOS - ME|NILOPOLIS|RJ","FORNECEDORA DE MAT. DE CONSTR. DOIS IRMAOS LTDA|RIO DE JANEIRO|RJ","BELMAN TRANSFORMADORES E EQUIPAMENTOS ELETRICOS LTDA|BIGUACU|SC","QUIMERAS COMERCIO E SERVICOS LTDA|RIO DE JANEIRO|RJ","JLV COMERCIO PARA CONSTRUCAO  LTDA|ANGRA DOS REIS|RJ","G B LEITE COMERCIO E MERCEARIA|RIO DE JANEIRO|RJ","VITORIA SCALDELAI JACINTHO LTDA|CATANDUVA|SP","BMB MATERIAL DE CONSTRUCAO S.A.|CARIACICA|ES","G. H. DE MOURA MATERIAIS PARA CONSTRUCAO|SAO PAULO|SP","ALTER CRUZ E CIA LTDA|RIO GRANDE|RS","CONSIGAZ DISTRIBUIDORA DE GAS LTDA.|DUQUE DE CAXIAS|RJ","JOSE CARLOS BRUM EVANGELHO LTDA|SAO SEPE|RS","RAVE CONSTRUTORA LTDA|DIADEMA|SP","FIEL COMERCIAL E SERVICOS EIRELI|SAO PAULO|SP","AQUARIO COMERCIO E SERVICOS LTDA|SAO PAULO|SP","60 206 757 ANA CLEIA CAETANO DE PONTES VILELA|SAO JOSE DOS CAMPOS|SP","AUTO MECANICA LTDA|CURITIBANOS|SC","BRASIDAS EIRELI - ME|BLUMENAU|SC","TONET MATERIAIS DE CONSTRUÇÃO LTDA - FILIAL|RIO DO SUL|SC","COMPANHIA ULTRAGAZ S A|IBIRITE|MG","ARENA COMERCIO DE MATERIAIS E SERVICOS LTDA|RIO DE JANEIRO|RJ","VALMIG COMERCIO E ASSESSORIA TECNICA DE EQUIPAMENTOS LTDA|HORTOLANDIA|SP","ELETRONEW COMERCIO DE MATERIAIS ELETRICOS LTDA|SAO PAULO|SP","EUROMASTER PNEUS E MANUTENCAO DE VEICULOS LTDA|FOZ DO IGUACU|PR","KATAGIRI EXTINTTORES'S LTDA|MARAU|RS","FLASHLAB COMERCIO E SERVICOS LTDA|CAMPINAS|SP","46.062.761 MARIA EDUARDA DA SILVA PEREIRA LOPES|SAO PAULO|SP","MECANICA VIEIRA DIESEL LTDA ME|ITAJAI|SC","ELLER & ELLER LTDA|GOVERNADOR VALADARES|MG","LINO BATISTA LTDA|MOGI DAS CRUZES|SP","EMPORIO PNEUS LTDA|TEOFILO OTONI|MG","50690830 MARGARIDA SANTINA DA SILVA|BARRINHA|SP","JAM ENGENHARIA S.A.|BELO HORIZONTE|MG","AEROSTEEL MANGUEIRAS E CONEXOES LTDA|NITEROI|RJ","AAE METALPARTES PRODUTOS E SERVICOS LTDA|RIO DE JANEIRO|RJ","SETUP SERVICOS ESPECIALIZADOS LTDA|CRICIUMA|SC","FAG AUTOMACAO INDUSTRIAL LTDA.|CRICIUMA|SC","VEIGRA COMERCIO DE VEICULOS EIRELI|SANTA MARIA|RS","CONSIGAZ DISTRIBUIDORA DE GAS LTDA.|SAO JOSE DOS CAMPOS|SP","DBRAS AUTO PECAS E AC. COM. E IND.LTDA|VILA VELHA|ES","HIDROCONCORDIA LTDA|CONCORDIA|SC","R. EMANUEL SIGARAN MACHADO E CIA LTDA|ALEGRETE|RS","COMERCIAL CHAMBER LTDA|CANOINHAS|SC","SANEFLUI MATERIAIS HIDRAULICOS LTDA|JOINVILLE|SC","PIANA & PIANA LTDA|GUAIRA|PR","VPC BRASIL LTDA|NITERÓI|RJ","BMB MATERIAL DE CONSTRUCAO S.A.|SAO GONCALO|RJ","CASAS DA AGUA MAT.P/CONST.LTDA -  MATRIZ|SÃO JOSÉ|SC","TMCAR AUTO CENTER LTDA|PORTO ALEGRE|RS","ZIMMER COMERCIO E SERVICOS LTDA|NAVEGANTES|SC","JOAO BATISTA SANCHES SILVA LTDA|ALEGRETE|RS","PEG COMERCIO E SERVICOS LTDA|NOVA IGUACU|RJ","ECOSIDER PRODUTOS SIDERURGICOS LTDA|PORTO ALEGRE|RS","ARTEFATOS TECNICOS DE BORRACHA LTDA|NITEROI|RJ","COZIL EQUIPAMENTOS INDUSTRIAIS LTDA|ITAQUAQUECETUBA|SP","MONTEPEDRA MATERIAIS DE CONSTRUCAO LTDA|RIO DE JANEIRO|RJ","AMOY E FREITAS COMERCIO DE BORRACHAS LTDA|CAMPOS DOS GOYTACAZES|RJ","COMERCIAL VENEZA MATERIAIS HIDR LTDA|RIO DE JANEIRO|RJ","PROTANKS INDUSTRIA COMERCIO E SERVICOS DE IMPLEMEN|ARAUCARIA|PR","NELSON FERNANDO FRANCO VELLOZO - ME|IJACI|MG","MADOQ COMERCIO E INDUSTRIA LTDA|VOLTA REDONDA|RJ","LUK IND COM DE USINAS GERADORAS DE OXIGENIO LTDA|SAO JOSE DOS PINHAIS|PR","MINHA CASA ASSISTENCIA TECNICA DE AQUECEDORES RESIDENCIAS LT|RIO DO SUL|SC","ROMANELLI & LOUREIRO LTDA EPP|PIRASSUNUNGA|SP","61909409 GUILHERME DA SILVA SANTOS ME|DUQUE DE CAXIAS|RJ","APAGAO SIST. DE INCENDIO LTDA|RIO DO SUL|SC","W ENGENHARIA LTDA|RIO DE JANEIRO|RJ","LOJAO TEM TUDO JR LTDA|TIMOTEO|MG","JUARI DE OLIVEIRA & CIA LTDA|SANTA CRUZ DO SUL|RS","BREPI EQUIPAMENTOS LTDA|RIO DE JANEIRO|RJ","UNIFA COMERCIO DE EQUIPAMENTOS AGRO-INDUSTRIAIS LTDA|ERECHIM|RS","DOUGLAS CORDEIRO LTDA|BIGUACU|SC","TRATORTEC PECAS E SERVICOS PARA TRATORES LTDA|SAO PAULO|SP","OPCAO SANTANA D.D.A MATERIAIS PARA CONSTRUCAO LTDA|GUARULHOS|SP","ITAJAI HIDRAULICA COMERCIAL LTDA|ITAJAI|SC","BMB MATERIAL DE CONSTRUCAO S.A.|RIO DE JANEIRO|RJ","QUALITY TUBOS COMERCIO DE FERRO E ACO LTDA|SAO PAULO|SP","COMINDRE MANGUEIRAS E CONEXOES|RESENDE|RJ","DEBORA MULLER CORREA|DOM PEDRITO|RS","BIOSAFE - BIOSSEGURANCA DO BRASIL LTDA - EPP|BARUERI|SP","MILTON AVILA DA SILVA - FERRAGEM|MEDIANEIRA|PR","CASA COSTA MATERIAIS DE CONSTRUCAO LTDA|RIO DE JANEIRO|RJ","50.245.776 SAULO VALADAO PORTO|NITERÓI|RJ","HIDROVAR COMERCIO DE MATERIAIS HIDRAULICOS LTDA|CURITIBA|PR","HEA VENDAS E SERVICOS LTDA|NITEROI|RJ","HYDRAU-TECH LTDA|GRAVATAÍ|RS","CASA ISSA LTDA EPP|PEDRO LEOPOLDO|MG","DONE COMERCIO DE MATERIAL DE CONSTRUCAO LTDA|RIO DE JANEIRO|RJ","LAFONTE MATERIAIS DE CONSTRUCAO LTDA - EPP|CAMPOS DOS GOYTACAZES|RJ","SUPERMERCADO MIX DP BORRACHEIRO LTD|CONTAGEM|MG","COMPRESSUL COMPRESSORES LTDA|UNIAO DA VITORIA|PR","ZEFLEX HIDRAULICA LTDA|BALNEARIO CAMBORIU|SC","GV BORRACHA LTDA - ME|GOVERNADOR VALADARES|MG","VENTRALIS TECNICA COMERCIAL LTDA|SAQUAREMA|RJ","CASA DAS MANGUEIRAS LTDA|SANTA MARIA|RS","BAZAR CONECTUBO LTDA.|NITEROI|RJ","REAL BORRACHAS DE ARAGUARI LTDA|ARAGUARI|MG","PAUMAR AUTOMACAO COMERCIO SERVICOS E REPRESENTACAO LTDA|RIO DE JANEIRO|RJ","A.J.BOLSON E CIA LTDA|SANTA MARIA|RS","SASSO E CIA LTDA EPP|ARARANGUA|SC","CLIMATIZ-AR MANUTENCAO E INSTALACAO DE AR COND LTDA|CHAPECO|SC","MULTITEINER COMERCIO E LOCACAO DE CONTEINERES LTDA|DUQUE DE CAXIAS|RJ","HIDRAULICA NAVEGANTES LTDA|NAVEGANTES|SC","JUJU PEÇAS PARA ELETRODOMÉSTICOS LTDA|JUIZ DE FORA|MG","IRMAOS JOUGLARD LTDA|RIO GRANDE|RS","EMPORIUM FOR HOME LTDA|ITAPEMA|SC","PEX CASA E FERRAMENTAS.COM LTDA|RIBEIRAO PRETO|SP","VENDOR COMERCIO DE PRODUTOS LTDA|INDAIATUBA|SP","CIMAFER COMERCIO DE MATERIAL CONSTRUCAO|PORTO ALEGRE|RS","COMERCIAL HIDRO PNEUMATICA LTDA|PORTO ALEGRE|RS","ANDRESON LUIZ DA SILVA|JUIZ DE FORA|MG","RT PONTES PRODUTOS HIDRAULICOS INDUSTRIAIS LTDA|BAURU|SP","ISABELLA CAETANO MAGALHAES BETIOL|BARRA BONITA|SP","MARTINS E ARAUJO MAT CONSTRUCAO|RIO POMBA|MG","UNI-MAQUINAS LTDA.|PALMAS|PR","COMERCIAL FIRENZE LTDA|RIO DE JANEIRO|RJ","AGROCOMERCIAL RIO CLARO LTDA|SANTA MARIA|RS","GUSMANG COMERCIO DE MANGUEIRAS E CONEXOES LTDA|LONDRINA|PR","LICITA SOLUCOES LTDA|CURITIBA|PR","MANGBOR COMERCIO DE BORRACHA LTDA - ME|RIO DE JANEIRO|RJ","GMIS COMERCIAL DE FERRAMENTAS LTDA EPP|CAIEIRAS|SP","OS CARVALHOS DO RECREIO MATERIAL E CONSTRUCAO LTDA|RIO DE JANEIRO|RJ","MORETTO IRRIGACAO LTDA|CAPAO BONITO|SP","3 FERA DA BORRACHA LTDA|UBERLANDIA|MG","HIDRAULICA UBERABA LTDA|UBERABA|MG","REFINAR EMPRESARIAL ASSESSORIA EM CONTROLES ADMINI|BLUMENAU|SC","LUCY FERRAGENS E EQUIPAMENTOS LTDA.|MEDIANEIRA|PR","MATERIAIS DE CONSTRUCAO PANORAMA D ALDEIA LTDA|SAO PEDRO DA ALDEIA|RJ","M. PEREIRA MATERIAIS HIDRAULICOS E DE CONSTRUCAO LTDA|SAO PAULO|SP","ARDUINO NARDELLI E FILHOS LTDA|RIO DO SUL|SC","FORMETAL FORNECEDORA DE METAIS LTDA.|VITORIA|ES","FOCKINK INDUSTRIAS ELETRICAS LTDA|PANAMBI|RS","FERRAGENS LINDORIO LTDA|RIO DE JANEIRO|RJ","A L DE ALMEIDA BOMBAS SUBMERSAS|SAO JOSE DO RIO PRETO|SP","MATER COMERCIO DE MANGUEIRAS LTDA|RIO GRANDE|RS","MANGSETE LTDA - EPP|SETE LAGOAS|MG","LOPES MAT. DE CONSTRUCAO LTDA|ITAJUBA|MG","CAMILO E VALARINI LTDA|LONDRINA|PR","F1 INDUSTRIA E COMERCIO|SAO JOSE DOS PINHAIS|PR","JZAGO MATERIAIS DE CONSTRUCAO LTDA.|LAGES|SC","D.M. DE ARAUJO EPP|BARRA DE SAO FRANCISCO|ES","FERRAGENS BRASIL LTDA|FOZ DO IGUACU|PR","89.339.600 MAICON TUMELERO|BENTO GONÇALVES|RS","COPA ENERGIA S.A|DUQUE DE CAXIAS|RJ"],"O":["Ministério da Saúde|Ministério da Saúde - Unidades com vínculo direto","Ministério da Defesa|Comando da Marinha","Ministério da Defesa|Comando do Exército","Ministério da Defesa|Fundo do Exército","Ministério da Educação|Universidade Tecnológica Federal do Paraná","Ministério da Saúde|Fundação Oswaldo Cruz","Ministério da Educação|Universidade Federal do Rio de Janeiro","Banco Central do Brasil - Orçamento Fiscal e Seguridade Social|Banco Central do Brasil - Orçamento Fiscal e Seguridade Social - Unidades com vínculo direto","Banco Central do Brasil - Orçamento Fiscal e Seguridade Social|Banco Central do Brasil","Ministério da Defesa|Comando da Aeronáutica","Ministério da Educação|Universidade Federal do Triângulo Mineiro","Ministério da Educação|Universidade Federal do Estado do Rio de Janeiro","Sem informação|Sem informação","Ministério da Fazenda|Ministério da Fazenda - Unidades com vínculo direto","Ministério da Integração e do Desenvolvimento Regional|Departamento Nacional de Obras Contra as Secas","Ministério da Educação|Ministério da Educação - Unidades com vínculo direto","Ministério da Educação|Universidade Federal de Lavras","Ministério da Educação|Universidade Federal de Minas Gerais","Ministério da Educação|Universidade Federal de Santa Catarina","Ministério da Educação|Universidade Federal de Santa Maria","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia de São Paulo","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia Catarinense","Ministério da Fazenda|Receita Federal do Brasil","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia Sul-rio-grandense","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia Goiano","Ministério da Agricultura e Pecuária|Ministério da Agricultura e Pecuária - Unidades com vínculo direto","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia Fluminense","Ministério da Educação|Universidade Federal do Rio Grande do Sul","Ministério da Justiça e Segurança Pública|Polícia Federal","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia Baiano","Ministério da Educação|Universidade Federal do Espírito Santo","Ministério da Educação|Colégio Pedro II","Ministério da Educação|Universidade Federal de Goiás","Ministério da Educação|Centro Federal de Educação Tecnológica de Minas Gerais","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul","Ministério do Planejamento e Orçamento|Fundação Instituto Brasileiro de Geografia e Estatística","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia do Sul de Minas Gerais","Ministério da Ciência, Tecnologia e Inovação|Ministério da Ciência, Tecnologia e Inovação - Unidades com vínculo direto","Ministério da Educação|Universidade Federal Fluminense","Ministério da Educação|Universidade Federal da Fronteira Sul","Ministério da Educação|Universidade Federal de Juiz de Fora","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia do Norte de Minas Gerais","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia do Sudeste de Minas Gerais","Ministério da Cultura|Instituto do Patrimônio Histórico e Artístico Nacional","Ministério do Meio Ambiente e Mudança do Clima|Instituto Chico Mendes de Conservação da Biodiversidade","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia do Triângulo Mineiro","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia do Espírito Santo","Ministério da Educação|Instituto Federal de Educação, Ciência e Tecnologia Farroupilha","Ministério da Educação|Universidade Federal do Rio Grande","Ministério da Educação|Fundação Universidade Federal de São João Del-Rei","Ministério da Educação|Instituto Federal do Paraná"],"R":[["260316",0,0,4799996.16],["260220",1,1,4561692],["261019",2,0,3094461.3],["260408",1,1,1201295.38],["261026",2,0,558537],["260311",3,2,536718],["260603",3,3,459250.54],["260206",4,4,396394.6],["260929",3,2,312109.2],["260907",3,2,239967.36],["260716",5,2,238697.71],["260202",6,5,225875],["260304",6,5,225875],["260113",6,5,225875],["260205",6,5,212375],["260826",7,0,153069],["260826",7,0,153069],["260310",3,2,151966.23],["251205",8,6,150030],["260121",9,1,136169.8],["260924",3,2,135742.32],["260923",10,2,123817.33],["260911",11,7,106111.2],["251112",12,2,90057.99],["260316",13,8,69512.8],["251222",14,2,69200],["260415",15,9,68393.12],["260409",15,9,68393.12],["260102",0,0,62272.8],["251126",3,2,59811.16],["260515",3,3,56314.1],["260324",16,1,49828.5],["260415",15,9,48830.85],["260409",15,9,48830.85],["260122",17,10,47956.06],["251211",13,8,45629.43],["260811",2,11,44315.6],["260417",18,12,43497.32],["260426",19,13,42600],["260716",20,14,40900],["260928",21,0,40896.4],["260310",21,0,40896.4],["260320",22,1,40672],["260105",3,15,39610.4],["260824",23,2,37633.96],["260225",3,2,37077.7],["260904",1,1,37006.82],["260128",24,1,36515.76],["260904",25,9,33715],["260519",3,2,33704.48],["260202",26,3,33399.24],["260522",27,16,32485.74],["260708",28,5,28885],["260728",29,17,27594.27],["251117",7,0,27333.75],["251210",30,2,27030.56],["260210",31,11,25505.6],["260826",32,0,22988],["260224",33,2,22732.56],["260127",31,1,22343.85],["260323",3,3,21602.16],["260810",3,2,21282.24],["251204",34,18,20962.62],["260804",24,2,20937.45],["251111",8,2,19999.7],["260119",35,2,18968.94],["260915",36,11,18195.6],["260914",36,11,18195.6],["260915",36,11,18195.6],["261028",37,5,18039.8],["260824",3,1,17977.96],["251210",27,16,17126.61],["251106",34,18,16558.96],["251210",27,16,16351.16],["260121",23,3,15220],["260121",23,3,15220],["260618",3,2,15181.38],["261026",38,9,14892.9],["260602",3,2,14452.44],["251209",3,1,14020.98],["251126",39,1,13514.6],["251219",8,2,12623],["260706",3,2,12511.6],["260729",40,2,11819.98],["260323",3,2,11515.76],["260323",3,2,11514.78],["260213",21,2,11510.54],["260430",3,2,11497.68],["260716",41,1,11472],["260616",3,1,11369.98],["260318",42,2,10972.8],["260316",3,2,10648.26],["260928",3,2,9208.89],["260121",33,2,9023.8],["261007",43,19,8920.6],["260319",3,3,8249.67],["260409",3,3,8131.23],["251106",3,1,8001.94],["260921",15,2,7925.7],["260729",3,2,7912.32],["251125",44,20,7717.16],["260512",45,9,7592.66],["260422",46,2,7526.68],["260618",3,2,7399.55],["251215",47,20,7221.07],["260601",3,2,7185],["260716",42,1,7178.96],["251221",3,1,6975.6],["260108",3,2,6919.71],["261026",38,9,6880],["260303",31,11,6852.6],["260618",3,1,6790.29],["261015",2,11,6756],["260817",23,3,6383.64],["251209",3,1,6328.7],["260914",48,18,6282],["260526",3,2,6251.78],["260617",3,2,6199.56],["260727",49,9,6128.88],["260714",3,2,6118.33],["260608",21,5,6073.92],["260113",21,5,6073.92],["260113",21,5,6073.92],["260107",21,5,6073.92],["260220",50,21,6067.98],["260821",51,2,6054.17],["260327",52,3,6024.51],["260107",52,3,6000.19],["260518",3,2,5999.74],["260224",42,2,5879.9],["260503",3,3,5859.68],["260503",3,2,5859.68],["260220",50,21,5776.26],["251104",32,0,5747],["260616",31,11,5570.1],["260312",53,18,5554.91],["260206",3,3,5498.57],["260904",27,16,5432.86],["251117",23,2,5320.8],["260518",3,2,5245.73],["260904",54,20,5213],["260601",3,2,5201.3],["260417",55,22,5136.96],["260909",3,2,5088.07],["261029",31,1,5048.4],["260722",56,23,5036],["260417",3,1,5020.44],["251128",57,24,4862],["251125",57,24,4862],["251103",57,24,4862],["251128",57,24,4862],["261001",58,1,4794.5],["260129",3,2,4777.99],["260730",59,21,4693.93],["260423",60,0,4646.67],["260514",61,5,4637.1],["260121",24,1,4634.2],["260320",62,25,4550],["260408",3,2,4501.14],["260602",3,26,4480],["260128",35,2,4467.19],["260820",3,2,4399.63],["260409",63,9,4395],["261020",64,5,4199.3],["261015",64,5,4199.3],["260615",65,1,3803.4],["251118",66,2,3779.1],["260311",67,18,3488.13],["251119",68,27,3452.67],["260413",69,28,3393.6],["260716",41,1,3377.4],["260727",41,1,3377.4],["260727",41,1,3373.4],["260127",31,1,3261.48],["260716",42,1,3166.56],["251209",70,2,3062.28],["260111",3,1,3005.15],["260304",3,2,3000.75],["251201",61,29,2972.25],["260417",3,2,2957.2],["260203",35,2,2956.2],["260619",71,30,2930.72],["260929",8,1,2864.1],["260702",72,21,2826.58],["251222",21,3,2813.7],["251124",3,1,2790],["260306",42,2,2749.72],["251112",73,3,2720.66],["260924",74,2,2687.6],["260805",3,1,2675.12],["261020",75,9,2632.74],["260616",3,2,2631],["260705",3,1,2588.4],["260208",3,1,2587.72],["260722",76,2,2549.4],["260209",77,1,2538.38],["260908",54,20,2513],["251208",3,1,2485.94],["260128",78,31,2453.2],["251124",79,1,2446.2],["251111",80,1,2431.56],["260618",3,3,2400.6],["260409",3,1,2395.25],["251208",15,2,2393.76],["260707",81,1,2380],["251201",61,9,2292.24],["260921",82,3,2242],["260318",3,2,2183.84],["260601",3,3,2041.4],["260810",3,2,1999.7],["261028",3,1,1990.8],["260311",3,2,1984.54],["251110",83,5,1971.4],["260820",3,3,1956.6],["261009",84,19,1944.45],["260917",85,1,1904.58],["260330",86,20,1895.04],["260630",3,2,1889.76],["251202",87,5,1760.7],["261007",3,2,1760],["260825",88,26,1752],["260602",89,1,1700],["260212",24,2,1698.65],["261023",90,2,1694.44],["260701",91,16,1690],["260209",92,2,1678.8],["251109",3,1,1521.1],["260116",93,32,1520],["260505",94,21,1518.8],["261021",95,2,1515.57],["260909",96,1,1512],["260722",21,0,1505.92],["260310",94,21,1472.66],["260429",21,2,1461],["260806",97,21,1459.5],["260612",98,5,1452.71],["260824",3,1,1413.6],["260529",99,33,1376.2],["251111",3,3,1338.4],["260326",21,2,1308.79],["260310",100,2,1302],["260601",101,1,1265.3],["260330",3,2,1242.67],["251104",3,2,1197.84],["260228",102,34,1177.64],["251123",3,1,1156.84],["260205",103,20,1145.84],["260424",3,2,1120.28],["260924",3,2,1100.28],["260320",98,5,1034.87],["260916",3,1,1032.34],["261030",104,3,1030.77],["251117",61,1,1006.8],["260430",3,2,999.45],["260511",3,2,983.2],["260107",105,1,971],["251210",105,1,971],["260426",3,1,967.19],["260720",3,3,926.36],["260202",58,1,922.4],["260721",106,1,905.01],["260814",107,1,895.18],["251205",108,35,893.88],["260821",109,2,869.94],["260515",3,2,826.6],["260424",52,2,825.04],["251116",3,1,790],["260401",61,36,778],["260426",3,2,759.92],["261005",3,2,759],["261008",110,2,750],["260320",111,2,746.22],["260317",112,4,712.8],["260818",113,37,703.3],["260730",114,38,699],["260720",114,38,699],["261020",102,34,693.96],["260309",3,3,691.77],["251119",68,27,687.27],["260213",113,37,677.5],["260317",115,12,677.14],["261001",74,2,637.27],["260730",61,1,627.9],["260312",3,2,620.96],["260727",116,1,582.2],["260910",3,2,579.4],["260316",117,1,568],["260924",118,25,560.99],["260824",119,1,559.6],["260630",120,26,554],["251125",35,3,533.9],["251219",35,2,524.6],["261015",121,22,524],["260720",3,1,515.9],["251113",122,2,514.12],["260220",123,21,514],["251109",3,1,503.45],["260428",124,0,477.24],["260911",3,2,474.89],["260430",125,5,474],["251215",79,1,472],["260511",126,2,471],["261020",127,1,466.88],["251215",79,1,465],["260908",127,1,450.04],["260729",128,2,441.36],["260714",3,3,439.55],["260508",129,1,430],["260317",130,19,428],["260803",67,18,423.33],["260630",131,12,422.31],["260206",132,39,391.58],["260127",58,1,385.98],["260111",3,1,359.88],["260414",133,5,352.65],["260703",134,1,345],["260208",3,1,337.5],["260715",135,40,327.65],["260606",136,1,316],["260828",109,2,309.56],["260610",137,18,309],["260921",138,41,308],["260816",139,3,303.6],["260210",21,1,294.46],["251103",140,28,284.9],["260520",3,2,280.07],["260804",141,27,270],["251218",142,1,261],["260409",87,1,260.85],["251105",143,1,249.2],["260507",144,1,247.5],["260402",145,42,240],["260712",3,1,236.9],["260224",146,2,230],["261027",3,1,209.93],["261001",147,1,202.78],["260222",3,2,200.05],["260324",148,19,200],["251223",70,2,194.06],["260609",3,2,190.29],["260324",149,4,185],["260206",150,1,175],["260302",66,0,162.78],["260122",130,19,158],["260721",151,12,155.5],["261023",152,9,151.45],["260722",3,1,149.95],["260602",3,1,149.5],["260902",153,43,141.41],["251128",154,44,134],["260910",155,2,132.49],["261026",156,45,130],["260324",89,1,130],["261029",157,2,129.96],["251117",61,1,120.8],["260426",3,2,114.7],["251211",3,2,111.6],["261022",85,1,104],["260526",3,2,101.36],["261027",127,1,100.55],["260327",158,4,98],["260410",65,1,96.5],["260805",159,1,94],["260114",160,1,93.4],["261001",161,21,90.36],["260723",162,46,90],["260311",163,47,89.9],["260313",164,31,75],["260515",165,2,70],["260224",166,48,70],["260327",167,49,66.5],["260622",168,37,54.05],["251127",169,50,50],["260311",130,19,49],["260324",149,4,37],["260429",170,33,27.08],["260413",171,12,25.83],["260410",126,2,25],["251126",130,19,24.7],["260128",172,46,21],["260408",173,1,20],["260415",3,2,17.1],["260414",171,12,17],["260205",172,46,9.5],["260817",174,2,9],["260525",175,9,3.59]]};
+const MONTHS=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const shortSup=s=>s.replace('Banco Central do Brasil - Orçamento Fiscal e Seguridade Social','Banco Central do Brasil');
+const shortOrg=s=>s.replace('Banco Central do Brasil - Orçamento Fiscal e Seguridade Social - Unidades com vínculo direto','Banco Central – unidades diretas')
+  .replace('Instituto Federal de Educação, Ciência e Tecnologia','IF').replace('Universidade Federal','Univ. Federal').replace(' - Unidades com vínculo direto',' – unidades diretas');
+const ROWS=D.R.map(([d,f,o,v],i)=>{const [forn,city,uf]=D.F[f].split('|');const [sup,org]=D.O[o].split('|');
+  return {i,date:'20'+d.slice(0,2)+'-'+d.slice(2,4)+'-'+d.slice(4),month:'20'+d.slice(0,2)+'-'+d.slice(2,4),fk:f,forn:forn.trim().replace(/\s+/g,' '),city,uf,sup:shortSup(sup),org:shortOrg(org),orgFull:org,v}});
+const ALLMONTHS=[];for(let y=2025,m=11;y<2026||m<=11;){ALLMONTHS.push(y+'-'+String(m).padStart(2,'0'));m++;if(m>12){m=1;y++}}
+const UFS=['ES','MG','PR','RJ','RS','SC','SP'];
+const S={q:'',sup:null,org:null,forn:null,ufs:new Set(),month:null,sort:'v',dir:-1,page:0};
+const brl=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+const nf=new Intl.NumberFormat('pt-BR');
+const compact=v=>v>=1e6?'R$ '+(v/1e6).toLocaleString('pt-BR',{maximumFractionDigits:2})+' mi':v>=1e3?'R$ '+(v/1e3).toLocaleString('pt-BR',{maximumFractionDigits:1})+' mil':brl.format(v);
+const fdate=d=>d.slice(8)+'/'+d.slice(5,7)+'/'+d.slice(0,4);
+const fmonth=m=>MONTHS[+m.slice(5)-1]+'/'+m.slice(2,4);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+
+function pass(r,skip){
+  if(S.q){const q=norm(S.q);if(!norm(r.forn+' '+r.org+' '+r.orgFull+' '+r.sup+' '+r.city).includes(q))return false}
+  if(skip!=='sup'&&S.sup&&r.sup!==S.sup)return false;
+  if(skip!=='org'&&S.org&&r.org!==S.org)return false;
+  if(skip!=='forn'&&S.forn!==null&&r.fk!==S.forn)return false;
+  if(skip!=='uf'&&S.ufs.size&&!S.ufs.has(r.uf))return false;
+  if(skip!=='month'&&S.month&&r.month!==S.month)return false;
+  return true;
+}
+function group(rows,key,label){const m=new Map();for(const r of rows){const k=key(r);let g=m.get(k);if(!g){g={key:k,label:label(r),v:0,n:0};m.set(k,g)}g.v+=r.v;g.n++}return [...m.values()].sort((a,b)=>b.v-a.v)}
+
+const tip=document.getElementById('tip');
+function showTip(e,title,rows){tip.innerHTML='<b>'+esc(title)+'</b>'+rows.map(([a,b])=>'<div class="r"><span>'+a+'</span><span>'+b+'</span></div>').join('');tip.style.opacity=1;moveTip(e)}
+function moveTip(e){const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;tip.style.left=x+'px';tip.style.top=y+'px'}
+function hideTip(){tip.style.opacity=0}
+
+function renderBars(el,groups,limit,selKey,onPick){
+  const tot=groups.reduce((s,g)=>s+g.v,0);const list=groups.slice(0,limit);
+  if(!list.length){el.innerHTML='<div class="empty">Nenhuma nota com os filtros atuais.</div>';return}
+  const max=list[0].v||1;
+  el.innerHTML=list.map((g,i)=>{const cls=selKey!==null&&selKey!==undefined?(g.key===selKey?'sel':'dim'):'';
+    return '<button class="bar '+cls+'" data-i="'+i+'"><span class="lab" >'+g.label+'</span><span class="track"><span class="fill" style="width:'+(g.v/max*100)+'%"></span></span><span class="val">'+compact(g.v)+'</span></button>'}).join('')
+    +(groups.length>limit?'<div class="empty" style="padding:6px">+ '+(groups.length-limit)+' outros ('+compact(groups.slice(limit).reduce((s,g)=>s+g.v,0))+')</div>':'');
+  el.querySelectorAll('.bar').forEach(b=>{const g=list[+b.dataset.i];
+    b.onclick=()=>{onPick(g.key);hideTip()};
+    b.onmousemove=e=>showTip(e,g.tip||g.plain||g.key,[['Valor',brl.format(g.v)],['Notas',nf.format(g.n)],['Participação',(g.v/tot*100).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%']]);
+    b.onmouseleave=hideTip;});
+}
+
+function renderMonth(){
+  const rows=ROWS.filter(r=>pass(r,'month'));const by={};ALLMONTHS.forEach(m=>by[m]={v:0,n:0});rows.forEach(r=>{if(by[r.month]){by[r.month].v+=r.v;by[r.month].n++}});
+  const W=900,H=230,L=64,R=8,T=12,B=28,iw=W-L-R,ih=H-T-B;const max=Math.max(1,...ALLMONTHS.map(m=>by[m].v));
+  const step=niceStep(max/4);const top=Math.ceil(max/step)*step;const y=v=>T+ih-v/top*ih;
+  const bw=iw/ALLMONTHS.length;let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Valor por mês">';
+  for(let t=0;t<=top+1e-6;t+=step){s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(t)+'" y2="'+y(t)+'" stroke="var(--grid)" stroke-width="1"/><text x="'+(L-8)+'" y="'+(y(t)+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+(t===0?'0':compact(t).replace('R$ ',''))+'</text>'}
+  ALLMONTHS.forEach((m,i)=>{const g=by[m];const x=L+i*bw+2,w=bw-4,h=Math.max(g.v>0?2:0,ih*g.v/top),yy=T+ih-h;const r=Math.min(4,h,w/2);
+    const fill=S.month?(S.month===m?'var(--series-strong)':'var(--series-dim)'):'var(--series-1)';
+    s+='<g class="col" data-m="'+m+'"><rect x="'+(L+i*bw)+'" y="'+T+'" width="'+bw+'" height="'+ih+'" fill="transparent"/>';
+    if(h>0)s+='<path d="M'+x+','+(T+ih)+'V'+(yy+r)+'Q'+x+','+yy+' '+(x+r)+','+yy+'H'+(x+w-r)+'Q'+(x+w)+','+yy+' '+(x+w)+','+(yy+r)+'V'+(T+ih)+'Z" fill="'+fill+'"/>';
+    s+='<text x="'+(L+i*bw+bw/2)+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="'+(S.month===m?'var(--text-primary)':'var(--muted)')+'">'+fmonth(m)+'</text></g>'});
+  s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+(T+ih)+'" y2="'+(T+ih)+'" stroke="var(--axis)"/></svg>';
+  const el=document.getElementById('month');el.innerHTML=s;
+  el.querySelectorAll('.col').forEach(c=>{const m=c.dataset.m,g=by[m];
+    c.onclick=()=>{S.month=S.month===m?null:m;S.page=0;render();hideTip()};
+    c.onmousemove=e=>showTip(e,MONTHS[+m.slice(5)-1]+' de '+m.slice(0,4),[['Valor',brl.format(g.v)],['Notas',nf.format(g.n)]]);
+    c.onmouseleave=hideTip});
+}
+function niceStep(x){const p=Math.pow(10,Math.floor(Math.log10(x)));const f=x/p;return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p}
+
+function renderTable(rows){
+  const k=S.sort,d=S.dir;rows=[...rows].sort((a,b)=>(a[k]>b[k]?1:a[k]<b[k]?-1:0)*d);
+  const per=20,pages=Math.max(1,Math.ceil(rows.length/per));S.page=Math.min(S.page,pages-1);
+  const slice=rows.slice(S.page*per,S.page*per+per);
+  document.getElementById('tbody').innerHTML=slice.map(r=>'<tr><td>'+fdate(r.date)+'</td><td><button class="lnk" data-f="'+r.fk+'">'+esc(r.forn)+'</button><div class="meta">'+esc(r.city)+'/'+r.uf+'</div></td><td><button class="lnk" data-s="'+esc(r.sup)+'">'+esc(r.sup)+'</button></td><td><button class="lnk" data-o="'+esc(r.org)+'" title="'+esc(r.orgFull)+'">'+esc(r.org)+'</button></td><td class="num">'+brl.format(r.v)+'</td></tr>').join('')||'<tr><td colspan="5" class="empty">Nenhuma nota com os filtros atuais.</td></tr>';
+  document.getElementById('pinfo').textContent=rows.length?((S.page*per+1)+'–'+Math.min(rows.length,S.page*per+per)+' de '+nf.format(rows.length)):'0';
+  document.getElementById('prev').disabled=S.page===0;document.getElementById('next').disabled=S.page>=pages-1;
+  document.querySelectorAll('th').forEach(th=>{const kk=th.dataset.k;th.textContent=th.textContent.replace(/ [▲▼]$/,'')+(kk===k?(d>0?' ▲':' ▼'):'')});
+  document.querySelectorAll('#tbody .lnk').forEach(b=>b.onclick=()=>{if(b.dataset.f!==undefined)S.forn=+b.dataset.f;if(b.dataset.s!==undefined)S.sup=b.dataset.s;if(b.dataset.o!==undefined)S.org=b.dataset.o;S.page=0;render()});
+  window._tableRows=rows;
+}
+
+function renderActive(){
+  const t=[];
+  if(S.q)t.push(['Busca: '+S.q,()=>{S.q='';document.getElementById('q').value=''}]);
+  if(S.month)t.push(['Mês: '+fmonth(S.month),()=>S.month=null]);
+  if(S.sup)t.push(['Órgão superior: '+S.sup,()=>S.sup=null]);
+  if(S.org)t.push(['Órgão: '+S.org,()=>S.org=null]);
+  if(S.forn!==null){const r=ROWS.find(r=>r.fk===S.forn);t.push(['Fornecedor: '+r.forn+' ('+r.uf+')',()=>S.forn=null])}
+  if(S.ufs.size)t.push(['UF: '+[...S.ufs].join(', '),()=>S.ufs.clear()]);
+  const el=document.getElementById('active');
+  el.innerHTML=t.length?'Filtros aplicados: '+t.map((x,i)=>'<span class="tag">'+esc(x[0])+'<button data-i="'+i+'" aria-label="Remover filtro">×</button></span>').join(''):'Sem filtros adicionais – mostrando todas as notas.';
+  el.querySelectorAll('button').forEach(b=>b.onclick=()=>{t[+b.dataset.i][1]();S.page=0;render()});
+}
+
+function render(){
+  const rows=ROWS.filter(r=>pass(r));
+  const tot=rows.reduce((s,r)=>s+r.v,0);
+  const nForn=new Set(rows.map(r=>r.fk)).size,nOrg=new Set(rows.map(r=>r.org)).size;
+  const top=group(rows,r=>r.fk,r=>r.forn)[0];
+  document.getElementById('kpis').innerHTML=
+    kpi('Valor total',compact(tot),brl.format(tot))+kpi('Notas fiscais',nf.format(rows.length),'ticket médio '+(rows.length?compact(tot/rows.length):'–'))+
+    kpi('Fornecedores',nf.format(nForn),'distintos')+kpi('Órgãos compradores',nf.format(nOrg),'unidades destinatárias')+
+    kpi('Maior fornecedor',top?compact(top.v):'–',top?esc(top.label)+' · '+(top.v/tot*100).toLocaleString('pt-BR',{maximumFractionDigits:0})+'%':'');
+  const sup=group(ROWS.filter(r=>pass(r,'sup')),r=>r.sup,r=>esc(r.sup));sup.forEach(g=>g.plain=g.key);
+  renderBars(document.getElementById('cSup'),sup,20,S.sup,k=>{S.sup=S.sup===k?null:k;S.page=0;render()});
+  const org=group(ROWS.filter(r=>pass(r,'org')),r=>r.org,r=>esc(r.org)+' <small>· '+esc(r.sup.replace('Ministério','Min.'))+'</small>');org.forEach(g=>{const r=ROWS.find(x=>x.org===g.key);g.tip=r.orgFull});
+  renderBars(document.getElementById('cOrg'),org,12,S.org,k=>{S.org=S.org===k?null:k;S.page=0;render()});
+  const forn=group(ROWS.filter(r=>pass(r,'forn')),r=>r.fk,r=>esc(r.forn)+' <small>· '+esc(r.city)+'/'+r.uf+'</small>');forn.forEach(g=>{const r=ROWS.find(x=>x.fk===g.key);g.tip=r.forn+' – '+r.city+'/'+r.uf});
+  renderBars(document.getElementById('cForn'),forn,15,S.forn,k=>{S.forn=S.forn===k?null:k;S.page=0;render()});
+  const uf=group(ROWS.filter(r=>pass(r,'uf')),r=>r.uf,r=>r.uf);uf.forEach(g=>g.plain=g.key);
+  renderBars(document.getElementById('cUf'),uf,10,S.ufs.size===1?[...S.ufs][0]:(S.ufs.size?'__multi':null),k=>{if(S.ufs.has(k))S.ufs.delete(k);else{S.ufs.clear();S.ufs.add(k)}S.page=0;render()});
+  if(S.ufs.size>1)document.querySelectorAll('#cUf .bar').forEach((b,i)=>{b.classList.toggle('sel',S.ufs.has(uf[i].key));b.classList.toggle('dim',!S.ufs.has(uf[i].key))});
+  renderMonth();
+  document.getElementById('tcount').textContent=nf.format(rows.length)+' notas · '+brl.format(tot)+' · clique no fornecedor ou órgão para filtrar';
+  renderTable(rows);renderActive();
+  document.getElementById('selSup').value=S.sup||'';
+  document.querySelectorAll('#ufChips .chip').forEach(c=>c.setAttribute('aria-pressed',S.ufs.has(c.dataset.uf)));
+}
+function kpi(l,v,h){return '<div class="kpi"><div class="l">'+l+'</div><div class="v">'+v+'</div><div class="h">'+h+'</div></div>'}
+
+// controls
+const sel=document.getElementById('selSup');
+sel.innerHTML='<option value="">Todos</option>'+group(ROWS,r=>r.sup,r=>r.sup).map(g=>'<option value="'+esc(g.key)+'">'+esc(g.key)+'</option>').join('');
+sel.onchange=()=>{S.sup=sel.value||null;S.page=0;render()};
+document.getElementById('ufChips').innerHTML=UFS.map(u=>'<button class="chip" data-uf="'+u+'" aria-pressed="false">'+u+'</button>').join('');
+document.querySelectorAll('#ufChips .chip').forEach(c=>c.onclick=()=>{const u=c.dataset.uf;S.ufs.has(u)?S.ufs.delete(u):S.ufs.add(u);S.page=0;render()});
+let qt;document.getElementById('q').oninput=e=>{clearTimeout(qt);qt=setTimeout(()=>{S.q=e.target.value.trim();S.page=0;render()},150)};
+document.getElementById('reset').onclick=()=>{Object.assign(S,{q:'',sup:null,org:null,forn:null,month:null,page:0});S.ufs.clear();document.getElementById('q').value='';render()};
+document.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(S.sort===k)S.dir*=-1;else{S.sort=k;S.dir=k==='v'||k==='date'?-1:1}render()});
+document.getElementById('prev').onclick=()=>{S.page--;render()};
+document.getElementById('next').onclick=()=>{S.page++;render()};
+document.getElementById('copy').onclick=async()=>{
+  const q=s=>'"'+String(s).replace(/"/g,'""')+'"';
+  const csv=['Emissão;Fornecedor;Município;UF;Órgão superior;Órgão destinatário;Valor'].concat(window._tableRows.map(r=>[fdate(r.date),q(r.forn),q(r.city),r.uf,q(r.sup),q(r.orgFull),r.v.toFixed(2).replace('.',',')].join(';'))).join('\n');
+  const t=document.getElementById('toast');
+  try{await navigator.clipboard.writeText(csv);t.textContent='Copiado: '+window._tableRows.length+' linhas. Cole no Excel.'}catch(e){t.textContent='Não foi possível copiar neste navegador.'}
+  setTimeout(()=>t.textContent='',4000)};
+render();
+</script>
+</body>
+</html>
