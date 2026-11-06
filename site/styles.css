@@ -2005,6 +2005,27 @@ a.gl:hover { color: var(--teal-d); }
 .calcdlg__body { padding: 0 6px 6px; }
 .calcdlg__body .tool { border: 0; background: transparent; }
 @media (max-width: 560px) { .calcdlg { width: 100%; max-height: 100vh; border-radius: 0; } .calcdlg__body .tool { padding: 18px 14px; } }
+/* Ações da ficha da calculadora: copiar link com os valores e memorial de cálculo */
+.calcdlg__acoes { display: flex; gap: 8px; margin-left: auto; }
+.calcdlg__btn { font: inherit; font-size: .8rem; font-weight: 700; padding: 8px 12px; border-radius: 999px; border: 1.5px solid var(--box-line-dark); background: rgba(255, 255, 255, .06); color: #fff; cursor: pointer; white-space: nowrap; }
+.calcdlg__btn:hover, .calcdlg__btn:focus-visible { background: #7ee7f2; color: #06233f; border-color: #7ee7f2; outline: 0; }
+@media (max-width: 560px) { .calcdlg__top { flex-wrap: wrap; padding-left: 14px; } .calcdlg__cat { flex-basis: calc(100% - 52px); } .calcdlg__acoes { order: 3; flex-basis: 100%; } .calcdlg__btn { flex: 1; } }
+/* Memorial: só a folha aparece na impressão, em preto e branco */
+.calcmem { display: none; }
+@media print {
+  html.print-calc body * { visibility: hidden !important; }
+  html.print-calc .calcmem, html.print-calc .calcmem * { visibility: visible !important; color: #000 !important; background: none !important; box-shadow: none !important; border-color: #bbb !important; }
+  html.print-calc .calcmem { display: block; position: absolute; left: 0; top: 0; width: 100%; font-size: 11pt; }
+  .calcmem__head { display: flex; justify-content: space-between; border-bottom: 2px solid #000 !important; padding-bottom: 6px; margin-bottom: 6px; }
+  .calcmem__ref { margin: 0 0 12px; font-weight: 600; }
+  .calcmem .tool { padding: 0; border: 0; }
+  .calcmem .form { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
+  .calcmem label { display: block; }
+  .calcmem__val { display: block; font-size: 11.5pt; }
+  .calcmem table { border-collapse: collapse; width: 100%; }
+  .calcmem td, .calcmem th { border-bottom: 1px solid #bbb; padding: 3px 6px; text-align: left; }
+  .calcmem__nota { margin-top: 16px; font-size: 9pt; border-top: 1px solid #bbb; padding-top: 6px; }
+}
 
 /* Comparativo de Preços */
 .preco__titulo { color: #fff; font-size: 1.3rem; margin: 0 0 6px; }

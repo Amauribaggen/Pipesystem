@@ -740,7 +740,9 @@
         <div class="calcs__chips" id="calcChips" role="group" aria-label="Filtrar calculadoras por assunto"></div>
         <ul class="calcs__list" id="calcList"></ul>
         <dialog class="calcdlg" id="calcDlg" aria-label="Calculadora">
-          <div class="calcdlg__top"><span class="calcdlg__cat" id="calcDlgCat"></span><button type="button" class="calcdlg__x" aria-label="Fechar a calculadora">×</button></div>
+          <div class="calcdlg__top"><span class="calcdlg__cat" id="calcDlgCat"></span>
+            <span class="calcdlg__acoes"><button type="button" class="calcdlg__btn" id="calcLink" title="Copia um link que reabre esta calculadora com os mesmos valores">Copiar link</button><button type="button" class="calcdlg__btn" id="calcMemo" title="Folha com dados de entrada, resultados, norma e data, para imprimir ou salvar em PDF">Memorial (PDF)</button></span>
+            <button type="button" class="calcdlg__x" aria-label="Fechar a calculadora">×</button></div>
           <div class="calcdlg__body" id="calcDlgBody"></div>
         </dialog>
       </div>

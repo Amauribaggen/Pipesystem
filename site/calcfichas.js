@@ -52,7 +52,7 @@ const CALCS = [
     aberta = marca = null;
   };
   const fecha = () => { devolve(); if (dlg.open) dlg.close(); };
-  dlg.addEventListener('close', devolve);
+  dlg.addEventListener('close', () => { if (!dlg.open) devolve(); });   // o evento chega depois: se outra calculadora já reabriu a ficha, não a devolve
   dlg.addEventListener('cancel', devolve);
   dlg.querySelector('.calcdlg__x').addEventListener('click', fecha);
   dlg.addEventListener('click', e => { if (e.target === dlg) fecha(); });   // clique fora da ficha fecha
@@ -74,5 +74,78 @@ const CALCS = [
     const a = e.target.closest('[data-calc]'); if (!a) return;
     e.preventDefault(); e.stopImmediatePropagation();
     window.abreCalc(a.dataset.calc);
+  });
+
+  // ----- Link com os valores: /dimensionamento?v=…#idDaCalculadora reabre a calculadora já preenchida -----
+  // Guarda cada campo (texto, número, lista, caixa de marcar) pelo id, ou pela posição na calculadora ("@3") quando
+  // não tem id (ex.: quantidades de aparelhos), e a aba escolhida de cada grupo de botões (.seg)
+  const campos = tool => [...tool.querySelectorAll('input, select, textarea')].filter(el => el.type !== 'file');
+  const valores = tool => {
+    const v = {};
+    campos(tool).forEach((el, i) => { v[el.id || '@' + i] = el.type === 'checkbox' || el.type === 'radio' ? el.checked : el.value; });
+    tool.querySelectorAll('.seg[id]').forEach(seg => { const b = seg.querySelector('.is-on[data-k]'); if (b) v['seg:' + seg.id] = b.dataset.k; });
+    return v;
+  };
+  const aplica = (tool, v) => {
+    Object.entries(v).filter(([k]) => k.startsWith('seg:')).forEach(([k, val]) => $(k.slice(4))?.querySelector(`[data-k="${val}"]`)?.click());
+    const lista = campos(tool);
+    Object.entries(v).filter(([k]) => !k.startsWith('seg:')).forEach(([k, val]) => {
+      const el = k[0] === '@' ? lista[+k.slice(1)] : $(k); if (!el || !tool.contains(el)) return;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = !!val; else el.value = val;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  };
+  const codifica = obj => btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const decodifica = s => JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/')))));
+  const aviso = (btn, txt) => { const old = btn.textContent; btn.textContent = txt; setTimeout(() => { btn.textContent = old; }, 2200); };
+
+  $('calcLink')?.addEventListener('click', async e => {
+    if (!aberta) return;
+    const url = `${location.origin}/dimensionamento?v=${codifica(valores(aberta))}#${aberta.id}`;
+    try { await navigator.clipboard.writeText(url); aviso(e.currentTarget, 'Link copiado ✓'); }
+    catch { window.prompt('Copie o link da calculadora com os valores:', url); }
+  });
+
+  // ao abrir um link com ?v=, preenche a calculadora depois que as ferramentas carregam
+  const qv = new URLSearchParams(location.search).get('v'), hid = location.hash.slice(1);
+  if (qv && CALCS.some(c => c[0] === hid)) {
+    let v = null; try { v = decodifica(qv); } catch { /* link incompleto: abre a calculadora com os valores padrão */ }
+    if (v) window.addEventListener('load', () => setTimeout(() => (typeof loadTools === 'function' ? loadTools() : Promise.resolve())
+      .then(() => { if (!aberta || aberta.id !== hid) window.abreCalc(hid); aplica($(hid), v); }), 80));
+  }
+
+  // ----- Memorial de cálculo: folha limpa com dados de entrada, resultados, norma e data, para imprimir ou salvar em PDF -----
+  $('calcMemo')?.addEventListener('click', () => {
+    if (!aberta) return;
+    const info = CALCS.find(c => c[0] === aberta.id);
+    const copia = aberta.cloneNode(true);
+    copia.removeAttribute('id');
+    copia.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+    // campos viram texto com o valor atual (o clone não leva o que foi digitado)
+    const orig = aberta.querySelectorAll('input, select, textarea'), clon = copia.querySelectorAll('input, select, textarea');
+    clon.forEach((el, i) => {
+      const o = orig[i], b = document.createElement('b');
+      b.className = 'calcmem__val';
+      b.textContent = o.tagName === 'SELECT' ? (o.selectedOptions[0]?.textContent || '') : o.type === 'checkbox' || o.type === 'radio' ? (o.checked ? 'sim' : 'não') : (o.value || '—');
+      el.replaceWith(b);
+    });
+    copia.querySelectorAll('[hidden]').forEach(el => el.remove());   // campos da aba que não está em uso
+    copia.querySelectorAll('.seg').forEach(seg => seg.querySelectorAll('button').forEach(bt => { if (!bt.classList.contains('is-on')) bt.remove(); }));
+    copia.querySelectorAll('button:not(.seg button), .calcmem-ocultar').forEach(el => el.remove());
+    const agora = new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+    const folha = document.createElement('div');
+    folha.id = 'calcMemoria';
+    folha.className = 'calcmem';
+    folha.innerHTML = `<header class="calcmem__head"><b>PipeSystem · Memorial de cálculo</b><span>${agora}</span></header>
+      <p class="calcmem__ref">${info[1]} · ${info[2]} · Base de cálculo: ${info[4]}</p>`;
+    folha.append(copia);
+    folha.insertAdjacentHTML('beforeend', `<p class="calcmem__nota">Resultado indicativo, gerado pela calculadora on-line do PipeSystem (${location.origin}/dimensionamento#${aberta.id}). Confira com a norma vigente; não substitui o projeto assinado por profissional habilitado.</p>`);
+    document.body.append(folha);
+    document.documentElement.classList.add('print-calc');
+    const limpa = () => { document.documentElement.classList.remove('print-calc'); folha.remove(); window.removeEventListener('afterprint', limpa); };
+    window.addEventListener('afterprint', limpa);
+    window.print();
+    setTimeout(() => { if (document.body.contains(folha) && !matchMedia('print').matches) limpa(); }, 1500);
   });
 })();
