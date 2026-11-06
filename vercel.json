@@ -9,6 +9,10 @@
     {
       "source": "/:secao(para-quem-e|contato)",
       "destination": "/"
+    },
+    {
+      "source": "/monitor/:path*",
+      "destination": "https://pipesystem-monitor.vercel.app/:path*"
     }
   ],
   "redirects": [
