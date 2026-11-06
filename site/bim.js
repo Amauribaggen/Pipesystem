@@ -471,7 +471,7 @@ function bimBoxHTML(matId, h = 'h4') {
   function render() {
     const list = BIM_LIBS.filter(b =>
       (!st.fmt || b.fmts.includes(st.fmt)) && (!st.cat || b.cat.includes(st.cat)) && (!st.orig || b.orig === st.orig) &&
-      (!st.q || norm([b.nome, b.desc, ...b.cat, ...b.fmts, ...b.mats.map(nome)].join(' ')).includes(st.q)));
+      (!st.q || matchText([b.nome, b.desc, ...b.cat, ...b.fmts, ...b.mats.map(nome)].join(' '), queryTerms(st.q))));
     document.getElementById('bimCount').textContent = `${list.length} de ${BIM_LIBS.length} bibliotecas`;
     grid.innerHTML = list.length ? list.map(card).join('') : '<p class="bim__empty">Nenhuma biblioteca com esses filtros.</p>';
   }

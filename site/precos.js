@@ -146,7 +146,7 @@ const PRECOS = {
   };
 
   function render() {
-    const list = PRECOS.itens.filter(it => !st.q || norm([it.nome, it.cat, ...it.chaves, ...it.ofertas.map(o => o[1] + ' ' + LOJAS_PRECOS[o[0]])].join(' ')).includes(st.q));
+    const list = PRECOS.itens.filter(it => !st.q || matchText([it.nome, it.cat, ...it.chaves, ...it.ofertas.map(o => o[1] + ' ' + LOJAS_PRECOS[o[0]])].join(' '), queryTerms(st.q)));
     document.getElementById('precoCount').textContent = `${list.length} de ${PRECOS.itens.length} itens · coleta em ${PRECOS.coleta}`;
     grid.innerHTML = list.length ? list.map(painel).join('') : '<p class="bim__empty">Nenhum item com essa busca.</p>';
   }

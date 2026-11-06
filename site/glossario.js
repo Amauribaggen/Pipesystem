@@ -276,7 +276,7 @@ function glossarize(root, opts = {}) {
     </details>`;
   function render() {
     const xs = GLOSSARIO.filter(x => (!st.letra || letterOf(x) === st.letra) && (!st.tema || x.tema === st.tema) &&
-      (!st.q || norm([x.t, x.en, x.def, x.exp || '', x.norma || ''].join(' ')).includes(st.q)));
+      (!st.q || matchText([x.t, x.en, x.def, x.exp || '', x.norma || ''].join(' '), queryTerms(st.q))));
     document.getElementById('glCount').textContent = `${xs.length} de ${GLOSSARIO.length} termos`;
     const groups = {};
     xs.forEach(x => (groups[letterOf(x)] = groups[letterOf(x)] || []).push(x));

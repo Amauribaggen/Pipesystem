@@ -100,18 +100,32 @@ const emptyEl = document.getElementById('catEmpty');
 const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
 // Busca tolerante: ignora acentos, maiúsculas, ordem das palavras e plural (válvulas = válvula,
-// conexões = conexão) e aceita códigos com ou sem espaço (NBR5626 = NBR 5626)
+// conexões = conexão, metais = metal, anéis = anel, garagens = garagem) e aceita códigos com ou
+// sem espaço (NBR5626 = NBR 5626). Cada palavra digitada vira o radical comum ao singular e ao
+// plural, que aparece dentro das duas formas no texto.
 const STOP = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'a', 'o', 'as', 'os', 'em', 'para', 'com', 'por', 'um', 'uma', 'no', 'na']);
-const stem = w => w.length > 4 ? w.replace(/(oes|aes|ao)$/, '').replace(/(es|s)$/, '') : w;
+const stem = w => {
+  if (w.length < 4 || /\d/.test(w)) return w;            // siglas curtas, códigos e medidas ficam como estão
+  if (w.length > 4 && /(oes|aes|ao)$/.test(w)) return w.slice(0, w.endsWith('ao') ? -2 : -3);   // conexão, conexões
+  if (w.length > 4 && /[aeou]is$/.test(w)) return w.slice(0, -2);   // metais, anéis, faróis, azuis
+  if (/[aeiou]l$/.test(w)) return w.slice(0, -1);                     // metal, anel, funil
+  if (w.length > 4 && /ns$/.test(w)) return w.slice(0, -2);           // garagens
+  if (w.length > 4 && /m$/.test(w)) return w.slice(0, -1);            // garagem
+  if (w.length > 4 && /[rsz]es$/.test(w)) return w.slice(0, -2);      // condutores, gases, luzes
+  return w.endsWith('s') ? w.slice(0, -1) : w;                        // válvulas, redes, caps
+};
+// Termo curto (anel → "ane", rede, caps → "cap") só vale no começo de uma palavra, marcado com "^",
+// para "anel" não achar "planejamento" nem "rede" achar "parede"
 function queryTerms(q) {
   const words = norm(q).replace(/[^a-z0-9.\-/ ]/g, ' ').split(/\s+/).filter(Boolean);
-  const terms = words.filter(w => !STOP.has(w)).map(stem);
+  const terms = words.filter(w => !STOP.has(w)).map(w => { const r = stem(w); return r.length < 5 && /^[a-z]+$/.test(r) ? '^' + r : r; });
   return terms.length ? terms : words;
 }
 function matchText(text, terms) {
   if (!terms.length) return true;
   const t = norm(text), compact = t.replace(/[\s.\-]/g, '');
-  return terms.every(w => t.includes(w) || compact.includes(w.replace(/[.\-]/g, '')));
+  return terms.every(w => w[0] === '^' ? new RegExp('(^|[^a-z0-9])' + w.slice(1)).test(t)
+    : t.includes(w) || compact.includes(w.replace(/[.\-]/g, '')));
 }
 
 searchEl?.addEventListener('input', () => { activeCat = 'Todos'; renderCatalog(); });   // a busca vale para todo o catálogo
@@ -1099,7 +1113,7 @@ const MAGAZINES = [
     const n = [...s].map(c => norm(c)).join('');
     if (n.length !== s.length) return s;
     const hits = [];
-    terms.forEach(t => { let i = n.indexOf(t); while (t && i > -1) { hits.push([i, i + t.length]); i = n.indexOf(t, i + t.length); } });
+    terms.map(t => t.replace(/^\^/, '')).forEach(t => { let i = n.indexOf(t); while (t && i > -1) { hits.push([i, i + t.length]); i = n.indexOf(t, i + t.length); } });
     if (!hits.length) return s;
     hits.sort((a, b) => a[0] - b[0]);
     let out = '', pos = 0;
@@ -1109,7 +1123,7 @@ const MAGAZINES = [
   // Trecho do texto em volta da primeira ocorrência
   function snippet(text, terms, fallback) {
     const t = clean(text), n = norm(t);
-    const i = Math.min(...terms.map(w => n.indexOf(w)).filter(i => i > -1));
+    const i = Math.min(...terms.map(w => n.indexOf(w.replace(/^\^/, ''))).filter(i => i > -1));
     if (!isFinite(i)) return fallback;
     const a = Math.max(0, i - 40);
     return (a > 0 ? '…' : '') + t.slice(a, a + 140);
@@ -1140,7 +1154,7 @@ const MAGAZINES = [
       g ? g.items.push(...items) : groups.push({ name, items, more });
     };
     // ordem: termo no título, depois termo no texto como está (sem juntar palavras: "mapres" não vale por "máxima pressão")
-    const literal = t => { const s = norm(t); return terms.every(w => s.includes(w)); };
+    const literal = t => matchText(t, terms.filter(w => w[0] === '^')) && terms.every(w => w[0] === '^' || norm(t).includes(w));
     const pick = (list, textOf, make) => list.filter(x => matchText(textOf(x), terms))
       .map(x => ({ ...make(x), score: matchText(make(x).title, terms) ? 2 : literal(textOf(x)) ? 1 : 0 })).sort((a, b) => b.score - a.score);
 

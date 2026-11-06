@@ -1520,7 +1520,8 @@ typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded',
   busca.addEventListener('input', () => {
     const ws = norm(busca.value).split(/\s+/).filter(Boolean);
     let n = 0;
-    cards.forEach(a => { const ok = ws.every(w => a.dataset.q.includes(w)); a.hidden = !ok; n += ok; });
+    const termos = queryTerms(busca.value);   // mesma regra da busca do site (plural, acentos)
+    cards.forEach(a => { const ok = !ws.length || matchText(a.dataset.q, termos); a.hidden = !ok; n += ok; });
     nBusca.textContent = ws.length ? `${n} de ${cards.length}` : '';
     vazio.hidden = n > 0;
   });
