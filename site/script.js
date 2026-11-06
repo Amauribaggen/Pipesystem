@@ -50,6 +50,27 @@ if (location.hash.length > 1 && !document.getElementById(location.hash.slice(1))
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// Números do site (faixa abaixo das estatísticas do mercado): contados direto dos dados
+// (só na página inicial; nas demais, alguns arquivos de dados não são carregados)
+if (document.querySelector('[data-num]')) {
+  const siteNums = {
+    fichas: CATALOG.length,
+    fabricantes: new Set(Object.values(MANUFACTURERS).flat().map(f => f[0].replace(/ \(.*/, ''))).size,
+    fotos: Object.keys(MATERIAL_PHOTOS).length + CATALOG.reduce((s, m) => s + (m.fotos || []).length, 0),
+    normas: typeof NORM_GROUPS !== 'undefined' ? NORM_GROUPS.reduce((s, g) => s + g.normas.length, 0) : 0,
+    sistemas: typeof SYSTEMS !== 'undefined' ? SYSTEMS.length : 0,
+    calculadoras: typeof CALCS !== 'undefined' ? CALCS.length : 0,
+    guias: typeof GUIAS !== 'undefined' ? GUIAS.length : 0,
+    comparativos: typeof CMPS !== 'undefined' ? CMPS.length : 0,
+    glossario: typeof GLOSSARIO !== 'undefined' ? GLOSSARIO.length : 0,
+    bim: typeof BIM_LIBS !== 'undefined' ? BIM_LIBS.length : 0,
+  };
+  document.querySelectorAll('[data-num]').forEach(el => {
+    const n = siteNums[el.dataset.num];
+    if (n) { el.dataset.count = n; el.textContent = 0; }
+  });
+}
+
 // Contadores
 const fmt = n => n.toLocaleString('pt-BR');
 const counters = document.querySelectorAll('[data-count]');
