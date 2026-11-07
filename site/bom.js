@@ -21,19 +21,30 @@
   // extra: ambientes molhados da unidade além dos banheiros (residencial 2 = cozinha e serviço; copa 1; nenhum 0).
   // cons: consumo diário por pessoa (L), valores usuais da literatura de instalações prediais (Macintyre).
   const PERFIS = {
-    hotel: { nome: 'Hotel', un: 'Quartos por andar', area: 'Área do quarto (m²)', pes: 'Hóspedes por quarto', extra: 0, cons: 120, sing: 'quarto',
+    hotel: { nome: 'Hotel', un: 'Quartos por andar', area: 'Área do quarto (m²)', pes: 'Hóspedes por quarto', extra: 0, cons: 120, sing: 'quarto', plu: 'quartos',
       ini: { nome: 'Quarto padrão', n: 12, area: 25, dorm: 2, ban: 1, lav: 0 }, aq: 'central', pe: 3, consNota: 'consumo diário de 120 L por hóspede (hotel sem cozinha e lavanderia)' },
-    hospital: { nome: 'Hospital', un: 'Quartos por andar', area: 'Área do quarto (m²)', pes: 'Leitos por quarto', extra: 0, cons: 250, sing: 'quarto',
+    hospital: { nome: 'Hospital', un: 'Quartos por andar', area: 'Área do quarto (m²)', pes: 'Leitos por quarto', extra: 0, cons: 250, sing: 'quarto', plu: 'quartos',
       ini: { nome: 'Quarto de internação', n: 10, area: 22, dorm: 2, ban: 1, lav: 0 }, aq: 'central', pe: 3.6, consNota: 'consumo diário de 250 L por leito' },
-    escritorio: { nome: 'Edifício de escritórios', un: 'Salas ou conjuntos por andar', area: 'Área da sala (m²)', pes: 'Pessoas por sala', extra: 1, cons: 50, sing: 'sala',
+    escritorio: { nome: 'Edifício de escritórios', un: 'Salas ou conjuntos por andar', area: 'Área da sala (m²)', pes: 'Pessoas por sala', extra: 1, cons: 50, sing: 'sala', plu: 'salas',
       ini: { nome: 'Sala padrão', n: 6, area: 70, dorm: 10, ban: 2, lav: 0 }, aq: 'eletrico', pe: 3.2, consNota: 'consumo diário de 50 L por pessoa e lotação de 1 pessoa a cada 7 m² (NBR 9077)' },
+    // escola e shopping: sem chuveiros; "lav" é a parcela de cada sala/loja nos sanitários (bacia + lavatório)
+    escola: { nome: 'Escola', un: 'Salas de aula por andar', area: 'Área da sala (m²)', pes: 'Alunos por sala', extra: 1, cons: 50, sing: 'sala de aula', plu: 'salas de aula',
+      lab: { ban: 'Vestiários com chuveiro por sala', lav: 'Bacias e lavatórios por sala' }, max: { dorm: 60 },
+      ini: { nome: 'Sala de aula', n: 6, area: 50, dorm: 35, ban: 0, lav: 1 }, aq: 'eletrico', pe: 3.5, pav: 3,
+      consNota: 'consumo diário de 50 L por aluno (escola externato, sem refeições preparadas no local); 1 bacia e 1 lavatório por sala, cerca de 1 para cada 35 alunos, e 1 bebedouro por sala',
+      aviso: 'a lista cobre os sanitários dos alunos (uma bacia e um lavatório por sala) e um bebedouro por sala. Cozinha, refeitório, vestiários de quadra e laboratórios entram pelo projeto específico. Confira a proporção de aparelhos sanitários exigida pelo código de obras do município e pela vigilância sanitária.' },
+    shopping: { nome: 'Shopping center', un: 'Lojas por andar', area: 'Área da loja (m²)', pes: 'Funcionários por loja', extra: 0, cons: 50, sing: 'loja', plu: 'lojas',
+      lab: { ban: 'Banheiros com chuveiro por loja', lav: 'Sanitários (bacia e lavatório) por loja' }, max: { n: 120, dorm: 40 },
+      ini: { nome: 'Loja padrão', n: 30, area: 60, dorm: 4, ban: 0, lav: 1 }, aq: 'eletrico', pe: 4.5, pav: 3,
+      consNota: 'consumo diário de 50 L por funcionário das lojas',
+      aviso: 'a lista cobre o sanitário de cada loja, as colunas e o barrilete. Sanitários públicos do mall, praça de alimentação, cinemas, ar-condicionado central (água gelada) e áreas técnicas entram pelo projeto específico.' },
   };
   const perfil = () => PERFIS[($('lmTipo').value.match(/^perfil-(\w+)/) || [])[1]] || null;
   function renderTypes() {
     $('lmTypes').innerHTML = types.map((t, i) => `
       <div class="lmat__type" data-i="${i}">
         <div class="form form--types">
-          ${typeFields.map(([f, label, type, min, max]) => `<label>${f === 'n' && isCasa() ? 'Quantidade de casas' : perfil() && { n: perfil().un, area: perfil().area, dorm: perfil().pes }[f] || label}<input type="${type}" data-f="${f}" value="${esc(t[f])}"${type === 'number' ? ` min="${min}" max="${max}" step="1"` : ''}></label>`).join('')}
+          ${typeFields.map(([f, label, type, min, max]) => `<label>${f === 'n' && isCasa() ? 'Quantidade de casas' : perfil() && { n: perfil().un, area: perfil().area, dorm: perfil().pes, ...perfil().lab }[f] || label}<input type="${type}" data-f="${f}" value="${esc(t[f])}"${type === 'number' ? ` min="${min}" max="${(perfil() && perfil().max && perfil().max[f]) || max}" step="1"` : ''}></label>`).join('')}
           <label class="lmat__check"${perfil() ? ' hidden' : ''}><input type="checkbox" data-f="varanda"${t.varanda ? ' checked' : ''}> Varanda ou espaço gourmet com pia</label>
         </div>
         ${types.length > 1 ? `<button type="button" class="lmat__del" data-del="${i}" aria-label="Remover ${esc(t.nome)}">Remover</button>` : ''}
@@ -78,7 +89,7 @@
     const P = perfil();
     if (P) {
       types = [{ ...P.ini, varanda: false }];
-      $('lmPav').value = 8; $('lmPe').value = P.pe; $('lmCist').value = 'com'; $('lmHres').value = 2.5;
+      $('lmPav').value = P.pav || 8; $('lmPe').value = P.pe; $('lmCist').value = 'com'; $('lmHres').value = 2.5;
       $('lmAq').value = P.aq; $('lmGas').value = 'nenhum'; $('lmMed').checked = false;
       $('lmSalao').value = 0; $('lmLavCol').value = 0; $('lmChur').value = 'nenhuma'; $('lmPisc').value = 0;
       return syncTipo();
@@ -777,8 +788,11 @@
         add(L_, hot ? 'Chuveiro / ducha (água quente)' : 'Chuveiro elétrico', ban * U, 'un', { loss: false });
         add(L_, 'Ducha higiênica com registro', ban * U, 'un', { loss: false });
         const cubas = (EXT ? 1 : 0) + vr;
-        add(L_, PF ? 'Cuba de copa' : 'Cuba de cozinha', cubas * U, 'un', { loss: false });
-        add(L_, hot ? 'Misturador de cozinha' : 'Torneira de cozinha', cubas * U, 'un', { loss: false });
+        if (PF === PERFIS.escola) add(L_, 'Bebedouro de pressão (inox, com filtro)', U, 'un', { loss: false, note: 'Um por sala de aula' });
+        else {
+          add(L_, PF ? 'Cuba de copa' : 'Cuba de cozinha', cubas * U, 'un', { loss: false });
+          add(L_, hot ? 'Misturador de cozinha' : 'Torneira de cozinha', cubas * U, 'un', { loss: false });
+        }
         if (EXT === 2) { add(L_, 'Tanque com torneira', U, 'un', { loss: false }); add(L_, 'Torneira para máquina de lavar', U, 'un', { loss: false }); }
         add(L_, 'Sifão', (bac + EXT + vr) * U, 'un', { loss: false });
         add(L_, 'Válvula de escoamento', (bac + EXT + vr) * U, 'un', { loss: false });
@@ -789,7 +803,8 @@
     const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (PF ? PF.cons : casa ? 150 : 200); // L/dia
     if (PF) {
       warn.push(`${PF.nome}: ${PF.consNota}, valores usuais da literatura de instalações prediais. Confirme com o programa de necessidades do empreendimento.`);
-      if (PF.extra === 0) warn.push(`${PF.nome}: a lista cobre os quartos, as colunas e o barrilete. Cozinha industrial, lavanderia${PF === PERFIS.hospital ? ', gases medicinais, central de esterilização' : ''} e áreas técnicas entram pelo projeto específico.`);
+      if (PF.aviso) warn.push(`${PF.nome}: ${PF.aviso}`);
+      else if (PF.extra === 0) warn.push(`${PF.nome}: a lista cobre os quartos, as colunas e o barrilete. Cozinha industrial, lavanderia${PF === PERFIS.hospital ? ', gases medicinais, central de esterilização' : ''} e áreas técnicas entram pelo projeto específico.`);
       else warn.push(`${PF.nome}: sanitários e copa por sala. Sanitários coletivos por andar, auditórios e restaurante entram pelo projeto específico.`);
     }
     const R_ = 'Reservação e recalque', P_ = 'Águas pluviais', I_ = 'Combate a incêndio', C_ = 'Áreas comuns', F_ = 'Consumíveis e fixação';
@@ -987,7 +1002,7 @@
         const b = bG + bA, floors = garFloors + (spk === 'todo' ? pav + 1 : 0);
         nBicos = b;
         add(S_, 'Bico de sprinkler 68 °C K80 1/2" — garagem (upright ou pendente)', bG, 'un', { note: ev ? `Inclui as ${ev} vagas com recarga de veículos elétricos` : '', loss: false });
-        add(S_, PF && PF !== PERFIS.hotel ? `Bico de sprinkler spray padrão 68 °C 1/2" — ${PF.sing === 'sala' ? 'salas' : 'quartos'} e circulações` : `Bico de sprinkler residencial 68 °C 1/2" — ${PF ? 'quartos' : 'apartamentos'} e circulações`, bA, 'un', { loss: false });
+        add(S_, PF && PF !== PERFIS.hotel ? `Bico de sprinkler spray padrão 68 °C 1/2" — ${PF.plu} e circulações` : `Bico de sprinkler residencial 68 °C 1/2" — ${PF ? 'quartos' : 'apartamentos'} e circulações`, bA, 'un', { loss: false });
         add(S_, 'Bicos de reserva com armário e chave de troca', Math.max(6, Math.ceil(b * 0.02)), 'un', { loss: false });
         // ramais de 1" e 1 1/4" sempre roscados (galvanizados); subgerais, prumada e barrilete conforme o material escolhido
         add(S_, 'Tubo de aço galvanizado 1" (DN 25) — ramais de sprinklers', b * 3, 'm', { pack: ['barra', 6] });
@@ -1189,7 +1204,7 @@
     out.hidden = false;
     const nome = $('lmNome').value.trim();
     $('lmOutTitle').textContent = last.titulo ? (nome || last.titulo) + last.subtitulo : (nome || (last.casa ? 'Conjunto de casas' : perfil() ? perfil().nome : 'Edifício residencial')) +
-      (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo, ${int(last.units)} ${perfil() ? perfil().sing + 's' : 'unidades'}`);
+      (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo, ${int(last.units)} ${perfil() ? perfil().plu : 'unidades'}`);
     $('lmStats').innerHTML = last.stats.map(([k, v]) => `<div><span>${k}</span><strong>${v}</strong></div>`).join('');
     $('lmPres').innerHTML = presHTML(last.pres);
     $('lmWarn').innerHTML = last.warn.map(w => `<p class="hint warn">${esc(w)}</p>`).join('');

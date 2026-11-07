@@ -104,7 +104,7 @@
     const ok = res.find(r => r.dp <= dPmax && r.vel <= 20);
     set('gasD', ok ? ok.nome : 'acima do maior diâmetro');
     set('gasDp', ok ? `${n(ok.dp, 0)} Pa · ${n(ok.vel, 1)} m/s` : '—');
-    hint('gasHint', `Potência adotada ${n(Cad * 60 / 860, 1)} kW (fator de simultaneidade da NBR 15526). Perda máxima admitida: ${n(dPmax, 0)} Pa (${n(v('gasPerda'), 0)}% de ${n(g.p, 1)} kPa). Confira a potência na placa de cada aparelho.`, !ok);
+    hint('gasHint', `Potência adotada ${n(Cad * 60 / 860, 1)} kW (fator de simultaneidade da NBR 15526). Perda máxima admitida: ${n(dPmax, 0)} Pa (${n(v('gasPerda'), 0)}% de ${n(g.p, 1)} kPa). Confira a potência na placa de cada aparelho. Perda de carga pela fórmula de Renouard para baixa pressão (até 7,5 kPa), com velocidade máxima de 20 m/s; conferida pela PipeSystem contra Darcy-Weisbach (diferença de 5% a 12%, sempre a favor da segurança).`, !ok);
   }
   on('calcGas', calcGas);
 
