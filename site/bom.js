@@ -17,12 +17,24 @@
   ];
   const isCasa = () => $('lmTipo').value === 'casa';
   const isGalpao = () => $('lmTipo').value.startsWith('galpao');
+  // Edifícios não residenciais montados por unidade (quarto, sala), sobre o mesmo cálculo do edifício residencial.
+  // extra: ambientes molhados da unidade além dos banheiros (residencial 2 = cozinha e serviço; copa 1; nenhum 0).
+  // cons: consumo diário por pessoa (L), valores usuais da literatura de instalações prediais (Macintyre).
+  const PERFIS = {
+    hotel: { nome: 'Hotel', un: 'Quartos por andar', area: 'Área do quarto (m²)', pes: 'Hóspedes por quarto', extra: 0, cons: 120, sing: 'quarto',
+      ini: { nome: 'Quarto padrão', n: 12, area: 25, dorm: 2, ban: 1, lav: 0 }, aq: 'central', pe: 3, consNota: 'consumo diário de 120 L por hóspede (hotel sem cozinha e lavanderia)' },
+    hospital: { nome: 'Hospital', un: 'Quartos por andar', area: 'Área do quarto (m²)', pes: 'Leitos por quarto', extra: 0, cons: 250, sing: 'quarto',
+      ini: { nome: 'Quarto de internação', n: 10, area: 22, dorm: 2, ban: 1, lav: 0 }, aq: 'central', pe: 3.6, consNota: 'consumo diário de 250 L por leito' },
+    escritorio: { nome: 'Edifício de escritórios', un: 'Salas ou conjuntos por andar', area: 'Área da sala (m²)', pes: 'Pessoas por sala', extra: 1, cons: 50, sing: 'sala',
+      ini: { nome: 'Sala padrão', n: 6, area: 70, dorm: 10, ban: 2, lav: 0 }, aq: 'eletrico', pe: 3.2, consNota: 'consumo diário de 50 L por pessoa e lotação de 1 pessoa a cada 7 m² (NBR 9077)' },
+  };
+  const perfil = () => PERFIS[($('lmTipo').value.match(/^perfil-(\w+)/) || [])[1]] || null;
   function renderTypes() {
     $('lmTypes').innerHTML = types.map((t, i) => `
       <div class="lmat__type" data-i="${i}">
         <div class="form form--types">
-          ${typeFields.map(([f, label, type, min, max]) => `<label>${f === 'n' && isCasa() ? 'Quantidade de casas' : label}<input type="${type}" data-f="${f}" value="${esc(t[f])}"${type === 'number' ? ` min="${min}" max="${max}" step="1"` : ''}></label>`).join('')}
-          <label class="lmat__check"><input type="checkbox" data-f="varanda"${t.varanda ? ' checked' : ''}> Varanda ou espaço gourmet com pia</label>
+          ${typeFields.map(([f, label, type, min, max]) => `<label>${f === 'n' && isCasa() ? 'Quantidade de casas' : perfil() && { n: perfil().un, area: perfil().area, dorm: perfil().pes }[f] || label}<input type="${type}" data-f="${f}" value="${esc(t[f])}"${type === 'number' ? ` min="${min}" max="${max}" step="1"` : ''}></label>`).join('')}
+          <label class="lmat__check"${perfil() ? ' hidden' : ''}><input type="checkbox" data-f="varanda"${t.varanda ? ' checked' : ''}> Varanda ou espaço gourmet com pia</label>
         </div>
         ${types.length > 1 ? `<button type="button" class="lmat__del" data-del="${i}" aria-label="Remover ${esc(t.nome)}">Remover</button>` : ''}
       </div>`).join('');
@@ -36,7 +48,7 @@
     const b = e.target.closest('[data-del]'); if (!b) return;
     types.splice(+b.dataset.del, 1); renderTypes(); live();
   });
-  $('lmAddType').addEventListener('click', () => { types.push(blank(types.length)); renderTypes(); });
+  $('lmAddType').addEventListener('click', () => { const P = perfil(); types.push(P ? { ...P.ini, nome: P.ini.nome + ' ' + (types.length + 1), varanda: false } : blank(types.length)); renderTypes(); });
   function syncTipo() {
     const casa = isCasa();
     document.querySelectorAll('#lmatTool [data-edif]').forEach(el => { el.hidden = casa; });
@@ -63,6 +75,15 @@
       $('lmGas').value = $('lgRef').value === 'cozinha' ? 'glp' : 'nenhum';
       return syncTipo();
     }
+    const P = perfil();
+    if (P) {
+      types = [{ ...P.ini, varanda: false }];
+      $('lmPav').value = 8; $('lmPe').value = P.pe; $('lmCist').value = 'com'; $('lmHres').value = 2.5;
+      $('lmAq').value = P.aq; $('lmGas').value = 'nenhum'; $('lmMed').checked = false;
+      $('lmSalao').value = 0; $('lmLavCol').value = 0; $('lmChur').value = 'nenhuma'; $('lmPisc').value = 0;
+      return syncTipo();
+    }
+    if (!isGalpao() && types[0] && Object.values(PERFIS).some(x => x.ini.nome === types[0].nome.replace(/ \d+$/, ''))) types = [{ ...blank(0) }];
     const casa = isCasa();
     $('lmPav').value = casa ? 2 : 8; $('lmPe').value = casa ? 3 : 2.88; $('lmCist').value = casa ? 'sem' : 'com'; $('lmHres').value = casa ? 1 : 2.5;
     if (casa && $('lmGas').value === 'gn') $('lmGas').value = 'p13';
@@ -629,7 +650,8 @@
 
     // Água fria: pesos, colunas e barrilete calculados antes da lista, para a verificação de pressão.
     // Caminho crítico: fundo do reservatório superior → barrilete → coluna → distribuição → chuveiro do último pavimento
-    const pesoDe = t => Math.round(t.ban) * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + Math.round(t.lav) * 0.6 + 0.7 + 1 + 0.7 + 1 + (t.varanda ? 0.7 : 0);
+    const PF = perfil(), EXT = PF ? PF.extra : 2;   // ambientes molhados além dos banheiros (cozinha e serviço no residencial)
+    const pesoDe = t => Math.round(t.ban) * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + Math.round(t.lav) * 0.6 + (EXT === 2 ? 0.7 + 1 + 0.7 + 1 : EXT * 0.7) + (t.varanda && !PF ? 0.7 : 0);
     const hRes = Math.max(0, parseFloat($('lmHres').value) || 0);   // fundo do reservatório superior acima da laje de cobertura
     const cargaAF = pe + hRes - 2;                                  // até a saída do chuveiro, a 2 m do piso do último pavimento
     const iRam = dimPipes[matAF].findIndex(([n]) => n.startsWith('25 mm')), qChu = 0.3 * Math.sqrt(hot ? 0.4 : 0.1);
@@ -662,19 +684,19 @@
       `${casa ? "Fundo da caixa d'água" : 'Fundo do reservatório superior'} a ${num(hRes, 1)} m acima da laje de cobertura`, 'Hidrômetro individual');
 
     for (const t of tp) {
-      const U = casa ? t.n : t.n * pav, ban = Math.round(t.ban), lav = Math.round(t.lav), vr = t.varanda ? 1 : 0;
+      const U = casa ? t.n : t.n * pav, ban = Math.round(t.ban), lav = Math.round(t.lav), vr = t.varanda && !PF ? 1 : 0;
       const sq = Math.sqrt(Math.max(20, t.area));
-      units += U; unitsPerFloor += casa ? 0 : t.n; pop += U * Math.max(2, 2 * t.dorm);
+      units += U; unitsPerFloor += casa ? 0 : t.n; pop += U * (PF ? Math.max(1, t.dorm) : Math.max(2, 2 * t.dorm));
       plate += casa ? t.n * t.area / pav * 1.1 : t.n * t.area * 1.2;
       // Pontos por unidade
-      const areas = ban + lav + 2 + vr;              // banheiros, lavabos, cozinha, serviço, varanda
-      const fria = ban * 4 + lav * 2 + 2 + 2 + vr;    // bacia, lavatório, chuveiro, ducha | bacia, lavatório | pia, lava-louça | tanque, máquina | pia
-      const qAreas = hot ? ban + 1 : 0, quente = hot ? ban * 2 + 1 : 0;
-      const gPts = hasGas ? 1 + (aq === 'gas' ? 1 : 0) + (chur === 'gas' ? vr : 0) : 0;
+      const areas = ban + lav + EXT + vr;            // banheiros, lavabos, cozinha e serviço (ou copa), varanda
+      const fria = ban * 4 + lav * 2 + (EXT === 2 ? 4 : EXT) + vr;    // bacia, lavatório, chuveiro, ducha | bacia, lavatório | pia, lava-louça, tanque, máquina (ou pia da copa) | pia
+      const qAreas = hot ? ban + (EXT ? 1 : 0) : 0, quente = hot ? ban * 2 + (EXT ? 1 : 0) : 0;
+      const gPts = hasGas ? (PF ? 0 : 1) + (aq === 'gas' ? 1 : 0) + (chur === 'gas' ? vr : 0) : 0;
       const peso = pesoDe(t);
       ptF += fria * U; ptQ += quente * U; ptG += gPts * U; pesoTot += peso * U;
-      uhc += U * (ban * (6 + 1 + 2) + lav * 7 + 3 + 2 + 3 + 3 + vr * 3);
-      nTQ += (casa ? (pav > 1 ? ban + lav : 0) : ban + lav) * t.n; nCoz += t.n; nVar += vr * t.n;
+      uhc += U * (ban * (6 + 1 + 2) + lav * 7 + (EXT === 2 ? 3 + 2 + 3 + 3 : EXT * 3) + vr * 3);
+      nTQ += (casa ? (pav > 1 ? ban + lav : 0) : ban + lav) * t.n; nCoz += t.n * EXT / 2; nVar += vr * t.n;
       aptArea += t.area * U; if (chur !== 'nenhuma') nChurVar += vr * U;
 
       // Água fria
@@ -728,11 +750,11 @@
       }
 
       // Esgoto (dentro da unidade)
-      const n40 = ban * 2 + lav + 2 + vr, n50 = ban + lav + 2 + vr;
+      const n40 = ban * 2 + lav + EXT + vr, n50 = ban + lav + EXT + vr;
       esg(E_, 100, (ban + lav) * 2 * U);
       esg(E_, 50, n50 * 1.5 * U);
       esg(E_, 40, n40 * 1.2 * U);
-      add(E_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', (ban + lav + 1) * U);
+      add(E_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', (ban + lav + (EXT ? 1 : 0)) * U);
       add(E_, 'Ralo seco 100 mm (box)', ban * U);
       add(E_, 'Ralo sifonado 100 x 40 mm', vr * U);
       add(E_, 'Joelho 90° esgoto 100 mm', (ban + lav) * U);
@@ -754,17 +776,22 @@
         add(L_, hot ? 'Misturador de lavatório' : 'Torneira de lavatório', bac * U, 'un', { loss: false });
         add(L_, hot ? 'Chuveiro / ducha (água quente)' : 'Chuveiro elétrico', ban * U, 'un', { loss: false });
         add(L_, 'Ducha higiênica com registro', ban * U, 'un', { loss: false });
-        add(L_, 'Cuba de cozinha', (1 + vr) * U, 'un', { loss: false });
-        add(L_, hot ? 'Misturador de cozinha' : 'Torneira de cozinha', (1 + vr) * U, 'un', { loss: false });
-        add(L_, 'Tanque com torneira', U, 'un', { loss: false });
-        add(L_, 'Torneira para máquina de lavar', U, 'un', { loss: false });
-        add(L_, 'Sifão', (bac + 2 + vr) * U, 'un', { loss: false });
-        add(L_, 'Válvula de escoamento', (bac + 2 + vr) * U, 'un', { loss: false });
-        add(L_, 'Engate flexível', (bac * (hot ? 3 : 2) + (1 + vr) * (hot ? 2 : 1)) * U, 'un', { loss: false });
+        const cubas = (EXT ? 1 : 0) + vr;
+        add(L_, PF ? 'Cuba de copa' : 'Cuba de cozinha', cubas * U, 'un', { loss: false });
+        add(L_, hot ? 'Misturador de cozinha' : 'Torneira de cozinha', cubas * U, 'un', { loss: false });
+        if (EXT === 2) { add(L_, 'Tanque com torneira', U, 'un', { loss: false }); add(L_, 'Torneira para máquina de lavar', U, 'un', { loss: false }); }
+        add(L_, 'Sifão', (bac + EXT + vr) * U, 'un', { loss: false });
+        add(L_, 'Válvula de escoamento', (bac + EXT + vr) * U, 'un', { loss: false });
+        add(L_, 'Engate flexível', (bac * (hot ? 3 : 2) + cubas * (hot ? 2 : 1)) * U, 'un', { loss: false });
       }
     }
 
-    const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (casa ? 150 : 200); // L/dia
+    const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (PF ? PF.cons : casa ? 150 : 200); // L/dia
+    if (PF) {
+      warn.push(`${PF.nome}: ${PF.consNota}, valores usuais da literatura de instalações prediais. Confirme com o programa de necessidades do empreendimento.`);
+      if (PF.extra === 0) warn.push(`${PF.nome}: a lista cobre os quartos, as colunas e o barrilete. Cozinha industrial, lavanderia${PF === PERFIS.hospital ? ', gases medicinais, central de esterilização' : ''} e áreas técnicas entram pelo projeto específico.`);
+      else warn.push(`${PF.nome}: sanitários e copa por sala. Sanitários coletivos por andar, auditórios e restaurante entram pelo projeto específico.`);
+    }
     const R_ = 'Reservação e recalque', P_ = 'Águas pluviais', I_ = 'Combate a incêndio', C_ = 'Áreas comuns', F_ = 'Consumíveis e fixação';
     let vertical = 0, horizontal = 0;
 
@@ -960,7 +987,7 @@
         const b = bG + bA, floors = garFloors + (spk === 'todo' ? pav + 1 : 0);
         nBicos = b;
         add(S_, 'Bico de sprinkler 68 °C K80 1/2" — garagem (upright ou pendente)', bG, 'un', { note: ev ? `Inclui as ${ev} vagas com recarga de veículos elétricos` : '', loss: false });
-        add(S_, 'Bico de sprinkler residencial 68 °C 1/2" — apartamentos e circulações', bA, 'un', { loss: false });
+        add(S_, PF && PF !== PERFIS.hotel ? `Bico de sprinkler spray padrão 68 °C 1/2" — ${PF.sing === 'sala' ? 'salas' : 'quartos'} e circulações` : `Bico de sprinkler residencial 68 °C 1/2" — ${PF ? 'quartos' : 'apartamentos'} e circulações`, bA, 'un', { loss: false });
         add(S_, 'Bicos de reserva com armário e chave de troca', Math.max(6, Math.ceil(b * 0.02)), 'un', { loss: false });
         // ramais de 1" e 1 1/4" sempre roscados (galvanizados); subgerais, prumada e barrilete conforme o material escolhido
         add(S_, 'Tubo de aço galvanizado 1" (DN 25) — ramais de sprinklers', b * 3, 'm', { pack: ['barra', 6] });
@@ -1141,7 +1168,7 @@
     const rows = build();
 
     const stats = [
-      [casa ? 'Casas' : 'Unidades', int(units)], ['População estimada', `${int(pop)} pessoas`],
+      [casa ? 'Casas' : PF ? PF.un.replace(' por andar', '') : 'Unidades', int(units)], [PF === PERFIS.hospital ? 'Leitos' : 'População estimada', `${int(pop)} ${PF === PERFIS.hospital ? 'leitos' : 'pessoas'}`],
       ['Consumo diário', `${num(cons / 1000, 1)} m³`], ['Vazão de projeto', `${num(0.3 * Math.sqrt(pesoTot))} L/s`],
       ['Pontos de água fria', int(ptF)], ['Pontos de água quente', int(ptQ)], ['Pontos de gás', int(ptG)],
       [casa ? 'Altura da casa' : 'Altura do edifício', `${num(H, 1)} m`],
@@ -1161,8 +1188,8 @@
     if (!last) { out.hidden = true; return; }
     out.hidden = false;
     const nome = $('lmNome').value.trim();
-    $('lmOutTitle').textContent = last.titulo ? (nome || last.titulo) + last.subtitulo : (nome || (last.casa ? 'Conjunto de casas' : 'Edifício residencial')) +
-      (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo, ${int(last.units)} unidades`);
+    $('lmOutTitle').textContent = last.titulo ? (nome || last.titulo) + last.subtitulo : (nome || (last.casa ? 'Conjunto de casas' : perfil() ? perfil().nome : 'Edifício residencial')) +
+      (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo, ${int(last.units)} ${perfil() ? perfil().sing + 's' : 'unidades'}`);
     $('lmStats').innerHTML = last.stats.map(([k, v]) => `<div><span>${k}</span><strong>${v}</strong></div>`).join('');
     $('lmPres').innerHTML = presHTML(last.pres);
     $('lmWarn').innerHTML = last.warn.map(w => `<p class="hint warn">${esc(w)}</p>`).join('');
