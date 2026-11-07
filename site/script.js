@@ -734,9 +734,15 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
   const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const badge = { ABNT: 'ABNT NBR', NR: 'NR · grátis', NFPA: 'NFPA', ASME: 'ASME', ASTM: 'ASTM', ISO: 'ISO', API: 'API', ASHRAE: 'ASHRAE' };
 
+  // edição e situação das NBR (normas.js); as normas estrangeiras e as NR não levam a marca
+  const edicao = code => {
+    const sit = typeof NORM_SITUACAO !== 'undefined' && NORM_SITUACAO[code], ed = typeof NORM_EDICAO !== 'undefined' && NORM_EDICAO[code];
+    if (sit) return `<span class="nrm__ed nrm__ed--fora">${sit}</span>`;
+    return ed ? `<span class="nrm__ed" title="Edição em vigor, conferida em 07/11/2026">Vigente · ${ed}</span>` : '';
+  };
   const row = n => `
     <article class="nrm__item">
-      <div class="nrm__code"><b class="notranslate" translate="no">${n.code}</b><span class="nrm__org nrm__org--${n.org}">${badge[n.org]}</span></div>
+      <div class="nrm__code"><b class="notranslate" translate="no">${n.code}</b><span class="nrm__org nrm__org--${n.org}">${badge[n.org]}</span>${edicao(n.code)}</div>
       <div class="nrm__text"><p class="nrm__title">${n.title}</p>${n.note ? `<p class="nrm__note">${n.note}</p>` : ''}</div>
       <a class="nrm__btn" href="${normUrl(n)}" target="_blank" rel="noopener noreferrer">${NORM_SOURCES[n.org].action} ↗</a>
     </article>`;

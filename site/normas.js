@@ -2,7 +2,7 @@
 // org define o link: ABNT → página da norma no ABNT Catálogo (resumo, preço e compra);
 // NR → texto oficial gratuito (gov.br); NFPA → página oficial com leitura gratuita on-line;
 // ASTM, ASME, ISO, API e ASHRAE → página oficial da entidade (resumo e compra).
-// Títulos e situação das NBR conferidos no ABNT Catálogo em 17/10/2026.
+// Títulos das NBR conferidos no ABNT Catálogo em 17/10/2026; edição e situação na Target em 07/11/2026 (NORM_EDICAO).
 const NORM_GROUPS = [
   // ---------- Normas usadas pelas ferramentas de cálculo do site ----------
   { id: 'dimensionamento', tipo: 'aplicacao', name: 'Dimensionamento Inteligente (normas usadas nos cálculos)', normas: [
@@ -21,7 +21,8 @@ const NORM_GROUPS = [
     { code: 'NBR 15705', org: 'ABNT', title: 'Instalações hidráulicas prediais — Registro de gaveta — Requisitos e métodos de ensaio', note: 'No Dimensionamento Inteligente: registros de gaveta dos ambientes, colunas, barrilete e recalque.' },
     { code: 'NBR 15704-1', org: 'ABNT', title: 'Registro — Requisitos e métodos de ensaio — Parte 1: Registros de pressão', note: 'No Dimensionamento Inteligente: registros de pressão dos chuveiros.' },
     { code: 'NBR 14799', org: 'ABNT', title: 'Reservatório com corpo em polietileno, com tampa em polietileno ou em polipropileno, para água potável, com volume nominal de até 3 000 L (inclusive) — Requisitos e métodos de ensaio', note: 'No Dimensionamento Inteligente: caixas d’água e cisternas de polietileno das casas.' },
-    { code: 'NBR 15097-1', org: 'ABNT', title: 'Aparelhos sanitários de material cerâmico — Parte 1: Requisitos e métodos de ensaios', note: 'No Dimensionamento Inteligente: bacias, lavatórios e tanques de louça. Confira no ABNT Catálogo a edição vigente.' },
+    { code: 'NBR 15097-1', org: 'ABNT', title: 'Aparelhos sanitários de material cerâmico — Parte 1: Requisitos e métodos de ensaios', note: 'No Dimensionamento Inteligente: lavatórios e tanques de louça. Substituída em 05/2019; para bacias sanitárias vale a NBR 16727-1.' },
+    { code: 'NBR 16727-1', org: 'ABNT', title: 'Bacia sanitária — Parte 1: Requisitos e métodos de ensaio', note: 'Substituiu a NBR 15097-1 para as bacias sanitárias.' },
     { code: 'NBR 9050', org: 'ABNT', title: 'Acessibilidade a edificações, mobiliário, espaços e equipamentos urbanos', note: 'No Dimensionamento Inteligente: sanitários acessíveis (PNE) das áreas comuns.' },
     { code: 'NBR 8160', org: 'ABNT', title: 'Sistemas prediais de esgoto sanitário — Projeto e execução', note: 'No Dimensionamento Inteligente: unidades Hunter de contribuição (UHC), diâmetro do coletor predial, colunas, ventilação, caixas sifonadas, de gordura e de inspeção.' },
     { code: 'NBR 5688', org: 'ABNT', title: 'Tubos e conexões de PVC-U para sistemas prediais de água pluvial, esgoto sanitário e ventilação', note: 'No Dimensionamento Inteligente: tubos e conexões de esgoto (série normal) e águas pluviais (série R).' },
@@ -53,7 +54,8 @@ const NORM_GROUPS = [
     { code: 'NBR 15569', org: 'ABNT', title: 'Sistema de aquecimento solar de água em circuito direto — Requisitos de projeto e instalação' },
     { code: 'NBR 15704-1', org: 'ABNT', title: 'Registro — Requisitos e métodos de ensaio — Parte 1: Registros de pressão' },
     { code: 'NBR 14799', org: 'ABNT', title: 'Reservatório com corpo em polietileno, com tampa em polietileno ou em polipropileno, para água potável, com volume nominal de até 3 000 L (inclusive) — Requisitos e métodos de ensaio' },
-    { code: 'NBR 15097-1', org: 'ABNT', title: 'Aparelhos sanitários de material cerâmico — Parte 1: Requisitos e métodos de ensaios', note: 'Confira no ABNT Catálogo a edição vigente.' },
+    { code: 'NBR 15097-1', org: 'ABNT', title: 'Aparelhos sanitários de material cerâmico — Parte 1: Requisitos e métodos de ensaios', note: 'Substituída em 05/2019; para bacias sanitárias vale a NBR 16727-1.' },
+    { code: 'NBR 16727-1', org: 'ABNT', title: 'Bacia sanitária — Parte 1: Requisitos e métodos de ensaio', note: 'Substituiu a NBR 15097-1 para as bacias sanitárias.' },
     { code: 'NBR 10339', org: 'ABNT', title: 'Piscina — Projeto, execução e manutenção' },
     { code: 'NBR 9050', org: 'ABNT', title: 'Acessibilidade a edificações, mobiliário, espaços e equipamentos urbanos', note: 'Sanitários acessíveis, barras de apoio e alturas de louças e metais.' },
     { code: 'NBR 15345', org: 'ABNT', title: 'Instalação predial de tubos e conexões de cobre e ligas de cobre — Procedimento' },
@@ -93,7 +95,6 @@ const NORM_GROUPS = [
   ]},
   { id: 'saneamento', tipo: 'aplicacao', name: 'Saneamento e redes públicas', normas: [
     { code: 'NBR 12211', org: 'ABNT', title: 'Estudos de concepção de sistemas públicos de abastecimento de água' },
-    { code: 'NBR 12215', org: 'ABNT', title: 'Projeto de adutora de água para abastecimento público' },
     { code: 'NBR 12218', org: 'ABNT', title: 'Projeto de rede de distribuição de água para abastecimento público — Procedimento' },
     { code: 'NBR 12215-1', org: 'ABNT', title: 'Projeto de adutora de água — Parte 1: Conduto forçado' },
     { code: 'NBR 9649', org: 'ABNT', title: 'Projeto de redes coletoras de esgoto sanitário — Procedimento' },
@@ -198,6 +199,67 @@ const NORM_GROUPS = [
 ];
 
 // Páginas de cada NBR no ABNT Catálogo (resumo oficial, preço e compra).
+// Edição (mês/ano da publicação) e situação de cada NBR, conferidas na busca da Target (normas.com.br) em 07/11/2026.
+// NORM_SITUACAO marca as normas que não estão mais em vigor.
+const NORM_EDICAO = {
+  'NBR 5626': '06/2020',
+  'NBR 5648': '12/2018',
+  'NBR 15813-1': '12/2018',
+  'NBR 15884-1': '10/2010',
+  'NBR 15939-1': '08/2023',
+  'NBR 13206': '05/2010',
+  'NBR 11720': '05/2010',
+  'NBR 5580': '09/2015',
+  'NBR 6943': '02/2025',
+  'NBR NM ISO 7-1': '02/2000',
+  'NBR 15705': '05/2009',
+  'NBR 15704-1': '03/2011',
+  'NBR 14799': '02/2026',
+  'NBR 9050': '08/2020',
+  'NBR 8160': '09/1999',
+  'NBR 5688': '12/2018',
+  'NBR 10844': '12/1989',
+  'NBR 10339': '09/2018',
+  'NBR 15526': '12/2012',
+  'NBR 14177': '06/2008',
+  'NBR 8473': '05/2005',
+  'NBR 13523': '02/2019',
+  'NBR 13103': '03/2024',
+  'NBR 13714': '01/2000',
+  'NBR 11861': '10/1998',
+  'NBR 10897': '09/2020',
+  'NBR 14105-1': '03/2013',
+  'NBR 16069': '04/2018',
+  'NBR 15575-6': '09/2021',
+  'NBR 15575-1': '12/2025',
+  'NBR 14037': '01/2024',
+  'NBR 5674': '01/2024',
+  'NBR 15569': '06/2021',
+  'NBR 15345': '11/2013',
+  'NBR 17076': '04/2024',
+  'NBR 16783': '11/2019',
+  'NBR 14462-1': '11/2016',
+  'NBR 12779': '01/2009',
+  'NBR 12211': '04/1992',
+  'NBR 12218': '05/2017',
+  'NBR 12215-1': '11/2017',
+  'NBR 9649': '11/1986',
+  'NBR 12214': '07/2020',
+  'NBR 16401-1': '11/2024',
+  'NBR 16655-1': '02/2018',
+  'NBR 16655-2': '02/2018',
+  'NBR 17505-1': '02/2013',
+  'NBR 12188': '03/2016',
+  'NBR 12176': '08/2026',
+  'NBR 15561': '01/2024',
+  'NBR 5590': '10/2015',
+  'NBR 7675': '08/2026',
+  'NBR 15527': '04/2019',
+  'NBR 6493': '11/2019',
+  'NBR 16727-1': '10/2025',
+};
+const NORM_SITUACAO = { 'NBR 15097-1': 'Substituída em 05/2019' };
+
 const ABNT_URLS = {
   'NBR 5580': 'https://www.abntcatalogo.com.br/pnm.aspx?Q=RUgrTDUvODd4VXJYaU9yK2ZmMWVNcU43Z1RlcHJTZ2FaenQ5SUk0d1BITT0=',
   'NBR 5590': 'https://www.abntcatalogo.com.br/pnm.aspx?Q=a0RXcW1kS3VIM3ZWRVdNOGdGV0REQ0hZRjdQa3ZRcXY5UmMrYXhySzVhND0=',

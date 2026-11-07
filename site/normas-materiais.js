@@ -34,7 +34,8 @@ const NORMAS_MATERIAIS = [
   [/^Manômetro/, 'ABNT NBR 14105-1'],
   [/^Válvula angular|^Abrigo para mangueira|^Esguicho|^Chave de mangueira|^Registro de recalque|^Bomba de reforço|^Válvula de retenção 2 1\/2"/, 'ABNT NBR 13714 (sistema)'],
   // Louças, áreas especiais e drenagem
-  [/^Bacia|^Lavatório|^Tanque/, 'ABNT NBR 15097-1'],
+  [/^Bacia/, 'ABNT NBR 16727-1'],
+  [/^Lavatório|^Tanque/, 'ABNT NBR 15097-1'],
   [/^Cisterna de água de chuva|não potável|^Filtro autolimpante|^Dispositivo de descarte|^Freio d'água|^Clorador de pastilhas/, 'ABNT NBR 15527 (sistema)'],
   [/piscina|^Skimmer|^Dispositivo de (retorno|aspiração)|^Ralo de fundo|^Clorador \/ dosador/, 'ABNT NBR 10339 (sistema)'],
   [/^Válvula de retenção|^Registro de esfera/, 'ABNT NBR 5626 (sistema)'],
