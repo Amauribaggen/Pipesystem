@@ -744,7 +744,7 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
     <article class="nrm__item">
       <div class="nrm__code"><b class="notranslate" translate="no">${n.code}</b><span class="nrm__org nrm__org--${n.org}">${badge[n.org]}</span>${edicao(n.code)}</div>
       <div class="nrm__text"><p class="nrm__title">${n.title}</p>${n.note ? `<p class="nrm__note">${n.note}</p>` : ''}</div>
-      <a class="nrm__btn" href="${normUrl(n)}" target="_blank" rel="noopener noreferrer">${NORM_SOURCES[n.org].action} ↗</a>
+      <div class="nrm__acao"><a class="nrm__btn" href="${normUrl(n)}" target="_blank" rel="noopener noreferrer">${NORM_SOURCES[n.org].action} ↗</a>${/abntcatalogo\.com\.br/.test(normUrl(n)) ? '<small class="nrm__aviso">O ABNT Catálogo pode mostrar "link expirado": clique em Continuar e faça a verificação.</small>' : ''}</div>
     </article>`;
 
   function renderGroups() {
