@@ -276,6 +276,7 @@ function renderMaterial(m) {
     ${p ? tabelasHTML(p.tabelas) : ''}
     <h4>Dados técnicos</h4>
     <table class="specs"><tbody>${m.specs.map(([k, v]) => `<tr><th>${k}</th><td>${linkNorms(v)}</td></tr>`).join('')}</tbody></table>
+    ${tabelasHTML(m.tabelas)}
     ${p ? `<div class="prod__cols">
       <div><h4>Tipos</h4><ul>${list(p.tipos)}</ul></div>
       <div><h4>Como escolher</h4><ul>${list(p.escolha)}</ul></div>
@@ -304,7 +305,7 @@ function openProduct(id) {
   const s = systemById[id], m = materialById[id];
   if (s || m) {
     s ? renderSystem(s) : renderMaterial(m);
-    sheet.classList.toggle('sheet--wide', !!(m && productById[m.rel] && productById[m.rel].tabelas));
+    sheet.classList.toggle('sheet--wide', !!(m && ((productById[m.rel] && productById[m.rel].tabelas) || m.tabelas)));
     if (!sheet.open) sheet.showModal();
     setSheetTitle(id);
     sheet.scrollTop = 0;

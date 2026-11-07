@@ -266,6 +266,7 @@ export function generate(D, outDir) {
       ${p ? tabelasHTML(p.tabelas, linkNorms) : ''}
       <h2 class="page__h">Dados técnicos</h2>
       <table class="specs"><tbody>${m.specs.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${linkNorms(v)}</td></tr>`).join('')}</tbody></table>
+      ${tabelasHTML(m.tabelas, linkNorms)}
       ${p ? `<div class="prod__cols">
         <section><h2 class="page__h">Tipos</h2><ul>${list(p.tipos, linkNorms)}</ul></section>
         <section><h2 class="page__h">Como escolher</h2><ul>${list(p.escolha, linkNorms)}</ul></section>
@@ -292,7 +293,7 @@ export function generate(D, outDir) {
     const imgs = fotos ? fotos.map(f => abs(f.src)) : foto ? [abs(foto.src)] : [];
     const capa = fotos ? fotos[0] : foto;
     pages.push({ url, images: imgs, html: page({
-      url, body, wide: !!(p && p.tabelas), reviewed: D.revisaoData(m),
+      url, body, wide: !!((p && p.tabelas) || m.tabelas), reviewed: D.revisaoData(m),
       title: `${m.name} — dados técnicos, tipos, normas e fabricantes | PipeSystem`,
       description: cut(`${plain(m.desc)} Dados técnicos, normas e ${importers ? 'importadores' : 'fabricantes'}.`, 158),
       image: capa && abs(capa.src), imageAlt: capa && capa.alt, keywords: [...new Set([m.name, m.cat, ...normas, ...(m.chaves || []), ...fabs.map(f => f[0])])].join(', '),
