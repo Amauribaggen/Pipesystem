@@ -1078,6 +1078,101 @@
           <p class="hint" id="velHint"></p>
         </div>
 
+        <div class="tool tool--wide" id="calcTrechos">
+          <h3>Água fria trecho a trecho — pressão até o ponto mais desfavorável</h3>
+          <p class="hint">Monte o caminho do reservatório até o ponto mais desfavorável, um trecho por linha. Em cada trecho: soma dos pesos dos aparelhos que ele abastece, diâmetro, comprimento real, comprimento equivalente das conexões e desnível (positivo quando o tubo desce). Vazão por Q = 0,3 √ΣP e perda por Fair-Whipple-Hsiao, como na edição de 1998 da NBR 5626: confira com a edição vigente, de 2020.</p>
+          <div class="form">
+            <label>Material
+              <select id="trMat"><option value="pvc">PVC soldável</option><option value="cobre">Cobre</option><option value="ppr">PPR</option><option value="aco">Aço galvanizado</option></select>
+            </label>
+            <label>Pressão disponível no início <span>mca (ex.: nível da água acima da saída do reservatório)</span><input type="number" id="trP0" value="2" step="0.1"></label>
+            <label>Pressão mínima no ponto <span>mca</span><input type="number" id="trPmin" value="1" min="0" step="0.1"></label>
+            <label>Quantidade de trechos<input type="number" id="trN" value="4" min="1" max="15" step="1"></label>
+          </div>
+          <div class="trtab" tabindex="0" role="region" aria-label="Trechos da tubulação">
+            <table class="trtab__t">
+              <thead><tr><th>Trecho</th><th>ΣP pesos</th><th>Diâmetro</th><th>Compr. real (m)</th><th>Compr. equiv. (m)</th><th>Desnível (m)</th><th>Q (L/s)</th><th>v (m/s)</th><th>Perda (mca)</th><th>Pressão no fim (mca)</th></tr></thead>
+              <tbody id="trRows"></tbody>
+            </table>
+          </div>
+          <p class="trtab__acoes"><button type="button" class="btn btn--ghost" id="trMais">+ Trecho</button> <button type="button" class="btn btn--ghost" id="trMenos">− Último trecho</button></p>
+          <div class="results">
+            <div><span>Pressão no fim do último trecho</span><strong id="trPfim">—</strong></div>
+            <div><span>Perda de carga total</span><strong id="trPerda">—</strong></div>
+            <div><span>Maior velocidade</span><strong id="trVmax">—</strong></div>
+          </div>
+          <p class="hint" id="trHint"></p>
+        </div>
+
+        <div class="tool" id="calcSpk">
+          <h3>Sprinklers — área de operação e bico mais desfavorável</h3>
+          <p class="hint">Valores de exemplo: use a densidade, a área de operação e a área máxima por bico da classe de risco (NBR 10897 ou Instrução Técnica do estado) e o fator K do bico escolhido.</p>
+          <div class="form">
+            <label>Densidade <span>mm/min (L/min por m²)</span><input type="number" id="spDens" value="5" min="0" step="0.1"></label>
+            <label>Área de operação <span>m²</span><input type="number" id="spArea" value="140" min="0" step="1"></label>
+            <label>Área coberta por bico <span>m²</span><input type="number" id="spAbico" value="12" min="0" step="0.5"></label>
+            <label>Fator K do bico <span>L/min/bar^½</span><input type="number" id="spK" value="80" min="0" step="1"></label>
+            <label>Pressão mínima no bico <span>bar</span><input type="number" id="spPmin" value="0.5" min="0" step="0.05"></label>
+            <label>Reserva para hidrantes e mangotinhos <span>L/min</span><input type="number" id="spRes" value="0" min="0" step="10"></label>
+          </div>
+          <div class="results">
+            <div><span>Bicos na área de operação</span><strong id="spN">—</strong></div>
+            <div><span>Vazão no bico mais desfavorável</span><strong id="spQb">—</strong></div>
+            <div><span>Pressão no bico mais desfavorável</span><strong id="spPb">—</strong></div>
+            <div><span>Vazão total estimada</span><strong id="spQt">—</strong></div>
+          </div>
+          <p class="hint" id="spHint"></p>
+        </div>
+
+        <div class="tool" id="calcHid">
+          <h3>Hidrante mais desfavorável — altura na bomba</h3>
+          <p class="hint">Valores de exemplo: vazão e pressão no esguicho, hidrantes simultâneos e mangueira conforme a NBR 13714 e a Instrução Técnica do estado. Perdas por Hazen-Williams.</p>
+          <div class="form">
+            <label>Vazão no esguicho <span>L/min</span><input type="number" id="hiQ" value="250" min="0" step="10"></label>
+            <label>Pressão no esguicho <span>mca</span><input type="number" id="hiP" value="40" min="0" step="1"></label>
+            <label>Hidrantes simultâneos<input type="number" id="hiN" value="2" min="1" step="1"></label>
+            <label>Mangueira: diâmetro interno <span>mm</span><input type="number" id="hiDm" value="40" min="1" step="1"></label>
+            <label>Mangueira: comprimento <span>m</span><input type="number" id="hiLm" value="30" min="0" step="1"></label>
+            <label>Mangueira: coeficiente C<input type="number" id="hiCm" value="140" min="1" step="5"></label>
+            <label>Tubulação: diâmetro interno <span>mm</span><input type="number" id="hiDt" value="63" min="1" step="1"></label>
+            <label>Tubulação: comprimento real <span>m</span><input type="number" id="hiLt" value="80" min="0" step="1"></label>
+            <label>Tubulação: comprimento equivalente <span>m</span><input type="number" id="hiLe" value="30" min="0" step="1"></label>
+            <label>Tubulação: coeficiente C<input type="number" id="hiCt" value="120" min="1" step="5"></label>
+            <label>Desnível da bomba ao hidrante <span>m (positivo quando o hidrante está acima)</span><input type="number" id="hiZ" value="15" step="0.5"></label>
+          </div>
+          <div class="results">
+            <div><span>Perda na mangueira</span><strong id="hiHm">—</strong></div>
+            <div><span>Perda na tubulação</span><strong id="hiHt">—</strong></div>
+            <div><span>Altura que a bomba precisa entregar</span><strong id="hiH">—</strong></div>
+            <div><span>Vazão da bomba</span><strong id="hiQt">—</strong></div>
+          </div>
+          <p class="hint" id="hiHint"></p>
+        </div>
+
+        <div class="tool tool--wide" id="calcPto">
+          <h3>Curva da bomba × curva do sistema — ponto de operação</h3>
+          <p class="hint">Copie três pontos da curva do fabricante (altura com vazão zero e dois pontos da faixa de trabalho) e descreva a tubulação. Valores de exemplo.</p>
+          <div class="form">
+            <label>Bomba: altura com vazão zero <span>mca</span><input type="number" id="ptH0" value="45" min="0" step="0.5"></label>
+            <label>Bomba: vazão Q1 <span>m³/h</span><input type="number" id="ptQ1" value="10" min="0" step="0.5"></label>
+            <label>Bomba: altura em Q1 <span>mca</span><input type="number" id="ptH1" value="40" min="0" step="0.5"></label>
+            <label>Bomba: vazão Q2 <span>m³/h</span><input type="number" id="ptQ2" value="20" min="0" step="0.5"></label>
+            <label>Bomba: altura em Q2 <span>mca</span><input type="number" id="ptH2" value="28" min="0" step="0.5"></label>
+            <label>Sistema: desnível geométrico <span>m</span><input type="number" id="ptHg" value="15" step="0.5"></label>
+            <label>Sistema: comprimento total <span>m (real + equivalente)</span><input type="number" id="ptL" value="120" min="0" step="1"></label>
+            <label>Sistema: diâmetro interno <span>mm</span><input type="number" id="ptD" value="52.5" min="1" step="0.5"></label>
+            <label>Sistema: coeficiente C<input type="number" id="ptC" value="120" min="1" step="5"></label>
+          </div>
+          <div class="results">
+            <div><span>Vazão no ponto de operação</span><strong id="ptQ">—</strong></div>
+            <div><span>Altura no ponto de operação</span><strong id="ptH">—</strong></div>
+            <div><span>Altura estática do sistema</span><strong id="ptHs">—</strong></div>
+          </div>
+          <svg class="pt__svg" id="ptSvg" viewBox="0 0 320 180" role="img" aria-label="Gráfico da curva da bomba e da curva do sistema"></svg>
+          <p class="pt__leg"><span class="pt__l pt__l--b"></span> Bomba <span class="pt__l pt__l--s"></span> Sistema</p>
+          <p class="hint" id="ptHint"></p>
+        </div>
+
         <div class="tool" id="calcDarcy">
           <h3>Perda de carga — Darcy-Weisbach (qualquer fluido)</h3>
           <div class="form">

@@ -1,7 +1,8 @@
 // Calculadoras de projeto (seção Dimensionamento): esgoto (NBR 8160), calhas e condutores (NBR 10844),
 // gás (NBR 15526), bombas (altura manométrica e NPSH), comprimentos equivalentes, golpe de aríete, aquecimento,
 // velocidade, Darcy-Weisbach, dilatação, reservatório (NBR 5626), vaso de expansão, água de chuva (NBR 15527),
-// tanque séptico (NBR 7229) e espessura de parede (ASME B31.3).
+// tanque séptico (NBR 7229), espessura de parede (ASME B31.3), água fria trecho a trecho, sprinklers, hidrante
+// mais desfavorável e ponto de operação da bomba.
 // Resultados indicativos: o projeto final segue as normas completas e o cálculo do projetista.
 (() => {
   const $ = id => document.getElementById(id);
@@ -338,4 +339,137 @@
     hint('epHint', 'A tensão admissível S depende do material e da temperatura de projeto: confira na Tabela A-1 da ASME B31.3 (aço-carbono A106 Gr. B e A53 Gr. B ficam em torno de 138 MPa até cerca de 200 °C). Fórmula para t < D/6; acima disso, ou com cargas externas, vácuo e flexão, o cálculo é mais completo. Verificação de apoio, não substitui o projeto.', tn > s80);
   }
   on('calcEsp', calcEsp);
+
+  // ---------- 17. Água fria trecho a trecho: pressão em cada trecho até o ponto mais desfavorável ----------
+  // Q = 0,3 √ΣP e perda por Fair-Whipple-Hsiao (dimPipes e dimJ do script.js, as mesmas da calculadora de água fria)
+  if ($('calcTrechos') && typeof dimPipes !== 'undefined') {
+    const TR_INI = [['Barrilete', 20, 3, 8, 4, 0], ['Coluna', 12, 2, 9, 3, 6], ['Ramal', 2.4, 1, 6, 4, 0], ['Sub-ramal do chuveiro', 0.4, 0, 2, 2, -1.8]];
+    const trBody = $('trRows');
+    const opcoes = (mat, sel) => dimPipes[mat].map(([nome], i) => `<option value="${i}"${i === sel ? ' selected' : ''}>${nome}</option>`).join('');
+    const linha = ([nome, sp, d, L, Le, h], mat) => `<tr>
+        <td><input type="text" value="${nome}" aria-label="Nome do trecho"></td>
+        <td><input type="number" value="${sp}" min="0" step="0.1" aria-label="Soma dos pesos"></td>
+        <td><select aria-label="Diâmetro">${opcoes(mat, d)}</select></td>
+        <td><input type="number" value="${L}" min="0" step="0.1" aria-label="Comprimento real (m)"></td>
+        <td><input type="number" value="${Le}" min="0" step="0.1" aria-label="Comprimento equivalente das conexões (m)"></td>
+        <td><input type="number" value="${h}" step="0.1" aria-label="Desnível (m), positivo quando desce"></td>
+        <td class="tr__q">—</td><td class="tr__v">—</td><td class="tr__hf">—</td><td class="tr__p">—</td></tr>`;
+    // a quantidade de trechos fica num campo (trN), para o link com os valores reconstruir a tabela antes de preencher
+    const monta = qtd => {
+      const mat = $('trMat').value, atuais = [...trBody.rows].map(r => [...r.querySelectorAll('input, select')].map(el => el.value));
+      const dados = Array.from({ length: qtd }, (_, i) => atuais[i] ? [atuais[i][0], atuais[i][1], Math.min(+atuais[i][2], dimPipes[mat].length - 1), atuais[i][3], atuais[i][4], atuais[i][5]] : (TR_INI[i] || [`Trecho ${i + 1}`, 1, 1, 5, 2, 0]));
+      trBody.innerHTML = dados.map(d => linha(d, mat)).join('');
+    };
+    function calcTrechos() {
+      const mat = $('trMat').value, qtd = Math.max(1, Math.min(15, Math.round(v('trN')) || 1));
+      if (trBody.rows.length !== qtd) monta(qtd);
+      let p = v('trP0'), estatica = v('trP0'), perda = 0, vmax = 0, pior = null;
+      [...trBody.rows].forEach(r => {
+        const [nomeEl, spEl, dEl, lEl, leEl, hEl] = r.querySelectorAll('input, select');
+        const sp = parseFloat(spEl.value) || 0, [, D] = dimPipes[mat][+dEl.value] || dimPipes[mat][0];
+        const L = (parseFloat(lEl.value) || 0) + (parseFloat(leEl.value) || 0), h = parseFloat(hEl.value) || 0;
+        const Q = 0.3 * Math.sqrt(sp), vel = 4 * Q / 1000 / (Math.PI * Math.pow(D / 1000, 2));
+        const hf = sp > 0 ? dimJ(mat, Q, D) / 9.80665 * L : 0;
+        p += h - hf; estatica += h; perda += hf;
+        if (vel > vmax) vmax = vel;
+        if (!pior || p < pior[1]) pior = [nomeEl.value, p];
+        r.querySelector('.tr__q').textContent = n(Q, 2);
+        r.querySelector('.tr__v').textContent = n(vel, 2);
+        r.querySelector('.tr__v').classList.toggle('warn', vel > 3);
+        r.querySelector('.tr__hf').textContent = n(hf, 2);
+        r.querySelector('.tr__p').textContent = n(p, 2);
+        r.querySelector('.tr__p').classList.toggle('warn', p < v('trPmin'));
+      });
+      set('trPfim', `${n(p, 2)} mca (${n(p * 9.80665, 1)} kPa)`);
+      set('trPerda', `${n(perda, 2)} mca`);
+      set('trVmax', `${n(vmax, 2)} m/s`);
+      const avisos = [];
+      if (pior[1] < v('trPmin')) avisos.push(`A pressão fica abaixo do mínimo de ${n(v('trPmin'), 1)} mca no trecho "${pior[0]}": aumente o diâmetro dos trechos com mais perda, eleve o reservatório ou preveja pressurização.`);
+      if (vmax > 3) avisos.push('Há trecho com velocidade acima de 3 m/s, o limite da NBR 5626: aumente o diâmetro.');
+      if (estatica > 40) avisos.push(`A pressão estática chega a ${n(estatica, 1)} mca, acima de 40 mca (400 kPa): preveja válvula redutora de pressão.`);
+      hint('trHint', avisos.length ? avisos.join(' ') : 'Pressão acima do mínimo em todos os trechos, velocidade dentro de 3 m/s e pressão estática abaixo de 40 mca.', avisos.length > 0);
+    }
+    $('trMat').addEventListener('change', () => { monta(trBody.rows.length); calcTrechos(); });
+    $('trMais').addEventListener('click', () => { $('trN').value = Math.min(15, v('trN') + 1); calcTrechos(); });
+    $('trMenos').addEventListener('click', () => { $('trN').value = Math.max(1, v('trN') - 1); calcTrechos(); });
+    monta(v('trN'));
+    on('calcTrechos', calcTrechos);
+  }
+
+  // perda de carga por Hazen-Williams em metros: Q em L/s, D em mm, L em m
+  const hwPerda = (Q, D, C, L) => Q > 0 && D > 0 && C > 0 ? 10.67 * Math.pow(Q / 1000, 1.852) / (Math.pow(C, 1.852) * Math.pow(D / 1000, 4.87)) * L : 0;
+
+  // ---------- 18. Sprinklers: bicos na área de operação, Q = K √P no bico e vazão total ----------
+  if ($('calcSpk')) {
+    function calcSpk() {
+      const dens = v('spDens'), area = v('spArea'), abico = v('spAbico'), K = v('spK'), Pmin = v('spPmin'), reserva = v('spRes');
+      if (!(dens > 0 && area > 0 && abico > 0 && K > 0)) { ['spN', 'spQb', 'spPb', 'spQt'].forEach(id => set(id, '—')); return; }
+      const nb = Math.ceil(area / abico);                       // bicos que abrem na área de operação
+      const qDens = dens * abico;                               // L/min por bico para atender a densidade
+      const pDens = Math.pow(qDens / K, 2);                     // bar, de Q = K √P
+      const pb = Math.max(pDens, Pmin), qb = K * Math.sqrt(pb);
+      const qt = nb * qb + reserva;
+      set('spN', `${nb} bicos`);
+      set('spQb', `${n(qb, 1)} L/min`);
+      set('spPb', `${n(pb, 2)} bar (${n(pb * 10.197, 1)} mca)`);
+      set('spQt', `${n(qt, 0)} L/min (${n(qt * 0.06, 1)} m³/h)`);
+      hint('spHint', `${pDens < Pmin ? `A densidade pediria só ${n(pDens, 2)} bar: vale a pressão mínima informada. ` : ''}A vazão total supõe todos os bicos da área na vazão do bico mais desfavorável e soma ${n(reserva, 0)} L/min de hidrantes e mangotinhos. Os bicos mais próximos da bomba recebem mais pressão e mais vazão: o cálculo hidráulico completo, bico a bico, é que define a vazão e a pressão da bomba. Densidade, área de operação e área máxima por bico vêm da classe de risco da NBR 10897 ou da Instrução Técnica do estado.`, pDens < Pmin);
+    }
+    on('calcSpk', calcSpk);
+  }
+
+  // ---------- 19. Hidrante mais desfavorável: esguicho + mangueira + tubulação até a bomba ----------
+  if ($('calcHid')) {
+    function calcHid() {
+      const qe = v('hiQ') / 60, pe = v('hiP'), nh = Math.max(1, Math.round(v('hiN')));     // L/s por hidrante, mca no esguicho
+      const hm = hwPerda(qe, v('hiDm'), v('hiCm'), v('hiLm'));                                  // mangueira (um hidrante)
+      const qt = qe * nh, ht = hwPerda(qt, v('hiDt'), v('hiCt'), v('hiLt') + v('hiLe'));       // tubulação com a vazão somada
+      const H = pe + hm + ht + v('hiZ');
+      if (!(qe > 0)) { ['hiHm', 'hiHt', 'hiH', 'hiQt'].forEach(id => set(id, '—')); return; }
+      const vt = 4 * qt / 1000 / (Math.PI * Math.pow(v('hiDt') / 1000, 2));
+      set('hiHm', `${n(hm, 2)} mca`);
+      set('hiHt', `${n(ht, 2)} mca (v = ${n(vt, 2)} m/s)`);
+      set('hiH', `${n(H, 1)} mca (${n(H * 9.80665, 0)} kPa)`);
+      set('hiQt', `${n(qt * 60, 0)} L/min (${n(qt * 3.6, 1)} m³/h)`);
+      hint('hiHint', `${vt > 5 ? 'Velocidade alta na tubulação: aumente o diâmetro. ' : ''}A bomba precisa entregar pelo menos ${n(qt * 3.6, 1)} m³/h com ${n(H, 1)} mca, somando a pressão no esguicho, a perda na mangueira e na tubulação e o desnível. Vazão e pressão no esguicho, quantidade de hidrantes simultâneos e tipo de mangueira vêm da NBR 13714 e da Instrução Técnica do Corpo de Bombeiros do estado.`, vt > 5);
+    }
+    on('calcHid', calcHid);
+  }
+
+  // ---------- 20. Curva da bomba × curva do sistema: ponto de operação ----------
+  if ($('calcPto')) {
+    function calcPto() {
+      // curva da bomba por três pontos (Q em m³/h, H em mca): H = a + b Q + c Q²
+      const P = [[0, v('ptH0')], [v('ptQ1'), v('ptH1')], [v('ptQ2'), v('ptH2')]];
+      const [[x0, y0], [x1, y1], [x2, y2]] = P;
+      const den = (x0 - x1) * (x0 - x2) * (x1 - x2);
+      const svg = $('ptSvg');
+      if (!(x1 > 0 && x2 > x1 && y0 > 0) || !den) { ['ptQ', 'ptH', 'ptHs'].forEach(id => set(id, '—')); svg.innerHTML = ''; hint('ptHint', 'Informe a altura com vazão zero e dois pontos da curva do fabricante, com Q2 maior que Q1.', true); return; }
+      const c = (x2 * (y1 - y0) + x1 * (y0 - y2) + x0 * (y2 - y1)) / den;
+      const b = (x2 * x2 * (y0 - y1) + x1 * x1 * (y2 - y0) + x0 * x0 * (y1 - y2)) / den;
+      const a = (x1 * x2 * (x1 - x2) * y0 + x2 * x0 * (x2 - x0) * y1 + x0 * x1 * (x0 - x1) * y2) / den;
+      const bomba = q => a + b * q + c * q * q;
+      // curva do sistema: desnível + perda por Hazen-Williams no comprimento total
+      const Hg = v('ptHg'), sistema = q => Hg + hwPerda(q / 3.6, v('ptD'), v('ptC'), v('ptL'));
+      // ponto de operação: bisseção onde bomba(q) = sistema(q)
+      let lo = 0, hi = x2 * 2, ok = bomba(lo) > sistema(lo);
+      for (let i = 0; i < 80 && ok; i++) { const m = (lo + hi) / 2; if (bomba(m) > sistema(m)) lo = m; else hi = m; }
+      const qop = (lo + hi) / 2, hop = sistema(qop);
+      const cruza = ok && bomba(hi) <= sistema(hi) + 0.01;
+      set('ptQ', cruza ? `${n(qop, 1)} m³/h (${n(qop / 3.6, 2)} L/s)` : '—');
+      set('ptH', cruza ? `${n(hop, 1)} mca` : '—');
+      set('ptHs', `${n(Hg, 1)} mca`);
+      // gráfico simples em SVG
+      const W = 320, H = 180, qmax = x2 * 1.4, hmax = Math.max(y0, sistema(qmax)) * 1.1;
+      const X = q => 34 + q / qmax * (W - 44), Y = h => H - 24 - Math.max(0, h) / hmax * (H - 34);
+      const curva = f => Array.from({ length: 41 }, (_, i) => { const q = qmax * i / 40; return `${X(q).toFixed(1)},${Y(f(q)).toFixed(1)}`; }).join(' ');
+      svg.innerHTML = `<line x1="34" y1="${H - 24}" x2="${W - 6}" y2="${H - 24}" class="pt__eixo"/><line x1="34" y1="8" x2="34" y2="${H - 24}" class="pt__eixo"/>
+        <text x="${W - 6}" y="${H - 8}" text-anchor="end" class="pt__txt">Q (m³/h)</text><text x="38" y="16" class="pt__txt">H (mca)</text>
+        <polyline points="${curva(bomba)}" class="pt__bomba"/><polyline points="${curva(sistema)}" class="pt__sist"/>
+        ${cruza ? `<circle cx="${X(qop).toFixed(1)}" cy="${Y(hop).toFixed(1)}" r="5" class="pt__op"/><text x="${(X(qop) + 8).toFixed(1)}" y="${(Y(hop) - 8).toFixed(1)}" class="pt__txt">${n(qop, 1)} m³/h · ${n(hop, 1)} mca</text>` : ''}`;
+      hint('ptHint', cruza ? `A bomba trabalha onde as curvas se cruzam. Confira no catálogo se esse ponto fica perto do melhor rendimento e se o NPSH disponível supera o requerido. Curva da bomba ajustada por uma parábola pelos três pontos informados; perda do sistema por Hazen-Williams no comprimento total (real + equivalente).`
+        : 'As curvas não se cruzam na faixa da bomba: o sistema pede mais altura do que a bomba entrega. Escolha outra bomba ou reduza a perda (diâmetro maior).', !cruza);
+    }
+    on('calcPto', calcPto);
+  }
 })();

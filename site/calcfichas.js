@@ -4,6 +4,7 @@
 // [id da calculadora, nome, categoria, para que serve, norma ou base de cálculo]
 const CALCS = [
   ['dimTool', 'Dimensionamento hidráulico — água fria', 'Água fria e quente', 'Vazão de projeto por pesos e diâmetro dos trechos de água fria.', 'NBR 5626 (método de 1998)'],
+  ['calcTrechos', 'Água fria trecho a trecho — pressão nos pontos', 'Água fria e quente', 'Vazão, velocidade, perda e pressão em cada trecho até o ponto mais desfavorável.', 'NBR 5626 (método de 1998)'],
   ['calcRes', 'Reservatório de água — volume de reservação', 'Água fria e quente', 'Consumo diário, reservação total e divisão entre reservatórios inferior e superior.', 'NBR 5626'],
   ['calcAq', 'Aquecedor de água — gás, elétrico e solar', 'Água fria e quente', 'Vazão simultânea, potência, aquecedor a gás e volume do boiler.', 'NBR 5626 · NBR 15569'],
   ['calcVexp', 'Vaso de expansão — água quente', 'Água fria e quente', 'Volume de expansão e vaso mínimo para boilers e sistemas fechados.', 'Coeficiente de expansão da água'],
@@ -18,6 +19,9 @@ const CALCS = [
   ['calcVel', 'Velocidade e diâmetro da tubulação', 'Tubulações e bombas', 'Velocidade no tubo e diâmetro mínimo para cada aplicação.', 'Q = v × A'],
   ['calcEq', 'Comprimentos equivalentes — perdas localizadas', 'Tubulações e bombas', 'Perda nas conexões e registros em metros de tubo.', 'Tabelas de comprimento equivalente'],
   ['calcBomba', 'Bombas — altura manométrica e NPSH', 'Tubulações e bombas', 'Altura manométrica, potência e NPSH disponível.', 'Hidráulica de bombas'],
+  ['calcPto', 'Curva da bomba × curva do sistema', 'Tubulações e bombas', 'Ponto de operação da bomba a partir de três pontos da curva do fabricante, com gráfico.', 'Hazen-Williams'],
+  ['calcSpk', 'Sprinklers — área de operação', 'Incêndio', 'Bicos na área de operação, vazão e pressão no bico mais desfavorável (Q = K √P) e vazão total.', 'NBR 10897 (dados da classe de risco)'],
+  ['calcHid', 'Hidrante mais desfavorável', 'Incêndio', 'Perda na mangueira e na tubulação e altura que a bomba de incêndio precisa entregar.', 'NBR 13714 · Hazen-Williams'],
   ['calcGolpe', 'Golpe de aríete', 'Tubulações e bombas', 'Celeridade da onda, sobrepressão e pressão máxima no fechamento.', 'Joukowsky'],
   ['calcEsp', 'Espessura de parede de tubo de aço', 'Industrial', 'Espessura mínima por pressão e corrosão, e o schedule que atende.', 'ASME B31.3'],
   ['calcAmb', 'Aquecimento de ambiente — potência estimada', 'Climatização', 'Potência de aquecimento pelo volume, isolamento e clima.', 'Regra prática por volume'],
@@ -88,9 +92,9 @@ const CALCS = [
   };
   const aplica = (tool, v) => {
     Object.entries(v).filter(([k]) => k.startsWith('seg:')).forEach(([k, val]) => $(k.slice(4))?.querySelector(`[data-k="${val}"]`)?.click());
-    const lista = campos(tool);
+    // a lista é lida de novo a cada campo: um campo (ex.: quantidade de trechos) pode refazer a tabela
     Object.entries(v).filter(([k]) => !k.startsWith('seg:')).forEach(([k, val]) => {
-      const el = k[0] === '@' ? lista[+k.slice(1)] : $(k); if (!el || !tool.contains(el)) return;
+      const el = k[0] === '@' ? campos(tool)[+k.slice(1)] : $(k); if (!el || !tool.contains(el)) return;
       if (el.type === 'checkbox' || el.type === 'radio') el.checked = !!val; else el.value = val;
       el.dispatchEvent(new Event('input', { bubbles: true }));
       el.dispatchEvent(new Event('change', { bubbles: true }));
