@@ -1643,12 +1643,23 @@ const MATERIAL_PHOTOS = {
 const MATERIAL_OF_PRODUCT = Object.fromEntries(CATALOG.filter(m => m.rel).map(m => [m.rel, m.id]));
 
 // Selo de revisão das fichas (sistemas e catálogo). Ao revisar uma ficha, informe a data nela: revisado: 'AAAA-MM-DD'.
-// Sem data própria, vale a data geral abaixo. Critérios na página /politica-editorial.
+// Sem data própria, vale a data da última alteração da ficha (REVISOES, em revisoes.js, gerado do histórico do git)
+// e, por fim, a data geral abaixo. Critérios na página /politica-editorial.
 const REVISAO = { por: 'Equipe Técnica PipeSystem', data: '2026-10-22' };
-const revisaoData = item => item.revisado || REVISAO.data;
+const revisaoData = item => [item.revisado, typeof REVISOES !== 'undefined' && REVISOES[item.id]].filter(Boolean).sort().pop() || REVISAO.data;
+// "Reportar erro": abre o formulário de contato com o assunto e a página já preenchidos
+const linkErro = item => {
+  if (!item.id || !item.name) return '';
+  const url = 'https://www.pipesystem.com.br/' + (item.id.startsWith('mat-') ? 'materiais/' + item.id.slice(4) : 'sistemas/' + item.id.slice(4));
+  const msg = `Página: ${item.name} (${url})
+
+O que está errado e qual a fonte correta:
+`;
+  return ` <a class="review__erro" href="/contato?assunto=${encodeURIComponent('Correção de conteúdo')}&amp;msg=${encodeURIComponent(msg)}">Reportar erro</a>`;
+};
 function revisaoHTML(item) {
-  const mes = new Date(revisaoData(item) + 'T12:00:00').toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  const mes = new Date(revisaoData(item) + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
   return `<p class="review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 2.1 3.2-.3.9 3.1 2.8 1.6-1 3 1 3-2.8 1.6-.9 3.1-3.2-.3L12 22l-2.4-2.1-3.2.3-.9-3.1-2.8-1.6 1-3-1-3 2.8-1.6.9-3.1 3.2.3z"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8" fill="none"/></svg>`
-    + `<span>Revisado pela <b>${REVISAO.por}</b> · atualizado em ${mes}</span> <a href="/politica-editorial">Política Editorial</a></p>`;
+    + `<span>Revisado pela <b>${REVISAO.por}</b> · atualizado em ${mes}</span> <a href="/politica-editorial">Política Editorial</a>${linkErro(item)}</p>`;
 }
 

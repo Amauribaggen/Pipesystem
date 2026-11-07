@@ -70,6 +70,11 @@ const CALCS = [
     $('calcDlgBody').append(tool);
     aberta = tool;
     $('calcDlgCat').textContent = `${info[2]} · ${info[4]}`;
+    const msgErro = `Calculadora: ${info[1]} (https://www.pipesystem.com.br/dimensionamento#${id})
+
+Valores usados, resultado e o que está errado:
+`;
+    if ($('calcErro')) $('calcErro').href = `/contato?assunto=${encodeURIComponent('Correção de conteúdo')}&msg=${encodeURIComponent(msgErro)}`;
     dlg.showModal();
     dlg.scrollTop = 0;
     return true;

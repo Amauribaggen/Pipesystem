@@ -16,7 +16,7 @@ const IDIOMA = readFileSync(new URL('../site/index.html', import.meta.url), 'utf
 
 // ---------- dados ----------
 export function loadData(siteDir) {
-  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'catalog.js', 'bim.js', 'glossario.js', 'sinapi-precos.js', 'comparativos.js', 'logos.js'];
+  const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'revisoes.js', 'catalog.js', 'bim.js', 'glossario.js', 'sinapi-precos.js', 'comparativos.js', 'logos.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
     '\n;({ logoFab, certFab, certNota, PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML, NORM_GROUPS, BIM_LIBS, WEB_TOOLS });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });

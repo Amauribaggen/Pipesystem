@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { BASE, SIZES, loadData, generate, sitemap, ultimasNoticiasHTML } from './pages.mjs';
 import { imageSizes, minify } from './optimize.mjs';
 import { separar } from './secoes.mjs';
+import { gerarRevisoes } from './revisoes.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const src = join(root, 'site');
@@ -16,6 +17,10 @@ if (!existsSync(join(src, 'index.html'))) {
   console.error('Erro: site/index.html não encontrado.');
   process.exit(1);
 }
+
+// Data da última alteração de cada ficha (só com o histórico completo do git; senão vale o site/revisoes.js salvo)
+const nRev = gerarRevisoes();
+if (nRev) console.log(`Datas de revisão atualizadas: ${nRev} fichas`);
 
 rmSync(out, { recursive: true, force: true });
 cpSync(src, out, { recursive: true });
