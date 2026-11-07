@@ -1643,6 +1643,20 @@ const MATERIAL_PHOTOS = {
   'mat-mangueiras': { src: 'img/materiais/mat-mangueiras-bucka-fab.webp', alt: 'Mangueiras de incêndio brancas enroladas com uniões storz', legenda: 'Mangueira de incêndio predial tipo 1', autor: 'Bucka', licenca: 'Divulgação', licUrl: 'https://www.bucka.com.br/mangueiras-de-incendio/mangueira-de-incendio-predial-tipo-1/', fonte: 'https://www.bucka.com.br/mangueiras-de-incendio/mangueira-de-incendio-predial-tipo-1/', fab: true, inteira: true },
 };
 
+// Imagens geradas por IA pela PipeSystem, mostradas abaixo da foto principal da ficha (crédito: "Imagem gerada por IA Pipesystem").
+const MATERIAL_EXTRA = {
+  'mat-cpvc': [{ src: 'img/sistemas/ia-central-agua-quente.webp', alt: 'Central de água quente com reservatórios azuis, bombas de recirculação e tubos de cobre, PPR e CPVC', legenda: 'Central de água quente com rede de CPVC' }],
+  'mat-compressores': [{ src: 'img/sistemas/ia-sala-compressores.webp', alt: 'Sala de compressores com compressores de parafuso, reservatórios azuis, secador e bateria de filtros', legenda: 'Sala de compressores' }],
+  'mat-ar-comprimido': [{ src: 'img/sistemas/ia-sala-compressores.webp', alt: 'Sala de compressores com rede de ar comprimido azul, filtros e purgadores na parede', legenda: 'Rede de ar comprimido na sala de compressores' }],
+  'mat-pex': [{ src: 'img/sistemas/ia-coletores-pex.webp', alt: 'Dois coletores de latão com saídas vermelhas e azuis ligados a dezenas de tubos PEX brancos curvados na parede', legenda: 'Coletores de água quente e fria com tubos PEX' }],
+  'mat-coletores': [{ src: 'img/sistemas/ia-coletores-pex.webp', alt: 'Dois coletores de latão, de água quente e de água fria, com registros vermelhos e azuis e tubos PEX', legenda: 'Coletores de água quente e fria' }],
+  'mat-esfera-tripartida': [{ src: 'img/materiais/ia-esfera-tripartida-explodida.webp', alt: 'Desenho em vista explodida da válvula de esfera tripartida: alavanca, haste, gaxeta, corpo, esfera, sedes de PTFE, juntas, tampas e tirantes', legenda: 'Vista explodida: componentes da válvula tripartida' }],
+  'mat-bombas-incendio': [{ src: 'img/sistemas/ia-casa-bombas-incendio.webp', alt: 'Casa de bombas de incêndio com duas bombas sobre base de concreto e tubulação vermelha', legenda: 'Casa de bombas de incêndio' }],
+  'mat-sprinklers': [{ src: 'img/sistemas/ia-sprinkler-vga.webp', alt: 'Sprinkler na rede vermelha e válvula de governo e alarme com manômetro e chave de fluxo', legenda: 'Sprinkler e válvula de governo e alarme' }],
+  'mat-hidrantes': [{ src: 'img/sistemas/ia-hidrante-abrigo.webp', alt: 'Abrigo vermelho de hidrante com mangueira aduchada, esguicho e válvula angular de latão', legenda: 'Hidrante em abrigo' }],
+};
+const IA_CREDITO = 'Imagem gerada por IA Pipesystem';
+
 // Cada ficha técnica do antigo guia (products.js) agora aparece dentro de um item do catálogo.
 const MATERIAL_OF_PRODUCT = Object.fromEntries(CATALOG.filter(m => m.rel).map(m => [m.rel, m.id]));
 

@@ -193,11 +193,22 @@ if (systemsEl) systemsEl.innerHTML = SYSTEMS.map(s =>
 
 // Galeria de fotos reais com créditos (licenças livres exigem a atribuição)
 // zoom (padrão): clicar na foto abre a imagem ampliada (lightbox.js)
+// créditos: fotos reais (autor e licença) e, à parte, as imagens geradas por IA (ia: true)
+function creditosFotos(fotos) {
+  const reais = fotos.filter(f => !f.ia);
+  const txt = reais.length ? `Fotos: ${reais.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i).map(f => `<a href="${f.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${f.autor}</a> (<a href="${f.licUrl}" target="_blank" rel="noopener noreferrer">${f.licenca}</a>)`).join(', ')}${reais.every(f => f.divulgacao) ? ', imagens de divulgação do fabricante' : ', via Wikimedia Commons'}` : '';
+  return [txt, fotos.some(f => f.ia) ? IA_CREDITO : ''].filter(Boolean).join(' · ');
+}
+// imagens geradas por IA abaixo da foto principal da ficha (MATERIAL_EXTRA)
+const extraHTML = m => (MATERIAL_EXTRA[m.id] || []).map(f => `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar imagem: ${f.legenda}" data-legenda="${f.legenda}">
+      <img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} class="inteira" loading="lazy">
+      <figcaption>${f.legenda} · ${IA_CREDITO}</figcaption>
+    </figure>`).join('');
 function fotosHTML(fotos, titulo = '', zoom = true) {
   if (!fotos) return '';
   return `<figure class="pfotos${zoom ? ' pfotos--zoom' : ''}">${titulo ? `<h4>${titulo}</h4>` : ''}
       <div class="pfotos__grid">${fotos.map(f => `<div class="pfotos__item"${zoom ? ' tabindex="0" role="button" aria-label="Ampliar foto: ' + f.legenda + '"' : ''}><img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} loading="lazy"><span>${f.legenda}</span></div>`).join('')}</div>
-      <figcaption>Fotos: ${fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i).map(f => `<a href="${f.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${f.autor}</a> (<a href="${f.licUrl}" target="_blank" rel="noopener noreferrer">${f.licenca}</a>)`).join(', ')}${fotos.every(f => f.divulgacao) ? ', imagens de divulgação do fabricante' : ', via Wikimedia Commons'}</figcaption>
+      <figcaption>${creditosFotos(fotos)}</figcaption>
     </figure>`;
 }
 
@@ -228,7 +239,7 @@ function renderSystem(s) {
       <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${s.name}">${s.svg}</svg>
       <figcaption>Esquema ilustrativo, sem escala</figcaption>
     </figure>
-    ${fotosHTML(SYSTEM_PHOTOS[s.id], 'Instalações reais')}
+    ${fotosHTML(SYSTEM_PHOTOS[s.id], SYSTEM_PHOTOS[s.id] && SYSTEM_PHOTOS[s.id].some(f => f.ia) ? 'Instalações' : 'Instalações reais')}
     <p class="sheet__desc">${linkNorms(s.desc)}</p>
     <div class="prod__cols">
       <div><h4>Componentes principais</h4><ul>${list(s.componentes)}</ul></div>
@@ -271,7 +282,7 @@ function renderMaterial(m) {
     </figure>` : `<figure class="matfig" style="--m:${m.tone}">
       <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${m.name}">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
       <figcaption>Ilustração representativa</figcaption>
-    </figure>`) : ''}
+    </figure>`) : ''}${extraHTML(m)}
     <p class="sheet__desc">${linkNorms(m.desc)}</p>
     ${p ? tabelasHTML(p.tabelas) : ''}
     <h4>Dados técnicos</h4>

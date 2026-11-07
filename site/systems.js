@@ -461,9 +461,9 @@ const SYSTEM_PHOTOS = {
     { src: 'img/sistemas/sis-combustiveis-2.webp', alt: 'Feixe de dutos de transporte atravessando o campo', legenda: 'Linhas de transporte', autor: 'Kevin Trahar', licenca: 'CC BY-SA 2.0', licUrl: 'https://creativecommons.org/licenses/by-sa/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:BP_oil_pipes_-_geograph.org.uk_-_461650.jpg' },
   ],
   'sis-agua': [
+    { src: 'img/sistemas/ia-central-agua-quente.webp', alt: 'Central de água quente com dois reservatórios azuis, bombas de recirculação e tubos de cobre, PPR e CPVC na parede', legenda: 'Central de água quente', autor: 'PipeSystem', ia: true },
     { src: 'img/sistemas/sis-agua-1.webp', alt: 'Tubulação de cobre de água quente instalada na parede', legenda: 'Rede de cobre', autor: 'Tony Webster', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Water_Pipes_-_Water_Heater.jpg' },
     { src: 'img/sistemas/sis-agua-2.webp', alt: 'Aquecedor de água de acumulação com as ligações de entrada e saída', legenda: 'Aquecedor de acumulação', autor: 'Infrogmation of New Orleans', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Rheem_home_gas_water_heater_tank_-_top_of_tank.jpg' },
-    { src: 'img/sistemas/sis-agua-3.webp', alt: 'Ligações de água fria e quente na base de um aquecedor', legenda: 'Ligações do aquecedor', autor: 'Almanta', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Heater_water_pipes_in_ground.jpg' },
   ],
   'sis-gas': [
     { src: 'img/sistemas/sis-gas-1.webp', alt: 'Medidor de gás com regulador e tubulação na parede externa', legenda: 'Medidor com regulador', autor: 'RadRafe', licenca: 'Public domain', licUrl: 'https://commons.wikimedia.org/wiki/Commons:Licensing#Public_domain', fonte: 'https://commons.wikimedia.org/wiki/File:Gas_meter.JPG' },
@@ -471,9 +471,9 @@ const SYSTEM_PHOTOS = {
     { src: 'img/sistemas/sis-gas-3.webp', alt: 'Regulador de pressão e medidor de gás instalados na fachada', legenda: 'Entrada de gás', autor: 'HomeSpot HQ', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:Gas_Meter_(8845661187).jpg' },
   ],
   'sis-incendio': [
-    { src: 'img/sistemas/sis-incendio-1.webp', alt: 'Casa de bombas de incêndio com tubulação vermelha', legenda: 'Casa de bombas', autor: 'Kgbo', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Fire_Pump_Room,_Brisbane,_2021.jpg' },
-    { src: 'img/sistemas/sis-incendio-2.webp', alt: 'Conjunto de válvulas de governo e alarme de sprinklers', legenda: 'Válvulas de governo', autor: 'Kgbo', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Automatic_Fire_Sprinkler_Systems,_Brisbane,_2021.jpg' },
-    { src: 'img/sistemas/sis-incendio-3.webp', alt: 'Sprinkler instalado em tubulação vermelha de incêndio', legenda: 'Sprinkler na rede', autor: 'Joe5088', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Old_Fire_Sprinkler.jpg' },
+    { src: 'img/sistemas/ia-casa-bombas-incendio.webp', alt: 'Casa de bombas de incêndio com duas bombas sobre base de concreto, tubulação vermelha e válvulas de bloqueio', legenda: 'Casa de bombas', autor: 'PipeSystem', ia: true },
+    { src: 'img/sistemas/ia-sprinkler-vga.webp', alt: 'Sprinkler na rede vermelha e válvula de governo e alarme com manômetro e chave de fluxo', legenda: 'Sprinkler e válvula de governo e alarme', autor: 'PipeSystem', ia: true },
+    { src: 'img/sistemas/ia-hidrante-abrigo.webp', alt: 'Abrigo vermelho de hidrante com mangueira aduchada, esguicho e válvula angular de latão', legenda: 'Hidrante em abrigo', autor: 'PipeSystem', ia: true },
   ],
   'sis-vapor': [
     { src: 'img/sistemas/sis-vapor-1.webp', alt: 'Caldeiras industriais com tubulações de vapor e gás', legenda: 'Casa de caldeiras', autor: 'Governo da Região de Tula', licenca: 'CC BY 4.0', licUrl: 'https://creativecommons.org/licenses/by/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Boiler_room_in_Tula_Oblast.jpg' },
@@ -481,7 +481,7 @@ const SYSTEM_PHOTOS = {
     { src: 'img/sistemas/sis-vapor-3.webp', alt: 'Frente de caldeira com portas da fornalha e tubulações', legenda: 'Fornalha da caldeira', autor: 'Kolforn', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:-2009-09-12_Boiler_room,_Lydia_Eva_Steam_Drifter,_South_Quay,_Great_Yarmouth.JPG' },
   ],
   'sis-ar': [
-    { src: 'img/sistemas/sis-ar-1.webp', alt: 'Compressor de ar instalado em sala de máquinas', legenda: 'Sala de compressores', autor: 'Павел', licenca: 'CC0', licUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en', fonte: 'https://commons.wikimedia.org/wiki/File:EP2K-073_power_room_-_air_compressor.jpg' },
+    { src: 'img/sistemas/ia-sala-compressores.webp', alt: 'Sala de compressores com dois compressores de parafuso, dois reservatórios azuis, secador e bateria de filtros na rede azul', legenda: 'Sala de compressores', autor: 'PipeSystem', ia: true },
     { src: 'img/sistemas/sis-ar-2.webp', alt: 'Compressores de ar de parafuso instalados lado a lado', legenda: 'Compressores de parafuso', autor: 'Elanggroup', licenca: 'CC BY-SA 4.0', licUrl: 'https://creativecommons.org/licenses/by-sa/4.0', fonte: 'https://commons.wikimedia.org/wiki/File:Elang_Compressors_Display.jpg' },
     { src: 'img/sistemas/sis-ar-3.webp', alt: 'Unidade compressora de ar de alta pressão com filtros', legenda: 'Unidade compressora', autor: 'Peter Southwood', licenca: 'CC BY-SA 3.0', licUrl: 'https://creativecommons.org/licenses/by-sa/3.0', fonte: 'https://commons.wikimedia.org/wiki/File:Small_stationary_Bauer_HP_compressor_installation_DSC09403.JPG' },
   ],

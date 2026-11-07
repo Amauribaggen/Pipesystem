@@ -18,7 +18,7 @@ const IDIOMA = readFileSync(new URL('../site/index.html', import.meta.url), 'utf
 export function loadData(siteDir) {
   const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'revisoes.js', 'catalog.js', 'bim.js', 'glossario.js', 'sinapi-precos.js', 'comparativos.js', 'logos.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ logoFab, certFab, certNota, PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML, NORM_GROUPS, BIM_LIBS, WEB_TOOLS });';
+    '\n;({ logoFab, certFab, certNota, PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_EXTRA, IA_CREDITO, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML, NORM_GROUPS, BIM_LIBS, WEB_TOOLS });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -42,11 +42,13 @@ export const pathOf = {
 // zoom (padrão): clicar na foto abre a imagem ampliada (site/lightbox.js)
 function fotosHTML(fotos, titulo = '', zoom = true) {
   if (!fotos || !fotos.length) return '';
-  const credits = fotos.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i)
+  const reais = fotos.filter(f => !f.ia);   // ia: true = imagem gerada por IA (crédito à parte)
+  const credits = reais.filter((f, i, a) => a.findIndex(x => x.autor === f.autor && x.licenca === f.licenca) === i)
     .map(f => `<a href="${esc(f.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(f.autor)}</a> (<a href="${esc(f.licUrl)}" target="_blank" rel="noopener noreferrer">${esc(f.licenca)}</a>)`).join(', ');
+  const legenda = [reais.length ? `Fotos: ${credits}${reais.every(f => f.divulgacao) ? ', imagens de divulgação do fabricante' : ', via Wikimedia Commons'}` : '', fotos.some(f => f.ia) ? 'Imagem gerada por IA Pipesystem' : ''].filter(Boolean).join(' · ');
   return `<figure class="pfotos${zoom ? ' pfotos--zoom' : ''}">${titulo ? `<h2 class="page__h">${titulo}</h2>` : ''}
       <div class="pfotos__grid">${fotos.map((f, i) => `<div class="pfotos__item"${zoom ? ' tabindex="0" role="button" aria-label="Ampliar foto: ' + esc(plain(f.legenda)) + '"' : ''}><img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)}${i ? ' loading="lazy"' : ''} decoding="async"><span>${f.legenda}</span></div>`).join('')}</div>
-      <figcaption>Fotos: ${credits}${fotos.every(f => f.divulgacao) ? ', imagens de divulgação do fabricante' : ', via Wikimedia Commons'}</figcaption>
+      <figcaption>${legenda}</figcaption>
     </figure>`;
 }
 function tabelasHTML(tabelas, linkNorms) {
@@ -220,7 +222,7 @@ export function generate(D, outDir) {
         <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${esc(s.name)}">${svg}</svg>
         <figcaption>Esquema ilustrativo, sem escala</figcaption>
       </figure>
-      ${fotosHTML(fotos, 'Instalações reais')}
+      ${fotosHTML(fotos, fotos.some(f => f.ia) ? 'Instalações' : 'Instalações reais')}
       <p class="sheet__desc page__lead">${linkNorms(s.desc)}</p>
       <div class="prod__cols">
         <section><h2 class="page__h">Componentes principais</h2><ul>${list(s.componentes, linkNorms)}</ul></section>
@@ -261,7 +263,10 @@ export function generate(D, outDir) {
       </figure>`;
     const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">${esc(m.name)}</h1></div><button type="button" class="sheet__print" data-imprimir>Imprimir ficha</button></div>
       ${D.revisaoHTML(m)}
-      ${fig}
+      ${fig}${(D.MATERIAL_EXTRA[m.id] || []).map(f => `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar imagem: ${esc(plain(f.legenda))}" data-legenda="${esc(plain(f.legenda))}">
+        <img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)} class="inteira" loading="lazy" decoding="async">
+        <figcaption>${f.legenda} · ${D.IA_CREDITO}</figcaption>
+      </figure>`).join('')}
       <p class="sheet__desc page__lead">${linkNorms(m.desc)}</p>
       ${p ? tabelasHTML(p.tabelas, linkNorms) : ''}
       <h2 class="page__h">Dados técnicos</h2>
