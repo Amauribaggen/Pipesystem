@@ -1305,23 +1305,55 @@
     return new Blob([...parts, ...dir, e], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   }
   const xe = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  // fabricantes de cada material, pela ficha do catálogo (MANUFACTURERS em catalog.js): até 4, nacionais primeiro
+  const FAB_FICHA = [
+    [/^Tubo PVC soldável|^Conexões soldáveis/i, 'mat-pvc'], [/esgoto|^Junção|^Caixa sifonada|^Ralo/i, 'mat-pvc-esgoto'],
+    [/PPR/, 'mat-ppr'], [/CPVC/, 'mat-cpvc'], [/PE-RT|PEX/, 'mat-pex'], [/PEAD corrugado/i, 'mat-corrugados'], [/PEAD/, 'mat-pe'],
+    [/cobre/i, 'mat-cobre'], [/galvaniz/i, 'mat-galv'], [/ranhurad/i, 'mat-grooved'], [/Tubo de aço/i, 'mat-aco'], [/alumínio/i, 'mat-ar-comprimido'],
+    [/Registro de gaveta/i, 'mat-gaveta'], [/Registro de esfera|Válvula de esfera|Válvula de bloqueio/i, 'mat-esfera-monobloco'], [/Registro de pressão/i, 'mat-registros'],
+    [/Válvula de retenção/i, 'mat-retencao'], [/Válvula redutora/i, 'mat-redutora'], [/Regulador de pressão/i, 'mat-reguladores'],
+    [/Válvula de governo|pré-ação/i, 'mat-acessorios-sprinkler'], [/sprinkler/i, 'mat-sprinklers'], [/Registro de recalque|Válvula angular/i, 'mat-valvula-hidrante'],
+    [/Abrigo para mangueira|Esguicho|Chave de mangueira/i, 'mat-hidrantes'], [/Mangueira de incêndio/i, 'mat-mangueiras'],
+    [/motobomba|Pressurizador/i, 'mat-bombas'], [/Hidrômetro/i, 'mat-hidrometros'], [/Torneira de boia|Válvula de nível|Chave-boia/i, 'mat-boia'],
+    [/Reservatório de ar|Secador de ar/i, 'mat-compressores'], [/Reservatório|Caixa d|Cisterna/i, 'mat-reservatorios'],
+    [/Caixa de (inspeção|gordura|areia)|Poço de visita/i, 'mat-caixas-inspecao'], [/Caixa separadora/i, 'mat-separador'],
+    [/Flexível|Engate flexível/i, 'mat-flexiveis'], [/Isolamento térmico/i, 'mat-isolamento'], [/Suporte de tubulação|Abraçadeira|Trilho/i, 'mat-suportes'],
+    [/Filtro/i, 'mat-filtros'], [/Manômetro/i, 'mat-medidores'], [/Sifão|Válvula de escoamento/i, 'mat-sifoes'],
+    [/Torneira|Cuba|Lavatório|Bacia|Mictório|Ducha|Tanque/i, 'mat-metais'],
+    [/Fita veda-rosca|Anel de vedação/i, 'mat-vedantes'], [/Purgador/i, 'mat-purgadores'], [/Tampão de teste/i, 'mat-teste'], [/Kit cavalete/i, 'mat-cavaletes'],
+  ];
+  function fabricantesDe(item) {
+    if (typeof MANUFACTURERS === 'undefined') return '';
+    const hit = FAB_FICHA.find(([re]) => re.test(item));
+    const lista = hit && MANUFACTURERS[hit[1]];
+    if (!lista) return '';
+    const ordem = { N: 0, M: 1, I: 2 };
+    return [...lista].sort((a, b) => ordem[a[2]] - ordem[b[2]]).slice(0, 4).map(f => f[0] + (f[2] === 'N' ? '' : f[2] === 'M' ? ' (importador)' : ' (internacional)')).join('; ');
+  }
   // sin (opcional): preços SINAPI do estado escolhido → preenche o preço e acrescenta as colunas de fonte
   function xlsx(sin, data = last, title = $('lmOutTitle').textContent) {
-    // estilos: 1 título, 2 cabeçalho, 3 preço (a preencher), 4 moeda, 5 grupo, 6 total, 7 nota
+    // estilos: 1 título, 2 cabeçalho, 3 preço (a preencher), 4 moeda, 5 grupo, 6 total, 7 nota, 8 número com 2 casas
     const rows = [], cell = (ref, v, st = 0) => v === '' ? `<c r="${ref}" s="${st}"/>` : typeof v === 'number' ? `<c r="${ref}" s="${st}"><v>${v}</v></c>`
       : v && v.f ? `<c r="${ref}" s="${st}"><f>${xe(v.f)}</f></c>` : `<c r="${ref}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${xe(v ?? '')}</t></is></c>`;
     const row = (r, cells) => rows.push(`<row r="${r}">${cells.map(([c, v, st]) => cell(c + r, v, st)).join('')}</row>`);
     row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + title + (sin ? ` — preços SINAPI ${SINAPI_PRECOS.ref}, ${sin.uf}` : ''), 1]]);
     row(2, [['A', sin ? `Preços de referência de material do SINAPI (Caixa), ${SINAPI_PRECOS.ref}, sem desoneração, ${UF_NOMES[sin.uf]}. Sem mão de obra, BDI e frete, salvo indicação. Itens "sem referência" ficam em branco: preencha com cotação.`
       : 'Lista orientativa. Preencha a coluna "Preço unitário": os totais por item, por grupo e o total geral são calculados automaticamente.', 7]]);
-    const cols = sin ? 'ABCDEFGHIJ' : 'ABCDEFGH';
-    row(4, ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Norma', 'Observação', 'Fonte do preço', 'Link para conferência'].slice(0, cols.length).map((t, i) => [cols[i], t, 2]));
+    // colunas: base (A–H); com SINAPI, fonte, link, código do insumo e horas de mão de obra; sempre, fabricantes e código do fabricante para cotação
+    const heads = ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Norma', 'Observação',
+      ...(sin ? ['Fonte do preço', 'Link para conferência', 'Código SINAPI (insumo)', 'Encanador (h/un)', 'Auxiliar (h/un)', 'Horas de mão de obra'] : []),
+      'Fabricantes (ficha PipeSystem, nacionais primeiro)', 'Código do fabricante (preencher)'];
+    const cols = heads.map((_, i) => String.fromCharCode(65 + i)), cx = Object.fromEntries(heads.map((h, i) => [h, cols[i]]));
+    const [cH1, cH2, cHt, cFab, cCod] = [cx['Encanador (h/un)'], cx['Auxiliar (h/un)'], cx['Horas de mão de obra'], cols.at(-2), cols.at(-1)];
+    row(4, heads.map((t, i) => [cols[i], t, 2]));
     let r = 5;
     const first = r;
     for (const it of data.rows) {
       const p = sin && sin.prices.get(it);
       row(r, [['A', it.group], ['B', it.item], ['C', it.qty], ['D', it.un], ['E', p ? p.p : '', 3], ['F', { f: `IF(E${r}="","",C${r}*E${r})` }, 4], ['G', it.norma || ''], ['H', it.note],
-        ...(sin ? [['I', p ? p.fonte : 'Sem referência SINAPI — cotar com fornecedores'], ['J', p ? p.url : '']] : [])]);
+        ...(sin ? [['I', p ? p.fonte : 'Sem referência SINAPI — cotar com fornecedores'], ['J', p ? p.url : ''], ['K', p && p.cod ? p.cod : ''],
+          [cH1, p && p.hh ? +p.hh[0].toFixed(4) : ''], [cH2, p && p.hh ? +p.hh[1].toFixed(4) : ''], [cHt, p && p.hh ? { f: `C${r}*(${cH1}${r}+${cH2}${r})` } : '', 8]] : []),
+        [cFab, fabricantesDe(it.item)], [cCod, '', 3]]);
       r++;
     }
     const lastR = r - 1;
@@ -1331,8 +1363,24 @@
       row(r++, [['B', g], ['F', { f: `SUMIF($A$${first}:$A$${lastR},"${g.replace(/"/g, '""')}",$F$${first}:$F$${lastR})` }, 4]]);
     r++;
     row(r, [['B', 'TOTAL GERAL', 6], ['F', { f: `SUM(F${first}:F${lastR})` }, 6]]);
-    row(r + 2, [['A', 'Gerado em pipesystem.com.br. Não substitui o projeto hidráulico.', 7]]);
-    const widths = [30, 62, 9, 6, 18, 18, 24, 48, 80, 60].slice(0, cols.length);
+    if (sin) {
+      const mo = maoDeObra(data.rows, sin.prices, sin.uf);
+      r += 2;
+      row(r++, [['A', 'Mão de obra de instalação (produtividade SINAPI)', 5], ['B', '', 5], ['C', '', 5], ['D', '', 5], ['E', '', 5], ['F', '', 5], ['G', '', 5]]);
+      const rP = r;
+      row(r++, [['B', 'Horas de encanador'], ['C', { f: `SUMPRODUCT(C${first}:C${lastR},${cH1}${first}:${cH1}${lastR})` }, 8]]);
+      row(r++, [['B', 'Horas de auxiliar de encanador'], ['C', { f: `SUMPRODUCT(C${first}:C${lastR},${cH2}${first}:${cH2}${lastR})` }, 8]]);
+      if (mo.hp) {
+        row(r++, [['B', `Custo da hora do encanador com encargos (SINAPI ${SINAPI_PRECOS.hora.prof.cod}, ${sin.uf})`], ['E', mo.hp, 4]]);
+        row(r++, [['B', `Custo da hora do auxiliar com encargos (SINAPI ${SINAPI_PRECOS.hora.aux.cod}, ${sin.uf})`], ['E', mo.ha, 4]]);
+        row(r++, [['B', 'MÃO DE OBRA ESTIMADA', 6], ['F', { f: `C${rP}*E${rP + 2}+C${rP + 1}*E${rP + 3}` }, 6]]);
+      }
+      row(r++, [['A', `Horas por unidade das composições analíticas do SINAPI ${SINAPI_PRECOS.ref} em que o material é o item principal (mediana). Equipamentos, louças e itens sem composição ficam sem horas. Sem rasgos, enchimentos, BDI e deslocamento.`, 7]]);
+    }
+    row(r + 2, [['A', 'Gerado em pipesystem.com.br. Não substitui o projeto hidráulico. Fabricantes conforme as fichas do catálogo PipeSystem; preencha o código do produto de cada fabricante para a cotação.', 7]]);
+    const W = { 'Grupo': 30, 'Material': 62, 'Qtd.': 9, 'Un.': 6, 'Preço unitário (R$)': 18, 'Total (R$)': 18, 'Norma': 24, 'Observação': 48, 'Fonte do preço': 80, 'Link para conferência': 60,
+      'Código SINAPI (insumo)': 16, 'Encanador (h/un)': 12, 'Auxiliar (h/un)': 12, 'Horas de mão de obra': 14 };
+    const widths = heads.map(h => W[h] || 40);
     const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">` +
       `<sheetViews><sheetView workbookViewId="0"><pane ySplit="4" topLeftCell="A5" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>` +
       `<cols>${widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('')}</cols>` +
@@ -1345,11 +1393,11 @@
       `<fill><patternFill patternType="solid"><fgColor rgb="FF0A2240"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFF4D6"/></patternFill></fill>` +
       `<fill><patternFill patternType="solid"><fgColor rgb="FFDDF5F8"/></patternFill></fill></fills>` +
       `<borders count="2"><border/><border><left style="thin"><color rgb="FFBFBFBF"/></left><right style="thin"><color rgb="FFBFBFBF"/></right><top style="thin"><color rgb="FFBFBFBF"/></top><bottom style="thin"><color rgb="FFBFBFBF"/></bottom></border></borders>` +
-      `<cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="8"><xf/>` +
+      `<cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="9"><xf/>` +
       `<xf fontId="1" applyFont="1"/><xf fontId="2" fillId="2" applyFont="1" applyFill="1"/>` +
       `<xf numFmtId="164" fillId="3" borderId="1" applyNumberFormat="1" applyFill="1" applyBorder="1"><protection locked="0"/></xf>` +
       `<xf numFmtId="164" applyNumberFormat="1"/><xf fontId="2" fillId="2" applyFont="1" applyFill="1"/>` +
-      `<xf numFmtId="164" fontId="2" fillId="2" applyNumberFormat="1" applyFont="1" applyFill="1"/><xf fontId="3" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+      `<xf numFmtId="164" fontId="2" fillId="2" applyNumberFormat="1" applyFont="1" applyFill="1"/><xf fontId="3" applyFont="1"/><xf numFmtId="2" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
     const iso = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
     return zip([
       ['[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>`],
@@ -1406,9 +1454,12 @@
     if (!spec.s) p /= vals.length;
     p = p * (spec.f || 1) + (spec.mais ? spec.mais.v : 0);
     const med = vals.some(v => v.med);
+    // horas de mão de obra por unidade (SINAPI_PRECOS.prod: [profissional, ajudante]); média ou soma como o preço
+    const hs = codes.map(c => SINAPI_PRECOS.prod && SINAPI_PRECOS.prod[c]).filter(Boolean);
+    const hh = hs.length ? [0, 1].map(i => hs.reduce((t, h) => t + h[i], 0) / (spec.s ? 1 : hs.length) * (spec.f || 1)) : null;   // f: mesma conversão de unidade do preço
     const fonte = `SINAPI ${SINAPI_PRECOS.ref} — ${uf}, ${codes.length > 1 ? (spec.s ? 'soma dos insumos ' : 'média dos insumos ') : 'insumo '}${codes.join(', ')}` +
       (med ? ` (sem preço em ${uf}: mediana dos estados com preço)` : '') + (spec.nota ? `. ${spec.nota}` : '') + (spec.mais ? ` + ${spec.mais.fonte}` : '');
-    return { p: Math.round(p * 100) / 100, fonte, url: SINAPI_PRECOS.fonte + (spec.mais ? ' ; ' + spec.mais.url : ''), med };
+    return { p: Math.round(p * 100) / 100, fonte, url: SINAPI_PRECOS.fonte + (spec.mais ? ' ; ' + spec.mais.url : ''), med, cod: codes.join(', '), hh };
   }
   function priceOf(name, uf) {
     const ui = SINAPI_PRECOS.ufs.indexOf(uf);
@@ -1423,6 +1474,14 @@
     for (const it of rows) { const r = priceOf(it.item, uf); if (r) prices.set(it, r); }
     return prices;
   }
+  // horas de mão de obra e custo estimado da lista (só os itens com produtividade no SINAPI)
+  function maoDeObra(rows, prices, uf) {
+    const ui = SINAPI_PRECOS.ufs.indexOf(uf), H = SINAPI_PRECOS.hora;
+    const hp = H && H.prof.v[ui], ha = H && H.aux.v[ui];
+    let prof = 0, aux = 0, n = 0;
+    for (const it of rows) { const p = prices.get(it); if (p && p.hh) { prof += p.hh[0] * it.qty; aux += p.hh[1] * it.qty; n++; } }
+    return { prof, aux, n, custo: hp && ha ? prof * hp + aux * ha : 0, hp, ha };
+  }
   function renderSinapi() {
     const box = $('lmSinapi'), uf = $('lmUf').value;
     if (!HAS_SINAPI) { box.hidden = true; return; }
@@ -1431,6 +1490,7 @@
     if (!uf || !last) { out.innerHTML = ''; $('lmSinXlsx').hidden = true; return; }
     const prices = priceList(uf), groups = new Map();
     let total = 0, semRef = 0, web = 0;
+    const mo = maoDeObra(last.rows, prices, uf);
     for (const it of last.rows) {
       const g = groups.get(it.group) || { v: 0, n: 0, sem: 0 };
       const p = prices.get(it);
@@ -1443,7 +1503,13 @@
       `<p class="hint">${prices.size} de ${last.rows.length} itens com preço: SINAPI ${SINAPI_PRECOS.ref} (Caixa, sem desoneração, capital do estado)` +
       (web ? `, e ${web} com preço pesquisado na internet` : '') + '.' +
       (semRef ? ` <b>${semRef} ${semRef > 1 ? 'itens ficam' : 'item fica'} sem referência</b> e fora do total: cote com fornecedores.` : '') +
-      ' Só material: sem mão de obra, BDI e frete.</p>';
+      ' Só material: sem mão de obra, BDI e frete.</p>' +
+      (mo.n ? `<div class="lmat__mo"><h5>Mão de obra de instalação (produtividade SINAPI)</h5>` +
+        `<p><b>${num(mo.prof, 0)} h</b> de encanador + <b>${num(mo.aux, 0)} h</b> de auxiliar = <b>${num(mo.prof + mo.aux, 0)} h</b> no total` +
+        (mo.custo ? `, cerca de <b>${brl(mo.custo)}</b> com encargos (horista, ${esc(UF_NOMES[uf])})` : '') + '.</p>' +
+        `<p class="hint">Horas por unidade tiradas das composições analíticas do SINAPI ${SINAPI_PRECOS.ref} em que o material é o item principal (mediana entre as composições). ` +
+        `Cobre ${mo.n} de ${last.rows.length} itens: equipamentos, louças e itens sem composição ficam de fora. Não inclui rasgos, enchimentos, BDI nem deslocamento. ` +
+        `Custo da hora: composições ${SINAPI_PRECOS.hora ? SINAPI_PRECOS.hora.prof.cod + ' e ' + SINAPI_PRECOS.hora.aux.cod : ''} (CSD, sem desoneração).</p></div>` : '');
     $('lmSinXlsx').hidden = false;
     $('lmSinXlsx').textContent = `Baixar planilha com preços SINAPI — ${uf}`;
   }
@@ -1452,6 +1518,10 @@
       SINAPI_PRECOS.ufs.map(u => `<option value="${u}">${u} — ${UF_NOMES[u] || u}</option>`).join('');
     try { const s = localStorage.getItem('lmUf'); if (s && SINAPI_PRECOS.ufs.includes(s)) $('lmUf').value = s; } catch {}
     $('lmSinRef').textContent = `SINAPI ${SINAPI_PRECOS.ref}`;
+    // data-base: mês de referência dos preços e data em que a Caixa publicou a edição
+    const [mm, aa] = SINAPI_PRECOS.ref.split('/');
+    const mesNome = new Date(+aa, +mm - 1, 15).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    $('lmSinBase').innerHTML = `Data-base dos preços: <b>${mesNome}</b> (SINAPI ${SINAPI_PRECOS.ref}, publicado pela Caixa em ${SINAPI_PRECOS.emissao}). Preço mediano na capital do estado, sem desoneração.`;
     $('lmUf').addEventListener('change', () => { try { localStorage.setItem('lmUf', $('lmUf').value); } catch {} renderSinapi(); });
     $('lmSinXlsx').addEventListener('click', () => {
       const uf = $('lmUf').value; if (!uf || !last) return;
