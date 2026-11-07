@@ -2157,3 +2157,22 @@ a.gl:hover { color: var(--teal-d); }
 .lmat__mo { margin-top: 14px; padding: 12px 14px; border: 1px solid rgba(31, 182, 201, .35); border-radius: 10px; background: rgba(31, 182, 201, .06); }
 .lmat__mo h5 { margin: 0 0 6px; }
 .lmat__mo p { margin: 0 0 6px; }
+
+/* Guias práticos: detalhes típicos (SVG desenhado em mm; cores pelo tema) */
+.gpdets { display: grid; gap: 18px; }
+.gpdet { display: grid; grid-template-columns: 1fr; gap: 14px; align-items: start; padding: 16px; border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 12px; }
+.gpdet__fig { background: #fff; border-radius: 8px; padding: 8px; }
+.dt-svg { width: 100%; height: auto; display: block; }
+.dt-svg line, .dt-svg circle, .dt-svg path { fill: none; vector-effect: non-scaling-stroke; }
+.dt-contorno { stroke: #1d2733; stroke-width: 1.6; }
+.dt-tubo { stroke: #1f7fbf; stroke-width: 2.2; }
+.dt-cota { stroke: #8a96a3; stroke-width: 1; }
+.dt-hachura { stroke: #b9c2cc; stroke-width: .8; }
+.dt-eixo { stroke: #c0504d; stroke-width: 1; stroke-dasharray: 8 4 2 4; }
+.dt-txt { font-family: Arial, sans-serif; fill: #1d2733; }
+.dt-cotat { fill: #5b6b80; }
+.gpdet__info h3 { margin: 0 0 6px; }
+.gpdet__norma { font-size: .85rem; opacity: .85; }
+.gpdet__acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.gpdet .btn--ghost { color: #fff; border-color: rgba(255, 255, 255, .45); }
+.gpdet__info p { margin: 0 0 6px; }

@@ -530,18 +530,18 @@ const CHECKS = [
   }
 
   // abas e filtro de tema
-  const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklists e ensaios', CHECKS.length], ['precos', 'Preços', PRECOS.itens.length], ['glossario', 'Glossário', GLOSSARIO.length]];
+  const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklists e ensaios', CHECKS.length], ...(typeof DETALHES !== 'undefined' ? [['detalhes', 'Detalhes típicos', DETALHES.length]] : []), ['precos', 'Preços', PRECOS.itens.length], ['glossario', 'Glossário', GLOSSARIO.length]];
   $('gpTabs').innerHTML = TABS.map(([k, n, c]) => `<button type="button" role="tab" class="gptab" data-tab="${k}" aria-selected="${k === st.tab}">${n}${c ? ` <small>${c}</small>` : ''}</button>`).join('');
   $('gpTemas').innerHTML = GP_TEMAS.map(t => `<button type="button" class="gptema" data-tema="${t}" aria-pressed="false">${t}</button>`).join('');
   const show = () => {
     TABS.forEach(([k]) => { $('gp-' + k).hidden = k !== st.tab; });
     $('gpTabs').querySelectorAll('.gptab').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === st.tab));
-    $('gpTemas').hidden = st.tab === 'check' || st.tab === 'glossario' || st.tab === 'precos';
+    $('gpTemas').hidden = ['check', 'glossario', 'precos', 'detalhes'].includes(st.tab);
     const box = $('gp-' + st.tab);
     let n = 0;
     box.querySelectorAll('[data-tema]').forEach(el => { const on = !st.tema || el.dataset.tema.split('|').includes(st.tema); el.hidden = !on; n += on; });
     box.querySelector('.gpempty')?.remove();
-    if (!n && st.tab !== 'check' && st.tab !== 'glossario' && st.tab !== 'precos') box.insertAdjacentHTML('beforeend', '<p class="gpempty">Ainda não há conteúdo deste tema nesta aba.</p>');
+    if (!n && !['check', 'glossario', 'precos', 'detalhes'].includes(st.tab)) box.insertAdjacentHTML('beforeend', '<p class="gpempty">Ainda não há conteúdo deste tema nesta aba.</p>');
   };
   const setTema = t => { st.tema = t; $('gpTemas').querySelectorAll('.gptema').forEach(x => x.setAttribute('aria-pressed', x.dataset.tema === st.tema)); };
   $('gpTabs').addEventListener('click', e => { const b = e.target.closest('.gptab'); if (b) { st.tab = b.dataset.tab; show(); } });
