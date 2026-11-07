@@ -1661,7 +1661,34 @@ ul.bimbox { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 6
   body.gp-printing #gpCheck, body.gp-printing #gpCheck * { visibility: visible; }
   body.gp-printing #gpCheck { position: absolute; left: 0; top: 0; width: 100%; }
   body.gp-printing .gpcheck__foot button { display: none; }
+  /* "Imprimir relatório": só o relatório de ensaio */
+  body.gp-printing-ens * { visibility: hidden; }
+  body.gp-printing-ens #gpEnsaio, body.gp-printing-ens #gpEnsaio * { visibility: visible; }
+  body.gp-printing-ens #gpEnsaio { position: absolute; left: 0; top: 0; width: 100%; margin: 0; box-shadow: none; }
+  body.gp-printing-ens .gpens__lead, body.gp-printing-ens .gpcheck__foot { display: none; }
+  body.gp-printing-ens .gpens__tab { overflow: visible; }
+  body.gp-printing-ens .gpens__tab table { min-width: 0; table-layout: fixed; }
+  body.gp-printing-ens .gpens input, body.gp-printing-ens .gpens select, body.gp-printing-ens .gpens textarea { border: 0; border-bottom: 1px solid #999; border-radius: 0; background: none; appearance: none; }
 }
+/* Seletor dos checklists e relatório de ensaio de estanqueidade */
+.gpcheck__sel { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.gpcheck__chip { font: inherit; font-size: .85rem; font-weight: 600; padding: .45em .9em; border-radius: 999px; border: 1.5px solid rgba(255, 255, 255, .3); background: rgba(255, 255, 255, .06); color: #fff; cursor: pointer; }
+.gpcheck__chip[aria-pressed=true] { background: #7ee7f2; border-color: #7ee7f2; color: #06233f; }
+.gpcheck__lead { grid-column: 1 / -1; margin: 0; font-size: .92rem; color: var(--muted); }
+.gpcheck__lead b { color: var(--navy); }
+.gpens { margin-top: 18px; background: #fff; color: var(--ink); border-radius: var(--radius); padding: 18px; }
+.gpens h3 { color: var(--navy); margin: 0 0 4px; font-size: 1.1rem; }
+.gpens__lead { margin: 0 0 12px; font-size: .88rem; color: var(--muted); }
+.gpens__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 16px; }
+.gpens label { display: flex; flex-direction: column; gap: 4px; font-size: .82rem; font-weight: 600; color: var(--navy); }
+.gpens input, .gpens select, .gpens textarea { font: inherit; font-weight: 400; font-size: .9rem; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); width: 100%; }
+.gpens__tab { overflow-x: auto; margin: 14px 0; }
+.gpens__tab table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: .85rem; }
+.gpens__tab th { text-align: left; color: var(--navy); padding: 6px; border-bottom: 2px solid var(--line); }
+.gpens__tab td { padding: 4px; border-bottom: 1px solid var(--line); }
+.gpens__obs { margin-bottom: 12px; }
+.gpens__assin { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0 14px; }
+.gpens__assin span { border-top: 1px solid #555; padding-top: 6px; font-size: .8rem; color: var(--muted); text-align: center; }
 
 /* ===== Glossário técnico ===== */
 .glaz { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -2106,3 +2133,17 @@ a.gl:hover { color: var(--teal-d); }
 .pt__l { display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-left: 8px; }
 .pt__l--b { background: #f2a03d; margin-left: 0; }
 .pt__l--s { background: #7ee7f2; }
+
+/* Página de ficha: botão "Imprimir ficha" e folha limpa na impressão (sem cabeçalho, rodapé, anúncios e botões) */
+.sheet--page .sheet__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.sheet__print { flex: none; font: inherit; font-size: .82rem; font-weight: 700; padding: .5em 1em; border-radius: 999px; border: 1.5px solid var(--teal); background: none; color: var(--teal-d); cursor: pointer; }
+.sheet__print:hover { background: var(--teal); color: #fff; }
+@media print {
+  body:has(.sheet--page):not(.gp-printing):not(.gp-printing-ens) { background: #fff !important; }
+  body:has(.sheet--page) .pg-top, body:has(.sheet--page) .pg-foot, body:has(.sheet--page) .crumbs, body:has(.sheet--page) #fab,
+  body:has(.sheet--page) .adslot, body:has(.sheet--page) .sheet__print, body:has(.sheet--page) .sheet__cta { display: none !important; }
+  body:has(.sheet--page) .sheet--page { box-shadow: none; border: 0; margin: 0; padding: 0; max-width: none; }
+  body:has(.sheet--page) .ptable__wrap { overflow: visible; }
+  body:has(.sheet--page) .ptable table { font-size: 9pt; }
+  body:has(.sheet--page) .ptable, body:has(.sheet--page) .specs tr { break-inside: avoid; }
+}

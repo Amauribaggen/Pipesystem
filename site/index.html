@@ -1493,8 +1493,33 @@
         <div class="gppgrid" id="gpPats"></div>
       </div>
       <div class="gppanel" id="gp-check" role="tabpanel" hidden>
-        <p class="gplead">Para fechar a obra com tudo testado e documentado, como pedem a NBR 15575-6 (desempenho) e a NBR 14037 (manual de uso e manutenção). Marque e imprima.</p>
+        <p class="gplead">Checklists da obra, do recebimento dos materiais à entrega: escolha a etapa, marque e imprima. Abaixo, o modelo de relatório de ensaio de estanqueidade para preencher e imprimir.</p>
+        <div class="gpcheck__sel" id="gpCheckSel" role="group" aria-label="Escolha o checklist"></div>
         <div class="gpcheck" id="gpCheck"></div>
+        <div class="gpens" id="gpEnsaio">
+          <h3>Relatório de ensaio de estanqueidade</h3>
+          <p class="gpens__lead">Preencha e imprima ou salve em PDF. Pressão, duração e meio de ensaio seguem a norma do sistema e o projeto. Nada do que você digita sai do seu navegador.</p>
+          <div class="gpens__grid">
+            <label>Obra<input type="text" id="ensObra"></label>
+            <label>Endereço<input type="text" id="ensEnd"></label>
+            <label>Sistema<select id="ensSistema"></select></label>
+            <label>Norma de referência<input type="text" id="ensNorma"></label>
+            <label>Meio de ensaio<select id="ensMeio"><option>Água</option><option>Ar</option><option>Fumaça</option><option>Gás inerte</option></select></label>
+            <label>Manômetro (identificação e calibração)<input type="text" id="ensMan"></label>
+            <label>Data<input type="date" id="ensData"></label>
+            <label>Responsável técnico<input type="text" id="ensResp"></label>
+            <label>Registro (CREA, CAU ou CFT)<input type="text" id="ensReg"></label>
+          </div>
+          <div class="gpens__tab">
+            <table>
+              <thead><tr><th>Trecho ou pavimento</th><th>Pressão de ensaio</th><th>Duração</th><th>Leitura inicial</th><th>Leitura final</th><th>Resultado</th></tr></thead>
+              <tbody id="ensRows"></tbody>
+            </table>
+          </div>
+          <label class="gpens__obs">Observações<textarea id="ensObs" rows="3"></textarea></label>
+          <div class="gpens__assin"><span>Assinatura do responsável técnico</span><span>Assinatura do fiscal ou cliente</span></div>
+          <div class="gpcheck__foot"><button type="button" class="btn btn--ghost btn--sm" id="ensMais">+ Trecho</button><button type="button" class="btn btn--sm" id="ensPrint">Imprimir relatório</button></div>
+        </div>
       </div>
       <div class="gppanel" id="gp-precos" role="tabpanel" hidden>
         <h3 class="preco__titulo">Comparativo de Preços: e-commerce nacional x SINAPI</h3>

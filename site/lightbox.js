@@ -72,3 +72,6 @@
     open(item);
   });
 })();
+
+// Botão "Imprimir ficha" das páginas de ficha (a folha limpa sai das regras de impressão de .sheet--page)
+document.addEventListener('click', e => { if (e.target.closest('[data-imprimir]')) print(); });

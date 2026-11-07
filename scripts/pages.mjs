@@ -259,7 +259,7 @@ export function generate(D, outDir) {
         <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${esc(m.name)}">${D.MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
         <figcaption>Ilustração representativa</figcaption>
       </figure>`;
-    const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">${esc(m.name)}</h1></div></div>
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">${esc(m.name)}</h1></div><button type="button" class="sheet__print" data-imprimir>Imprimir ficha</button></div>
       ${D.revisaoHTML(m)}
       ${fig}
       <p class="sheet__desc page__lead">${linkNorms(m.desc)}</p>

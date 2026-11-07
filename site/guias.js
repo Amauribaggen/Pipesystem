@@ -310,10 +310,39 @@ const PATS = [
 ];
 
 // ---------- checklist de entrega ----------
-const CHECK = [
+const CHECK_ENTREGA = [
   ['Testes', ['Teste de estanqueidade da água fria registrado (pressão, duração, responsável)', 'Teste de estanqueidade da água quente registrado', 'Teste do esgoto registrado (água, ar ou fumaça)', 'Teste da rede de gás com laudo e responsável técnico', 'Teste de funcionamento de todos os aparelhos (vazão, escoamento, sem retorno)']],
   ['Instalação', ['Bujões retirados e metais instalados em todos os pontos', 'Fechos hídricos funcionando (sem cheiro)', 'Registros de cada ambiente acessíveis e identificados', "Caixa d'água limpa, tampada e com extravasor visível", 'Tubulações aparentes fixadas e identificadas por cor ou etiqueta']],
   ['Documentos', ['Projeto "como construído" (as built) atualizado', 'Manual de uso, operação e manutenção (NBR 14037)', 'Notas fiscais e garantias dos materiais e equipamentos', 'Plano de manutenção preventiva (NBR 5674)', 'ART ou RRT do projeto e da execução']],
+];
+// Checklists da obra, do recebimento à entrega: [id, nome, texto de abertura, grupos]
+const CHECKS = [
+  ['recebimento', 'Recebimento de materiais', 'Na chegada de cada entrega, antes de assinar o canhoto: confira o que veio, o estado das peças e onde guardar.', [
+    ['Documento e identificação', ['Nota fiscal confere com o pedido: fabricante, linha, bitola, classe ou PN e quantidade', 'Marcação do fabricante no tubo legível: norma, bitola, classe e lote', 'Conexões da mesma linha e do mesmo fabricante do tubo (sistemas soldáveis, roscáveis e de termofusão)', 'Ficha técnica ou certificado do fabricante para válvulas, bombas e equipamentos']],
+    ['Inspeção visual', ['Tubos sem trincas, amassados, ovalização ou deformação nas pontas', 'Bolsas e roscas sem rebarbas nem quebras', 'Anéis de borracha presentes, limpos e sem ressecamento', 'Válvulas e registros abrem e fecham sem travar', 'Adesivos, solventes e pastas dentro da validade']],
+    ['Armazenamento', ['Tubos plásticos apoiados em toda a extensão e protegidos do sol', 'Altura das pilhas dentro do limite indicado pelo fabricante', 'Conexões em caixas, longe de solventes e combustíveis', 'Adesivos e solventes em local ventilado e fechado', 'Tubos metálicos sobre calços, longe da umidade e do contato com o solo']],
+  ]],
+  ['agua', 'Execução: água fria e quente', 'Para conferir cada pavimento antes de fechar paredes e forros.', [
+    ['Antes de começar', ['Projeto aprovado e compatibilizado com estrutura, elétrica e climatização', 'Furos e passagens previstos no projeto, sem cortar armaduras', 'Traçado, bitolas e registros marcados conforme o projeto']],
+    ['Montagem', ['Tubo cortado no esquadro, sem rebarba e com chanfro na ponta (soldável)', 'Ponta e bolsa lixadas e limpas antes do adesivo (PVC e CPVC)', 'Tempo de aquecimento e encaixe do fabricante respeitados (PPR)', 'Rosca feita com ferramenta própria para o material, vedada com fita veda-rosca', 'Abraçadeiras no espaçamento indicado pelo fabricante', 'Liras ou juntas de dilatação na água quente', 'Isolamento térmico na água quente', 'Distância das tubulações de gás e dos eletrodutos respeitada', 'Pontos de espera fechados com bujão']],
+    ['Antes de fechar', ['Ensaio de estanqueidade feito e registrado (relatório de ensaio)', 'Fotos com trena do traçado nas paredes, para o as built', 'Registros acessíveis e identificados']],
+  ]],
+  ['esgoto', 'Execução: esgoto e águas pluviais', 'Para conferir ramais, tubos de queda e coletores antes de fechar shafts, forros e valas.', [
+    ['Montagem', ['Declividade conforme o projeto: no mínimo 2% em ramais de até 75 mm e 1% a partir de 100 mm (NBR 8160)', 'Junta elástica com anel e pasta lubrificante, sem adesivo, onde a linha pede', 'Caixas sifonadas e ralos com fecho hídrico', 'Ventilação ligada como no projeto, sem ralos sem ventilação', 'Tubos de queda no prumo e fixados em cada pavimento', 'Pontos de espera fechados com tampão de teste']],
+    ['Separação e acesso', ['Esgoto e águas pluviais em redes separadas', 'Peças de inspeção e caixas acessíveis', 'Caixa de gordura na saída das pias de cozinha']],
+    ['Antes de fechar', ['Ensaio com água, ar ou fumaça feito e registrado', 'Escoamento conferido em todos os aparelhos', 'Fotos do traçado para o as built']],
+  ]],
+  ['gas', 'Execução: gás', 'Rede interna de gás natural ou GLP (NBR 15526): conferência antes de liberar o abastecimento.', [
+    ['Materiais e equipe', ['Instalador habilitado e responsável técnico com ART', 'Tubos, conexões e reguladores próprios para gás', 'Flexíveis de aparelho dentro da norma e da validade']],
+    ['Montagem', ['Abrigo de medidores e reguladores ventilado e de fácil acesso', 'Registro de corte em cada aparelho e na entrada da unidade', 'Distância de eletrodutos, tomadas e pontos de ignição respeitada', 'Tubulação aparente identificada (amarelo ou a palavra GÁS, conforme a norma)', 'Ambientes com aparelhos a gás com ventilação permanente']],
+    ['Liberação', ['Ensaio de estanqueidade com laudo e responsável técnico', 'Purga da rede antes do primeiro uso', 'Aparelhos testados com chama estável']],
+  ]],
+  ['incendio', 'Execução: incêndio', 'Hidrantes, mangotinhos e sprinklers conforme o projeto aprovado no Corpo de Bombeiros.', [
+    ['Montagem', ['Hidrantes e mangotinhos nas posições do projeto aprovado', 'Abrigos sinalizados, desobstruídos e com o kit completo (mangueiras, esguicho, chave storz)', 'Mangueiras e válvulas com certificação exigida', 'Prumadas e barriletes fixados, com acoplamentos ranhurados ou roscas conforme o projeto', 'Sprinklers no espaçamento do projeto, com defletor livre e sem pintura nos bicos', 'Hidrante de recalque acessível e sinalizado']],
+    ['Ensaios', ['Ensaio hidrostático da rede feito e registrado', 'Bomba de incêndio com partida automática testada', 'Válvula de governo e alarme dos sprinklers testados', 'Reserva técnica de incêndio com o volume do projeto']],
+    ['Documentos', ['Projeto como construído (as built) da rede de incêndio', 'Vistoria do Corpo de Bombeiros (AVCB ou CLCB)', 'Plano de inspeção e manutenção (NBR 12779 para mangueiras)']],
+  ]],
+  ['entrega', 'Entrega da obra', 'Para fechar a obra com tudo testado e documentado, como pedem a NBR 15575-6 (desempenho) e a NBR 14037 (manual de uso e manutenção).', CHECK_ENTREGA],
 ];
 
 (() => {
@@ -455,18 +484,53 @@ const CHECK = [
   $('gpGuias').querySelectorAll('[data-calc="fossa"]').forEach(box => { calcFossa(box); box.addEventListener('input', () => calcFossa(box)); });
   $('gpVideos').innerHTML = Object.values(VIDEOS).map(videoCard).join('');
   $('gpPats').innerHTML = PATS.map(patHTML).join('');
-  $('gpCheck').innerHTML = CHECK.map(([t, itens]) => `<div><h3>${t}</h3>${itens.map(i => `<label><input type="checkbox"> <span>${i}</span></label>`).join('')}</div>`).join('') +
-    `<div class="gpcheck__foot"><span id="gpCheckCount"></span><button type="button" class="btn btn--sm" id="gpPrint">Imprimir checklist</button></div>`;
+  // checklists: um seletor no alto e a lista escolhida (as marcações de cada uma ficam guardadas ao trocar)
+  let ckAtual = CHECKS[0][0];
+  const ckMarcas = {};
+  const desenhaCheck = () => {
+    const [id, nome, lead, grupos] = CHECKS.find(c => c[0] === ckAtual), marc = ckMarcas[id] || [];
+    let k = 0;
+    $('gpCheck').innerHTML = `<p class="gpcheck__lead"><b>${nome}.</b> ${lead}</p>` + grupos.map(([t, itens]) => `<div><h3>${t}</h3>${itens.map(i => `<label><input type="checkbox" data-k="${k}"${marc[k++] ? ' checked' : ''}> <span>${i}</span></label>`).join('')}</div>`).join('') +
+      `<div class="gpcheck__foot"><span id="gpCheckCount"></span><button type="button" class="btn btn--sm" id="gpPrint">Imprimir checklist</button></div>`;
+    countCheck();
+  };
   const countCheck = () => { const all = $('gpCheck').querySelectorAll('input'), ok = [...all].filter(i => i.checked).length; $('gpCheckCount').textContent = `${ok} de ${all.length} itens conferidos`; };
-  $('gpCheck').addEventListener('change', countCheck); countCheck();
-  $('gpPrint').addEventListener('click', () => {
+  $('gpCheckSel').innerHTML = CHECKS.map(([id, nome]) => `<button type="button" class="gpcheck__chip" data-ck="${id}" aria-pressed="${id === ckAtual}">${nome}</button>`).join('');
+  $('gpCheckSel').addEventListener('click', e => {
+    const b = e.target.closest('[data-ck]'); if (!b) return;
+    ckAtual = b.dataset.ck;
+    $('gpCheckSel').querySelectorAll('[data-ck]').forEach(x => x.setAttribute('aria-pressed', x === b));
+    desenhaCheck();
+  });
+  $('gpCheck').addEventListener('change', e => { (ckMarcas[ckAtual] ||= [])[+e.target.dataset.k] = e.target.checked; countCheck(); });
+  desenhaCheck();
+  $('gpCheck').addEventListener('click', e => {
+    if (!e.target.closest('#gpPrint')) return;
     document.body.classList.add('gp-printing');
     addEventListener('afterprint', () => document.body.classList.remove('gp-printing'), { once: true });
     print();
   });
 
+  // Relatório de ensaio de estanqueidade: o responsável preenche e imprime (nada é enviado)
+  const ENSAIO_NORMA = { 'Água fria': 'NBR 5626', 'Água quente': 'NBR 5626', 'Esgoto sanitário': 'NBR 8160', 'Águas pluviais': 'NBR 10844', 'Gás': 'NBR 15526', 'Hidrantes e mangotinhos': 'NBR 13714', 'Sprinklers': 'NBR 10897', 'Outro': '' };
+  const ensLinha = () => `<tr><td><input type="text" aria-label="Trecho ou pavimento"></td><td><input type="text" aria-label="Pressão de ensaio"></td><td><input type="text" aria-label="Duração"></td><td><input type="text" aria-label="Leitura inicial"></td><td><input type="text" aria-label="Leitura final"></td><td><select aria-label="Resultado"><option></option><option>Aprovado</option><option>Reprovado</option></select></td></tr>`;
+  if ($('gpEnsaio')) {
+    $('ensSistema').innerHTML = Object.keys(ENSAIO_NORMA).map(k => `<option>${k}</option>`).join('');
+    const normaEns = () => { $('ensNorma').value = ENSAIO_NORMA[$('ensSistema').value]; };
+    $('ensSistema').addEventListener('change', normaEns); normaEns();
+    $('ensData').value = new Date().toISOString().slice(0, 10);
+    $('ensRows').innerHTML = ensLinha() + ensLinha() + ensLinha();
+    $('ensMais').addEventListener('click', () => $('ensRows').insertAdjacentHTML('beforeend', ensLinha()));
+    $('ensPrint').addEventListener('click', () => {
+      // só o relatório vai para a impressão (regras de print-ens em styles.css)
+      document.body.classList.add('gp-printing-ens');
+      addEventListener('afterprint', () => document.body.classList.remove('gp-printing-ens'), { once: true });
+      print();
+    });
+  }
+
   // abas e filtro de tema
-  const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklist de entrega', ''], ['precos', 'Preços', PRECOS.itens.length], ['glossario', 'Glossário', GLOSSARIO.length]];
+  const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklists e ensaios', CHECKS.length], ['precos', 'Preços', PRECOS.itens.length], ['glossario', 'Glossário', GLOSSARIO.length]];
   $('gpTabs').innerHTML = TABS.map(([k, n, c]) => `<button type="button" role="tab" class="gptab" data-tab="${k}" aria-selected="${k === st.tab}">${n}${c ? ` <small>${c}</small>` : ''}</button>`).join('');
   $('gpTemas').innerHTML = GP_TEMAS.map(t => `<button type="button" class="gptema" data-tema="${t}" aria-pressed="false">${t}</button>`).join('');
   const show = () => {
