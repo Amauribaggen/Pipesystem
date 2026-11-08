@@ -35,7 +35,33 @@ const SINAPI_REGRAS = (() => {
   const USD = 5.5013, USD_DATA = '06/11/2026', COLETA = '08/11/2026';
   const imp = (usd, item, loja, url) => web(Math.round(usd * USD * 2.5 * 100) / 100, `${item}: US$ ${usd.toFixed(2)} em ${loja} (coleta ${COLETA}) × R$ ${USD.toFixed(4).replace('.', ',')} (PTAX venda de ${USD_DATA}) × 2,5 para internação, impostos e logística`, url);
   const QR = 'https://www.qrfs.com';
+  const br = (v, item, asin) => web(v, `${item}: Amazon Brasil (coleta ${COLETA})`, 'https://www.amazon.com.br/dp/' + asin);
   return [
+    // SINAPI completo
+    [/^Hidrômetro da água de processo 2"/, '12768'], [/^Joelho 90° 150 mm/, '37950'],
+    [/^Tampão de teste PVC esgoto 100/, '1200'], [/^Tampão de teste PVC esgoto 50/, '12909'], [/^Tampão de teste PVC esgoto 40/, { c: '12909', nota: 'cap de 50 mm como referência; sem 40 mm na tabela' }],
+    [/^Kit sanitário acessível/, { s: ['10422', '20269', '13415', '36207'], nota: 'bacia, lavatório, torneira e barra de apoio' }],
+    // Lojas brasileiras
+    [/^Bebedouro de pressão/, br(493.05, 'Bebedouro industrial de pressão, inox 304', 'B0H7YVSKJV')],
+    [/^Clorador \/ dosador automático/, br(284.05, 'Dosador clorador automático em pastilhas Netuno', 'B0C6J8FYJ2')],
+    [/^Clorador de pastilhas/, br(21.83, 'Clorador flutuante', 'B0DKPCV5M9')],
+    [/^Skimmer/, br(397.14, 'Skimmer boca pequena Sodramar', 'B079Z619J6')],
+    [/^Dispositivo de aspiração/, br(41.80, 'Dispositivo de aspiração em ABS 1 1/2"', 'B0793Q7VN9')],
+    [/^Dispositivo de retorno/, br(46.55, 'Dispositivo de retorno ABS 1 1/2" Sodramar', 'B07BY6WR6X')],
+    [/^Ralo de fundo antiaprisionamento/, br(187.90, 'Par de ralos de fundo anti-turbilhão em inox (2 × R$ 93,95)', 'B0FYR8HHYY')],
+    [/^Ralo linear com grelha/, br(408.40, 'Ralo linear com grelha 70 cm inox', 'B0BHN26QHL')],
+    [/^Purgador automático de condensado/, br(142.40, 'Purgador eletrônico para compressor', 'B0H5G1VQ5C')],
+    [/^Lavatório de mãos com acionamento sem contato/, { c: '20269', nota: 'cuba de louça', mais: br(238.45, 'torneira automática com sensor', 'B0CRL9FMR1') }],
+    [/^Filtro autolimpante de água de chuva/, br(71.15, 'Filtro para captação de água de chuva 100 mm', 'B0CMYKZG4Q')],
+    [/^Filtro de areia para piscina/, br(656.45, 'Filtro FM-50 Sodramar, até 78 mil litros, sem a areia', 'B07BY6YHTQ')],
+    [/^Motobomba de piscina/, br(791.77, 'Bomba Sodramar BMC-100 monofásica', 'B0771VWZGL')],
+    // Exterior: US$ × PTAX × 2,5
+    [/^Filtro Y 2"/, imp(161.99, 'Filtro Y 2" bronze, Zoro Select 6NPX4', 'Zoro (EUA)', 'https://www.zoro.com/k/2-in-wye-strainer/')],
+    [/^Filtro Y DN 200/, imp(1081.99, 'Filtro Y 8" flangeado Titan FCI YS-58', 'ValveMan (EUA)', 'https://valveman.com/products/Titan-FCI-YS-58-CI-Series-8-Y-Strainer-125-Flanged-Cast-Iron-Body')],
+    [/^Válvula borboleta DN 200/, imp(628.99, 'Válvula borboleta 8" Bonomi GN501S', 'ValveMan (EUA)', 'https://valveman.com/products/8-bonomi-gn501s/')],
+    [/^Chuveiro de emergência com lava-olhos/, imp(993.62, 'Haws 8300-8309', 'Zoro (EUA)', 'https://www.zoro.com/haws-shower-and-eyewash-station-8300-8309/i/G7494663/')],
+    [/^Filtros coalescentes/, imp(666.99, 'Filtro coalescente 1" Wilkerson M30-08-FM0', 'Zoro (EUA)', 'https://www.zoro.com/wilkerson-coalescing-filter-1in-m30-08-fm0/i/G2482387')],
+    [/^Secador de ar/, imp(5391, 'Secador Nano DXR 230 scfm', 'Compressed Air Advisors (EUA)', 'https://www.compressedairadvisors.com/products/nano-dxr-230-direct-expansion-refrigerated-air-dryer-230-scfm-230v-1ph-60hz')],
     [/^Válvula de governo e alarme \(VGA\) 4"/, imp(1745.12, 'Tyco AV-1-300 4" ranhurada, sem trim', 'QRFS (EUA)', QR + '/valves/tyco-av-1-300-alarm-check-valve-4-in-groove-x-groove-ductile-iron-300-psi-52-203-1-113')],
     [/^Válvula de governo e alarme \(VGA\) 6"/, imp(2182, 'Tyco AV-1-300 6" ranhurada, sem trim', 'FireAlarm.com (EUA)', 'https://firealarm.com/product/tyco-522033115-av-1-300-alarm-check-valve-6-groove-x-groove/')],
     [/^Válvula de controle seccional|^Válvula de bloqueio 4"/, imp(281.35, 'Válvula borboleta ranhurada 4" com chave supervisora', 'QRFS (EUA)', QR + '/valves/butterfly-valve-with-tamper-switch-grooved-4-in')],
