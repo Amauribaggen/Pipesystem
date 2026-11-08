@@ -680,12 +680,13 @@
       return { san, salas, cin, tr, torre, nB, nL, nM, nuc: san + cin, lug: salas * val('lmCinLug'), vis: san ? val('lmVisit') * val('lmLVisit') : 0, repos: torre ? tr * 80 : 0, peso: (nB + nL + nM) * 0.3 + (torre ? 1 : 0) };
     })() : null;
     const pesoCoz = (KZ ? KZ.n * KZ.peso : 0) + (SH ? SH.peso : 0);
+    const pavU = PF === PERFIS.shopping ? pav + 1 : pav;   // pavimentos com unidades: no shopping, o térreo também tem lojas
     const soCozGas = !!PF && aq !== 'gas';   // nos perfis, o gás só existe para a cozinha, salvo aquecedor a gás nas unidades
     const pesoDe = t => Math.round(t.ban) * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + Math.round(t.lav) * 0.6 + (EXT === 2 ? 0.7 + 1 + 0.7 + 1 : EXT * 0.7) + (t.varanda && !PF ? 0.7 : 0);
     const hRes = Math.max(0, parseFloat($('lmHres').value) || 0);   // fundo do reservatório superior acima da laje de cobertura
     const cargaAF = pe + hRes - 2;                                  // até a saída do chuveiro, a 2 m do piso do último pavimento
     const iRam = dimPipes[matAF].findIndex(([n]) => n.startsWith('25 mm')), qChu = 0.3 * Math.sqrt(hot ? 0.4 : 0.1);
-    const upf = tp.reduce((s, t) => s + t.n, 0), pesoAll = tp.reduce((s, t) => s + pesoDe(t) * (casa ? t.n : t.n * pav), 0) + pesoCoz;
+    const upf = tp.reduce((s, t) => s + t.n, 0), pesoAll = tp.reduce((s, t) => s + pesoDe(t) * (casa ? t.n : t.n * pavU), 0) + pesoCoz;
     const nPrum = casa ? 0 : med ? Math.ceil(upf / 4) : upf * 2;
     const lBar = casa ? 0 : 2 * Math.sqrt(tp.reduce((s, t) => s + t.n * t.area * 1.2, 0)) + 4 * nPrum;
     const qBar = 0.3 * Math.sqrt(pesoAll), qCol = casa ? 0 : 0.3 * Math.sqrt(pesoAll / nPrum);
@@ -714,7 +715,7 @@
       `${casa ? "Fundo da caixa d'água" : 'Fundo do reservatório superior'} a ${num(hRes, 1)} m acima da laje de cobertura`, 'Hidrômetro individual');
 
     for (const t of tp) {
-      const U = casa ? t.n : t.n * pav, ban = Math.round(t.ban), lav = Math.round(t.lav), vr = t.varanda && !PF ? 1 : 0;
+      const U = casa ? t.n : t.n * pavU, ban = Math.round(t.ban), lav = Math.round(t.lav), vr = t.varanda && !PF ? 1 : 0;
       const sq = Math.sqrt(Math.max(20, t.area));
       units += U; unitsPerFloor += casa ? 0 : t.n; pop += U * (PF ? Math.max(1, t.dorm) : Math.max(2, 2 * t.dorm));
       plate += casa ? t.n * t.area / pav * 1.1 : t.n * t.area * 1.2;
@@ -996,7 +997,7 @@
       add(B_, `Registro de gaveta ${pName} (topo das colunas)`, nPrum, 'un', { loss: false });
       add(B_, `Registro de gaveta ${bName} (saídas do reservatório)`, 2, 'un', { loss: false });
       add(B_, `${AF.t} ${bName}`, nPrum);
-      add(B_, `${AF.t} ${pName} (derivações dos andares)`, nPrum * pav);
+      add(B_, `${AF.t} ${pName} (derivações dos andares)`, nPrum * pavU);
       const nf = piorAF.nf || (piorAF.p < PMIN ? pav : 0);   // andares de cima que não chegam ao mínimo por gravidade
       if (nf) {
         const qual = nf === 1 ? 'o último andar' : `os ${nf} últimos andares`;
@@ -1017,10 +1018,10 @@
       esg(E_, 100, nTQ * lTQ);
       esg(E_, 75, n75 * lTQ);
       add(E_, 'Tubo PVC esgoto 75 mm — colunas de ventilação', Math.ceil(nTQ / 2) * lTQ, 'm', { pack: ['barra', 6] });
-      add(E_, 'Junção 100 x 100 mm (ligação dos ramais às colunas)', nTQ * pav);
-      add(E_, 'Junção 75 x 50 mm (cozinha e serviço)', n75 * pav);
-      add(E_, 'Luva de correr 100 mm', nTQ * pav);
-      add(E_, 'Luva de correr 75 mm', n75 * pav);
+      add(E_, 'Junção 100 x 100 mm (ligação dos ramais às colunas)', nTQ * pavU);
+      add(E_, 'Junção 75 x 50 mm (cozinha e serviço)', n75 * pavU);
+      add(E_, 'Luva de correr 100 mm', nTQ * pavU);
+      add(E_, 'Luva de correr 75 mm', n75 * pavU);
       add(E_, 'Joelho 45° esgoto 100 mm (pé das colunas)', nTQ * 2);
       add(E_, 'Joelho 45° esgoto 75 mm (pé das colunas)', n75 * 2);
       const dCol = uhc <= 180 ? 100 : uhc <= 700 ? 150 : 200;
@@ -1028,7 +1029,7 @@
       add(E_, `Coletor predial: ${dCol} mm (${int(uhc)} UHC)`, 1, 'cj', { loss: false, note: 'Diâmetro pela soma das unidades Hunter (NBR 8160)' });
       if (nCoz) add(E_, 'Caixa de gordura (coletiva, dimensionar pelo nº de cozinhas)', Math.max(1, Math.ceil(nCoz / 2)), 'un', { loss: false });
       add(E_, 'Caixa de inspeção 60 x 60 cm', Math.ceil((nTQ + n75) / 2) + 2, 'un', { loss: false });
-      vertical += (nTQ + n75 + Math.ceil(nTQ / 2)) * lTQ; joints += (nTQ + n75) * (pav * 3 + 2);
+      vertical += (nTQ + n75 + Math.ceil(nTQ / 2)) * lTQ; joints += (nTQ + n75) * (pavU * 3 + 2);
 
       // Águas pluviais
       const nCond = Math.max(2, Math.ceil(plate / 90));
@@ -1101,7 +1102,7 @@
       if (spk !== 'nao' && (vagas || spk === 'todo')) {
         const S_ = 'Sprinklers', bG = vagas ? Math.ceil(areaGar / 12) : 0, aCorr = PF === PERFIS.shopping && spk === 'todo' ? val('lmCorr') * (pav + 1) : 0;   // andares e térreo
         // shopping: risco ordinário, até 12 m² por bico (NBR 10897), nas lojas e nos corredores; demais: 18 m², com 15% de circulações
-        const bL = PF === PERFIS.shopping && spk === 'todo' ? Math.ceil(aptArea * (pav + 1) / pav / 12) : 0, bC = Math.ceil(aCorr / 12);
+        const bL = PF === PERFIS.shopping && spk === 'todo' ? Math.ceil(aptArea / 12) : 0, bC = Math.ceil(aCorr / 12);
         const bA = spk !== 'todo' ? 0 : PF === PERFIS.shopping ? bL + bC : Math.ceil(aptArea * 1.15 / 18);
         const b = bG + bA, floors = garFloors + (spk === 'todo' ? pav + 1 : 0);
         nBicos = b;
@@ -1313,7 +1314,7 @@
     out.hidden = false;
     const nome = $('lmNome').value.trim();
     $('lmOutTitle').textContent = last.titulo ? (nome || last.titulo) + last.subtitulo : (nome || (last.casa ? 'Conjunto de casas' : perfil() ? perfil().nome : 'Edifício residencial')) +
-      (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo, ${int(last.units)} ${perfil() ? perfil().plu : 'unidades'}`);
+      (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo${perfil() === PERFIS.shopping ? ' e térreo' : ''}, ${int(last.units)} ${perfil() ? perfil().plu : 'unidades'}`);
     $('lmStats').innerHTML = last.stats.map(([k, v]) => `<div><span>${k}</span><strong>${v}</strong></div>`).join('');
     $('lmPres').innerHTML = presHTML(last.pres);
     $('lmWarn').innerHTML = last.warn.map(w => `<p class="hint warn">${esc(w)}</p>`).join('');
