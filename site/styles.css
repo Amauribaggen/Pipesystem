@@ -2207,3 +2207,12 @@ a.gl:hover { color: var(--teal-d); }
 .lmat__sintab tfoot .lmat__geral th { font-size: 1.1rem; }
 
 .sitenums__laranja strong, .sitenums__laranja span { color: #f2a03d; }
+
+/* Orçamento de referência no celular: a tabela não pode passar das bordas dos quadros */
+@media (max-width: 600px) {
+  #lmatTool { padding-left: 12px; padding-right: 12px; }
+  .lmat__sin { padding: 14px 10px; }
+  .lmat__sintab { font-size: .8rem; }
+  .lmat__sintab th, .lmat__sintab td { padding-left: 3px; padding-right: 3px; }
+  .lmat__sintab tfoot th, .lmat__sintab tfoot .lmat__geral th { font-size: .82rem; }
+}
