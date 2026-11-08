@@ -36,8 +36,8 @@
     shopping: { nome: 'Shopping center', un: 'Lojas por andar', area: 'Área da loja (m²)', pes: 'Funcionários por loja', extra: 0, cons: 50, sing: 'loja', plu: 'lojas',
       lab: { ban: 'Banheiros com chuveiro por loja', lav: 'Sanitários (bacia e lavatório) por loja' }, max: { n: 120, dorm: 40 },
       ini: { nome: 'Loja padrão', n: 30, area: 60, dorm: 4, ban: 0, lav: 1 }, aq: 'eletrico', pe: 4.5, pav: 3,
-      gas: 'glp', consNota: 'consumo diário de 50 L por funcionário das lojas, mais 25 L por refeição dos restaurantes',
-      aviso: 'a lista cobre o sanitário de cada loja, as cozinhas dos restaurantes informados, as colunas e o barrilete. Sanitários públicos do mall, cinemas, ar-condicionado central (água gelada) e áreas técnicas entram pelo projeto específico.' },
+      gas: 'glp', consNota: 'consumo diário de 50 L por funcionário das lojas, mais 25 L por refeição dos restaurantes, visitantes, cinemas e reposição da torre',
+      aviso: 'a lista cobre o sanitário de cada loja, as cozinhas, os sanitários públicos, os cinemas, o ar-condicionado central, as colunas e o barrilete. Áreas técnicas e demais instalações entram pelo projeto específico.' },
   };
   const perfil = () => PERFIS[($('lmTipo').value.match(/^perfil-(\w+)/) || [])[1]] || null;
   function renderTypes() {
@@ -669,7 +669,13 @@
     const nRest = PF === PERFIS.shopping ? Math.round(val('lmRest')) : 0, refHotel = PF === PERFIS.hotel ? Math.round(val('lmRefHotel')) : 0;
     const KZ = nRest ? { n: nRest, ref: nRest * Math.round(val('lmRefRest')), nome: 'restaurante', d32: 12, d25: 20, pts: 6, e100: 10, e75: 12, cx50: 3, ralo: 1, lav: 1, gasL: 15, gasPt: 3, peso: 4 * 0.7, uhc: 20, q: 0 }
       : refHotel ? { n: 1, ref: refHotel, nome: 'cozinha do hotel', d32: 20, d25: 40, pts: 8, e100: 20, e75: 25, cx50: 6, ralo: 3, lav: 2, gasL: 40, gasPt: 4, peso: 6 * 0.7, uhc: 30, q: 4 } : null;
-    const pesoCoz = KZ ? KZ.n * KZ.peso : 0;
+    // Shopping: núcleos de sanitários públicos (8 bacias, 8 lavatórios, 3 mictórios) e dos cinemas (4, 4, 2; um a cada 4 salas); ar-condicionado central de água gelada
+    const SH = PF === PERFIS.shopping ? (() => {
+      const san = val('lmSanPub'), salas = val('lmCinSalas'), cin = Math.ceil(salas / 4), tr = val('lmAcTR'), torre = tr > 0 && $('lmAcCond').value === 'torre';
+      const nB = san * 8 + cin * 4, nL = nB, nM = san * 3 + cin * 2;
+      return { san, salas, cin, tr, torre, nB, nL, nM, nuc: san + cin, lug: salas * val('lmCinLug'), vis: san ? val('lmVisit') * val('lmLVisit') : 0, repos: torre ? tr * 80 : 0, peso: (nB + nL + nM) * 0.3 + (torre ? 1 : 0) };
+    })() : null;
+    const pesoCoz = (KZ ? KZ.n * KZ.peso : 0) + (SH ? SH.peso : 0);
     const soCozGas = !!PF && aq !== 'gas';   // nos perfis, o gás só existe para a cozinha, salvo aquecedor a gás nas unidades
     const pesoDe = t => Math.round(t.ban) * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + Math.round(t.lav) * 0.6 + (EXT === 2 ? 0.7 + 1 + 0.7 + 1 : EXT * 0.7) + (t.varanda && !PF ? 0.7 : 0);
     const hRes = Math.max(0, parseFloat($('lmHres').value) || 0);   // fundo do reservatório superior acima da laje de cobertura
@@ -820,7 +826,7 @@
       add(CZ_, 'Caixa de gordura industrial (dimensionar pelo nº de refeições, NBR 8160)', N, 'un', { loss: false, note: `${int(KZ.ref)} refeições por dia no total` });
       add(CZ_, 'Ralo linear com grelha inox (piso da cozinha)', KZ.ralo * N, 'un', { loss: false });
       add(CZ_, 'Lavatório de mãos com acionamento sem contato (cozinha)', KZ.lav * N, 'un', { loss: false });
-      ptF += KZ.pts * N; ptQ += hot ? KZ.q * N : 0; pesoTot += pesoCoz; uhc += KZ.uhc * N; joints += 40 * N; threads += KZ.pts * N;
+      ptF += KZ.pts * N; ptQ += hot ? KZ.q * N : 0; pesoTot += KZ.n * KZ.peso; uhc += KZ.uhc * N; joints += 40 * N; threads += KZ.pts * N;
       if (hot && KZ.q) {
         const [hD, hS, packN, packL, cx] = HOT[aqMat];
         add(Q_, hD + ' — distribuição da cozinha', 15 * N, 'm', { pack: [packN, packL] });
@@ -842,7 +848,56 @@
       } else warn.push('Cozinha comercial sem gás: escolha gás natural ou GLP no item 3, ou preveja equipamentos elétricos.');
       warn.push(`${nRest ? `Praça de alimentação: ${N} restaurante${N > 1 ? 's' : ''}` : 'Cozinha do hotel'}, com ${int(KZ.ref)} refeições por dia a 25 L cada. Quantidades por cozinha são estimativas: ajuste ao layout, aos equipamentos e à vigilância sanitária.`);
     }
-    const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (PF ? PF.cons : casa ? 150 : 200) + (KZ ? KZ.ref * 25 : 0); // L/dia
+    if (SH && SH.nuc) {
+      const SP_ = 'Sanitários públicos e cinemas', { nB, nL, nM, nuc } = SH;
+      af(SP_, '50 mm (1 1/2") — distribuição dos núcleos', nuc * 15);
+      af(SP_, '25 mm (3/4") — ramais dos aparelhos', (nB + nL + nM) * 2.5);
+      add(SP_, AF.bucha, nL + nuc, 'un', { note: 'Saída para os pontos de utilização' });
+      plug(SP_, nL + nuc);
+      add(SP_, 'Registro de gaveta 3/4" com acabamento', nuc * 2, 'un', { loss: false, note: 'Um por sanitário' });
+      esg(SP_, 100, nB * 2 + nuc * 10); esg(SP_, 50, (nM + nuc) * 1.5); esg(SP_, 40, nL * 1.2);
+      cap(SP_, 100, nB); cap(SP_, 50, nM); cap(SP_, 40, nL);
+      add(SP_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', nuc * 2);
+      add(SP_, 'Joelho 90° esgoto 100 mm', nB + nuc * 2);
+      add(SP_, 'Junção simples 100 x 50 mm', nB);
+      add(SP_, 'Joelho 90° esgoto 50 mm', nM);
+      add(SP_, 'Joelho 90° esgoto 40 mm', nL);
+      add(SP_, 'Anel de vedação para saída de bacia sanitária', nB);
+      add(SP_, 'Tubo PVC esgoto 50 mm — ramais de ventilação', nuc * 8, 'm', { pack: ['barra', 6] });
+      if (loucas) {
+        add(L_, 'Bacia sanitária com caixa acoplada', nB, 'un', { loss: false, note: 'Sanitários públicos e cinemas' });
+        add(L_, 'Assento sanitário', nB, 'un', { loss: false });
+        add(L_, 'Lavatório com torneira', nL, 'cj', { loss: false });
+        if (nM) add(L_, 'Mictório com válvula de fechamento automático', nM, 'un', { loss: false });
+        add(L_, 'Kit sanitário acessível (bacia, lavatório e barras de apoio, NBR 9050)', nuc, 'cj', { loss: false });
+      }
+      ptF += nB + nL + nM; uhc += nB * 6 + nL + nM * 2 + nuc * 3; joints += nB * 4 + nM * 2 + nL * 2 + nuc * 12; threads += nL * 2;
+      warn.push(`Sanitários: ${SH.san} núcleo${SH.san === 1 ? '' : 's'} público${SH.san === 1 ? '' : 's'} (8 bacias, 8 lavatórios e 3 mictórios cada)${SH.cin ? ` e ${SH.cin} de cinema (4, 4 e 2)` : ''}. Quantidades de referência: confirme com o código de obras e a NBR 9050.`);
+    }
+    if (SH) { pesoTot += SH.peso; if (SH.salas) warn.push(`Cinemas: ${SH.salas} sala${SH.salas > 1 ? 's' : ''} e ${int(SH.lug)} lugares, a 2 L por lugar ao dia. Exaustão, sprinklers e compartimentação das salas entram pelo projeto específico.`); }
+    if (SH && SH.tr) {
+      const AC_ = 'Ar-condicionado central', Q = SH.tr * 0.545, Dmm = Math.sqrt(Q / 3600 * 4 / (Math.PI * 2.5)) * 1000;   // 0,545 m³/h por TR (2,4 gpm), 2,5 m/s
+      const dn = [50, 65, 80, 100, 150, 200, 250, 300, 350].find(d => d >= Dmm) || 400;
+      const lAg = 2 * (2 * Math.sqrt(plate) + H);
+      add(AC_, `Chiller de água gelada, ${int(SH.tr)} TR no total (dimensionar à parte)`, 2, 'cj', { loss: false, note: 'Duas unidades, para não parar tudo em manutenção' });
+      add(AC_, 'Bomba de água gelada (dimensionar à parte)', 2, 'cj', { loss: false, note: `Vazão total de ${num(Q, 0)} m³/h; uma reserva` });
+      add(AC_, `Tubo de aço carbono DN ${dn} — água gelada, ida e retorno`, lAg, 'm', { note: 'Diâmetro a 2,5 m/s' });
+      add(AC_, `Isolamento de tubo de água gelada DN ${dn}`, lAg, 'm');
+      add(AC_, `Válvula borboleta DN ${dn}`, 8 + (SH.torre ? 4 : 0), 'un', { loss: false });
+      add(AC_, `Filtro Y DN ${dn}`, 2, 'un', { loss: false });
+      add(AC_, 'Tanque de expansão do circuito de água gelada (dimensionar à parte)', 1, 'cj', { loss: false });
+      add(AC_, 'Fan-coils e distribuição de ar (dimensionar à parte)', 1, 'cj', { loss: false });
+      if (SH.torre) {
+        add(AC_, 'Torre de resfriamento (dimensionar à parte)', 1, 'cj', { loss: false, note: `Reposição estimada de ${num(SH.repos / 1000, 1)} m³/dia` });
+        add(AC_, 'Bomba de água de condensação (dimensionar à parte)', 2, 'cj', { loss: false, note: 'Uma reserva' });
+        add(AC_, `Tubo de aço carbono DN ${dn} — água de condensação`, 60, 'm');
+        af(AC_, '32 mm (1") — reposição de água da torre', 30);
+        add(AC_, 'Registro de gaveta 3/4" com acabamento', 1, 'un', { loss: false, note: 'Reposição da torre' });
+        ptF += 1;
+      }
+      warn.push(`Ar-condicionado central: ${int(SH.tr)} TR, com rede de DN ${dn}${SH.torre ? ` e reposição da torre estimada em ${num(SH.repos / 1000, 1)} m³/dia (80 L por TR ao dia, cerca de 12 h de operação)` : ''}. Estimativa: a carga térmica e os equipamentos vêm do projeto de climatização.`);
+    }
+    const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (PF ? PF.cons : casa ? 150 : 200) + (KZ ? KZ.ref * 25 : 0) + (SH ? SH.vis + SH.lug * 2 + SH.repos : 0); // L/dia
     if (PF) {
       warn.push(`${PF.nome}: ${PF.consNota}, valores usuais da literatura de instalações prediais. Confirme com o programa de necessidades do empreendimento.`);
       if (PF.aviso) warn.push(`${PF.nome}: ${PF.aviso}`);
