@@ -1260,7 +1260,9 @@ if (document.querySelector('[data-num]')) {
     // Palavras do texto das páginas próprias (Cotações, Dimensionamento, Feiras, Termos de uso...)
     if (PAG_IDX) {
       const ja2 = new Set(groups.flatMap(g => g.items.map(i => i.href)).filter(Boolean));
-      add('No texto das páginas', pick(PAG_IDX, x => x.t + ' ' + x.x, x => ({ href: x.p + (x.id ? '#' + x.id : ''), title: x.t, sub: x.s + ' · ' + snippet(x.x, terms, '') }))
+      // órgãos e entidades: grupo próprio e, quando o nome coincide, no topo dos resultados
+      add('Associações e entidades', pick(PAG_IDX.filter(x => x.s === 'Associações e entidades'), x => x.t + ' ' + x.x, x => ({ href: x.p + '#' + x.id, title: x.t, sub: snippet(x.x, terms, '') })).map(it => ({ ...it, score: it.score === 2 ? 3 : it.score })));
+      add('No texto das páginas', pick(PAG_IDX.filter(x => x.s !== 'Associações e entidades'), x => x.t + ' ' + x.x, x => ({ href: x.p + (x.id ? '#' + x.id : ''), title: x.t, sub: x.s + ' · ' + snippet(x.x, terms, '') }))
         .filter(i => !ja2.has(i.href) && ja2.add(i.href)));
     }
     // Grupos com o termo no título dos itens vêm primeiro (ex.: "perda de carga" → calculadora)

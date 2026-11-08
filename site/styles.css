@@ -2216,3 +2216,7 @@ a.gl:hover { color: var(--teal-d); }
   .lmat__sintab th, .lmat__sintab td { padding-left: 3px; padding-right: 3px; }
   .lmat__sintab tfoot th, .lmat__sintab tfoot .lmat__geral th { font-size: .82rem; }
 }
+
+/* Entidade aberta pela busca: visível abaixo do menu fixo e destacada */
+.ulinks__list li { scroll-margin-top: 96px; }
+.ulinks__list li:target > a { outline: 2px solid #f2a03d; outline-offset: 2px; }
