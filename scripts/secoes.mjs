@@ -41,7 +41,7 @@ export const PAGINAS = [
     n: D => [new Set(D.NORM_GROUPS.flatMap(g => g.normas.map(x => x.code))).size, 'normas organizadas'],
     links: [['Por aplicação', '/normas'], ['Por produto', '/normas']] },
   { id: 'artigos', path: '/artigos', nome: 'Notícias, artigos e revistas', tag: 'Notícias e leituras técnicas', titulo: 'Notícias do setor, artigos técnicos e revistas de hidráulica | PipeSystem',
-    resumo: 'As notícias mais recentes do setor (atualizadas a cada 5 dias), artigos de revistas técnicas e científicas com acesso gratuito e as edições digitais das revistas especializadas.',
+    resumo: 'As notícias mais recentes do setor (atualizadas toda semana), artigos de revistas técnicas e científicas com acesso gratuito e as edições digitais das revistas especializadas.',
     n: (D, x) => [x.artigos, 'artigos selecionados'],
     links: [['Notícias', '/noticias'], ['Cursos e eventos', '/noticias#cursos'], ['Vagas do setor', '/noticias#vagas'], ['Artigos', '/artigos#artList'], ['Revistas', '/artigos#magList'], ['Envie seu artigo', '/artigos#artigo-envio']] },
   { id: 'feiras', path: '/feiras', nome: 'Feiras e eventos', tag: 'Agenda do setor', titulo: 'Feiras e eventos de hidráulica no Brasil e no exterior | PipeSystem',

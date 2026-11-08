@@ -387,7 +387,7 @@ export function generate(D, outDir) {
     }
   }
 
-  // Notícias do setor (/noticias): lista curada à mão a cada 5 dias em site/noticias.json, das mais novas para as mais antigas
+  // Notícias do setor (/noticias): lista curada toda semana em site/noticias.json, das mais novas para as mais antigas
   if (existsSync('site/noticias.json')) {
     const N = JSON.parse(readFileSync('site/noticias.json', 'utf8'));
     const url = '/noticias';
@@ -396,11 +396,11 @@ export function generate(D, outDir) {
     const cats = [...new Set(N.itens.map(n => n.categoria))];
     const ufs = [...new Set(N.itens.map(n => n.uf).filter(Boolean))].sort();
     const relTitulo = Object.fromEntries(D.CMPS.map(c => ['/comparativos/' + c.id, c.titulo]));
-    // Lotes de 5 dias contados a partir da última atualização
+    // Lotes de 7 dias contados a partir da última atualização
     const ref = Date.parse(N.atualizado);
     const lote = d => {
-      const k = Math.max(0, Math.floor((ref - Date.parse(d)) / 864e5 / 5));
-      const fim = new Date(ref - k * 5 * 864e5), ini = new Date(fim - 4 * 864e5);
+      const k = Math.max(0, Math.floor((ref - Date.parse(d)) / 864e5 / 7));
+      const fim = new Date(ref - k * 7 * 864e5), ini = new Date(fim - 6 * 864e5);
       const f = x => `${x.getUTCDate()} ${MES[x.getUTCMonth()]}`;
       return k === 0 ? `Atualização mais recente · ${f(ini)} a ${f(fim)}` : `${f(ini)} a ${f(fim)} de ${fim.getUTCFullYear()}`;
     };
@@ -418,7 +418,7 @@ export function generate(D, outDir) {
     const body = `      <div class="nt__hero">
         <p class="nt__sobre">Portal da Hidráulica</p>
         <h1 id="sheetTitle" class="nt__h1">Notícias do setor</h1>
-        <p class="nt__lead">Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio. Selecionadas a cada 5 dias, das mais recentes para as mais antigas.</p>
+        <p class="nt__lead">Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio. Selecionadas toda semana, das mais recentes para as mais antigas.</p>
         <p class="nt__abas"><a href="#ntLista">Notícias do setor</a><a href="#cursos">Cursos, treinamentos e eventos</a><a href="#vagas">Vagas do setor</a></p>
       </div>
       <div class="nt__filtros" role="group" aria-label="Filtrar notícias">
@@ -449,7 +449,7 @@ export function generate(D, outDir) {
       ${vagasHTML()}`;
     pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
       title: 'Notícias do setor: hidráulica, saneamento, gás e construção | PipeSystem',
-      description: cut('Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio, selecionados a cada 5 dias.', 158),
+      description: cut('Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio, selecionados toda semana.', 158),
       keywords: ['notícias', 'saneamento', 'hidráulica', 'construção', 'leilão', 'investimento', 'lançamento', ...cats,
         'cursos', 'treinamentos', 'eventos', 'feiras', 'capacitação', 'curso de instalador hidráulico', 'curso de encanador', 'NBR 5626', 'sprinklers', 'bombas',
         'vagas', 'emprego', 'vaga de encanador', 'bombeiro hidráulico', 'projetista hidráulico', 'tubulação industrial', 'operador de ETA'].join(', '),
@@ -559,7 +559,7 @@ export function ultimasNoticiasHTML(qtd = 6) {
   return `<div class="ntc" id="ultimas-noticias">
         <div class="ntc__head"><h3 class="mags__title">Notícias do setor</h3><div class="ntc__botoes"><a class="btn btn--sm" href="/noticias">Ver todas as notícias</a><a class="btn btn--sm" href="/noticias#cursos">Cursos, treinamentos e eventos</a><a class="btn btn--sm" href="/noticias#vagas">Vagas do setor</a></div></div>
         <ol class="ntc__lista">${itens}</ol>${proximosCursos()}
-        <p class="ntc__nota">Novas notícias a cada 5 dias: investimentos, obras, leilões, lançamentos, normas e feiras.</p>
+        <p class="ntc__nota">Novas notícias toda semana: investimentos, obras, leilões, lançamentos, normas e feiras.</p>
       </div>`;
 }
 
