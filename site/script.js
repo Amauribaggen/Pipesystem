@@ -1186,6 +1186,9 @@ const MAGAZINES = [
       add('Vídeos dos fabricantes', pick(Object.values(VIDEOS), v => [v.t, v.tema, v.canal, v.d].join(' '), v => ({ href: '/guias-praticos#gp-videos', title: v.t, sub: `${v.canal} · ${v.dur}` })));
     }
 
+    if (typeof DETALHES !== 'undefined') add('Detalhes típicos para baixar', pick(DETALHES, d => [d.titulo, d.desc, d.normas, ...d.chaves].join(' '),
+      d => ({ href: '/guias-praticos#detalhe-' + d.id, title: d.titulo, sub: d.desc })));
+
     const sysText = s => [s.name, s.desc, ...s.componentes, ...s.cuidados, ...s.normas].join(' ');
     add('Áreas de aplicação', pick(SYSTEMS, sysText, s => ({ href: '/sistemas/' + s.id.slice(4), sheet: s.id, title: s.name, sub: snippet(sysText(s), terms, s.desc) })));
 
@@ -1377,7 +1380,7 @@ const MAGAZINES = [
     bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS), '#bimGrid') + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS), '#bimPlats'),
     guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo })), '#comparativos') +
       group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo })), '#gp-guias') +
-      group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-precos', label: 'Comparativo de preços: e-commerce x SINAPI' }, { href: '#gp-check', label: 'Checklist de entrega' }, { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
+      group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-precos', label: 'Comparativo de preços: e-commerce x SINAPI' }, { href: '#gp-check', label: 'Checklist de entrega' }, ...(typeof DETALHES !== 'undefined' ? [{ href: '#gp-detalhes', label: `Detalhes típicos para baixar (${DETALHES.length})` }] : []), { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)
         .map(g => ({ href: '#normas', label: g.name, attrs: ` data-norm-mode="${tipo}" data-norm-group="${g.id}"` })), '#normas', ` data-norm-mode="${tipo}"`)).join(''),

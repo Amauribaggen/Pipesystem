@@ -562,6 +562,7 @@ const CHECKS = [
   };
   document.addEventListener('click', e => { const a = e.target.closest('a[href^="#"]'); if (a) reveal(a.getAttribute('href').slice(1)); }, true);
   if (location.hash) reveal(location.hash.slice(1));
+  window.addEventListener('hashchange', () => { const id = location.hash.slice(1); reveal(id); if (/^detalhe-/.test(id)) document.getElementById(id)?.scrollIntoView(); });
 
   // vídeo só carrega no clique (youtube-nocookie, sem cookies até o play)
   $('gpVideos').addEventListener('click', e => {
