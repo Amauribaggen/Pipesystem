@@ -50,27 +50,6 @@ if (location.hash.length > 1 && !document.getElementById(location.hash.slice(1))
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Números do site (faixa abaixo das estatísticas do mercado): contados direto dos dados
-// (só na página inicial; nas demais, alguns arquivos de dados não são carregados)
-if (document.querySelector('[data-num]')) {
-  const siteNums = {
-    fichas: CATALOG.length,
-    fabricantes: new Set(Object.values(MANUFACTURERS).flat().map(f => f[0].replace(/ \(.*/, ''))).size,
-    fotos: Object.keys(MATERIAL_PHOTOS).length + CATALOG.reduce((s, m) => s + (m.fotos || []).length, 0),
-    normas: typeof NORM_GROUPS !== 'undefined' ? new Set(NORM_GROUPS.flatMap(g => g.normas.map(n => n.code))).size : 0,   // a mesma norma aparece em vários grupos
-    sistemas: typeof SYSTEMS !== 'undefined' ? SYSTEMS.length : 0,
-    calculadoras: typeof CALCS !== 'undefined' ? CALCS.length : 0,
-    guias: typeof GUIAS !== 'undefined' ? GUIAS.length : 0,
-    comparativos: typeof CMPS !== 'undefined' ? CMPS.length : 0,
-    glossario: typeof GLOSSARIO !== 'undefined' ? GLOSSARIO.length : 0,
-    bim: typeof BIM_LIBS !== 'undefined' ? BIM_LIBS.length : 0,
-  };
-  document.querySelectorAll('[data-num]').forEach(el => {
-    const n = siteNums[el.dataset.num];
-    if (n) { el.dataset.count = n; el.textContent = 0; }
-  });
-}
-
 // Contadores
 const fmt = n => n.toLocaleString('pt-BR');
 const counters = document.querySelectorAll('[data-count]');
@@ -1032,6 +1011,37 @@ const MAGAZINES = [
     edicao: 'Outubro de 2026', edicaoUrl: 'https://plumbingandhvac.ca/october-2026/',
     resumo: 'Revista canadense para instaladores, projetistas e distribuidores de hidráulica, aquecimento hidrônico, refrigeração e climatização. A edição de outubro traz treinamento técnico em refrigeração, tubulação com circuito primário-secundário e a água depois do hidrômetro. Edição digital para ler on-line.' },
 ];
+
+// Números do site (faixa abaixo das estatísticas do mercado): contados direto dos dados
+// (fica depois de ARTICLES e MAGAZINES; os contadores só leem o valor quando aparecem na tela)
+// (só na página inicial; nas demais, alguns arquivos de dados não são carregados)
+if (document.querySelector('[data-num]')) {
+  const siteNums = {
+    fichas: CATALOG.length,
+    fabricantes: new Set(Object.values(MANUFACTURERS).flat().map(f => f[0].replace(/ \(.*/, ''))).size,
+    fotos: Object.keys(MATERIAL_PHOTOS).length + CATALOG.reduce((s, m) => s + (m.fotos || []).length, 0),
+    normas: typeof NORM_GROUPS !== 'undefined' ? new Set(NORM_GROUPS.flatMap(g => g.normas.map(n => n.code))).size : 0,   // a mesma norma aparece em vários grupos
+    sistemas: typeof SYSTEMS !== 'undefined' ? SYSTEMS.length : 0,
+    calculadoras: typeof CALCS !== 'undefined' ? CALCS.length : 0,
+    guias: typeof GUIAS !== 'undefined' ? GUIAS.length : 0,
+    comparativos: typeof CMPS !== 'undefined' ? CMPS.length : 0,
+    glossario: typeof GLOSSARIO !== 'undefined' ? GLOSSARIO.length : 0,
+    bim: typeof BIM_LIBS !== 'undefined' ? BIM_LIBS.length : 0,
+    detalhes: typeof DETALHES !== 'undefined' ? DETALHES.length : 0,
+    videos: typeof VIDEOS !== 'undefined' ? Object.keys(VIDEOS).length : 0,
+    patologias: typeof PATS !== 'undefined' ? PATS.length : 0,
+    checklists: typeof CHECKS !== 'undefined' ? CHECKS.length : 0,
+    precos: typeof PRECOS !== 'undefined' ? PRECOS.itens.length : 0,
+    ferramentas: typeof WEB_TOOLS !== 'undefined' ? WEB_TOOLS.length : 0,
+    artigos: ARTICLES.length,
+    revistas: MAGAZINES.length,
+  };
+  document.querySelectorAll('[data-num]').forEach(el => {
+    const n = siteNums[el.dataset.num];
+    if (n) { el.dataset.count = n; el.textContent = 0; }
+  });
+}
+
 (() => {
   const list = document.getElementById('artList');
   if (!list) return;
