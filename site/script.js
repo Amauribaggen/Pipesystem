@@ -1404,7 +1404,7 @@ if (document.querySelector('[data-num]')) {
     anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano', 'anuncie'), '#planos-banner') +
       group('', [{ href: '#adMap', label: 'Onde os banners aparecem' }]),
     sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor', 'sobre'), '#diretoria') +
-      group('', [{ href: '#contato', label: 'Consultoria técnica & comercial', attrs: ' data-subject="Consultoria técnica & comercial e pesquisa de mercado"' },
+      group('', [{ href: '#contato', label: 'Pesquisa de Mercado & Consultoria', attrs: ' data-subject="Pesquisa de Mercado & Consultoria"' },
         { href: '#contato', label: 'Fale conosco' }]),
   };
   const WIDE = { materiais: 'dd__menu--mega', normas: 'dd__menu--cols2', sistemas: 'dd__menu--cols2', ferramentas: 'dd__menu--cols2' };
