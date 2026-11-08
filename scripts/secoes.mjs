@@ -125,6 +125,11 @@ function indiceBusca(out, secoes) {
   for (const { path, nome, html } of secoes) {
     // sem scripts, estilos, SVG e formulários (só o texto que o visitante lê)
     const limpo = html.replace(/<(script|style|svg|select|template)\b[\s\S]*?<\/\1>/gi, ' ');
+    // cada associação ou entidade vira um resultado próprio (a lista inteira passaria do limite de texto de um trecho)
+    for (const m of limpo.matchAll(/<li><a href="[^"]+"[^>]*><span class="ulinks__logo[^"]*"[\s\S]*?<\/li>/g)) {
+      const t = texto((m[0].match(/<b\b[^>]*>([\s\S]*?)<\/b>/) || [])[1] || '');
+      if (t) itens.push({ p: path, s: 'Associações e entidades', id: 'associacoes', t, x: texto(m[0]) });
+    }
     const partes = limpo.split(/(?=<h[2-4]\b)/i);
     let ultimoId = '';
     for (const parte of partes) {
