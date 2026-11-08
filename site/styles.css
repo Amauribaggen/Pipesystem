@@ -2194,3 +2194,9 @@ a.gl:hover { color: var(--teal-d); }
 .sitenums__list--serv { grid-template-columns: repeat(3, 1fr); }
 .sitenums__list--serv strong { font-size: 1rem; }
 @media (max-width: 760px) { .sitenums__list--serv { grid-template-columns: repeat(2, 1fr); } }
+
+/* Orçamento de referência: lista dos itens sem preço ao passar o mouse */
+.sinref { position: relative; cursor: help; text-decoration: underline dotted; outline: none; }
+.sinref__tip { display: none; position: absolute; left: 0; top: 100%; z-index: 30; width: min(360px, 78vw); max-height: 260px; overflow-y: auto; margin-top: 4px; padding: 10px 12px; border-radius: 8px; background: #0a2240; border: 1px solid rgba(242, 160, 61, .55); color: #e7eef6; font-size: .78rem; font-weight: 400; line-height: 1.35; text-align: left; white-space: normal; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .6); }
+.sinref__tip ul { margin: 4px 0 0; padding-left: 16px; }
+.sinref:hover .sinref__tip, .sinref:focus .sinref__tip, .sinref:focus-within .sinref__tip { display: block; }

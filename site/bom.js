@@ -680,7 +680,14 @@
       const nB = san * 8 + cin * 4, nL = nB, nM = san * 3 + cin * 2;
       return { san, salas, cin, tr, torre, nB, nL, nM, nuc: san + cin, lug: salas * val('lmCinLug'), vis: san ? val('lmVisit') * val('lmLVisit') : 0, repos: torre ? tr * 80 : 0, peso: (nB + nL + nM) * 0.3 + (torre ? 1 : 0) };
     })() : null;
-    const pesoCoz = (KZ ? KZ.n * KZ.peso : 0) + (SH ? SH.peso : 0);
+    // Hospital: consultórios, leitos de emergência/observação e recepção. Um banheiro a cada 4 leitos, um lavatório de mãos a cada 5 leitos e um núcleo público (4 bacias e 4 lavatórios) a cada 150 atendimentos por dia
+    const HP = PF === PERFIS.hospital ? (() => {
+      const cons_ = val('lmConsult'), leitos = val('lmEmerg'), atend = val('lmAtend');
+      const nBan = Math.ceil(leitos / 4), nuc = Math.ceil(atend / 150), nMao = Math.ceil(leitos / 5);
+      const nB = nBan + nuc * 4, nL = cons_ + nBan + nMao + nuc * 4;
+      return { cons_, leitos, atend, nBan, nuc, nMao, nB, nL, amb: (cons_ ? 1 : 0) + (leitos ? 1 : 0) + nuc, peso: nB * 0.3 + nL * 0.3 + nBan * (hot ? 0.4 : 0.1) };
+    })() : null;
+    const pesoCoz = (KZ ? KZ.n * KZ.peso : 0) + (SH ? SH.peso : 0) + (HP ? HP.peso : 0);
     const pavU = !casa && $('lmTerreo').checked ? pav + 1 : pav;   // pavimentos com unidades: andares-tipo e, se marcado, o térreo
     const soCozGas = !!PF && aq !== 'gas';   // nos perfis, o gás só existe para a cozinha, salvo aquecedor a gás nas unidades
     const pesoDe = t => Math.round(t.ban) * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + Math.round(t.lav) * 0.6 + (EXT === 2 ? 0.7 + 1 + 0.7 + 1 : EXT * 0.7) + (t.varanda && !PF ? 0.7 : 0);
@@ -854,6 +861,42 @@
       } else warn.push('Cozinha comercial sem gás: escolha gás natural ou GLP no item 3, ou preveja equipamentos elétricos.');
       warn.push(`${nRest ? `Praça de alimentação: ${N} restaurante${N > 1 ? 's' : ''}` : 'Cozinha do hotel'}, com ${int(KZ.ref)} refeições por dia a 25 L cada. Quantidades por cozinha são estimativas: ajuste ao layout, aos equipamentos e à vigilância sanitária.`);
     }
+    if (HP && HP.amb) {
+      const HE_ = 'Emergência, recepção e consultórios', { nB, nL, nBan, amb } = HP;
+      af(HE_, '50 mm (1 1/2") — distribuição dos setores', amb * 20);
+      af(HE_, '25 mm (3/4") — ramais dos aparelhos', (nB + nL + nBan) * 2.5);
+      add(HE_, AF.bucha, nL + nBan + amb, 'un', { note: 'Saída para os pontos de utilização' });
+      plug(HE_, nL + nBan + amb);
+      add(HE_, 'Registro de gaveta 3/4" com acabamento', amb * 2 + nBan, 'un', { loss: false, note: 'Por setor e por banheiro' });
+      if (nBan) add(HE_, 'Registro de pressão 3/4" com acabamento', nBan, 'un', { loss: false, note: 'Chuveiros' });
+      esg(HE_, 100, nB * 2 + amb * 10); esg(HE_, 50, (nBan + amb) * 1.5); esg(HE_, 40, nL * 1.2);
+      cap(HE_, 100, nB); cap(HE_, 50, nBan); cap(HE_, 40, nL);
+      add(HE_, 'Caixa sifonada 150 x 150 x 50 mm com grelha', amb * 2 + nBan);
+      if (nBan) add(HE_, 'Ralo seco 100 mm (box)', nBan);
+      add(HE_, 'Joelho 90° esgoto 100 mm', nB + amb * 2);
+      add(HE_, 'Junção simples 100 x 50 mm', nB);
+      add(HE_, 'Joelho 90° esgoto 40 mm', nL);
+      add(HE_, 'Anel de vedação para saída de bacia sanitária', nB);
+      if (loucas) {
+        add(L_, 'Bacia sanitária com caixa acoplada', nB, 'un', { loss: false, note: 'Emergência e recepção' });
+        add(L_, 'Assento sanitário', nB, 'un', { loss: false });
+        add(L_, 'Lavatório com torneira', nL, 'cj', { loss: false, note: 'Consultórios, emergência e recepção' });
+        if (nBan) add(L_, hot ? 'Chuveiro / ducha (água quente)' : 'Chuveiro elétrico', nBan, 'un', { loss: false });
+        add(L_, 'Kit sanitário acessível (bacia, lavatório e barras de apoio, NBR 9050)', HP.nuc + (nBan ? 1 : 0), 'cj', { loss: false });
+      }
+      if (hot && nBan) {
+        const [hD, hS, packN, packL, cx] = HOT[aqMat];
+        add(Q_, hD + ' — distribuição da emergência', 20, 'm', { pack: [packN, packL] });
+        add(Q_, hS + ' — sub-ramais da emergência', nBan * 5, 'm', { pack: [packN, packL] });
+        add(Q_, `${cx}: joelhos, tês e luvas`, 6 + nBan * 6);
+        add(Q_, `${cx}: terminal com rosca 1/2"`, nBan * 2, 'un', { note: 'Saída para os pontos de água quente' });
+        plug(Q_, nBan * 2);
+        add(Q_, 'Isolamento térmico tubular (espuma elastomérica)', 20, 'm');
+        ptQ += nBan * 2;
+      }
+      ptF += nB + nL + nBan; pesoTot += HP.peso; uhc += nB * 6 + nL + nBan * 2 + amb * 3; joints += nB * 4 + nL * 2 + nBan * 2 + amb * 12; threads += nL * 2 + nBan * 2;
+      warn.push(`Emergência, recepção e consultórios: ${HP.cons_} consultórios, ${HP.leitos} leitos de observação e ${int(HP.atend)} atendimentos por dia (250 L por leito e 25 L por atendimento). Quantidades de referência: confirme com a RDC 50 da Anvisa e o programa do hospital.`);
+    }
     if (SH && SH.nuc) {
       const SP_ = 'Sanitários públicos e cinemas', { nB, nL, nM, nuc } = SH;
       af(SP_, '50 mm (1 1/2") — distribuição dos núcleos', nuc * 15);
@@ -903,7 +946,7 @@
       }
       warn.push(`Ar-condicionado central: ${int(SH.tr)} TR, com rede de DN ${dn}${SH.torre ? ` e reposição da torre estimada em ${num(SH.repos / 1000, 1)} m³/dia (80 L por TR ao dia, cerca de 12 h de operação)` : ''}. Estimativa: a carga térmica e os equipamentos vêm do projeto de climatização.`);
     }
-    const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (PF ? PF.cons : casa ? 150 : 200) + (KZ ? KZ.ref * 25 : 0) + (SH ? SH.vis + SH.lug * 2 + SH.repos : 0); // L/dia
+    const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (PF ? PF.cons : casa ? 150 : 200) + (KZ ? KZ.ref * 25 : 0) + (SH ? SH.vis + SH.lug * 2 + SH.repos : 0) + (HP ? HP.leitos * 250 + HP.atend * 25 : 0); // L/dia
     if (PF) {
       warn.push(`${PF.nome}: ${PF.consNota}, valores usuais da literatura de instalações prediais. Confirme com o programa de necessidades do empreendimento.`);
       if (PF.aviso) warn.push(`${PF.nome}: ${PF.aviso}`);
@@ -1616,19 +1659,20 @@
     if (!uf || !last) { out.innerHTML = ''; $('lmSinXlsx').hidden = true; return; }
     const prices = priceList(uf), groups = new Map();
     let total = 0, semRef = 0, web = 0;
-    const mo = maoDeObra(last.rows, prices, uf);
+    const mo = maoDeObra(last.rows, prices, uf), semLista = [];
+    const dica = lista => `<span class="sinref__tip" role="tooltip"><b>Sem preço de referência:</b><ul>${lista.map(i => `<li>${esc(i)}</li>`).join('')}</ul></span>`;
     for (const it of last.rows) {
-      const g = groups.get(it.group) || { v: 0, n: 0, sem: 0 };
+      const g = groups.get(it.group) || { v: 0, n: 0, sem: 0, lista: [] };
       const p = prices.get(it);
-      if (p) { g.v += p.p * it.qty; total += p.p * it.qty; if (!/^SINAPI|^Sem custo/.test(p.fonte)) web++; } else { g.sem++; semRef++; }
+      if (p) { g.v += p.p * it.qty; total += p.p * it.qty; if (!/^SINAPI|^Sem custo/.test(p.fonte)) web++; } else { g.sem++; semRef++; g.lista.push(it.item); semLista.push(it.item); }
       g.n++; groups.set(it.group, g);
     }
     out.innerHTML = `<table class="table lmat__sintab"><thead><tr><th>Grupo</th><th class="num">Valor (R$)</th><th class="num">%</th></tr></thead><tbody>` +
-      [...groups].map(([g, x]) => `<tr><td>${esc(g)}${x.sem ? ` <small>(${x.sem} sem referência)</small>` : ''}</td><td class="num">${brl(x.v)}</td><td class="num">${total ? num(x.v / total * 100, 1) : '0'}%</td></tr>`).join('') +
+      [...groups].map(([g, x]) => `<tr><td>${esc(g)}${x.sem ? ` <small class="sinref" tabindex="0">(${x.sem} sem referência)${dica(x.lista)}</small>` : ''}</td><td class="num">${brl(x.v)}</td><td class="num">${total ? num(x.v / total * 100, 1) : '0'}%</td></tr>`).join('') +
       `</tbody><tfoot><tr><th>Total de material — ${esc(UF_NOMES[uf])}</th><th class="num">${brl(total)}</th><th class="num">100%</th></tr></tfoot></table>` +
       `<p class="hint">${prices.size} de ${last.rows.length} itens com preço: SINAPI ${SINAPI_PRECOS.ref} (Caixa, sem desoneração, capital do estado)` +
       (web ? `, e ${web} com preço pesquisado na internet` : '') + '.' +
-      (semRef ? ` <b>${semRef} ${semRef > 1 ? 'itens ficam' : 'item fica'} sem referência</b> e fora do total: cote com fornecedores.` : '') +
+      (semRef ? ` <span class="sinref" tabindex="0"><b>${semRef} ${semRef > 1 ? 'itens ficam' : 'item fica'} sem referência</b>${dica(semLista)}</span> e fora do total: cote com fornecedores.` : '') +
       ' Só material: sem mão de obra, BDI e frete.</p>' +
       (mo.n ? `<div class="lmat__mo"><h5>Mão de obra de instalação (produtividade SINAPI)</h5>` +
         `<p><b>${num(mo.prof, 0)} h</b> de encanador + <b>${num(mo.aux, 0)} h</b> de auxiliar = <b>${num(mo.prof + mo.aux, 0)} h</b> no total` +
