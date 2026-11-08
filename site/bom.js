@@ -30,12 +30,12 @@
     // escola e shopping: sem chuveiros; "lav" é a parcela de cada sala/loja nos sanitários (bacia + lavatório)
     escola: { nome: 'Escola', un: 'Salas de aula por andar', area: 'Área da sala (m²)', pes: 'Alunos por sala', extra: 1, cons: 50, sing: 'sala de aula', plu: 'salas de aula',
       lab: { ban: 'Vestiários com chuveiro por sala', lav: 'Bacias e lavatórios por sala' }, max: { dorm: 60 },
-      ini: { nome: 'Sala de aula', n: 6, area: 50, dorm: 35, ban: 0, lav: 1 }, aq: 'eletrico', pe: 3.5, pav: 3,
+      ini: { nome: 'Sala de aula', n: 6, area: 50, dorm: 35, ban: 0, lav: 1 }, aq: 'eletrico', pe: 3.5, pav: 3, terreo: true,
       consNota: 'consumo diário de 50 L por aluno (escola externato, sem refeições preparadas no local); 1 bacia e 1 lavatório por sala, cerca de 1 para cada 35 alunos, e 1 bebedouro por sala',
       aviso: 'a lista cobre os sanitários dos alunos (uma bacia e um lavatório por sala) e um bebedouro por sala. Cozinha, refeitório, vestiários de quadra e laboratórios entram pelo projeto específico. Confira a proporção de aparelhos sanitários exigida pelo código de obras do município e pela vigilância sanitária.' },
     shopping: { nome: 'Shopping center', un: 'Lojas por andar', area: 'Área da loja (m²)', pes: 'Funcionários por loja', extra: 0, cons: 50, sing: 'loja', plu: 'lojas',
       lab: { ban: 'Banheiros com chuveiro por loja', lav: 'Sanitários (bacia e lavatório) por loja' }, max: { n: 120, dorm: 40 },
-      ini: { nome: 'Loja padrão', n: 30, area: 60, dorm: 4, ban: 0, lav: 1 }, aq: 'eletrico', pe: 4.5, pav: 3,
+      ini: { nome: 'Loja padrão', n: 30, area: 60, dorm: 4, ban: 0, lav: 1 }, aq: 'eletrico', pe: 4.5, pav: 3, terreo: true,
       gas: 'glp', consNota: 'consumo diário de 50 L por funcionário das lojas, mais 25 L por refeição dos restaurantes, visitantes, cinemas e reposição da torre',
       aviso: 'a lista cobre o sanitário de cada loja, as cozinhas, os sanitários públicos, os cinemas, o ar-condicionado central, as colunas e o barrilete. Áreas técnicas e demais instalações entram pelo projeto específico.' },
   };
@@ -93,6 +93,7 @@
       return syncTipo();
     }
     const P = perfil();
+    $('lmTerreo').checked = !!(P && P.terreo);   // térreo com as mesmas unidades dos andares: padrão em escola e shopping
     if (P) {
       types = [{ ...P.ini, varanda: false }];
       $('lmPav').value = P.pav || 8; $('lmPe').value = P.pe; $('lmCist').value = 'com'; $('lmHres').value = 2.5;
@@ -680,7 +681,7 @@
       return { san, salas, cin, tr, torre, nB, nL, nM, nuc: san + cin, lug: salas * val('lmCinLug'), vis: san ? val('lmVisit') * val('lmLVisit') : 0, repos: torre ? tr * 80 : 0, peso: (nB + nL + nM) * 0.3 + (torre ? 1 : 0) };
     })() : null;
     const pesoCoz = (KZ ? KZ.n * KZ.peso : 0) + (SH ? SH.peso : 0);
-    const pavU = PF === PERFIS.shopping ? pav + 1 : pav;   // pavimentos com unidades: no shopping, o térreo também tem lojas
+    const pavU = !casa && $('lmTerreo').checked ? pav + 1 : pav;   // pavimentos com unidades: andares-tipo e, se marcado, o térreo
     const soCozGas = !!PF && aq !== 'gas';   // nos perfis, o gás só existe para a cozinha, salvo aquecedor a gás nas unidades
     const pesoDe = t => Math.round(t.ban) * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + Math.round(t.lav) * 0.6 + (EXT === 2 ? 0.7 + 1 + 0.7 + 1 : EXT * 0.7) + (t.varanda && !PF ? 0.7 : 0);
     const hRes = Math.max(0, parseFloat($('lmHres').value) || 0);   // fundo do reservatório superior acima da laje de cobertura
@@ -1100,7 +1101,7 @@
         warn.push('Recarga de veículos elétricos: a lista inclui sprinklers na garagem, exigidos por muitos Corpos de Bombeiros nas vagas com carregador. Confirme na Instrução Técnica do seu estado.');
       }
       if (spk !== 'nao' && (vagas || spk === 'todo')) {
-        const S_ = 'Sprinklers', bG = vagas ? Math.ceil(areaGar / 12) : 0, aCorr = PF === PERFIS.shopping && spk === 'todo' ? val('lmCorr') * (pav + 1) : 0;   // andares e térreo
+        const S_ = 'Sprinklers', bG = vagas ? Math.ceil(areaGar / 12) : 0, aCorr = PF === PERFIS.shopping && spk === 'todo' ? val('lmCorr') * pavU : 0;   // andares e, se marcado, térreo
         // shopping: risco ordinário, até 12 m² por bico (NBR 10897), nas lojas e nos corredores; demais: 18 m², com 15% de circulações
         const bL = PF === PERFIS.shopping && spk === 'todo' ? Math.ceil(aptArea / 12) : 0, bC = Math.ceil(aCorr / 12);
         const bA = spk !== 'todo' ? 0 : PF === PERFIS.shopping ? bL + bC : Math.ceil(aptArea * 1.15 / 18);
@@ -1108,8 +1109,8 @@
         nBicos = b;
         add(S_, 'Bico de sprinkler 68 °C K80 1/2" — garagem (upright ou pendente)', bG, 'un', { note: ev ? `Inclui as ${ev} vagas com recarga de veículos elétricos` : '', loss: false });
         if (PF === PERFIS.shopping) {
-          add(S_, 'Bico de sprinkler spray padrão 68 °C 1/2" — lojas', bL, 'un', { loss: false, note: '1 bico a cada 12 m² (risco ordinário), com o térreo' });
-          add(S_, 'Bico de sprinkler spray padrão 68 °C 1/2" — corredores do mall', bC, 'un', { loss: false, note: `${int(aCorr)} m² de corredores com o térreo, 1 bico a cada 12 m²` });
+          add(S_, 'Bico de sprinkler spray padrão 68 °C 1/2" — lojas', bL, 'un', { loss: false, note: '1 bico a cada 12 m² (risco ordinário)' });
+          add(S_, 'Bico de sprinkler spray padrão 68 °C 1/2" — corredores do mall', bC, 'un', { loss: false, note: `${int(aCorr)} m² de corredores, 1 bico a cada 12 m²` });
         } else add(S_, PF && PF !== PERFIS.hotel ? `Bico de sprinkler spray padrão 68 °C 1/2" — ${PF.plu} e circulações` : `Bico de sprinkler residencial 68 °C 1/2" — ${PF ? 'quartos' : 'apartamentos'} e circulações`, bA, 'un', { loss: false });
         add(S_, 'Bicos de reserva com armário e chave de troca', Math.max(6, Math.ceil(b * 0.02)), 'un', { loss: false });
         // ramais de 1" e 1 1/4" sempre roscados (galvanizados); subgerais, prumada e barrilete conforme o material escolhido
@@ -1314,7 +1315,7 @@
     out.hidden = false;
     const nome = $('lmNome').value.trim();
     $('lmOutTitle').textContent = last.titulo ? (nome || last.titulo) + last.subtitulo : (nome || (last.casa ? 'Conjunto de casas' : perfil() ? perfil().nome : 'Edifício residencial')) +
-      (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo${perfil() === PERFIS.shopping ? ' e térreo' : ''}, ${int(last.units)} ${perfil() ? perfil().plu : 'unidades'}`);
+      (last.casa ? ` · ${int(last.units)} casa${last.units > 1 ? 's' : ''} de ${last.pav} pavimento${last.pav > 1 ? 's' : ''}` : ` · ${last.pav} andares-tipo${$('lmTerreo').checked ? ' e térreo' : ''}, ${int(last.units)} ${perfil() ? perfil().plu : 'unidades'}`);
     $('lmStats').innerHTML = last.stats.map(([k, v]) => `<div><span>${k}</span><strong>${v}</strong></div>`).join('');
     $('lmPres').innerHTML = presHTML(last.pres);
     $('lmWarn').innerHTML = last.warn.map(w => `<p class="hint warn">${esc(w)}</p>`).join('');

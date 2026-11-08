@@ -28,7 +28,7 @@
       condut: sum(/^Ralo hemisférico|^Bocal de calha/), calha: find(/^Calha/),
       prumGas: find(/prumadas de gás/), temGas: rows.some(r => r.group === 'Gás'), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/), aquec: find(/^Aquecedor de passagem/), hotDist: rows.find(r => r.group === 'Água quente' && /— distribuição/.test(r.item)),
       prumHid: find(/prumada de hidrantes|^Tubo de aço.*\(DN 65\)/), nHid: sum(/^Válvula angular/), bombaInc: find(/^Bomba (de reforço|principal)/), recInc: find(/^Registro de recalque/),
-      prumSpk: find(/prumada de sprinklers/), bicosG: sum(/sprinkler.*garagem/), bicosA: sum(/sprinkler (residencial|spray)/), bicosT: sum(/corredores do mall/), esfr: sum(/ESFR/), bicos: sum(/^Bico de sprinkler/),
+      prumSpk: find(/prumada de sprinklers/), bicosG: sum(/sprinkler.*garagem/), bicosA: sum(/sprinkler (residencial|spray)/), bicosT: ck('lmTerreo'), esfr: sum(/ESFR/), bicos: sum(/^Bico de sprinkler/),
       piscina: find(/^Filtro de areia/), chuva: find(/^Cisterna de água de chuva/), gordura: find(/^Caixa de gordura/),
       lgArea: n('lgArea'), lgPe: n('lgPe'), lgDocas: n('lgDocas'), camara: find(/câmara|Câmara/),
     };
