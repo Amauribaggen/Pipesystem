@@ -2220,3 +2220,9 @@ a.gl:hover { color: var(--teal-d); }
 /* Entidade aberta pela busca: visível abaixo do menu fixo e destacada */
 .ulinks__list li { scroll-margin-top: 96px; }
 .ulinks__list li:target > a { outline: 2px solid #f2a03d; outline-offset: 2px; }
+
+/* Entidades: menu de grupos no início da seção */
+.ulinks__menu { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+.ulinks__menu a { padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(126, 231, 242, .4); color: #7ee7f2; font-size: .84rem; font-weight: 600; text-decoration: none; transition: background .15s, color .15s; }
+.ulinks__menu a:hover, .ulinks__menu a:focus-visible { background: #7ee7f2; color: #0a2240; }
+.ulinks__grupo { scroll-margin-top: 20px; }
