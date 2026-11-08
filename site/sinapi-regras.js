@@ -33,6 +33,10 @@ const SINAPI_REGRAS = (() => {
   const web = (v, fonte, url) => ({ v, fonte, url });
   return [
     // Itens sem regra achados no SINAPI completo em 08/11/2026 (no início: a primeira regra que casa é a que vale)
+    [/^Tê de redução com saída 1\/2" para bico/, { c: '6320', nota: 'tê galvanizado 1" x 1/2"' }],
+    [/^Tê de redução com saída para bico \(3\/4"\)/, { c: '6304', nota: 'tê galvanizado 1 1/2" x 3/4"' }],
+    [/^Tê de redução com saída para bico \(1"\)/, { c: '6305', nota: 'tê galvanizado 2" x 1"' }],
+    [/^Suporte de tubulação \(tirante/, { c: '390', nota: 'suporte para tubo 2" com rosca mecânica; tirante e chumbador à parte' }],
     [/^Bujão de ferro galvanizado 1" para/, '4890'], [/^Bujão de ferro galvanizado 3\/4" para saída de sprinkler/, '4889'],
     [/^Conexão PEX de crimpar: joelhos/, { c: ['39300', '39302', '39308', '39310'], nota: 'média de joelhos e luvas de 16 e 25 mm' }],
     [/^Conexão PEX de crimpar: terminal/, '39304'],
