@@ -22,7 +22,7 @@
   // cons: consumo diário por pessoa (L), valores usuais da literatura de instalações prediais (Macintyre).
   const PERFIS = {
     hotel: { nome: 'Hotel', un: 'Quartos por andar', area: 'Área do quarto (m²)', pes: 'Hóspedes por quarto', extra: 0, cons: 120, sing: 'quarto', plu: 'quartos',
-      ini: { nome: 'Quarto padrão', n: 12, area: 25, dorm: 2, ban: 1, lav: 0 }, aq: 'central', pe: 3, consNota: 'consumo diário de 120 L por hóspede (hotel sem cozinha e lavanderia)' },
+      ini: { nome: 'Quarto padrão', n: 12, area: 25, dorm: 2, ban: 1, lav: 0 }, aq: 'central', pe: 3, gas: 'glp', consNota: 'consumo diário de 120 L por hóspede, sem lavanderia, mais 25 L por refeição da cozinha' },
     hospital: { nome: 'Hospital', un: 'Quartos por andar', area: 'Área do quarto (m²)', pes: 'Leitos por quarto', extra: 0, cons: 250, sing: 'quarto', plu: 'quartos',
       ini: { nome: 'Quarto de internação', n: 10, area: 22, dorm: 2, ban: 1, lav: 0 }, aq: 'central', pe: 3.6, consNota: 'consumo diário de 250 L por leito' },
     escritorio: { nome: 'Edifício de escritórios', un: 'Salas ou conjuntos por andar', area: 'Área da sala (m²)', pes: 'Pessoas por sala', extra: 1, cons: 50, sing: 'sala', plu: 'salas',
@@ -36,8 +36,8 @@
     shopping: { nome: 'Shopping center', un: 'Lojas por andar', area: 'Área da loja (m²)', pes: 'Funcionários por loja', extra: 0, cons: 50, sing: 'loja', plu: 'lojas',
       lab: { ban: 'Banheiros com chuveiro por loja', lav: 'Sanitários (bacia e lavatório) por loja' }, max: { n: 120, dorm: 40 },
       ini: { nome: 'Loja padrão', n: 30, area: 60, dorm: 4, ban: 0, lav: 1 }, aq: 'eletrico', pe: 4.5, pav: 3,
-      consNota: 'consumo diário de 50 L por funcionário das lojas',
-      aviso: 'a lista cobre o sanitário de cada loja, as colunas e o barrilete. Sanitários públicos do mall, praça de alimentação, cinemas, ar-condicionado central (água gelada) e áreas técnicas entram pelo projeto específico.' },
+      gas: 'glp', consNota: 'consumo diário de 50 L por funcionário das lojas, mais 25 L por refeição dos restaurantes',
+      aviso: 'a lista cobre o sanitário de cada loja, as cozinhas dos restaurantes informados, as colunas e o barrilete. Sanitários públicos do mall, cinemas, ar-condicionado central (água gelada) e áreas técnicas entram pelo projeto específico.' },
   };
   const perfil = () => PERFIS[($('lmTipo').value.match(/^perfil-(\w+)/) || [])[1]] || null;
   function renderTypes() {
@@ -69,6 +69,9 @@
     document.querySelectorAll('#lmatTool [data-res]').forEach(el => { el.hidden = gal; });
     document.querySelectorAll('#lmatTool [data-gal]').forEach(el => { el.hidden = !gal; });
     document.querySelectorAll('#lmatTool [data-gt]').forEach(el => { el.hidden = !gal || !el.dataset.gt.split(' ').includes(gt); });
+    // campos de um perfil só (restaurantes do shopping, cozinha do hotel)
+    const pfK = ($('lmTipo').value.match(/^perfil-(\w+)/) || [])[1];
+    document.querySelectorAll('#lmatTool [data-pf]').forEach(el => { el.hidden = el.dataset.pf !== pfK; });
     renderTypes();
   }
   // valores típicos ao escolher cada tipo de galpão (o usuário ajusta depois)
@@ -90,7 +93,7 @@
     if (P) {
       types = [{ ...P.ini, varanda: false }];
       $('lmPav').value = P.pav || 8; $('lmPe').value = P.pe; $('lmCist').value = 'com'; $('lmHres').value = 2.5;
-      $('lmAq').value = P.aq; $('lmGas').value = 'nenhum'; $('lmMed').checked = false;
+      $('lmAq').value = P.aq; $('lmGas').value = P.gas || 'nenhum'; $('lmMed').checked = false;
       $('lmSalao').value = 0; $('lmLavCol').value = 0; $('lmChur').value = 'nenhuma'; $('lmPisc').value = 0;
       return syncTipo();
     }
@@ -662,11 +665,17 @@
     // Água fria: pesos, colunas e barrilete calculados antes da lista, para a verificação de pressão.
     // Caminho crítico: fundo do reservatório superior → barrilete → coluna → distribuição → chuveiro do último pavimento
     const PF = perfil(), EXT = PF ? PF.extra : 2;   // ambientes molhados além dos banheiros (cozinha e serviço no residencial)
+    // Cozinhas comerciais: restaurantes da praça de alimentação (shopping) ou cozinha do hotel. 25 L por refeição, como no refeitório dos galpões.
+    const nRest = PF === PERFIS.shopping ? Math.round(val('lmRest')) : 0, refHotel = PF === PERFIS.hotel ? Math.round(val('lmRefHotel')) : 0;
+    const KZ = nRest ? { n: nRest, ref: nRest * Math.round(val('lmRefRest')), nome: 'restaurante', d32: 12, d25: 20, pts: 6, e100: 10, e75: 12, cx50: 3, ralo: 1, lav: 1, gasL: 15, gasPt: 3, peso: 4 * 0.7, uhc: 20, q: 0 }
+      : refHotel ? { n: 1, ref: refHotel, nome: 'cozinha do hotel', d32: 20, d25: 40, pts: 8, e100: 20, e75: 25, cx50: 6, ralo: 3, lav: 2, gasL: 40, gasPt: 4, peso: 6 * 0.7, uhc: 30, q: 4 } : null;
+    const pesoCoz = KZ ? KZ.n * KZ.peso : 0;
+    const soCozGas = !!PF && aq !== 'gas';   // nos perfis, o gás só existe para a cozinha, salvo aquecedor a gás nas unidades
     const pesoDe = t => Math.round(t.ban) * (0.3 + 0.3 + (hot ? 0.4 : 0.1) + 0.4) + Math.round(t.lav) * 0.6 + (EXT === 2 ? 0.7 + 1 + 0.7 + 1 : EXT * 0.7) + (t.varanda && !PF ? 0.7 : 0);
     const hRes = Math.max(0, parseFloat($('lmHres').value) || 0);   // fundo do reservatório superior acima da laje de cobertura
     const cargaAF = pe + hRes - 2;                                  // até a saída do chuveiro, a 2 m do piso do último pavimento
     const iRam = dimPipes[matAF].findIndex(([n]) => n.startsWith('25 mm')), qChu = 0.3 * Math.sqrt(hot ? 0.4 : 0.1);
-    const upf = tp.reduce((s, t) => s + t.n, 0), pesoAll = tp.reduce((s, t) => s + pesoDe(t) * (casa ? t.n : t.n * pav), 0);
+    const upf = tp.reduce((s, t) => s + t.n, 0), pesoAll = tp.reduce((s, t) => s + pesoDe(t) * (casa ? t.n : t.n * pav), 0) + pesoCoz;
     const nPrum = casa ? 0 : med ? Math.ceil(upf / 4) : upf * 2;
     const lBar = casa ? 0 : 2 * Math.sqrt(tp.reduce((s, t) => s + t.n * t.area * 1.2, 0)) + 4 * nPrum;
     const qBar = 0.3 * Math.sqrt(pesoAll), qCol = casa ? 0 : 0.3 * Math.sqrt(pesoAll / nPrum);
@@ -747,7 +756,7 @@
       }
 
       // Gás
-      if (hasGas) {
+      if (hasGas && gPts) {
         const lg = gPts * (0.4 * sq + 3);
         add(G_, 'Tubo de cobre classe A 15 mm (gás)', lg * U, 'm', { pack: ['barra', 5] });
         add(G_, 'Conexões de cobre 15 mm para gás (joelhos, tês)', (gPts * 3 + gPts - 1) * U);
@@ -800,11 +809,44 @@
       }
     }
 
-    const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (PF ? PF.cons : casa ? 150 : 200); // L/dia
+    // Cozinhas comerciais (lista por cozinha; o porte de cada uma varia com o projeto)
+    if (KZ) {
+      const CZ_ = nRest ? 'Praça de alimentação' : 'Cozinha do hotel', N = KZ.n;
+      af(CZ_, '32 mm (1") — distribuição da cozinha', KZ.d32 * N);
+      af(CZ_, '25 mm (3/4") — pontos de pias e equipamentos', KZ.d25 * N);
+      plug(CZ_, KZ.pts * N);
+      add(CZ_, 'Registro de gaveta 3/4" com acabamento', N, 'un', { loss: false, note: 'Um por cozinha' });
+      esg(CZ_, 100, KZ.e100 * N); esg(CZ_, 75, KZ.e75 * N); cap(CZ_, 50, KZ.cx50 * N);
+      add(CZ_, 'Caixa de gordura industrial (dimensionar pelo nº de refeições, NBR 8160)', N, 'un', { loss: false, note: `${int(KZ.ref)} refeições por dia no total` });
+      add(CZ_, 'Ralo linear com grelha inox (piso da cozinha)', KZ.ralo * N, 'un', { loss: false });
+      add(CZ_, 'Lavatório de mãos com acionamento sem contato (cozinha)', KZ.lav * N, 'un', { loss: false });
+      ptF += KZ.pts * N; ptQ += hot ? KZ.q * N : 0; pesoTot += pesoCoz; uhc += KZ.uhc * N; joints += 40 * N; threads += KZ.pts * N;
+      if (hot && KZ.q) {
+        const [hD, hS, packN, packL, cx] = HOT[aqMat];
+        add(Q_, hD + ' — distribuição da cozinha', 15 * N, 'm', { pack: [packN, packL] });
+        add(Q_, hS + ' — sub-ramais da cozinha', 10 * N, 'm', { pack: [packN, packL] });
+        add(Q_, `${cx}: joelhos, tês e luvas`, 12 * N);
+        add(Q_, `${cx}: terminal com rosca 1/2"`, KZ.q * N, 'un', { note: 'Saída para os pontos de água quente' });
+        plug(Q_, KZ.q * N);
+        add(Q_, 'Isolamento térmico tubular (espuma elastomérica)', 15 * N, 'm');
+      }
+      if (hasGas) {
+        add(G_, 'Tubo de aço galvanizado 1" (DN 25) — rede de gás da cozinha', KZ.gasL * N, 'm', { pack: ['barra', 6] });
+        add(G_, 'Conexões galvanizadas 1" (gás)', 16 * N);
+        add(G_, 'Registro de esfera para gás 1/2" (fogão, forno, caldeirão)', KZ.gasPt * N, 'un', { loss: false });
+        add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', KZ.gasPt * N, 'un', { loss: false });
+        plug(G_, KZ.gasPt * N, true);
+        add(G_, 'Detector de vazamento de gás com válvula de bloqueio', N, 'un', { loss: false });
+        ptG += KZ.gasPt * N; threads += 24 * N;
+        if (gas === 'p13') warn.push('Cozinha comercial com botijão P13: use gás natural ou central de GLP.');
+      } else warn.push('Cozinha comercial sem gás: escolha gás natural ou GLP no item 3, ou preveja equipamentos elétricos.');
+      warn.push(`${nRest ? `Praça de alimentação: ${N} restaurante${N > 1 ? 's' : ''}` : 'Cozinha do hotel'}, com ${int(KZ.ref)} refeições por dia a 25 L cada. Quantidades por cozinha são estimativas: ajuste ao layout, aos equipamentos e à vigilância sanitária.`);
+    }
+    const qTot = 0.3 * Math.sqrt(pesoTot), cons = pop * (PF ? PF.cons : casa ? 150 : 200) + (KZ ? KZ.ref * 25 : 0); // L/dia
     if (PF) {
       warn.push(`${PF.nome}: ${PF.consNota}, valores usuais da literatura de instalações prediais. Confirme com o programa de necessidades do empreendimento.`);
       if (PF.aviso) warn.push(`${PF.nome}: ${PF.aviso}`);
-      else if (PF.extra === 0) warn.push(`${PF.nome}: a lista cobre os quartos, as colunas e o barrilete. Cozinha industrial, lavanderia${PF === PERFIS.hospital ? ', gases medicinais, central de esterilização' : ''} e áreas técnicas entram pelo projeto específico.`);
+      else if (PF.extra === 0) warn.push(`${PF.nome}: a lista cobre os quartos, as colunas e o barrilete. ${KZ ? 'Lavanderia' : 'Cozinha industrial, lavanderia'}${PF === PERFIS.hospital ? ', gases medicinais, central de esterilização' : ''} e áreas técnicas entram pelo projeto específico.`);
       else warn.push(`${PF.nome}: sanitários e copa por sala. Sanitários coletivos por andar, auditórios e restaurante entram pelo projeto específico.`);
     }
     const R_ = 'Reservação e recalque', P_ = 'Águas pluviais', I_ = 'Combate a incêndio', C_ = 'Áreas comuns', F_ = 'Consumíveis e fixação';
@@ -925,7 +967,7 @@
       const dCol = uhc <= 180 ? 100 : uhc <= 700 ? 150 : 200;
       esg(E_, dCol, 2 * Math.sqrt(plate) + 10 + 2 * (nTQ + n75));
       add(E_, `Coletor predial: ${dCol} mm (${int(uhc)} UHC)`, 1, 'cj', { loss: false, note: 'Diâmetro pela soma das unidades Hunter (NBR 8160)' });
-      add(E_, 'Caixa de gordura (coletiva, dimensionar pelo nº de cozinhas)', Math.max(1, Math.ceil(nCoz / 2)), 'un', { loss: false });
+      if (nCoz) add(E_, 'Caixa de gordura (coletiva, dimensionar pelo nº de cozinhas)', Math.max(1, Math.ceil(nCoz / 2)), 'un', { loss: false });
       add(E_, 'Caixa de inspeção 60 x 60 cm', Math.ceil((nTQ + n75) / 2) + 2, 'un', { loss: false });
       vertical += (nTQ + n75 + Math.ceil(nTQ / 2)) * lTQ; joints += (nTQ + n75) * (pav * 3 + 2);
 
@@ -1087,19 +1129,21 @@
     }
 
     // Gás: prumadas e central
-    if (hasGas && !casa && gas !== 'p13') {
+    if (hasGas && !casa && gas !== 'p13' && !(soCozGas && !KZ)) {
+      if (!soCozGas) {
       const nGp = Math.ceil(unitsPerFloor / 4);
       add(G_, 'Tubo de aço galvanizado 1" (DN 25) — prumadas de gás', nGp * (H + 3), 'm', { pack: ['barra', 6] });
       add(G_, 'Conexões galvanizadas 1" (tês das derivações)', nGp * pav + 6);
       add(G_, 'Tubo de cobre classe A 22 mm — ramais até os medidores', units * 3, 'm', { pack: ['barra', 5] });
       add(G_, 'Abrigo de medidores de gás por pavimento', pav, 'un', { loss: false });
       add(G_, 'Válvula de bloqueio da prumada 1"', nGp, 'un', { loss: false });
+      vertical += nGp * (H + 3); threads += nGp * pav * 2;
+      }
       if (gas === 'glp') {
         add(G_, 'Central de GLP (cilindros P190 ou tanque, dimensionar com a distribuidora)', 1, 'cj', { loss: false });
         add(G_, 'Regulador de pressão de 1º estágio', 1, 'un', { loss: false });
         add(G_, 'Tubo de aço galvanizado 1" — da central à prumada', 20, 'm', { pack: ['barra', 6] });
       } else add(G_, 'Abrigo de entrada e regulador geral (fornecidos pela concessionária)', 1, 'cj', { loss: false });
-      vertical += nGp * (H + 3); threads += nGp * pav * 2;
     }
     // Piscina (NBR 10339): filtragem do volume em 6 h
     if (piscA) {
@@ -1184,7 +1228,7 @@
 
     const stats = [
       [casa ? 'Casas' : PF ? PF.un.replace(' por andar', '') : 'Unidades', int(units)], [PF === PERFIS.hospital ? 'Leitos' : 'População estimada', `${int(pop)} ${PF === PERFIS.hospital ? 'leitos' : 'pessoas'}`],
-      ['Consumo diário', `${num(cons / 1000, 1)} m³`], ['Vazão de projeto', `${num(0.3 * Math.sqrt(pesoTot))} L/s`],
+      ...(KZ ? [['Refeições por dia', int(KZ.ref)]] : []), ['Consumo diário', `${num(cons / 1000, 1)} m³`], ['Vazão de projeto', `${num(0.3 * Math.sqrt(pesoTot))} L/s`],
       ['Pontos de água fria', int(ptF)], ['Pontos de água quente', int(ptQ)], ['Pontos de gás', int(ptG)],
       [casa ? 'Altura da casa' : 'Altura do edifício', `${num(H, 1)} m`],
     ];
