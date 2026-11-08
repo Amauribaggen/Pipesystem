@@ -57,4 +57,61 @@ export const GLOSSARIO_EXTRA = {
     exemplo: 'Um ramal DN 100 de 12 m com 1% precisa de 12 cm de desnível entre as pontas. Um ramal DN 50 de 3 m com 2% precisa de 6 cm.',
     erros: ['Deixar barriga (trecho mais baixo no meio do caminho), que acumula resíduos.', 'Assentar sem conferir o caimento com nível.', 'Montar o tubo com contrafluxo para fugir de uma viga.', 'Prever pé-direito ou forro sem espaço para o caimento.'],
   },
+  'velocidade-de-escoamento': {
+    pratica: 'A velocidade é o equilíbrio do dimensionamento: tubo menor custa menos, mas aumenta a velocidade, o ruído e a perda de carga. Como a perda cresce aproximadamente com o quadrado da velocidade, aumentar um diâmetro comercial costuma trazer grande alívio. Em linhas de sucção, a velocidade baixa ajuda a evitar a cavitação.',
+    valores: [['Água fria predial (referência usual)', 'até 3 m/s'], ['Sucção de bombas (prática usual)', 'até cerca de 1,5 m/s'], ['Recalque de bombas (prática usual)', 'cerca de 1,5 a 3 m/s']],
+    exemplo: 'Vazão de 1 L/s (0,001 m³/s) em tubo com diâmetro interno de 25 mm: área = 0,00049 m²; V = 0,001 / 0,00049 ≈ 2,0 m/s.',
+    erros: ['Calcular a área com o diâmetro nominal, e não com o interno.', 'Esquecer a conversão de L/s para m³/s.', 'Olhar só a perda de carga e ignorar o ruído em áreas de dormitórios.'],
+  },
+  'separacao-atmosferica': {
+    pratica: 'A proteção funciona sem peças móveis, por isso não depende de manutenção. A altura é medida da saída de água até o nível máximo que o recipiente pode atingir, o de transbordamento, e não até o nível normal. A distância mínima deve ser conferida na tabela da NBR 5626, conforme o diâmetro da saída.',
+    valores: [['Regra internacional de referência (ASME A112.1.2)', 'duas vezes o diâmetro efetivo da saída, com mínimo de 25 mm'], ['Aplicações típicas', 'reservatórios, tanques, pias, lavatórios e cisternas de reúso']],
+    erros: ['Medir a altura até o nível normal, sem considerar o transbordamento.', 'Colocar extensão ou mangueira na saída, eliminando o espaço de ar.', 'Instalar a entrada de água potável abaixo do extravasor do reservatório.'],
+  },
+  'pressao-dinamica': {
+    pratica: 'Dois pontos podem ter a mesma pressão estática e desempenhos bem diferentes, porque a perda de carga depende do caminho e da vazão. O caso mais crítico costuma ser o ponto mais alto e mais distante do reservatório, com outros aparelhos em uso. Medir exige um manômetro no ponto, com a água correndo.',
+    valores: [['Mínima nos pontos de utilização (confira a edição vigente da NBR 5626)', '1 mca'], ['Válvula de descarga (referência usual)', 'cerca de 1,5 mca, conforme o modelo'], ['Duchas e aquecedores', 'muitas vezes exigem mais; ver o manual do fabricante']],
+    exemplo: 'Chuveiro 6 m abaixo do fundo do reservatório, com 2,5 mca de perda de carga no caminho: pressão dinâmica = 6 − 2,5 = 3,5 mca.',
+    erros: ['Medir com o registro fechado, o que mostra só a pressão estática.', 'Calcular considerando apenas um aparelho aberto em ramais de uso simultâneo.', 'Não verificar o aquecedor, cuja perda interna pode ser alta.'],
+  },
+  uhc: {
+    pratica: 'As UHC já consideram que os aparelhos não descarregam todos ao mesmo tempo, por isso não são litros por segundo. Além da soma, cada aparelho tem um diâmetro mínimo próprio de ramal. A tabela usada muda conforme o trecho: ramal, tubo de queda ou coletor.',
+    valores: [['Bacia sanitária', '6 UHC'], ['Chuveiro residencial', '2 UHC'], ['Lavatório residencial', '1 UHC'], ['Pia de cozinha residencial', '3 UHC'], ['Ramal DN 50 (limite da NBR 8160)', '6 UHC'], ['Ramal DN 75', '20 UHC'], ['Ramal DN 100', '160 UHC']],
+    exemplo: 'Banheiro com bacia (6), lavatório (1) e chuveiro (2) soma 9 UHC. Pela soma, caberia em DN 75, mas o ramal que recebe a bacia deve ser DN 100, porque esse é o mínimo da peça.',
+    erros: ['Dimensionar só pela soma e esquecer o diâmetro mínimo de cada aparelho.', 'Confundir UHC com o peso relativo usado na água fria.', 'Ler a tabela de ramais para dimensionar o tubo de queda.'],
+  },
+  celeridade: {
+    pratica: 'A celeridade determina o tamanho da sobrepressão no fechamento rápido e também o tempo que a onda leva para ir e voltar. Esse tempo, igual a 2L/a, é o período crítico: fechar a válvula em tempo menor gera o golpe máximo. Ar dissolvido na água reduz bastante a celeridade.',
+    valores: [['Aço e ferro dúctil (ordem de grandeza)', '1.000 a 1.300 m/s'], ['PVC (ordem de grandeza)', '300 a 500 m/s'], ['PEAD (ordem de grandeza)', '200 a 400 m/s'], ['Sobrepressão máxima (Joukowsky)', 'ΔH = a × ΔV / g']],
+    exemplo: 'Parada brusca de água a 1,5 m/s: com a = 1.200 m/s, ΔH = 1.200 × 1,5 / 9,81 ≈ 183 mca; com a = 400 m/s, cerca de 61 mca. Em 600 m de tubo com a = 1.200 m/s, o período crítico é 2 × 600 / 1.200 = 1 s.',
+    erros: ['Adotar a celeridade do aço em tubos plásticos, ou o contrário.', 'Fechar válvulas em tempo menor que o período crítico.', 'Avaliar a sobrepressão sem somar a pressão de trabalho.'],
+  },
+  'dilatacao-termica': {
+    pratica: 'Se o tubo não tiver como se movimentar, o esforço vai para conexões, suportes e paredes. Em trechos retos longos, são usadas liras, braços flexíveis, curvas de expansão ou juntas de dilatação. Os pontos fixos dividem o trecho e direcionam o movimento para os compensadores, e os demais suportes precisam permitir o deslizamento.',
+    valores: [['Aço carbono', '≈ 0,012 mm/m·°C'], ['Cobre', '≈ 0,017 mm/m·°C'], ['Tubos plásticos multicamada com alumínio', '≈ 0,025 mm/m·°C'], ['CPVC', '≈ 0,06 a 0,07 mm/m·°C'], ['PPR', '≈ 0,15 mm/m·°C']],
+    exemplo: 'Trecho de 20 m com variação de 50 °C: em PPR, ΔL = 0,15 × 20 × 50 = 150 mm; em cobre, 0,017 × 20 × 50 ≈ 17 mm.',
+    erros: ['Embutir tubo rígido sem espaço ou proteção para o movimento.', 'Colocar todos os suportes fixos, impedindo a dilatação.', 'Usar a variação entre a água e o ambiente sem considerar a temperatura de montagem.'],
+  },
+  pn: {
+    pratica: 'A pressão nominal serve para compatibilizar tubos, conexões, válvulas e flanges de um mesmo sistema, e o componente de menor PN limita o conjunto. A pressão de trabalho também deve considerar os picos de golpe de aríete. Nos tubos de polietileno, o PN decorre do material e da relação entre diâmetro e espessura (SDR).',
+    valores: [['PN 10', '10 bar ≈ 102 mca'], ['PN 16', '16 bar ≈ 163 mca'], ['PE 100, SDR 17', 'PN 10'], ['PE 100, SDR 11', 'PN 16']],
+    erros: ['Tomar a pressão de ensaio como se fosse a pressão de trabalho.', 'Ignorar a queda da pressão admissível com a temperatura.', 'Misturar flanges ou conexões de PN inferior ao do tubo.', 'Especificar sem considerar o golpe de aríete.'],
+  },
+  de: {
+    pratica: 'Nos plásticos, a bitola comercial é dada pelo diâmetro externo, e a espessura varia com a classe de pressão. Por isso, dois tubos com o mesmo DE podem ter diâmetros internos diferentes. Para o cálculo hidráulico, vale sempre o diâmetro interno, informado pelo fabricante ou obtido descontando duas espessuras do DE.',
+    valores: [['DE 20 em PVC soldável', 'equivale a cerca de 1/2"'], ['DE 25', 'cerca de 3/4"'], ['DE 32', 'cerca de 1"'], ['DE 50', 'cerca de 1 1/2"'], ['DE 60', 'cerca de 2"']],
+    exemplo: 'PEAD DE 63 SDR 11, com parede de 5,8 mm: diâmetro interno = 63 − (2 × 5,8) = 51,4 mm.',
+    erros: ['Usar o DE direto no cálculo de velocidade e perda de carga.', 'Pedir o tubo em polegadas sem confirmar o DE do sistema.', 'Trocar de fabricante sem conferir a compatibilidade das conexões.'],
+  },
+  ventilacao: {
+    pratica: 'O escoamento no tubo de queda empurra e puxa o ar à sua frente. Sem caminho para esse ar, a variação de pressão esvazia os sifões, e o mau cheiro entra no ambiente. Por isso, o tubo ventilador sai acima da cobertura, longe de janelas e de tomadas de ar.',
+    valores: [['Saída acima de cobertura sem uso (confira a NBR 8160)', 'ao menos 30 cm'], ['Saída em laje usada para outros fins', 'ao menos 2 m acima do piso'], ['Distância de janelas e portas', 'ao menos 4 m, ou 1 m acima da verga']],
+    erros: ['Fechar o tubo de ventilação no forro ou na alvenaria.', 'Conectar a ventilação abaixo do nível de transbordamento do aparelho mais alto do ramal.', 'Deixar a saída perto de janelas ou captações de ar-condicionado.', 'Subdimensionar a coluna em prédios altos.'],
+  },
+  'intensidade-pluviometrica': {
+    pratica: 'A NBR 10844 usa chuvas de 5 minutos de duração, e a intensidade vem de dados da região. O período de retorno depende do dano que um transbordamento pode causar. A área de contribuição considera a inclinação do telhado e a parede que recebe chuva, e não apenas a projeção em planta.',
+    valores: [['Áreas pavimentadas onde empoçamento é tolerável', 'período de retorno de 1 ano'], ['Coberturas e terraços', '5 anos'], ['Coberturas e áreas onde não se tolera empoçamento ou extravasamento', '25 anos'], ['Coberturas de até 100 m² de projeção (simplificação da norma)', '150 mm/h'], ['Vazão de projeto', 'Q (L/min) = I (mm/h) × A (m²) / 60']],
+    exemplo: 'Cobertura com 200 m² de área de contribuição e I = 150 mm/h: Q = 150 × 200 / 60 = 500 L/min, cerca de 8,3 L/s.',
+    erros: ['Usar a área em planta e ignorar a inclinação do telhado.', 'Adotar a intensidade de outra cidade.', 'Escolher um período de retorno curto onde o extravasamento causa dano.'],
+  },
 };
