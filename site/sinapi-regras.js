@@ -31,7 +31,26 @@ const SINAPI_REGRAS = (() => {
   const map = (tab, conv = INCH) => ({ by: Object.fromEntries(Object.entries(tab).map(([k, v]) => [conv(k), Array.isArray(v) ? { c: v } : v])), key: conv });
   const ret = { ...map(retencao), fbBy: Object.fromEntries(Object.entries(retencaoNac).map(([k, v]) => [k, { v, fonte: 'SINAPI 05/2026, média nacional (sem preço estadual em 09/2026)', url: orc + retencao[k] + '/' }])) };
   const web = (v, fonte, url) => ({ v, fonte, url });
+  // Importados sem preço no Brasil: US$ × PTAX venda × 2,5 (internação, impostos, logística e venda interna). Ao atualizar, troque a cotação e as datas.
+  const USD = 5.5013, USD_DATA = '06/11/2026', COLETA = '08/11/2026';
+  const imp = (usd, item, loja, url) => web(Math.round(usd * USD * 2.5 * 100) / 100, `${item}: US$ ${usd.toFixed(2)} em ${loja} (coleta ${COLETA}) × R$ ${USD.toFixed(4).replace('.', ',')} (PTAX venda de ${USD_DATA}) × 2,5 para internação, impostos e logística`, url);
+  const QR = 'https://www.qrfs.com';
   return [
+    [/^Válvula de governo e alarme \(VGA\) 4"/, imp(1745.12, 'Tyco AV-1-300 4" ranhurada, sem trim', 'QRFS (EUA)', QR + '/valves/tyco-av-1-300-alarm-check-valve-4-in-groove-x-groove-ductile-iron-300-psi-52-203-1-113')],
+    [/^Válvula de governo e alarme \(VGA\) 6"/, imp(2182, 'Tyco AV-1-300 6" ranhurada, sem trim', 'FireAlarm.com (EUA)', 'https://firealarm.com/product/tyco-522033115-av-1-300-alarm-check-valve-6-groove-x-groove/')],
+    [/^Válvula de controle seccional|^Válvula de bloqueio 4"/, imp(281.35, 'Válvula borboleta ranhurada 4" com chave supervisora', 'QRFS (EUA)', QR + '/valves/butterfly-valve-with-tamper-switch-grooved-4-in')],
+    [/^Válvula de bloqueio 6"/, imp(437.04, 'Válvula borboleta ranhurada 6" com chave supervisora', 'QRFS (EUA)', QR + '/valves/butterfly-valve-with-tamper-switch-grooved-6-in')],
+    [/^Chave detectora de fluxo/, imp(162.68, 'Chave de fluxo System Sensor 4"', 'APFS (EUA)', 'https://apfs.com/product/4-flow-switch')],
+    [/^Conjunto de teste e dreno/, imp(188.99, 'AGF TESTanDRAIN 1000, 1"', 'FireAlarm.com (EUA)', 'https://firealarm.com/product/agf-manufacturing-10001000500/')],
+    [/^Bico ESFR K-25/, imp(50.49, 'Reliable P25 ESFR K25 pendente 74 °C', 'FireAlarm.com (EUA)', 'https://firealarm.com/?p=209473')],
+    [/^Acoplamento rígido ranhurado 1 1\/2"/, imp(9.67, 'Acoplamento GemLock Style 5 1 1/2"', 'QRFS (EUA)', QR + '/gemlock-grooved-rigid-coupling-style-5-1-1-2-in')],
+    [/^Acoplamento rígido ranhurado 4"/, imp(16.21, 'Acoplamento GemLock Style 5 4"', 'QRFS (EUA)', QR + '/gemlock-grooved-rigid-coupling-style-5-4-in')],
+    [/^Acoplamento rígido ranhurado 6"/, imp(25.83, 'Acoplamento GemLock Style 5 6"', 'QRFS (EUA)', QR + '/gemlock-grooved-rigid-coupling-style-5-6-in')],
+    [/^Curva 90° ranhurada 1 1\/2"/, imp(8.52, 'Curva 90° GemLock Style 100 1 1/2"', 'QRFS (EUA)', QR + '/gemlock-grooved-90-degree-elbow-standard-1-1-2-in-style-100')],
+    [/^Curva 90° ranhurada 4"/, imp(36.35, 'Curva 90° GemLock Style 100 4"', 'QRFS (EUA)', QR + '/gemlock-grooved-90-degree-elbow-standard-4-in-style-100')],
+    [/^Curva 90° ranhurada 6"/, imp(98.95, 'Curva 90° GemLock Style 100 6"', 'QRFS (EUA)', QR + '/gemlock-grooved-90-degree-elbow-standard-6-in-style-100')],
+    [/^Tê ranhurado 6"/, imp(137.99, 'Tê GemLock Style 110 6"', 'QRFS (EUA)', QR + '/gemlock-grooved-tee-standard-style-110-6-in')],
+    [/^Tê ranhurado 4"/, imp(70.60, 'Tê GemLock Style 110 4"', 'QRFS (EUA)', QR + '/gemlock-grooved-tee-standard-style-110-4-in')],
     // Itens sem regra achados no SINAPI completo em 08/11/2026 (no início: a primeira regra que casa é a que vale)
     [/^Tê de redução com saída 1\/2" para bico/, { c: '6320', nota: 'tê galvanizado 1" x 1/2"' }],
     [/^Tê de redução com saída para bico \(3\/4"\)/, { c: '6304', nota: 'tê galvanizado 1 1/2" x 3/4"' }],
