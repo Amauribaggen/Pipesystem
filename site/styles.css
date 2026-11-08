@@ -2188,3 +2188,9 @@ a.gl:hover { color: var(--teal-d); }
 .preco__foto { flex: 0 0 72px; text-align: center; text-decoration: none; }
 .preco__foto img { display: block; width: 72px; height: 72px; object-fit: contain; background: #fff; border-radius: 8px; }
 .preco__foto small { display: block; margin-top: 2px; font-size: .62rem; line-height: 1.15; color: #7a8796; overflow-wrap: anywhere; }
+
+/* Página inicial: serviços da seção Cotações no resumo */
+.sitenums__title--serv { margin-top: 14px; }
+.sitenums__list--serv { grid-template-columns: repeat(3, 1fr); }
+.sitenums__list--serv strong { font-size: 1rem; }
+@media (max-width: 760px) { .sitenums__list--serv { grid-template-columns: repeat(2, 1fr); } }
