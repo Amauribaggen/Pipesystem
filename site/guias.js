@@ -531,7 +531,7 @@ const CHECKS = [
 
   // abas e filtro de tema
   const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklists e ensaios', CHECKS.length], ...(typeof DETALHES !== 'undefined' ? [['detalhes', 'Detalhes típicos', DETALHES.length]] : []), ['precos', 'Preços', PRECOS.itens.length], ['glossario', 'Glossário', GLOSSARIO.length]];
-  $('gpTabs').innerHTML = TABS.map(([k, n, c]) => `<button type="button" role="tab" class="gptab" data-tab="${k}" aria-selected="${k === st.tab}">${n}${c ? ` <small>${c}</small>` : ''}</button>`).join('');
+  $('gpTabs').innerHTML = TABS.map(([k, n, c]) => `<button type="button" role="tab" class="gptab" data-tab="${k}"${k === 'detalhes' ? ' data-novo' : ''} aria-selected="${k === st.tab}">${n}${c ? ` <small>${c}</small>` : ''}</button>`).join('');
   $('gpTemas').innerHTML = GP_TEMAS.map(t => `<button type="button" class="gptema" data-tema="${t}" aria-pressed="false">${t}</button>`).join('');
   const show = () => {
     TABS.forEach(([k]) => { $('gp-' + k).hidden = k !== st.tab; });

@@ -2176,3 +2176,6 @@ a.gl:hover { color: var(--teal-d); }
 .gpdet__acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .gpdet .btn--ghost { color: #fff; border-color: rgba(255, 255, 255, .45); }
 .gpdet__info p { margin: 0 0 6px; }
+
+/* Selo "Novo" em menus e abas (no CSS, para não entrar no texto da busca) */
+[data-novo]::after { content: "Novo"; display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 999px; background: #f2a03d; color: #0a2240; font-size: .68rem; font-weight: 700; line-height: 1.4; vertical-align: middle; }
