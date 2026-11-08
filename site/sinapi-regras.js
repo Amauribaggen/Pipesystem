@@ -32,6 +32,23 @@ const SINAPI_REGRAS = (() => {
   const ret = { ...map(retencao), fbBy: Object.fromEntries(Object.entries(retencaoNac).map(([k, v]) => [k, { v, fonte: 'SINAPI 05/2026, média nacional (sem preço estadual em 09/2026)', url: orc + retencao[k] + '/' }])) };
   const web = (v, fonte, url) => ({ v, fonte, url });
   return [
+    // Itens sem regra achados no SINAPI completo em 08/11/2026 (no início: a primeira regra que casa é a que vale)
+    [/^Bujão de ferro galvanizado 1" para/, '4890'], [/^Bujão de ferro galvanizado 3\/4" para saída de sprinkler/, '4889'],
+    [/^Conexão PEX de crimpar: joelhos/, { c: ['39300', '39302', '39308', '39310'], nota: 'média de joelhos e luvas de 16 e 25 mm' }],
+    [/^Conexão PEX de crimpar: terminal/, '39304'],
+    [/^Tubo PEX 25 mm/, '38826'], [/^Tubo PEX 16 mm/, '38787'],
+    [/^Cuba de copa/, '1744'], [/^Lavatório ou bancada/, { c: '20269', nota: 'só a cuba; bancada à parte' }],
+    [/^Tanque de limpeza/, '20271'],
+    [/^Mictório com válvula/, { s: ['10432', '21112'], nota: 'mictório de louça e válvula de fechamento automático' }],
+    [/^Isolamento térmico tubular/, { c: '39715', nota: 'espuma de polietileno 3/4", e = 10 mm; a espuma elastomérica costuma custar mais' }],
+    [/^Isolamento térmico dos drenos/, { c: '39714', nota: 'espuma de polietileno 1", e = 10 mm; a espuma elastomérica costuma custar mais' }],
+    [/^Bocal de calha \/ saída 100/, '12614'],
+    [/^Registro de esfera 2"/, '11747'], [/^Válvula de esfera 1\/2"/, '11748'],
+    [/^Válvula de nível \/ torneira de boia 1 1\/2"/, '11763'],
+    [/^Tubo PEAD corrugado 300/, '41780'], [/^Tubo PEAD corrugado 400/, '41781'],
+    [/^Tubo de cobre 28 mm — drenos/, '12744'],
+    [/^Tubo de aço carbono DN (\d+)/, { by: { 50: '21148', 65: '21147', 80: '42576', 100: '21151', 150: '7672', 200: '7661' }, g: 1, nota: 'tubo sem costura schedule 40' }],
+    [/^Tubo de aço galvanizado leve ranhurado 6"/, { c: '7695', nota: 'tubo galvanizado 6" classe média; sem classe leve nesta bitola' }],
     // Reservação e recalque
     [/^Reservatório (inferior|superior)|^Cisterna de água de chuva/, { c: '43982', f: 1 / 20, nota: 'reservatório em fibra de vidro 20.000 L ÷ 20 m³' }],
     [/^Caixa d'água de polietileno ([\d.]+) L/, { ...map(caixaPE, k => k), g: 1 }],
