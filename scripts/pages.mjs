@@ -3,6 +3,7 @@
 //   /materiais/<id>  — catálogo de produtos e materiais (CATALOG)
 // Os dados vêm dos mesmos arquivos usados pelo site (site/*.js), executados num contexto isolado.
 // Também gera o sitemap.xml com todas as URLs e imagens.
+import { GLOSSARIO_EXTRA } from './glossario-extra.mjs';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import vm from 'node:vm';
@@ -333,6 +334,11 @@ export function generate(D, outDir) {
         hasDefinedTerm: G.map(x => ({ '@type': 'DefinedTerm', name: x.t, url: BASE + '/glossario/' + x.id })) }],
     }) });
   }
+  for (const id of Object.keys(GLOSSARIO_EXTRA)) if (!gById[id]) throw new Error('Termo inexistente em glossario-extra: ' + id);
+  const extraGlossario = e => !e ? '' : ['<p class="glpage__rev">Em revisão pela equipe Pipesystem</p>', e.pratica && `<h2 class="page__h">Na prática</h2><p class="sheet__desc">${e.pratica}</p>`,
+    e.valores && `<h2 class="page__h">Valores de referência</h2><dl class="glpage__valores">${e.valores.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`,
+    e.exemplo && `<h2 class="page__h">Exemplo</h2><p class="sheet__desc">${e.exemplo}</p>`,
+    e.erros && `<h2 class="page__h">Erros comuns</h2><ul class="glpage__erros">${e.erros.map(t => `<li>${t}</li>`).join('')}</ul>`].filter(Boolean).join(' ');
   for (const x of G) {
     const url = '/glossario/' + x.id;
     const ver = x.ver.filter(v => gById[v]);
@@ -342,6 +348,7 @@ export function generate(D, outDir) {
       <p class="glpage__answer"><b>O que é:</b> ${x.def}</p>
       ${x.exp ? `<h2 class="page__h">Como funciona</h2><p class="sheet__desc">${x.exp}</p>` : ''}
       ${x.f ? `<div class="formula">${x.f[0]}<small>${x.f[1]}</small></div>` : ''}
+${extraGlossario(GLOSSARIO_EXTRA[x.id])}
       ${x.norma ? `<h2 class="page__h">Norma de referência</h2><p class="tags tags--links">${normTags(x.norma.split(' · '))}</p>${normNote}` : ''}
       ${x.links.length ? `<h2 class="page__h">No portal</h2>${links(x.links.map(([n, u]) => [u, n]))}` : ''}
       ${ver.length ? `<h2 class="page__h">Termos relacionados</h2>${links(ver.map(v => ['/glossario/' + v, gById[v].t]))}` : ''}

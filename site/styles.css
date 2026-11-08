@@ -2226,3 +2226,14 @@ a.gl:hover { color: var(--teal-d); }
 .ulinks__menu a { padding: 7px 14px; border-radius: 999px; border: 1px solid rgba(126, 231, 242, .4); color: #7ee7f2; font-size: .84rem; font-weight: 600; text-decoration: none; transition: background .15s, color .15s; }
 .ulinks__menu a:hover, .ulinks__menu a:focus-visible { background: #7ee7f2; color: #0a2240; }
 .ulinks__grupo { scroll-margin-top: 20px; }
+
+/* Glossário: valores de referência e erros comuns */
+.glpage__valores { margin: 0 0 8px; border: 1px solid rgba(10, 34, 64, .14); border-radius: 10px; overflow: hidden; }
+.glpage__valores div { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 12px; padding: 9px 14px; }
+.glpage__valores div + div { border-top: 1px solid rgba(10, 34, 64, .1); }
+.glpage__valores dt { font-weight: 400; }
+.glpage__valores dd { margin: 0; font-weight: 700; }
+.glpage__erros { margin: 0 0 8px; padding-left: 20px; line-height: 1.55; }
+.glpage__erros li + li { margin-top: 6px; }
+@media (max-width: 600px) { .glpage__valores div { grid-template-columns: 1fr; gap: 2px; } }
+.glpage__rev { display: inline-block; margin: 14px 0 0; padding: 4px 12px; border-radius: 999px; background: #f2a03d; color: #0a2240; font-size: .78rem; font-weight: 700; }
