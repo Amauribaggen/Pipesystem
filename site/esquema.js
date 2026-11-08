@@ -28,7 +28,7 @@
       condut: sum(/^Ralo hemisférico|^Bocal de calha/), calha: find(/^Calha/),
       prumGas: find(/prumadas de gás/), temGas: rows.some(r => r.group === 'Gás'), glp: find(/^Central de GLP/), p13: find(/^Botijão P13/), aquec: find(/^Aquecedor de passagem/), hotDist: rows.find(r => r.group === 'Água quente' && /— distribuição/.test(r.item)),
       prumHid: find(/prumada de hidrantes|^Tubo de aço.*\(DN 65\)/), nHid: sum(/^Válvula angular/), bombaInc: find(/^Bomba (de reforço|principal)/), recInc: find(/^Registro de recalque/),
-      prumSpk: find(/prumada de sprinklers/), bicosG: sum(/sprinkler.*garagem/), bicosA: sum(/sprinkler (residencial|spray)/), esfr: sum(/ESFR/), bicos: sum(/^Bico de sprinkler/),
+      prumSpk: find(/prumada de sprinklers/), bicosG: sum(/sprinkler.*garagem/), bicosA: sum(/sprinkler (residencial|spray)/), bicosT: sum(/corredores do mall/), esfr: sum(/ESFR/), bicos: sum(/^Bico de sprinkler/),
       piscina: find(/^Filtro de areia/), chuva: find(/^Cisterna de água de chuva/), gordura: find(/^Caixa de gordura/),
       lgArea: n('lgArea'), lgPe: n('lgPe'), lgDocas: n('lgDocas'), camara: find(/câmara|Câmara/),
     };
@@ -144,7 +144,7 @@
     if (d.prumSpk || d.bicos) {
       for (let s = 0; s < sub; s++) bicos(x0 + 6, x1 - 50, G + s * fh + 10);
       if (!sub && d.bicosG) bicos(x0 + 6, x1 - 50, floorY(0) + 6);
-      if (d.bicosA) for (let i = 1; i <= nShow; i++) bicos(x0 + 120, x1 - 120, floorY(i) + 6, 34);
+      if (d.bicosA) for (let i = d.bicosT ? 0 : 1; i <= nShow; i++) bicos(x0 + 120, x1 - 120, floorY(i) + 6, 34);
       label(x0 + 8, fundo + 20, [`Sprinklers: ${d.bicos} bicos`], { s: 10, c: 'inc' });
     }
     if (d.vagas && !sub) label(x0 + 8, G - 10, [`Garagem no térreo · ${d.vagas} vagas`], { s: 10, c: 'mut' });

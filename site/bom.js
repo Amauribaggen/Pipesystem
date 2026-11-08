@@ -1099,16 +1099,16 @@
         warn.push('Recarga de veículos elétricos: a lista inclui sprinklers na garagem, exigidos por muitos Corpos de Bombeiros nas vagas com carregador. Confirme na Instrução Técnica do seu estado.');
       }
       if (spk !== 'nao' && (vagas || spk === 'todo')) {
-        const S_ = 'Sprinklers', bG = vagas ? Math.ceil(areaGar / 12) : 0, aCorr = PF === PERFIS.shopping && spk === 'todo' ? val('lmCorr') * pav : 0;
+        const S_ = 'Sprinklers', bG = vagas ? Math.ceil(areaGar / 12) : 0, aCorr = PF === PERFIS.shopping && spk === 'todo' ? val('lmCorr') * (pav + 1) : 0;   // andares e térreo
         // shopping: risco ordinário, até 12 m² por bico (NBR 10897), nas lojas e nos corredores; demais: 18 m², com 15% de circulações
-        const bL = PF === PERFIS.shopping && spk === 'todo' ? Math.ceil(aptArea / 12) : 0, bC = Math.ceil(aCorr / 12);
+        const bL = PF === PERFIS.shopping && spk === 'todo' ? Math.ceil(aptArea * (pav + 1) / pav / 12) : 0, bC = Math.ceil(aCorr / 12);
         const bA = spk !== 'todo' ? 0 : PF === PERFIS.shopping ? bL + bC : Math.ceil(aptArea * 1.15 / 18);
         const b = bG + bA, floors = garFloors + (spk === 'todo' ? pav + 1 : 0);
         nBicos = b;
         add(S_, 'Bico de sprinkler 68 °C K80 1/2" — garagem (upright ou pendente)', bG, 'un', { note: ev ? `Inclui as ${ev} vagas com recarga de veículos elétricos` : '', loss: false });
         if (PF === PERFIS.shopping) {
-          add(S_, 'Bico de sprinkler spray padrão 68 °C 1/2" — lojas', bL, 'un', { loss: false, note: '1 bico a cada 12 m² (risco ordinário)' });
-          add(S_, 'Bico de sprinkler spray padrão 68 °C 1/2" — corredores do mall', bC, 'un', { loss: false, note: `${int(aCorr)} m² de corredores, 1 bico a cada 12 m²` });
+          add(S_, 'Bico de sprinkler spray padrão 68 °C 1/2" — lojas', bL, 'un', { loss: false, note: '1 bico a cada 12 m² (risco ordinário), com o térreo' });
+          add(S_, 'Bico de sprinkler spray padrão 68 °C 1/2" — corredores do mall', bC, 'un', { loss: false, note: `${int(aCorr)} m² de corredores com o térreo, 1 bico a cada 12 m²` });
         } else add(S_, PF && PF !== PERFIS.hotel ? `Bico de sprinkler spray padrão 68 °C 1/2" — ${PF.plu} e circulações` : `Bico de sprinkler residencial 68 °C 1/2" — ${PF ? 'quartos' : 'apartamentos'} e circulações`, bA, 'un', { loss: false });
         add(S_, 'Bicos de reserva com armário e chave de troca', Math.max(6, Math.ceil(b * 0.02)), 'un', { loss: false });
         // ramais de 1" e 1 1/4" sempre roscados (galvanizados); subgerais, prumada e barrilete conforme o material escolhido
