@@ -2198,5 +2198,10 @@ a.gl:hover { color: var(--teal-d); }
 /* Orçamento de referência: lista dos itens sem preço ao passar o mouse */
 .sinref { position: relative; cursor: help; text-decoration: underline dotted; outline: none; }
 .sinref__tip { display: none; position: absolute; left: 0; top: 100%; z-index: 30; width: min(360px, 78vw); max-height: 260px; overflow-y: auto; margin-top: 4px; padding: 10px 12px; border-radius: 8px; background: #0a2240; border: 1px solid rgba(242, 160, 61, .55); color: #e7eef6; font-size: .78rem; font-weight: 400; line-height: 1.35; text-align: left; white-space: normal; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .6); }
-.sinref__tip ul { margin: 4px 0 0; padding-left: 16px; }
+.sinref__item { display: block; margin-top: 4px; padding-left: 10px; text-indent: -10px; }
+.sinref__item::before { content: '• '; }
 .sinref:hover .sinref__tip, .sinref:focus .sinref__tip, .sinref:focus-within .sinref__tip { display: block; }
+
+/* Orçamento de referência: subtotal de mão de obra e total geral */
+.lmat__sintab tfoot .lmat__mosub th { border-top: 0; padding-top: 6px; }
+.lmat__sintab tfoot .lmat__geral th { font-size: 1.1rem; }

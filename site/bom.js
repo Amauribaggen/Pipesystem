@@ -1506,7 +1506,7 @@
       : v && v.f ? `<c r="${ref}" s="${st}"><f>${xe(v.f)}</f></c>` : `<c r="${ref}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${xe(v ?? '')}</t></is></c>`;
     const row = (r, cells) => rows.push(`<row r="${r}">${cells.map(([c, v, st]) => cell(c + r, v, st)).join('')}</row>`);
     row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + title + (sin ? ` — preços SINAPI ${SINAPI_PRECOS.ref}, ${sin.uf}` : ''), 1]]);
-    row(2, [['A', sin ? `Preços de referência de material do SINAPI (Caixa), ${SINAPI_PRECOS.ref}, sem desoneração, ${UF_NOMES[sin.uf]}. Sem mão de obra, BDI e frete, salvo indicação. Itens "sem referência" ficam em branco: preencha com cotação.`
+    row(2, [['A', sin ? `Preços de referência de material do SINAPI (Caixa), ${SINAPI_PRECOS.ref}, sem desoneração, ${UF_NOMES[sin.uf]}. Mão de obra e total geral no fim da planilha, sem BDI e frete. Itens "sem referência" ficam em branco: preencha com cotação.`
       : 'Lista orientativa. Preencha a coluna "Preço unitário": os totais por item, por grupo e o total geral são calculados automaticamente.', 7]]);
     // colunas: base (A–H); com SINAPI, fonte, link, código do insumo e horas de mão de obra; sempre, fabricantes e código do fabricante para cotação
     const heads = ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Norma', 'Observação',
@@ -1531,7 +1531,8 @@
     for (const g of [...new Set(data.rows.map(x => x.group))])
       row(r++, [['B', g], ['F', { f: `SUMIF($A$${first}:$A$${lastR},"${g.replace(/"/g, '""')}",$F$${first}:$F$${lastR})` }, 4]]);
     r++;
-    row(r, [['B', 'TOTAL GERAL', 6], ['F', { f: `SUM(F${first}:F${lastR})` }, 6]]);
+    const rMat = r;
+    row(r, [['B', sin ? 'TOTAL DE MATERIAL' : 'TOTAL GERAL', 6], ['F', { f: `SUM(F${first}:F${lastR})` }, 6]]);
     if (sin) {
       const mo = maoDeObra(data.rows, sin.prices, sin.uf);
       r += 2;
@@ -1542,7 +1543,9 @@
       if (mo.hp) {
         row(r++, [['B', `Custo da hora do encanador com encargos (SINAPI ${SINAPI_PRECOS.hora.prof.cod}, ${sin.uf})`], ['E', mo.hp, 4]]);
         row(r++, [['B', `Custo da hora do auxiliar com encargos (SINAPI ${SINAPI_PRECOS.hora.aux.cod}, ${sin.uf})`], ['E', mo.ha, 4]]);
-        row(r++, [['B', 'MÃO DE OBRA ESTIMADA', 6], ['F', { f: `C${rP}*E${rP + 2}+C${rP + 1}*E${rP + 3}` }, 6]]);
+        const rMo = r;
+        row(r++, [['B', 'TOTAL DE MÃO DE OBRA', 6], ['F', { f: `C${rP}*E${rP + 2}+C${rP + 1}*E${rP + 3}` }, 6]]);
+        row(r++, [['B', 'TOTAL GERAL (material + mão de obra)', 6], ['F', { f: `F${rMat}+F${rMo}` }, 6]]);
       }
       row(r++, [['A', `Horas por unidade das composições analíticas do SINAPI ${SINAPI_PRECOS.ref} em que o material é o item principal (mediana). Equipamentos, louças e itens sem composição ficam sem horas. Sem rasgos, enchimentos, BDI e deslocamento.`, 7]]);
     }
@@ -1660,7 +1663,7 @@
     const prices = priceList(uf), groups = new Map();
     let total = 0, semRef = 0, web = 0;
     const mo = maoDeObra(last.rows, prices, uf), semLista = [];
-    const dica = lista => `<span class="sinref__tip" role="tooltip"><b>Sem preço de referência:</b><ul>${lista.map(i => `<li>${esc(i)}</li>`).join('')}</ul></span>`;
+    const dica = lista => `<span class="sinref__tip" role="tooltip"><b>Sem preço de referência:</b>${lista.map(i => `<span class="sinref__item">${esc(i)}</span>`).join('')}</span>`;
     for (const it of last.rows) {
       const g = groups.get(it.group) || { v: 0, n: 0, sem: 0, lista: [] };
       const p = prices.get(it);
@@ -1669,11 +1672,13 @@
     }
     out.innerHTML = `<table class="table lmat__sintab"><thead><tr><th>Grupo</th><th class="num">Valor (R$)</th><th class="num">%</th></tr></thead><tbody>` +
       [...groups].map(([g, x]) => `<tr><td>${esc(g)}${x.sem ? ` <small class="sinref" tabindex="0">(${x.sem} sem referência)${dica(x.lista)}</small>` : ''}</td><td class="num">${brl(x.v)}</td><td class="num">${total ? num(x.v / total * 100, 1) : '0'}%</td></tr>`).join('') +
-      `</tbody><tfoot><tr><th>Total de material — ${esc(UF_NOMES[uf])}</th><th class="num">${brl(total)}</th><th class="num">100%</th></tr></tfoot></table>` +
+      `</tbody><tfoot><tr><th>Total de material — ${esc(UF_NOMES[uf])}</th><th class="num">${brl(total)}</th><th class="num">${mo.custo ? num(total / (total + mo.custo) * 100, 1) : '100'}%</th></tr>` +
+      (mo.custo ? `<tr class="lmat__mosub"><th>Total de mão de obra (SINAPI)</th><th class="num">${brl(mo.custo)}</th><th class="num">${num(mo.custo / (total + mo.custo) * 100, 1)}%</th></tr><tr class="lmat__geral"><th>TOTAL GERAL</th><th class="num">${brl(total + mo.custo)}</th><th class="num">100%</th></tr>` : '') +
+      `</tfoot></table>` +
       `<p class="hint">${prices.size} de ${last.rows.length} itens com preço: SINAPI ${SINAPI_PRECOS.ref} (Caixa, sem desoneração, capital do estado)` +
       (web ? `, e ${web} com preço pesquisado na internet` : '') + '.' +
       (semRef ? ` <span class="sinref" tabindex="0"><b>${semRef} ${semRef > 1 ? 'itens ficam' : 'item fica'} sem referência</b>${dica(semLista)}</span> e fora do total: cote com fornecedores.` : '') +
-      ' Só material: sem mão de obra, BDI e frete.</p>' +
+      ' Valores sem frete e sem BDI (Benefícios e Despesas Indiretas: administração, seguros, impostos, riscos e lucro da empresa).</p>' +
       (mo.n ? `<div class="lmat__mo"><h5>Mão de obra de instalação (produtividade SINAPI)</h5>` +
         `<p><b>${num(mo.prof, 0)} h</b> de encanador + <b>${num(mo.aux, 0)} h</b> de auxiliar = <b>${num(mo.prof + mo.aux, 0)} h</b> no total` +
         (mo.custo ? `, cerca de <b>${brl(mo.custo)}</b> com encargos (horista, ${esc(UF_NOMES[uf])})` : '') + '.</p>' +
