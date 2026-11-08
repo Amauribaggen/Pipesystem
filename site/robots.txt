@@ -2,5 +2,7 @@
 # Todo o conteúdo público pode ser indexado.
 User-agent: *
 Allow: /
+# Links que apenas preenchem o formulário de contato
+Disallow: /*?assunto=
 
 Sitemap: https://www.pipesystem.com.br/sitemap.xml

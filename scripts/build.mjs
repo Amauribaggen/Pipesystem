@@ -47,6 +47,16 @@ const fotos = [...new Set([
   ...D.PRODUCTS.flatMap(p => (p.fotos || []).map(f => f.src)),
   ...Object.values(D.SYSTEM_PHOTOS).flatMap(a => a.map(f => f.src)),
 ])].map(s => `${BASE}/${s}`);
+// Links que só preenchem o formulário de contato: o Google não precisa segui-los (ver também o robots.txt)
+const marcarNofollow = dir => readdirSync(dir, { withFileTypes: true }).forEach(e => {
+  const p = join(dir, e.name);
+  if (e.isDirectory()) return marcarNofollow(p);
+  if (!e.name.endsWith('.html')) return;
+  const h = readFileSync(p, 'utf8'), novo = h.replace(/<a (?![^>]*\brel=)([^>]*\bhref="[^"]*\?assunto=)/g, '<a rel="nofollow" $1');
+  if (novo !== h) writeFileSync(p, novo);
+});
+marcarNofollow(out);
+
 // Data real de cada página: o build local atualiza scripts/datas-paginas.json; a Vercel só lê
 const { datas, mudou } = datasPaginas(out, ['/', ...pages.map(p => p.url)], !process.env.VERCEL);
 console.log(`Páginas com conteúdo alterado: ${mudou}`);
