@@ -2205,3 +2205,5 @@ a.gl:hover { color: var(--teal-d); }
 /* Orçamento de referência: subtotal de mão de obra e total geral */
 .lmat__sintab tfoot .lmat__mosub th { border-top: 0; padding-top: 6px; }
 .lmat__sintab tfoot .lmat__geral th { font-size: 1.1rem; }
+
+.sitenums__laranja strong, .sitenums__laranja span { color: #f2a03d; }
