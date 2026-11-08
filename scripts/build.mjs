@@ -8,6 +8,8 @@ import { BASE, SIZES, loadData, generate, sitemap, ultimasNoticiasHTML } from '.
 import { imageSizes, minify } from './optimize.mjs';
 import { separar } from './secoes.mjs';
 import { gerarRevisoes } from './revisoes.mjs';
+import { datasPaginas } from './datas.mjs';
+import { avisarIndexNow } from './indexnow.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const src = join(root, 'site');
@@ -45,7 +47,10 @@ const fotos = [...new Set([
   ...D.PRODUCTS.flatMap(p => (p.fotos || []).map(f => f.src)),
   ...Object.values(D.SYSTEM_PHOTOS).flatMap(a => a.map(f => f.src)),
 ])].map(s => `${BASE}/${s}`);
-sitemap(pages, [`${BASE}/img/og-pipesystem.jpg`, ...fotos], out);
+// Data real de cada página: o build local atualiza scripts/datas-paginas.json; a Vercel só lê
+const { datas, mudou } = datasPaginas(out, ['/', ...pages.map(p => p.url)], !process.env.VERCEL);
+console.log(`Páginas com conteúdo alterado: ${mudou}`);
+sitemap(pages, [`${BASE}/img/og-pipesystem.jpg`, ...fotos], out, datas);
 console.log(`Páginas geradas: ${pages.length} (+ página inicial) · sitemap.xml com ${pages.length + 1} URLs`);
 
 // Scripts e estilos compactados
@@ -60,3 +65,5 @@ const walk = dir => readdirSync(dir).forEach(name => {
 });
 walk(out);
 console.log(`Build concluído: ${files} arquivos (${(bytes / 1024 / 1024).toFixed(1)} MB) em ${relative(root, out)}/`);
+
+if (process.env.VERCEL_ENV === 'production') await avisarIndexNow();

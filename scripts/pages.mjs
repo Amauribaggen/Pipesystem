@@ -575,15 +575,15 @@ function proximosCursos(qtd = 3) {
 }
 
 // ---------- sitemap ----------
-export function sitemap(pages, homeImages, outDir) {
+export function sitemap(pages, homeImages, outDir, datas = {}) {
   const today = new Date().toISOString().slice(0, 10);
-  const urlEntry = (loc, imgs, priority) => [
-    '  <url>', `    <loc>${loc}</loc>`, `    <lastmod>${today}</lastmod>`, `    <priority>${priority}</priority>`,
+  const urlEntry = (loc, imgs, priority, data) => [
+    '  <url>', `    <loc>${loc}</loc>`, `    <lastmod>${data || today}</lastmod>`, `    <priority>${priority}</priority>`,
     ...imgs.map(i => `    <image:image><image:loc>${esc(i)}</image:loc></image:image>`), '  </url>'].join('\n');
   const xml = ['<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
-    urlEntry(BASE + '/', homeImages, '1.0'),
-    ...pages.map(p => urlEntry(BASE + p.url, p.images, '0.8')),
+    urlEntry(BASE + '/', homeImages, '1.0', datas['/']),
+    ...pages.map(p => urlEntry(BASE + p.url, p.images, '0.8', datas[p.url])),
     '</urlset>', ''].join('\n');
   writeFileSync(join(outDir, 'sitemap.xml'), xml);
 }
