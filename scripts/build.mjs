@@ -28,7 +28,10 @@ cpSync(src, out, { recursive: true });
 // Últimas notícias (site/noticias.json) no alto da seção Notícias, artigos e revistas
 {
   const f = join(out, 'index.html');
-  writeFileSync(f, readFileSync(f, 'utf8').replace(/<!-- ULTIMAS_NOTICIAS:[^>]*-->/, ultimasNoticiasHTML()));
+  // o total de notícias vai para o resumo numérico da página inicial, que não carrega o noticias.json
+  const totalNoticias = JSON.parse(readFileSync('site/noticias.json', 'utf8')).itens.length;
+  writeFileSync(f, readFileSync(f, 'utf8').replace(/<!-- ULTIMAS_NOTICIAS:[^>]*-->/, ultimasNoticiasHTML())
+    .replace('<strong data-count="0" data-prefix="" data-num="noticias">0<', `<strong data-count="${totalNoticias}" data-prefix="" data-num="noticias">${totalNoticias}<`));
 }
 
 // Páginas próprias de cada ficha (produtos, sistemas e materiais) + sitemap.xml com todas as URLs
