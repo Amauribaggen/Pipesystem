@@ -2182,3 +2182,9 @@ a.gl:hover { color: var(--teal-d); }
 
 .dt-eixot { fill: #c0504d; font-weight: 700; }
 .gpdet__rev { display: inline-block; margin: 0 0 8px; padding: 2px 10px; border-radius: 999px; background: rgba(242, 160, 61, .16); border: 1px solid #f2a03d; color: #f2a03d; font-size: .82rem; font-weight: 700; }
+
+/* Comparativo de preços: imagem pequena do produto */
+.preco__head { display: flex; align-items: center; gap: 12px; }
+.preco__foto { flex: 0 0 72px; text-align: center; text-decoration: none; }
+.preco__foto img { display: block; width: 72px; height: 72px; object-fit: contain; background: #fff; border-radius: 8px; }
+.preco__foto small { display: block; margin-top: 2px; font-size: .62rem; line-height: 1.15; color: #7a8796; overflow-wrap: anywhere; }
