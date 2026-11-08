@@ -220,12 +220,258 @@ const DETALHES = (() => {
     return s.g;
   })();
 
+
+  // ---------- Lote em revisão: símbolos comuns ----------
+  const reg = (s, x, y) => s.r(x - 35, y - 30, 70, 60);                                   // registro
+  const ret = (s, x, y) => s.r(x - 35, y - 30, 70, 60).l(x - 35, y - 30, x + 35, y + 30); // retenção
+  const man = (s, x, y, h = 90) => s.l(x, y, x, y + h).c(x, y + h + 30, 30, 'CONTORNO');  // manômetro
+
+  // ---------- 6. Casa de bombas de recalque (esquema em planta) ----------
+  const bombas = (() => {
+    const s = D();
+    s.r(-100, -50, 2700, 1650).tubo(200, 200, 200, 1300, 70).tubo(2350, 200, 2350, 1500, 60);
+    s.tubo(-400, 750, 200, 750, 70).tubo(2350, 1500, 2350, 1950, 60);
+    for (const y of [350, 1000]) {
+      s.tubo(200, y, 950, y, 60).tubo(1150, y, 2350, y, 50);
+      reg(s, 480, y); s.r(680, y - 45, 70, 90); s.c(1050, y, 100, 'CONTORNO'); s.r(980, y + 100, 140, 230);
+      s.r(1330, y - 45, 70, 90); man(s, 1560, y + 25); ret(s, 1800, y); reg(s, 2050, y);
+    }
+    s.n(-250, 750, -300, 1100, 'Sucção (do reservatório inferior)');
+    s.n(480, 1030, 300, 1800, 'Registro na sucção');
+    s.n(715, 1045, 500, 1950, 'Junta flexível');
+    s.n(1050, 1100, 900, 2100, 'Bomba');
+    s.n(1050, 1250, 1200, 1800, 'Motor');
+    s.n(1365, 1045, 1420, 1950, 'Junta flexível');
+    s.n(1560, 1145, 1650, 2100, 'Manômetro');
+    s.n(1800, 1030, 1900, 1800, 'Válvula de retenção');
+    s.n(2050, 1030, 2500, 1650, 'Registro no recalque');
+    s.n(2350, 1850, 2500, 2000, 'Recalque ao reservatório superior');
+    s.n(1050, 250, 1300, -220, 'Bomba reserva, com as mesmas peças');
+    s.n(0, -50, -250, -220, 'Base e drenagem do piso: conforme projeto');
+    s.t(-400, -420, 'Esquema em planta, sem escala. Duas bombas iguais: uma em operação e uma reserva. Diâmetros, vazão e altura manométrica: conforme projeto. NBR 5626.', 24);
+    return s.g;
+  })();
+
+  // ---------- 7. Banheiro: esgoto em planta e corte ----------
+  const banheiro = (() => {
+    const s = D(), Y = 1500;
+    s.r(0, Y, 2400, 1800).r(40, Y + 40, 2320, 1720);
+    s.r(250, Y + 1350, 300, 400); s.c(400, Y + 1150, 40, 'TUBO');
+    s.r(890, Y + 1490, 420, 260); s.c(1100, Y + 1490, 25, 'TUBO');
+    s.c(1300, Y + 1150, 110, 'CONTORNO').c(1300, Y + 1150, 75, 'CONTORNO');
+    s.r(1650, Y + 1050, 500, 650, 'COTA'); s.c(1900, Y + 1200, 45, 'TUBO');
+    s.tubo(400, Y + 1150, 2050, Y + 300, 100).tubo(1100, Y + 1490, 1300, Y + 1150, 40).tubo(1900, Y + 1200, 1300, Y + 1150, 40).tubo(1300, Y + 1040, 1300, Y + 686, 50);
+    s.c(2050, Y + 300, 70);
+    s.n(400, Y + 1150, -200, Y + 1900, 'Saída da bacia');
+    s.n(800, Y + 944, -200, Y + 700, 'Ramal DN 100 (declividade mínima de 1%)');
+    s.n(1100, Y + 1490, 800, Y + 1950, 'Saída do lavatório');
+    s.n(1300, Y + 1260, 1500, Y + 1950, 'Caixa sifonada');
+    s.n(1900, Y + 1200, 2550, Y + 1650, 'Ralo do box');
+    s.n(1600, Y + 1175, 2550, Y + 1300, 'Ramal DN 40 (declividade mínima de 2%)');
+    s.n(1300, Y + 860, 2550, Y + 900, 'Saída da caixa sifonada DN 50');
+    s.n(2050, Y + 300, 2550, Y + 300, 'Tubo de queda');
+    s.t(1200, Y - 90, 'PLANTA', 34, 'c');
+    s.r(0, 900, 2400, 120).hach(0, 900, 2400, 120).t(1200, 1050, 'LAJE', 26, 'c');
+    s.tubo(300, 900, 300, 720, 100).tubo(300, 720, 2050, 560, 100).tubo(1200, 900, 1200, 780, 50).tubo(2050, 1100, 2050, 200, 100);
+    s.r(1090, 780, 220, 120);
+    s.n(300, 800, -200, 800, 'Descida da bacia');
+    s.n(800, 675, 700, 300, 'Ramal com declividade para o tubo de queda');
+    s.n(1200, 780, 1500, 1200, 'Caixa sifonada');
+    s.n(2050, 300, 2550, 300, 'Tubo de queda');
+    s.t(1200, 100, 'CORTE', 34, 'c');
+    s.t(-200, -80, 'Ramal de DN 75 ou menor: declividade mínima de 2%. DN 100 ou maior: 1%. Traçado, ventilação e diâmetros: conforme projeto. NBR 8160.', 24);
+    return s.g;
+  })();
+
+  // ---------- 8. Tubo de queda e ventilação ----------
+  const ventilacao = (() => {
+    const s = D();
+    for (const y of [0, 1000, 2000, 3000]) s.r(0, y - 120, 1800, 120).hach(0, y - 120, 1800, 120);
+    s.tubo(500, -500, 500, 3500, 100).tubo(1500, -300, 1500, 2820, 75).tubo(500, -300, 1500, -300, 75).tubo(500, 2820, 1500, 2820, 75);
+    s.tubo(500, -500, 1700, -650, 100);
+    for (const y of [300, 1300, 2300]) { s.tubo(1250, y + 180, 500, y, 100); s.tubo(1100, y + 144, 1500, y + 450, 50); }
+    s.l(430, 3560, 570, 3560).l(430, 3560, 500, 3640).l(570, 3560, 500, 3640);
+    s.n(500, 3500, 900, 3700, 'Terminal de ventilação aberto, protegido');
+    s.d(500, 3000, 500, 3500, -220, 'conforme NBR 8160', true);
+    s.t(1750, 3030, 'COBERTURA', 26, 'r');
+    s.n(500, 1700, 2000, 3300, 'Tubo de queda');
+    s.n(1500, 1900, 2000, 2400, 'Coluna de ventilação');
+    s.n(1000, 2820, 2000, 2900, 'Ligação da coluna ao tubo de queda, acima do último ramal');
+    s.n(900, 1396, 2000, 1000, 'Ramal de esgoto do pavimento');
+    s.n(1300, 1520, 2000, 1500, 'Ramal de ventilação');
+    s.n(1000, -300, 2000, 200, 'Pé da coluna de ventilação');
+    s.n(1200, -590, 2000, -300, 'Saída ao subcoletor, com curvas de raio longo');
+    s.t(0, -900, 'Esquema em elevação, sem escala. Diâmetros, distâncias e alturas do terminal: conforme projeto e NBR 8160.', 24);
+    return s.g;
+  })();
+
+  // ---------- 9. Pontos de água do banheiro ----------
+  const pontos = (() => {
+    const s = D();
+    s.l(-100, 0, 3100, 0).hach(-100, -120, 3200, 120).r(0, 0, 3000, 2700);
+    s.r(300, 0, 400, 450); s.r(1150, 650, 500, 180); s.r(2150, 0, 700, 40, 'COTA');
+    s.tubo(100, 2450, 2800, 2450, 32);
+    const pts = [['A', 500, 350], ['B', 800, 500], ['C', 1400, 900], ['D', 2000, 1800], ['E', 2300, 1150], ['F', 2500, 2250]];
+    for (const [nm, x, y] of pts) { s.l(x, 2450, x, y + 40, 'TUBO').c(x, y, 40, 'CONTORNO').t(x, y - 12, nm, 30, 'c'); }
+    s.t(500, 100, 'Bacia', 26, 'c').t(1400, 560, 'Lavatório', 26, 'c').t(2500, 80, 'Box', 26, 'c');
+    const T = 3400, itens = [['Ponto', 'Peça', 'Altura'], ['A', 'Alimentação da bacia', 'manual da louça'], ['B', 'Ducha higiênica', 'manual do metal'], ['C', 'Lavatório', 'manual da louça'], ['D', 'Registro de gaveta do ambiente', 'projeto'], ['E', 'Registro de pressão do chuveiro', 'manual do metal'], ['F', 'Chuveiro', 'manual do metal']];
+    s.r(T, 1500, 1750, 720, 'COTA');
+    itens.forEach((ln, i) => { const y = 2150 - i * 100; s.t(T + 30, y, ln[0], 26).t(T + 200, y, ln[1], 26).t(T + 1250, y, ln[2], 26); if (i) s.l(T, y + 70, T + 1750, y + 70, 'COTA'); });
+    s.t(-100, -330, 'Elevação da parede hidráulica, sem escala. As alturas variam com a louça, o metal e a altura do usuário: confirme antes de embutir. NBR 5626.', 24);
+    return s.g;
+  })();
+
+  // ---------- 10. Caixa de gordura ----------
+  const gordura = (() => {
+    const s = D();
+    s.l(-500, 1000, 1500, 1000).t(1500, 1040, 'TERRENO', 24, 'r');
+    s.r(-100, -100, 1200, 100).hach(-100, -100, 1200, 100).r(-100, 0, 100, 960).r(1000, 0, 100, 960).r(-120, 960, 1240, 60);
+    s.tubo(-500, 720, 200, 700, 80).tubo(200, 740, 200, 380, 80);
+    s.tubo(800, 690, 1500, 660, 80).tubo(800, 740, 800, 380, 80);
+    s.l(0, 700, 1000, 700, 'EIXO');
+    for (let k = 0; k < 4; k++) s.l(20, 720 + k * 16, 980, 720 + k * 16, 'HACHURA');
+    s.n(-350, 715, -420, 1180, 'Entrada do esgoto da cozinha');
+    s.n(200, 450, -420, 400, 'Tê com a descida mergulhada');
+    s.n(500, 745, 300, 1200, 'Gordura acumulada na superfície');
+    s.n(1000, 700, 1350, 1200, 'Nível de saída');
+    s.n(800, 450, 1350, 300, 'Tê de saída: retira a água de baixo da gordura');
+    s.n(1300, 670, 1400, 900, 'Saída para a rede');
+    s.n(600, 1020, 750, 1330, 'Tampa removível, bem vedada');
+    s.n(-50, 300, -420, 150, 'Parede revestida e impermeável');
+    s.n(-50, -50, -420, -150, 'Base de concreto');
+    s.d(0, 0, 1000, 0, -240, 'dimensões conforme contribuição (NBR 8160)');
+    s.t(500, -440, 'CORTE', 34, 'c');
+    s.t(-500, -600, 'Receber só as pias de cozinha. Limpeza periódica. Tipo, volume e dimensões: conforme projeto e NBR 8160.', 24);
+    return s.g;
+  })();
+
+  // ---------- 11. Estação redutora de pressão ----------
+  const redutora = (() => {
+    const s = D();
+    s.tubo(-200, 600, 500, 600, 60).tubo(500, 300, 500, 900, 60).tubo(2500, 300, 2500, 900, 60).tubo(2500, 600, 3200, 600, 60);
+    for (const y of [300, 900]) {
+      s.tubo(500, y, 2500, y, 50); reg(s, 780, y); s.r(1000, y - 35, 110, 70).l(1040, y - 35, 1090, y - 110).l(1090, y - 110, 1120, y - 80, 'CONTORNO');
+      s.r(1400, y - 60, 180, 120).l(1490, y + 60, 1490, y + 150).l(1440, y + 150, 1540, y + 150); reg(s, 2200, y);
+    }
+    man(s, 100, 630); man(s, 2900, 630);
+    s.n(-100, 600, -200, 1100, 'Entrada: pressão alta');
+    s.n(100, 750, 100, 1300, 'Manômetro de montante');
+    s.n(780, 930, 650, 1500, 'Registro');
+    s.n(1050, 935, 1100, 1300, 'Filtro Y');
+    s.n(1490, 1050, 1600, 1500, 'Válvula redutora de pressão');
+    s.n(2200, 930, 2300, 1300, 'Registro');
+    s.n(2900, 750, 2900, 1200, 'Manômetro de jusante');
+    s.n(3100, 600, 3200, 300, 'Saída: pressão regulada');
+    s.n(1490, 240, 1600, -100, 'By-pass: segunda válvula, em reserva');
+    s.t(-200, -300, 'Esquema sem escala. Permite trocar ou regular uma válvula sem parar o abastecimento. Pressões e diâmetros: conforme projeto. NBR 5626.', 24);
+    return s.g;
+  })();
+
+  // ---------- 12. Passagem em laje e parede ----------
+  const passagem = (() => {
+    const s = D();
+    s.r(0, 700, 1400, 220).hach(0, 700, 1400, 220);
+    s.tubo(700, 100, 700, 1500, 110).r(620, 670, 160, 300, 'CONTORNO');
+    for (const x of [630, 770]) for (let y = 720; y < 920; y += 30) s.l(x - 10, y, x + 10, y + 20, 'HACHURA');
+    s.n(700, 1300, 1000, 1500, 'Tubo');
+    s.n(780, 960, 1000, 1250, 'Camisa (luva de passagem)');
+    s.n(630, 800, 200, 1250, 'Folga preenchida com selo corta-fogo');
+    s.n(200, 800, 100, 400, 'Laje entre pavimentos');
+    s.t(700, -60, 'A) PASSAGEM EM LAJE', 32, 'c');
+    const X = 2100;
+    s.r(X + 600, 0, 220, 1500).hach(X + 600, 0, 220, 1500);
+    s.tubo(X, 750, X + 1500, 750, 110).r(X + 570, 670, 280, 160, 'CONTORNO');
+    for (const y of [680, 820]) for (let x = X + 620; x < X + 820; x += 30) s.l(x, y - 10, x + 20, y + 10, 'HACHURA');
+    s.n(X + 1200, 750, X + 1300, 1100, 'Tubo');
+    s.n(X + 850, 830, X + 1000, 1350, 'Camisa (luva de passagem)');
+    s.n(X + 660, 820, X + 150, 1300, 'Folga preenchida com selo corta-fogo');
+    s.n(X + 710, 200, X + 1100, 250, 'Parede de compartimentação');
+    s.t(X + 700, -60, 'B) PASSAGEM EM PAREDE', 32, 'c');
+    s.t(0, -240, 'Selo com resistência ao fogo igual à do elemento atravessado e produto ensaiado para aquele tipo de tubo. Dimensões: conforme projeto e fabricante do selo.', 24);
+    s.t(0, -280, 'Tubo plástico em shaft ou laje de compartimentação: use colar ou selo intumescente. NBR 15575 e Instrução Técnica do Corpo de Bombeiros.', 24);
+    return s.g;
+  })();
+
+  // ---------- 13. Entrada de gás ----------
+  const gas = (() => {
+    const s = D();
+    s.l(-400, 0, 2000, 0).hach(-400, -150, 2400, 150);
+    s.r(0, 0, 1400, 1200).r(40, 40, 1320, 1120);
+    for (const y of [120, 1050]) s.r(600, y, 200, 40, 'COTA');
+    s.tubo(200, -150, 200, 500, 32).tubo(200, 500, 1200, 500, 32).tubo(1200, 500, 1200, 1500, 32);
+    reg(s, 330, 500); s.r(470, 440, 130, 120); s.r(740, 380, 260, 260);
+    s.t(870, 490, 'M', 44, 'c'); reg(s, 1100, 500);
+    s.n(200, -80, -100, -300, 'Rede da distribuidora');
+    s.n(330, 530, -100, 900, 'Registro de corte');
+    s.n(535, 560, 200, 1400, 'Regulador de pressão');
+    s.n(870, 640, 700, 1500, 'Medidor');
+    s.n(1100, 530, 1500, 900, 'Registro após o medidor');
+    s.n(1200, 1400, 1500, 1500, 'Rede interna do imóvel');
+    s.n(700, 1070, 1500, 1200, 'Ventilação superior');
+    s.n(700, 140, 1500, 200, 'Ventilação inferior');
+    s.t(-400, -450, 'Abrigo ventilado, com porta identificada. Modelo, medidas e posição: padrão da distribuidora e NBR 15526.', 24);
+    return s.g;
+  })();
+
+  // ---------- 14. Válvula de governo e alarme de sprinklers ----------
+  const vga = (() => {
+    const s = D();
+    s.l(-300, 0, 2200, 0).hach(-300, -120, 2500, 120);
+    s.tubo(800, 0, 800, 2800, 110);
+    reg(s, 800, 450); s.l(800, 480, 800, 480); s.r(680, 1000, 240, 400);
+    man(s, 860, 760); s.l(800, 760, 860, 760); man(s, 860, 1650); s.l(800, 1650, 860, 1650);
+    s.tubo(920, 1200, 1400, 1200, 20).tubo(1400, 1200, 1400, 1500, 20).r(1320, 1500, 160, 320).tubo(1400, 1820, 1400, 2200, 20).tubo(1400, 2200, 1800, 2200, 20).r(1800, 2100, 200, 200);
+    s.c(1400, 2020, 45, 'CONTORNO');
+    s.tubo(680, 900, 200, 900, 40).tubo(200, 900, 200, 0, 40); reg(s, 430, 900);
+    s.n(800, 2600, 1100, 2800, 'Rede de sprinklers');
+    s.n(800, 450, 1200, 350, 'Registro de bloqueio com indicação de posição (supervisionado)');
+    s.n(800, 1200, 1250, 900, 'Válvula de governo e alarme');
+    s.n(890, 880, 1250, 650, 'Manômetro abaixo da válvula');
+    s.n(890, 1770, 1100, 2400, 'Manômetro acima da válvula');
+    s.n(1480, 1660, 1750, 1650, 'Câmara de retardo');
+    s.n(1445, 2020, 1750, 1900, 'Pressostato de alarme');
+    s.n(1900, 2300, 2000, 2550, 'Gongo hidráulico');
+    s.n(430, 930, -200, 1400, 'Dreno e ensaio, com registro');
+    s.n(800, 100, 1200, 120, 'Alimentação');
+    s.t(-300, -320, 'Esquema sem escala. Conjunto do fabricante da válvula, instalado e ensaiado conforme o manual, a NBR 10897 e o projeto.', 24);
+    return s.g;
+  })();
+
+  // ---------- 15. Hidrante de recalque no passeio ----------
+  const recalque = (() => {
+    const s = D();
+    s.l(-500, 0, 1900, 0).hach(-500, 0, 400, 60).hach(1000, 0, 900, 60).t(1900, 90, 'PASSEIO', 24, 'r');
+    s.r(0, -800, 100, 800).r(800, -800, 100, 800).r(-20, -20, 940, 50);
+    s.tubo(1900, -600, 450, -600, 90).tubo(450, -600, 450, -220, 90);
+    s.r(390, -560, 120, 110); s.r(370, -220, 160, 60); s.l(390, -160, 510, -160);
+    for (let x = 120; x < 790; x += 70) s.l(x, -800, x + 35, -740, 'HACHURA');
+    ret(s, 1250, -600);
+    s.n(450, 30, 250, 330, 'Tampa metálica com a inscrição INCÊNDIO');
+    s.n(510, -190, 1150, -180, 'Adaptador storz com tampão');
+    s.n(390, -505, -300, -400, 'Válvula do hidrante de recalque');
+    s.n(1250, -570, 1450, -280, 'Válvula de retenção');
+    s.n(1750, -600, 1750, -900, 'Da rede de incêndio');
+    s.n(450, -780, -300, -950, 'Fundo drenante (brita)');
+    s.t(-500, -1200, 'Acesso livre para a viatura, com a saída voltada para cima. Posição, profundidade, diâmetros e inscrição: Instrução Técnica do Corpo de Bombeiros e NBR 13714.', 24);
+    return s.g;
+  })();
+
   return [
     { id: 'suportes', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'suporte', 'abraçadeira', 'pêra', 'pendural', 'tirante', 'vergalhão roscado', 'perfilado', 'trapézio', 'fixação de tubulação', 'espaçamento de suportes'], titulo: 'Suportes de tubulação', desc: 'Pendural com abraçadeira tipo pêra, trapézio com perfilado e espaçamento máximo entre suportes para aço e cobre.', normas: 'NBR 5626 · NBR 8160 · MSS SP-58', g: suportes, mat: 'suportes' },
     { id: 'cavalete', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'cavalete', 'hidrômetro', 'ramal predial', 'padrão de entrada', 'abrigo do hidrômetro', 'kit cavalete'], titulo: 'Cavalete do hidrômetro', desc: 'Elevação do cavalete com ramal predial, registros, hidrômetro e abrigo. As medidas finais são do padrão da concessionária.', normas: 'NBR 5626 · padrão da concessionária', g: cavalete, mat: 'cavaletes' },
     { id: 'barrilete', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'barrilete', 'reservatório superior', 'caixa d\'água', 'extravasor', 'ladrão', 'torneira de boia', 'coluna de água fria', 'ventilação da coluna', 'respiro', 'limpeza do reservatório', 'reserva técnica de incêndio', 'reserva de incêndio', 'RTI', 'coluna de incêndio'], titulo: 'Barrilete e saídas do reservatório', desc: 'Reservatório de duas células com reserva técnica de incêndio, saídas de consumo acima dela, saída própria de incêndio, alimentação com boia, extravasor, limpeza, barrilete, registros e colunas com ventilação.', normas: 'NBR 5626 · NBR 13714 · IT do Corpo de Bombeiros', g: barrilete, mat: 'reservatorios' },
     { id: 'caixa-inspecao', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'caixa de inspeção', 'caixa de passagem', 'esgoto', 'meia-cana', 'tampa de caixa'], titulo: 'Caixa de inspeção de esgoto', desc: 'Corte e planta da caixa de 60 cm com fundo em meia-cana, tampa vedada e profundidade máxima de 1,00 m.', normas: 'NBR 8160', g: caixa, mat: 'caixas-inspecao' },
     { id: 'abrigo-hidrante', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'abrigo de hidrante', 'hidrante', 'caixa de incêndio', 'mangueira de incêndio', 'esguicho', 'válvula angular', 'chave storz', 'incêndio'], titulo: 'Abrigo de hidrante', desc: 'Abrigo com mangueira, esguicho, chave e válvula angular de 45°, com a altura da válvula em relação ao piso.', normas: 'NBR 13714 · IT do Corpo de Bombeiros', g: abrigo, mat: 'hidrantes' },
+    { id: 'casa-bombas', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'casa de bombas', 'recalque', 'motobomba', 'junta flexível', 'válvula de retenção', 'sucção'], titulo: 'Casa de bombas de recalque', desc: 'Duas bombas com reserva, registros, juntas flexíveis, manômetros, retenção e barrilete de recalque.', normas: 'NBR 5626', g: bombas, mat: 'bombas', revisao: true },
+    { id: 'banheiro-esgoto', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'banheiro', 'esgoto', 'caixa sifonada', 'ramal de esgoto', 'declividade', 'ralo'], titulo: 'Banheiro: esgoto em planta e corte', desc: 'Bacia, lavatório, ralo, caixa sifonada, ramais com declividade e ligação ao tubo de queda.', normas: 'NBR 8160', g: banheiro, mat: 'pvc-esgoto', revisao: true },
+    { id: 'tubo-queda', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'tubo de queda', 'ventilação', 'coluna de ventilação', 'respiro', 'terminal de ventilação', 'subcoletor'], titulo: 'Tubo de queda e ventilação', desc: 'Tubo de queda, coluna de ventilação, ramais por pavimento, terminal na cobertura e pé da coluna.', normas: 'NBR 8160', g: ventilacao, mat: 'pvc-esgoto', revisao: true },
+    { id: 'pontos-banheiro', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'pontos de água', 'altura dos pontos', 'parede hidráulica', 'registro de pressão', 'chuveiro', 'banheiro'], titulo: 'Pontos de água do banheiro', desc: 'Elevação da parede hidráulica com os pontos da bacia, ducha, lavatório, registros e chuveiro.', normas: 'NBR 5626', g: pontos, mat: 'metais', revisao: true },
+    { id: 'caixa-gordura', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'caixa de gordura', 'gordura', 'cozinha', 'esgoto'], titulo: 'Caixa de gordura', desc: 'Corte com entrada e saída em tê mergulhado, camada de gordura, tampa vedada e base.', normas: 'NBR 8160', g: gordura, mat: 'caixas-inspecao', revisao: true },
+    { id: 'estacao-redutora', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'válvula redutora', 'redutora de pressão', 'estação redutora', 'VRP', 'by-pass', 'filtro Y'], titulo: 'Estação redutora de pressão', desc: 'Duas válvulas redutoras em paralelo, filtro Y, registros e manômetros antes e depois.', normas: 'NBR 5626', g: redutora, mat: 'redutora', revisao: true },
+    { id: 'passagem-laje-parede', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'passagem de tubulação', 'camisa', 'luva de passagem', 'selo corta-fogo', 'corta-fogo', 'shaft', 'compartimentação'], titulo: 'Passagem em laje e parede', desc: 'Camisa, folga e selo corta-fogo na travessia de laje e de parede de compartimentação.', normas: 'NBR 15575 · IT do Corpo de Bombeiros', g: passagem, mat: 'corta-fogo', revisao: true },
+    { id: 'entrada-gas', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'entrada de gás', 'gás', 'abrigo de gás', 'medidor de gás', 'regulador de pressão', 'GLP', 'gás natural'], titulo: 'Entrada de gás', desc: 'Abrigo ventilado com registro de corte, regulador, medidor e saída para a rede interna.', normas: 'NBR 15526 · padrão da distribuidora', g: gas, mat: 'reguladores', revisao: true },
+    { id: 'vga-sprinklers', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'válvula de governo', 'VGA', 'sprinkler', 'sprinklers', 'gongo hidráulico', 'pressostato', 'câmara de retardo', 'incêndio'], titulo: 'Válvula de governo e alarme de sprinklers', desc: 'Registro de bloqueio, válvula, manômetros, câmara de retardo, pressostato, gongo e dreno de ensaio.', normas: 'NBR 10897', g: vga, mat: 'acessorios-sprinkler', revisao: true },
+    { id: 'hidrante-recalque', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'hidrante de recalque', 'recalque de incêndio', 'registro de passeio', 'storz', 'incêndio', 'hidrante'], titulo: 'Hidrante de recalque no passeio', desc: 'Caixa no passeio, tampa identificada, válvula, adaptador storz, retenção e fundo drenante.', normas: 'NBR 13714 · IT do Corpo de Bombeiros', g: recalque, mat: 'hidrantes', revisao: true },
   ];
 })();
 
@@ -289,6 +535,9 @@ function detDXF(det) {
   return L.join('\r\n') + '\r\n';
 }
 
+const DET_REVISAO = 'Em revisão pela equipe Pipesystem';
+DETALHES.filter(d => d.revisao).forEach(d => { const [x0, y0] = detBox(d.g); d.g.push(['t', x0 + 60, y0 - 20, 36, DET_REVISAO.toUpperCase(), 'l', 'EIXO']); });
+
 (() => {
   const box = document.getElementById('gpDetalhes');
   if (!box) return;
@@ -297,6 +546,7 @@ function detDXF(det) {
       <div class="gpdet__fig">${detSVG(d)}</div>
       <div class="gpdet__info">
         <h3>${d.titulo}</h3>
+        ${d.revisao ? `<p class="gpdet__rev">${DET_REVISAO}</p>` : ''}
         <p>${d.desc}</p>
         <p class="gpdet__norma">${d.normas} · <a href="/materiais/${d.mat}" data-sheet="mat-${d.mat}">ficha do material</a></p>
         <div class="gpdet__acoes">
