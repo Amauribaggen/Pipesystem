@@ -133,10 +133,20 @@ const DETALHES = (() => {
     s.tubo(2400, 1480, 2800, 1480, 40).n(2700, 1480, 2700, 1700, 'Extravasor (aviso), maior que a entrada');
     // saídas pelo fundo com registro, barrilete e colunas
     const yb = 150;
-    for (const xs of [600, 1800]) { s.tubo(xs, 300, xs, yb, 50).r(xs - 40, 210, 80, 60).n(xs + 40, 240, xs + 160, 260, 'Registro de gaveta'); }
+    const yRti = 740;   // topo da reserva técnica de incêndio
+    s.l(0, yRti, 2400, yRti, 'EIXO').t(900, 500, 'RESERVA TÉCNICA DE INCÊNDIO (RTI)', 26, 'c').t(1500, 500, 'RTI', 26, 'c');
+    s.d(0, 300, 0, yRti, -150, 'RTI: volume conforme a IT', true);
+    for (const xs of [600, 1800]) { s.tubo(xs, yRti + 20, xs, yb, 50).r(xs - 40, 210, 80, 60).n(xs + 40, 240, xs + 160, 260, 'Registro de gaveta'); }
+    s.n(600, yRti + 10, 760, 950, 'Saída de consumo acima do nível da RTI');
+    // saída de incêndio pelo fundo, em tubulação própria
+    const yi = 70;
+    for (const xs of [200, 2250]) s.tubo(xs, 300, xs, yi, 50).r(xs - 40, 190, 80, 55);
+    s.tubo(200, yi, 2250, yi, 50).n(2290, 217, 2680, 217, 'Registro da saída de incêndio');
+    s.tubo(200, yi, 200, -700, 60).r(160, -230, 80, 55).r(160, -450, 80, 60).l(160, -450, 240, -390).t(200, -760, 'INC', 28, 'c');
+    s.n(160, -202, -60, -202, 'Registro').n(160, -420, -60, -420, 'Válvula de retenção').n(170, -620, -60, -620, 'Coluna de incêndio (tubulação própria)');
     s.tubo(400, yb, 2000, yb, 50).n(1200, yb, 1250, 360, 'Barrilete (liga as duas células)');
     // limpeza
-    s.tubo(1200, yb, 1200, -100, 40);
+    s.tubo(1200, yi, 1200, -100, 40);
     s.r(1160, -60, 80, 50).n(1240, -35, 1420, -230, 'Limpeza com registro, ao ralo ou à calha');
     // colunas
     const cols = [[500, 'AF1'], [900, 'AF2'], [1600, 'AF3'], [1950, 'AF4']];
@@ -144,11 +154,12 @@ const DETALHES = (() => {
       s.tubo(x, yb, x, -700, 40).r(x - 35, -230, 70, 55).t(x, -760, nm, 28, 'c');
       // ventilação da coluna logo após o registro (respiro acima do N.A.)
     }
-    s.n(500, -200, 120, -420, 'Registro de gaveta por coluna');
+    s.n(900, -200, 1000, -520, 'Registro de gaveta por coluna');
     s.tubo(2600, -280, 2600, 1750, 25).tubo(1950, -280, 2600, -280, 25).n(2600, 1650, 2700, 1880, 'Ventilação da coluna (respiro), acima do N.A. máximo');
     s.d(0, 0, 0, 300, -150, 'apoio', true);
-    s.t(-300, -950, 'Reservatório com 2 células para limpeza sem cortar o abastecimento. Saídas a 3 cm a 5 cm acima do fundo (o fundo fica para a limpeza).', 24);
+    s.t(-300, -950, 'Reservatório com 2 células para limpeza sem cortar o abastecimento. Saídas de consumo acima da RTI: o uso diário não gasta a reserva de incêndio.', 24);
     s.t(-300, -990, 'Registro em cada saída, em cada coluna e na limpeza. Coluna de válvula de descarga com ventilação (respiro). NBR 5626.', 24);
+    s.t(-300, -1030, 'Hidrantes (NBR 13714) e sprinklers (NBR 10897): volume da RTI pela Instrução Técnica do Corpo de Bombeiros do estado. Com reserva em tanque separado ou no reservatório inferior, com bomba, a RTI e a saída de incêndio não ficam aqui.', 24);
     return s.g;
   })();
 
@@ -212,7 +223,7 @@ const DETALHES = (() => {
   return [
     { id: 'suportes', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'suporte', 'abraçadeira', 'pêra', 'pendural', 'tirante', 'vergalhão roscado', 'perfilado', 'trapézio', 'fixação de tubulação', 'espaçamento de suportes'], titulo: 'Suportes de tubulação', desc: 'Pendural com abraçadeira tipo pêra, trapézio com perfilado e espaçamento máximo entre suportes para aço e cobre.', normas: 'NBR 5626 · NBR 8160 · MSS SP-58', g: suportes, mat: 'suportes' },
     { id: 'cavalete', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'cavalete', 'hidrômetro', 'ramal predial', 'padrão de entrada', 'abrigo do hidrômetro', 'kit cavalete'], titulo: 'Cavalete do hidrômetro', desc: 'Elevação do cavalete com ramal predial, registros, hidrômetro e abrigo. As medidas finais são do padrão da concessionária.', normas: 'NBR 5626 · padrão da concessionária', g: cavalete, mat: 'cavaletes' },
-    { id: 'barrilete', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'barrilete', 'reservatório superior', 'caixa d\'água', 'extravasor', 'ladrão', 'torneira de boia', 'coluna de água fria', 'ventilação da coluna', 'respiro', 'limpeza do reservatório'], titulo: 'Barrilete e saídas do reservatório', desc: 'Reservatório de duas células, alimentação com boia, extravasor, limpeza, barrilete, registros e colunas com ventilação.', normas: 'NBR 5626', g: barrilete, mat: 'reservatorios' },
+    { id: 'barrilete', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'barrilete', 'reservatório superior', 'caixa d\'água', 'extravasor', 'ladrão', 'torneira de boia', 'coluna de água fria', 'ventilação da coluna', 'respiro', 'limpeza do reservatório', 'reserva técnica de incêndio', 'reserva de incêndio', 'RTI', 'coluna de incêndio'], titulo: 'Barrilete e saídas do reservatório', desc: 'Reservatório de duas células com reserva técnica de incêndio, saídas de consumo acima dela, saída própria de incêndio, alimentação com boia, extravasor, limpeza, barrilete, registros e colunas com ventilação.', normas: 'NBR 5626 · NBR 13714 · IT do Corpo de Bombeiros', g: barrilete, mat: 'reservatorios' },
     { id: 'caixa-inspecao', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'caixa de inspeção', 'caixa de passagem', 'esgoto', 'meia-cana', 'tampa de caixa'], titulo: 'Caixa de inspeção de esgoto', desc: 'Corte e planta da caixa de 60 cm com fundo em meia-cana, tampa vedada e profundidade máxima de 1,00 m.', normas: 'NBR 8160', g: caixa, mat: 'caixas-inspecao' },
     { id: 'abrigo-hidrante', chaves: ['detalhe típico', 'detalhes típicos', 'detalhe construtivo', 'desenho', 'DXF', 'CAD', 'AutoCAD', 'baixar', 'download', 'abrigo de hidrante', 'hidrante', 'caixa de incêndio', 'mangueira de incêndio', 'esguicho', 'válvula angular', 'chave storz', 'incêndio'], titulo: 'Abrigo de hidrante', desc: 'Abrigo com mangueira, esguicho, chave e válvula angular de 45°, com a altura da válvula em relação ao piso.', normas: 'NBR 13714 · IT do Corpo de Bombeiros', g: abrigo, mat: 'hidrantes' },
   ];
