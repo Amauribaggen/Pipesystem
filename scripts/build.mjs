@@ -59,7 +59,10 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
   });
   const feiras = [...html.matchAll(/<article class="fair">(.*?)<\/article>/gs)].map(([, a]) => ({ seg: txt((a.match(/fair__seg[^>]*>(.*?)</s) || [])[1] || ''), n: txt((a.match(/fair__name">(.*?)<time/s) || [])[1] || ''), dt: (a.match(/datetime="([^"]+)"/) || [])[1] || '', q: txt((a.match(/<time[^>]*>(.*?)<\/time>/s) || [])[1] || ''), d: txt((a.match(/<p>(.*?)<\/p>/s) || [])[1] || ''), l: txt((a.match(/fair__loc">(.*?)<\/p>/s) || [])[1] || ''), u: (a.match(/fair__link" href="([^"]+)"/) || [])[1] || '' }));
   const fabs = new Map();
-  Object.entries(D.MANUFACTURERS).forEach(([id, l]) => { const nome = (D.CATALOG.find(m => m.id === id) || {}).name; l.forEach(f => { const k = f[0].split(' (')[0], x = fabs.get(k) || { n: k, u: f[1], o: f[2], m: [] }; if (nome && x.m.length < 6) x.m.push(nome); fabs.set(k, x); }); });
+  // Linha completa de cada fabricante, agrupada: o que define a empresa (tubos, conexões, válvulas) vem antes das ferramentas
+  const ORDEM_CAT = ['Tubos', 'Conexões', 'Válvulas', 'Acessórios', 'Equipamentos', 'Ferramentas'];
+  Object.entries(D.MANUFACTURERS).forEach(([id, l]) => { const ficha = D.CATALOG.find(m => m.id === id); l.forEach(f => { const k = f[0].split(' (')[0], x = fabs.get(k) || { n: k, u: f[1], o: f[2], m: [], g: {} }; if (ficha && !x.m.includes(ficha.name)) { x.m.push(ficha.name); (x.g[ficha.cat] ||= []).push(ficha.name); } fabs.set(k, x); }); });
+  fabs.forEach(x => { x.g = ORDEM_CAT.filter(c => x.g[c]).map(c => [c, x.g[c]]); });
   const vistas = new Set();
   writeFileSync(join(out, 'bolso-dados.json'), JSON.stringify({
     g: D.GLOSSARIO.map(x => ({ id: x.id, t: x.t, en: x.en, tema: x.tema, def: x.def, exp: x.exp, f: x.f, norma: x.norma, x: GLOSSARIO_EXTRA[x.id] })),
