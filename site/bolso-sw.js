@@ -1,6 +1,6 @@
 // PipeSystem Pro: guarda a página no aparelho para funcionar sem internet.
 // Com internet, busca a versão nova e atualiza a cópia; sem internet, usa a cópia.
-const CACHE = 'bolso-v16';
+const CACHE = 'bolso-v17';
 const ARQUIVOS = ['/bolso', '/bolso.webmanifest', '/bolso-dados.json', '/bolso-pdf.js', '/detalhes.js', '/img/icons/icon-192.png', '/img/icons/favicon-32.png'];
 
 self.addEventListener('install', e => {
