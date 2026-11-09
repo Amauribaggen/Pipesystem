@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PipeSystem de Bolso (protótipo)</title>
+<title>PipeSystem Pro (protótipo)</title>
 <meta name="description" content="Conversor de unidades e tabela de tubos para usar na obra, inclusive sem internet.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#061527">
@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png">
 <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="PipeSystem">
+<meta name="apple-mobile-web-app-title" content="PipeSystem Pro">
 <script>
   // Aplica os ajustes antes de desenhar a página, para não piscar
   try { const d = document.documentElement; if (localStorage.getItem('bolso:letra') === 'true') d.dataset.letra = '1'; if (localStorage.getItem('bolso:sol') === 'true') d.dataset.sol = '1'; } catch (e) { /* sem armazenamento: segue o padrão */ }
@@ -126,6 +126,7 @@
   .entrada p { margin: 4px 0 8px; font-size: .94rem; white-space: pre-wrap; }
   .entrada img, #dPrevia { display: block; width: 100%; max-height: 260px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
   .ck-foto { margin: -4px 0 8px 36px; }
+  .pro { color: var(--laranja); }
   /* Letra grande */
   :root[data-letra] { font-size: 118%; }
   :root[data-letra] nav button { font-size: clamp(9.6px, 2.85vw, 12.5px); }
@@ -153,7 +154,7 @@
 <body>
 <header>
   <img src="/img/icons/icon-192.png" alt="" width="30" height="30">
-  <h1>PipeSystem de Bolso</h1>
+  <h1>PipeSystem <span class="pro">Pro</span></h1>
   <span class="selo">Protótipo</span>
 </header>
 <div id="estado" role="status">Sem internet: as ferramentas continuam funcionando.</div>
@@ -347,7 +348,7 @@
 
 <div id="boas" role="dialog" aria-modal="true" aria-labelledby="boasT" hidden>
   <div>
-    <h2 id="boasT">Bem-vindo ao PipeSystem de Bolso</h2>
+    <h2 id="boasT">Bem-vindo ao PipeSystem <span class="pro">Pro</span></h2>
     <p>Conversor, tabelas, cálculos, checklists, lista de materiais e consulta técnica para usar na obra, inclusive sem internet.</p>
     <div id="boasInstala">
       <h3>Instale no celular</h3>
@@ -536,7 +537,7 @@
   let favs = ler_('favs', []), hist = ler_('hist', []), marcas = ler_('marcas', {});
 
   // Compartilhar: folha do sistema no celular; sem ela, abre o WhatsApp
-  const ASSINA = 'Conta de conferência, não substitui o projeto.\nPipeSystem de Bolso: https://www.pipesystem.com.br/bolso';
+  const ASSINA = 'Conta de conferência, não substitui o projeto.\nPipeSystem Pro: https://www.pipesystem.com.br/bolso';
   const compartilhar = texto => {
     if (navigator.share) navigator.share({ text: texto }).catch(() => {});
     else open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank', 'noopener');
@@ -601,7 +602,7 @@
   $('limparCk').addEventListener('click', () => { if (confirm('Desmarcar todos os itens deste checklist?')) { delete marcas[ckAtual()[0]]; gravar('marcas', marcas); ckDesenha(); } });
   $('shareCk').addEventListener('click', () => {
     const c = ckAtual(), feitos = marcas[c[0]] || [], todos = ckItens(c), falta = todos.filter(i => !feitos.includes(i));
-    compartilhar(`Checklist: ${c[1]}\n${todos.length - falta.length} de ${todos.length} itens conferidos\n\n${falta.length ? 'Pendentes:\n' + falta.map(i => '- ' + i).join('\n') : 'Nenhum item pendente.'}\n\nPipeSystem de Bolso: https://www.pipesystem.com.br/bolso`);
+    compartilhar(`Checklist: ${c[1]}\n${todos.length - falta.length} de ${todos.length} itens conferidos\n\n${falta.length ? 'Pendentes:\n' + falta.map(i => '- ' + i).join('\n') : 'Nenhum item pendente.'}\n\nPipeSystem Pro: https://www.pipesystem.com.br/bolso`);
   });
 
   // Início
@@ -679,7 +680,7 @@
   $('itens').addEventListener('change', () => pintarLista());
   $('itens').addEventListener('click', e => { if (e.target.dataset.rem !== undefined) { lista_.splice(+e.target.dataset.rem, 1); salvarLista(); } });
   $('limparLista').addEventListener('click', () => { if (confirm('Apagar toda a lista?')) { lista_ = []; salvarLista(); aviso(''); } });
-  $('shareLista').addEventListener('click', () => compartilhar(`Lista de materiais\n${textoLista()}\n\nPipeSystem de Bolso: https://www.pipesystem.com.br/bolso`));
+  $('shareLista').addEventListener('click', () => compartilhar(`Lista de materiais\n${textoLista()}\n\nPipeSystem Pro: https://www.pipesystem.com.br/bolso`));
   $('enviarCot').addEventListener('click', () => {
     if (!navigator.onLine) return aviso('Sem internet: a lista fica guardada. Envie quando a conexão voltar.');
     const url = '/?assunto=' + encodeURIComponent('Cotação de materiais') + '&msg=' + encodeURIComponent('Cotação de materiais:\n' + textoLista() + '\n\nLocal de entrega: ') + '#contato';
@@ -810,7 +811,7 @@
       if (itens.length) b.push({ h: 'Diário de obra' });
       itens.forEach(x => { b.push({ p: [dataBR(x.id), x.tag, x.texto].filter(Boolean).join(' - ') }); if (x.foto) b.push({ img: new Uint8Array(x.foto), w: x.w, h_: x.h }); });
       b.push({ h: 'Aviso' }, { p: 'Registro de acompanhamento. Não substitui projeto, laudo ou responsabilidade técnica de profissional habilitado.' });
-      pdfPronto = new File([BolsoPDF.gerar(b, 'Gerado no PipeSystem de Bolso')], 'relatorio-de-obra.pdf', { type: 'application/pdf' });
+      pdfPronto = new File([BolsoPDF.gerar(b, 'Gerado no PipeSystem Pro')], 'relatorio-de-obra.pdf', { type: 'application/pdf' });
       $('dShare').hidden = false;
       avisar('Relatório pronto. Toque em Compartilhar PDF.');
     } catch (e) { avisar('Não foi possível gerar o relatório.'); }

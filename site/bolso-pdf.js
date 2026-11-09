@@ -1,4 +1,4 @@
-// PipeSystem de Bolso: monta um PDF no próprio aparelho, sem internet e sem biblioteca externa.
+// PipeSystem Pro: monta um PDF no próprio aparelho, sem internet e sem biblioteca externa.
 // Blocos: { h: 'título' }, { p: 'parágrafo' }, { img: Uint8Array(JPEG), w, h, legenda }.
 const BolsoPDF = (() => {
   const A4 = [595, 842], M = 40, LARG = A4[0] - 2 * M;
