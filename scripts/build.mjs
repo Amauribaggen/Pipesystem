@@ -51,6 +51,12 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
   writeFileSync(join(out, 'bolso-dados.json'), JSON.stringify({
     g: D.GLOSSARIO.map(x => ({ id: x.id, t: x.t, en: x.en, tema: x.tema, def: x.def, exp: x.exp, f: x.f, norma: x.norma, x: GLOSSARIO_EXTRA[x.id] })),
     ntc: JSON.parse(readFileSync(join(src, 'noticias.json'), 'utf8')).itens.slice().sort((x, y) => y.data.localeCompare(x.data)).slice(0, 5).map(({ titulo, link, data, fonte }) => ({ titulo, link, data, fonte })),
+    gu: vm.runInNewContext(guias.slice(guias.indexOf('const GUIAS'), guias.indexOf('\n];', guias.indexOf('const GUIAS')) + 3) + ';GUIAS').map(({ id, tema, titulo, resumo, tempo, nivel, norma, separar, passos, atencao, videos, mats }) => ({ id, tema, titulo, resumo, tempo, nivel, norma, separar, passos, atencao, videos, mats })),
+    v: Object.entries(vm.runInNewContext(guias.slice(guias.indexOf('const VIDEOS'), guias.indexOf('\n};', guias.indexOf('const VIDEOS')) + 3) + ';VIDEOS')).map(([k, x]) => ({ k, id: x.id, t: x.t, canal: x.canal, dur: x.dur, tema: x.tema, d: x.d })),
+    cm: D.CMPS.map(({ id, tema, titulo, resumo, opcoes, linhas, pros, erros, apps }) => ({ id, tema, titulo, resumo, opcoes, linhas, pros, erros, apps })),
+    nt: JSON.parse(readFileSync(join(src, 'noticias.json'), 'utf8')).itens.slice().sort((x, y) => y.data.localeCompare(x.data)),
+    cu: JSON.parse(readFileSync(join(src, 'cursos.json'), 'utf8')).itens,
+    va: (V => V.itens.map(x => ({ ...x, fim: x.ate || new Date(Date.parse(x.publicada) + (V.validadePadrao || 30) * 864e5).toISOString().slice(0, 10) })))(JSON.parse(readFileSync(join(src, 'vagas.json'), 'utf8'))),
     c: CHECKS,
     p: vm.runInNewContext(guias.slice(guias.indexOf('const PATS'), guias.indexOf('];', guias.indexOf('const PATS')) + 2) + ';PATS').map(({ tema, sev, t, sint, causa, sol }) => ({ tema, sev, t, sint, causa, sol })),
     t: D.CATALOG.flatMap(m => (m.tabelas || []).map(x => ({ titulo: x.titulo, colunas: x.colunas, linhas: x.linhas, ficha: m.name }))),

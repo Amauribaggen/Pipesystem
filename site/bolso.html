@@ -127,6 +127,26 @@
   .entrada img, #dPrevia { display: block; width: 100%; max-height: 260px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
   .ck-foto { margin: -4px 0 8px 36px; }
   .pro { color: var(--laranja); }
+  .tiles h3 { grid-column: 1 / -1; margin: 6px 0 -2px; }
+  .grupos[data-troca="consulta"] { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+  .grupos[data-troca="consulta"] button { flex: 0 0 auto; padding: 0 14px; }
+  .fig { margin: 8px 0; border-radius: 10px; overflow: hidden; background: #fff; }
+  .fig { padding: 8px; }
+  .fig svg { display: block; width: 100%; height: auto; }
+  .dt-svg line, .dt-svg circle, .dt-svg path { fill: none; vector-effect: non-scaling-stroke; }
+  .dt-contorno { stroke: #1d2733; stroke-width: 1.6; }
+  .dt-tubo { stroke: #1f7fbf; stroke-width: 2.2; }
+  .dt-cota { stroke: #8a96a3; stroke-width: 1; }
+  .dt-hachura { stroke: #b9c2cc; stroke-width: .8; }
+  .dt-eixo { stroke: #c0504d; stroke-width: 1; stroke-dasharray: 8 4 2 4; }
+  .dt-txt { font-family: Arial, sans-serif; fill: #1d2733; }
+  .dt-cotat { fill: #5b6b80; }
+  .dt-eixot { fill: #c0504d; font-weight: 700; }
+  details ol { margin: 8px 0 0; padding-left: 20px; color: #d6e2ee; font-size: .92rem; }
+  details ol li + li, details ul li + li { margin-top: 5px; }
+  :root[data-sol] details ol { color: #000; }
+  .btn-linha { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { display: inline-block; margin-top: 4px; padding: 1px 8px; border: 1px solid var(--linha); border-radius: 99px; color: var(--suave); font-size: .72rem; }
   /* Letra grande */
   :root[data-letra] { font-size: 118%; }
   :root[data-letra] nav button { font-size: clamp(9.6px, 2.85vw, 12.5px); }
@@ -364,6 +384,7 @@
 </div>
 <input id="fotoCk" type="file" accept="image/*" hidden>
 <script src="/bolso-pdf.js"></script>
+<script src="/detalhes.js"></script>
 <div id="toast" role="status" aria-live="polite"></div>
 <nav aria-label="Ferramentas">
   <button type="button" data-aba="inicio" aria-current="page">Início</button>
@@ -377,6 +398,7 @@
 <script>
 (() => {
   const $ = id => document.getElementById(id);
+  const DADOS = fetch('/bolso-dados.json').then(r => r.json());   // um arquivo só, lido uma vez
   const num = (v, c = 2) => v.toLocaleString('pt-BR', { maximumFractionDigits: c });
   const sig = v => {           // até 4 algarismos significativos, sem notação científica
     if (!isFinite(v)) return '—';
@@ -489,6 +511,68 @@
       n: 'NBR 10844: Q = I × A / 60. Use a intensidade da sua região.' },
     { t: 'Dilatação térmica', c: [['m', 'Material', .15, [['PPR (0,15 mm/m·°C)', .15], ['CPVC (0,065 mm/m·°C)', .065], ['Multicamada com alumínio (0,025 mm/m·°C)', .025], ['Cobre (0,017 mm/m·°C)', .017], ['Aço carbono (0,012 mm/m·°C)', .012]]], ['l', 'Comprimento (m)', 20], ['t', 'Variação de temperatura (°C)', 50]],
       f: v => [['Dilatação', num(v.m * v.l * v.t, 1) + ' mm']], n: 'ΔL = α × L × ΔT. Coeficientes aproximados: confira o catálogo do fabricante.' },
+    (() => {
+      const AP = [['bacia', 'Bacias sanitárias', 1, 6, 100], ['lav', 'Lavatórios residenciais', 1, 1, 40], ['chu', 'Chuveiros residenciais', 1, 2, 40], ['ban', 'Banheiras', 0, 2, 40], ['bide', 'Bidês', 0, 1, 40], ['pia', 'Pias de cozinha', 1, 3, 50], ['mll', 'Máquinas de lavar louças', 0, 2, 50], ['tanque', 'Tanques', 1, 3, 40], ['mlr', 'Máquinas de lavar roupas', 1, 3, 50], ['micv', 'Mictórios com válvula', 0, 6, 75], ['micc', 'Mictórios com caixa', 0, 5, 50], ['lavg', 'Lavatórios de uso geral', 0, 2, 40], ['chuc', 'Chuveiros coletivos', 0, 4, 40], ['beb', 'Bebedouros', 0, .5, 40]];
+      const RAMAL = [[40, 3], [50, 6], [75, 20], [100, 160]], QUEDA = [[40, 4, 2, 8], [50, 10, 6, 24], [75, 30, 16, 70], [100, 240, 90, 500], [150, 960, 350, 1900], [200, 2200, 600, 3600], [250, 3800, 1000, 5600], [300, 6000, 1500, 8400]], COL = [[100, [null, 180, 216, 250]], [150, [null, 700, 840, 1000]], [200, [1400, 1600, 1920, 2300]], [250, [2500, 2900, 3500, 4200]], [300, [3900, 4600, 5600, 6700]], [400, [7000, 8300, 10000, 12000]]];
+      return { t: 'Esgoto por UHC', c: [...AP.map(([k, r, q]) => [k, r, q]), ['pav', 'Pavimentos', 4], ['de', 'Declividade do coletor', 1, [['0,5%', 0], ['1%', 1], ['2%', 2], ['4%', 3]]]],
+        f: v => {
+          let uhc = 0, min = 40;
+          AP.forEach(([k, , , u, d]) => { const q = Math.max(0, Math.round(v[k])); if (q) { uhc += q * u; min = Math.max(min, d); } });
+          if (!uhc) return [['Contribuição', '0 UHC']];
+          const pav = Math.max(1, Math.round(v.pav)), tot = uhc * pav, r = (RAMAL.find(([d, m]) => uhc <= m && d >= min) || [])[0], q = QUEDA.find(([d, a, b, c]) => d >= (v.bacia > 0 ? 100 : 40) && (pav <= 3 ? tot <= a : uhc <= b && tot <= c)), c = COL.find(([, x]) => x[v.de] && tot <= x[v.de]);
+          return [['Por pavimento', num(uhc, 1) + ' UHC'], ['Ramal de esgoto', r ? 'DN ' + r : 'Acima de DN 100'], ['Tubo de queda', q ? 'DN ' + q[0] : 'Acima de DN 300'], ['Coletor predial', c ? `DN ${c[0]} (${num(tot, 0)} UHC)` : 'Acima de DN 400']];
+        }, n: 'Mesmas tabelas do portal (NBR 8160). Dimensione também a ventilação.' };
+    })(),
+    { t: 'Calhas e condutores', c: [['a', 'Projeção do telhado (m)', 8], ['b', 'Comprimento (m)', 20], ['h', 'Altura do telhado (m)', 1.5], ['I', 'Intensidade (mm/h)', 150], ['nn', 'Material da calha', .011, [['Plástico, aço, fibrocimento (0,011)', .011], ['Ferro, concreto alisado (0,012)', .012], ['Cerâmica, concreto (0,013)', .013]]], ['i', 'Declividade da calha (%)', .5], ['nd', 'Descidas', 2], ['ti', 'Calha', 0, [['Semicircular', 0], ['Retangular', 1]]], ['la', 'Largura retangular (mm)', 150], ['al', 'Altura retangular (mm)', 100], ['dh', 'Declividade do condutor horizontal', 1, [['0,5%', 0], ['1%', 1], ['2%', 2], ['4%', 3]]]],
+      f: v => {
+        const man = (S, P, i) => 60000 * S / v.nn * (S / P) ** (2 / 3) * Math.sqrt(i), i = Math.max(.005, v.i / 100), A = (v.a + v.h / 2) * v.b, Q = v.I * A / 60, nd = Math.max(1, Math.round(v.nd));
+        const CV = [[75, 5.8], [100, 12.1], [125, 22.7], [150, 35.5], [200, 76.2]], CH = [[50, [32, 45, 64, 90]], [75, [95, 133, 188, 267]], [100, [204, 287, 405, 575]], [125, [370, 521, 735, 1040]], [150, [602, 847, 1190, 1690]], [200, [1300, 1820, 2570, 3650]], [250, [2350, 3310, 4660, 6620]], [300, [3820, 5380, 7590, 10800]]];
+        let ca;
+        if (!v.ti) { const D = [100, 125, 150, 200, 250, 300].find(d => { const r = d / 2000; return man(Math.PI * r * r / 2, Math.PI * r, i) >= Q; }); ca = D ? 'Semicircular Ø ' + D + ' mm' : 'Acima de Ø 300: mais descidas'; }
+        else { const L = v.la / 1000, y = v.al / 2000, cap = L > 0 && y > 0 ? man(L * y, L + 2 * y, i) : 0; ca = `${num(cap, 0)} L/min: ${cap >= Q ? 'atende' : 'NÃO atende'}`; }
+        const qd = Q / 60 / nd, cv = CV.find(([, c]) => c >= qd), ch = CH.find(([, c]) => c[v.dh] >= Q / nd);
+        return [['Área de contribuição', num(A, 1) + ' m²'], ['Vazão', num(Q, 0) + ' L/min'], ['Calha', ca], ['Condutor vertical', cv ? `${nd} × DN ${cv[0]}` : 'Aumente as descidas'], ['Condutor horizontal', ch ? `DN ${ch[0]} por descida` : 'Acima de DN 300']];
+      }, n: 'Mesma conta do portal (NBR 10844). Confirme o condutor vertical pelos ábacos da norma.' },
+    { t: 'Bomba: altura manométrica', c: [['q', 'Vazão (m³/h)', 10], ['C', 'Material', 120, [['PVC e plásticos (C 140)', 140], ['Cobre (C 130)', 130], ['Aço novo (C 120)', 120], ['Aço usado (C 100)', 100]]], ['ds', 'Ø interno da sucção (mm)', 66.6], ['dr', 'Ø interno do recalque (mm)', 53.4], ['hs', 'Altura de sucção (m)', 3], ['hr', 'Altura de recalque (m)', 20], ['ls', 'Comprimento da sucção (m)', 10], ['lr', 'Comprimento do recalque (m)', 40], ['pr', 'Pressão no ponto final (mca)', 0], ['e', 'Rendimento (%)', 65]],
+      f: v => { const hw = (d, L) => 10.67 * (v.q / 3600) ** 1.852 / (v.C ** 1.852 * (d / 1000) ** 4.87) * L, s = hw(v.ds, v.ls), r = hw(v.dr, v.lr), H = v.hs + v.hr + s + r + v.pr, cv = 1000 * (v.q / 3600) * H / (75 * Math.max(.1, v.e / 100)), M = [.25, .33, .5, .75, 1, 1.5, 2, 3, 4, 5, 6, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 60, 75, 100, 125, 150, 200].find(m => m >= cv * 1.15); return [['Perda na sucção', num(s) + ' m'], ['Perda no recalque', num(r) + ' m'], ['Altura manométrica', num(H, 1) + ' mca'], ['Potência', num(cv) + ' cv'], ['Motor', M ? num(M) + ' cv' : 'Acima de 200 cv']]; },
+      n: 'Mesma conta do portal. Comprimentos incluem os equivalentes das peças. Motor com 15% de folga.' },
+    { t: 'Ponto de operação da bomba', c: [['h0', 'Altura com vazão zero (mca)', 45], ['q1', 'Q1 da curva (m³/h)', 10], ['h1', 'H1 da curva (mca)', 40], ['q2', 'Q2 da curva (m³/h)', 20], ['h2', 'H2 da curva (mca)', 28], ['g', 'Desnível (m)', 15], ['d', 'Ø interno (mm)', 52.5], ['C', 'Coeficiente C', 120], ['l', 'Comprimento total (m)', 120]],
+      f: v => {
+        if (!(v.q1 > 0 && v.q2 > v.q1 && v.h0 > 0)) return [['Curva', 'Q2 deve ser maior que Q1']];
+        const den = (0 - v.q1) * (0 - v.q2) * (v.q1 - v.q2), c = (v.q2 * (v.h1 - v.h0) + v.q1 * (v.h0 - v.h2)) / den, b = (v.q2 * v.q2 * (v.h0 - v.h1) + v.q1 * v.q1 * (v.h2 - v.h0)) / den, a = v.h0;
+        const bo = q => a + b * q + c * q * q, si = q => v.g + (q > 0 ? 10.67 * (q / 3600) ** 1.852 / (v.C ** 1.852 * (v.d / 1000) ** 4.87) * v.l : 0);
+        let lo = 0, hi = v.q2 * 2; const ok = bo(lo) > si(lo);
+        for (let i = 0; i < 80 && ok; i++) { const m = (lo + hi) / 2; if (bo(m) > si(m)) lo = m; else hi = m; }
+        const q = (lo + hi) / 2;
+        return ok && bo(hi) <= si(hi) + .01 ? [['Vazão de operação', `${num(q, 1)} m³/h`], ['Altura de operação', num(si(q), 1) + ' mca']] : [['Ponto de operação', 'As curvas não se cruzam']];
+      }, n: 'Curva da bomba por três pontos; perda por Hazen-Williams, como no portal. Confira o rendimento e o NPSH no catálogo.' },
+    { t: 'Hidrante mais desfavorável', c: [['q', 'Vazão no esguicho (L/min)', 250], ['p', 'Pressão no esguicho (mca)', 40], ['n', 'Hidrantes simultâneos', 2], ['dm', 'Ø da mangueira (mm)', 40], ['cm', 'C da mangueira', 140], ['lm', 'Comprimento da mangueira (m)', 30], ['dt', 'Ø da tubulação (mm)', 63], ['ct', 'C da tubulação', 120], ['lt', 'Comprimento da tubulação (m)', 80], ['le', 'Comprimento equivalente (m)', 30], ['z', 'Desnível (m)', 15]],
+      f: v => { const hw = (Q, D, C, L) => Q > 0 && D > 0 && C > 0 ? 10.67 * (Q / 1000) ** 1.852 / (C ** 1.852 * (D / 1000) ** 4.87) * L : 0, qe = v.q / 60, nh = Math.max(1, Math.round(v.n)), hm = hw(qe, v.dm, v.cm, v.lm), qt = qe * nh, ht = hw(qt, v.dt, v.ct, v.lt + v.le), H = v.p + hm + ht + v.z, vt = 4 * qt / 1000 / (Math.PI * (v.dt / 1000) ** 2); return [['Perda na mangueira', num(hm) + ' mca'], ['Perda na tubulação', `${num(ht)} mca · ${num(vt)} m/s`], ['Altura da bomba', num(H, 1) + ' mca'], ['Vazão da bomba', `${num(qt * 60, 0)} L/min`]]; },
+      n: 'Vazão, pressão e hidrantes simultâneos vêm da NBR 13714 e da Instrução Técnica do estado.' },
+    { t: 'Comprimento equivalente', c: [['i', 'Diâmetro (PVC e cobre)', 1, [['20 mm', 0], ['25 mm', 1], ['32 mm', 2], ['40 mm', 3], ['50 mm', 4], ['60 mm', 5], ['75 mm', 6], ['85 mm', 7], ['110 mm', 8]]], ['l', 'Tubo reto (m)', 20], ['j9', 'Joelhos 90°', 4], ['j4', 'Joelhos 45°', 0], ['tp', 'Tês de passagem direta', 0], ['ts', 'Tês de saída lateral', 1], ['rg', 'Registros de gaveta', 2], ['rl', 'Registros de globo', 0]],
+      f: v => { const P = { j9: [1.1, 1.2, 1.5, 2, 3.2, 3.4, 3.7, 3.9, 4.3], j4: [.4, .5, .7, 1, 1.3, 1.5, 1.7, 1.8, 1.9], tp: [.7, .8, .9, 1.5, 2.2, 2.3, 2.4, 2.5, 2.6], ts: [2.3, 2.4, 3.1, 4.6, 7.3, 7.6, 7.8, 8, 8.3], rg: [.1, .2, .3, .4, .7, .8, .9, .9, 1], rl: [11.1, 11.4, 15, 22, 35.8, 37.9, 38, 40, 42.3] }, e = Object.keys(P).reduce((s, k) => s + v[k] * P[k][v.i], 0); return [['Peças', num(e, 1) + ' m'], ['Comprimento total', num(v.l + e, 1) + ' m']]; },
+      n: 'Valores de referência de catálogo para tubos lisos. Aço e ferro têm comprimentos maiores.' },
+    { t: 'Perda de carga (Darcy-Weisbach)', c: [['q', 'Vazão (L/s)', 5], ['d', 'Ø interno (mm)', 77.9], ['l', 'Comprimento (m)', 100], ['k', 'Soma dos K das peças', 0], ['ep', 'Rugosidade', .0015, [['Plásticos (0,0015 mm)', .0015], ['Aço comercial (0,045 mm)', .045], ['Ferro fundido (0,26 mm)', .26]]]],
+      f: v => { const Q = v.q / 1000, D = v.d / 1000, V = Q / (Math.PI * D * D / 4), Re = V * D / 1e-6, f = Re < 2300 ? 64 / Re : .25 / Math.log10(v.ep / 1000 / (3.7 * D) + 5.74 / Re ** .9) ** 2, h = f * (v.l / D) * V * V / 19.62 + v.k * V * V / 19.62; return [['Velocidade', num(V) + ' m/s'], ['Reynolds', num(Re, 0)], ['Fator f', num(f, 4)], ['Perda', num(h) + ' m']]; },
+      n: 'Para água a 20 °C. Fator de atrito por Swamee-Jain, como no portal.' },
+    { t: 'Aquecedor de água', c: [['du', 'Duchas simultâneas', 2], ['vd', 'Vazão por ducha (L/min)', 8], ['to', 'Torneiras simultâneas', 1], ['vt', 'Vazão por torneira (L/min)', 4], ['tq', 'Temperatura do banho (°C)', 40], ['tf', 'Temperatura da água fria (°C)', 15], ['pe', 'Pessoas', 4], ['co', 'Consumo quente (L/pessoa/dia)', 50]],
+      f: v => { const Q = v.du * v.vd + v.to * v.vt, dT = v.tq - v.tf; if (!(Q > 0 && dT > 0)) return [['Dados', 'Informe vazão e temperatura']]; const dia = v.pe * v.co; return [['Vazão simultânea', num(Q, 1) + ' L/min'], ['Potência', num(Q * 4.186 * dT / 60, 1) + ' kW'], ['Aquecedor a gás (etiqueta)', `mínimo ${num(Math.ceil(Q * dT / 20), 0)} L/min`], ['Consumo diário', num(dia, 0) + ' L']]; },
+      n: 'A vazão de etiqueta dos aquecedores a gás vale para aumento de 20 °C.' },
+    { t: 'Vaso de expansão', c: [['V', 'Volume de água (L)', 300], ['tf', 'Temperatura fria (°C)', 10], ['tq', 'Temperatura quente (°C)', 70], ['pi', 'Pressão da rede (bar)', 3], ['ps', 'Ajuste da válvula de segurança (bar)', 6]],
+      f: v => { const R = [[4, 1000], [10, 999.7], [20, 998.2], [30, 995.7], [40, 992.2], [50, 988], [60, 983.2], [70, 977.8], [80, 971.8], [90, 965.3], [95, 961.9]], rho = t => { for (let i = 1; i < R.length; i++) if (t <= R[i][0]) { const [a, b] = R[i - 1], [c, d] = R[i]; return b + (d - b) * (t - a) / (c - a); } return R[R.length - 1][1]; }, Pi = v.pi + 1, Pf = v.ps + .5; if (!(v.V > 0 && v.tq > v.tf)) return [['Dados', 'Temperatura quente deve ser maior']]; if (Pf <= Pi) return [['Pressões', 'A válvula precisa abrir acima da rede']]; const e = rho(v.tf) / rho(v.tq) - 1, Ve = e * v.V, Vn = Ve / (1 - Pi / Pf); return [['Expansão', num(e * 100) + '%'], ['Volume expandido', num(Ve, 1) + ' L'], ['Volume do vaso', num(Vn, 1) + ' L'], ['Comercial', num([2, 5, 8, 12, 18, 24, 35, 50, 60, 80, 100, 150, 200, 300, 500].find(x => x >= Vn) || Math.ceil(Vn), 0) + ' L']]; },
+      n: 'Pré-carga igual à pressão da rede. Use vaso próprio para água potável.' },
+    { t: 'Água de chuva', c: [['a', 'Área de captação (m²)', 150], ['p', 'Chuva anual (mm)', 1500], ['co', 'Cobertura', .8, [['Telha cerâmica (0,80)', .8], ['Telha metálica (0,90)', .9], ['Laje impermeabilizada (0,85)', .85], ['Telhado verde (0,50)', .5]]], ['et', 'Eficiência', .85], ['de', 'Demanda não potável (L/dia)', 300]],
+      f: v => { const ano = v.p * v.a * v.co * v.et / 1000, cons = v.de * 365 / 1000, res = .06 * Math.min(ano, cons || ano); return [['Volume por ano', num(ano, 1) + ' m³'], ['Volume por mês', num(ano / 12, 1) + ' m³'], ['Atende do consumo', cons > 0 ? num(Math.min(100, ano / cons * 100), 0) + '%' : '—'], ['Reservatório', num(res * 1000, 0) + ' L']]; },
+      n: 'Método prático alemão da NBR 15527. Somente usos não potáveis, com rede separada.' },
+    { t: 'Tanque séptico', c: [['ti', 'Ocupação', 1, [['Residência padrão alto (160 L)', 0], ['Residência padrão médio (130 L)', 1], ['Residência padrão baixo (100 L)', 2], ['Hotel (100 L)', 3], ['Alojamento provisório (80 L)', 4]]], ['n', 'Pessoas', 5], ['int', 'Intervalo de limpeza', 0, [['1 ano', 0], ['2 anos', 1], ['3 anos', 2], ['4 anos', 3], ['5 anos', 4]]], ['te', 'Temperatura do mês mais frio', 2, [['Até 10 °C', 0], ['10 a 20 °C', 1], ['Acima de 20 °C', 2]]]],
+      f: v => { const C = [160, 130, 100, 100, 80][v.ti], cd = v.n * C, [, T] = [[1500, 1], [3000, .92], [4500, .83], [6000, .75], [7500, .67], [9000, .58], [Infinity, .5]].find(x => cd <= x[0]), K = [[94, 65, 57], [134, 105, 97], [174, 145, 137], [214, 185, 177], [254, 225, 217]][v.int][v.te], V = 1000 + v.n * (C * T + K); return [['Contribuição', num(cd, 0) + ' L/dia'], ['Detenção', num(T) + ' dia'], ['Lodo fresco e K', '1 L · K ' + K], ['Volume útil', num(V, 0) + ' L']]; },
+      n: 'Método da NBR 7229, cancelada em 2024 e substituída pela NBR 17076: confira a norma vigente.' },
+    { t: 'Espessura de parede', c: [['d', 'Tubo', 114.3, [['1/2" (21,3 mm)', 21.3], ['3/4" (26,7 mm)', 26.7], ['1" (33,4 mm)', 33.4], ['1 1/4" (42,2 mm)', 42.2], ['1 1/2" (48,3 mm)', 48.3], ['2" (60,3 mm)', 60.3], ['2 1/2" (73 mm)', 73], ['3" (88,9 mm)', 88.9], ['4" (114,3 mm)', 114.3], ['6" (168,3 mm)', 168.3], ['8" (219,1 mm)', 219.1], ['10" (273 mm)', 273], ['12" (323,8 mm)', 323.8]]], ['p', 'Pressão de projeto (bar)', 40], ['s', 'Tensão admissível S (MPa)', 138], ['e', 'Eficiência', 1, [['1,00 sem costura', 1], ['0,85 com costura', .85]]], ['c', 'Sobrespessura de corrosão (mm)', 1.5], ['to', 'Tolerância de fabricação (%)', 12.5]],
+      f: v => { const P = v.p / 10, t = P * v.d / (2 * (v.s * v.e + P * .4)), tm = t + v.c, tn = tm / (1 - v.to / 100), x = TUBOS.find(y => y[2] === v.d || (y[2] === 219.1 && v.d === 219.1)), a = x[3], b = x[4]; return [['Espessura de pressão', num(t) + ' mm'], ['Com corrosão', num(tm) + ' mm'], ['Nominal mínima', num(tn) + ' mm'], ['Schedule', tn <= a ? `SCH 40 (${num(a)} mm)` : tn <= b ? `SCH 80 (${num(b)} mm)` : 'Acima de SCH 80']]; },
+      n: 'ASME B31.3, Y = 0,4 e W = 1. Tensão S conforme material e temperatura. Verificação de apoio.' },
+    { t: 'Aquecimento de ambiente', c: [['a', 'Área (m²)', 16], ['h', 'Pé-direito (m)', 2.6], ['i', 'Isolamento', 40, [['Bom', 30], ['Médio', 40], ['Ruim', 50]]], ['cl', 'Clima', 1, [['Ameno', .7], ['Frio', 1], ['Muito frio', 1.25]]]],
+      f: v => { const kcal = v.a * v.h * v.i * v.cl, W = kcal * 1.163; return [['Potência', num(W / 1000, 1) + ' kW'], ['Em BTU/h', num(W * 3.412, 0)]]; },
+      n: 'Regra prática por volume, para comparar opções. Não substitui o cálculo de carga térmica.' },
   ];
   const ler = s => parseFloat(String(s).replace(',', '.'));
   function resolver() {
@@ -519,7 +603,7 @@
   const htmlTermo = x => `<details><summary>${x.t}<small>${x.tema}</small></summary><p>${x.def}</p>${x.exp ? `<p>${x.exp}</p>` : ''}${x.f ? `<p class="formula">${x.f[0]}<small>${x.f[1]}</small></p>` : ''}${x.x ? extra(x.x) : ''}${x.norma ? `<p>Norma: ${x.norma}</p>` : ''}<p><a href="/glossario/${x.id}">Ver no portal</a></p></details>`;
   const extra = e => (e.pratica ? `<h4>Na prática</h4><p>${e.pratica}</p>` : '') + (e.valores ? `<h4>Valores de referência</h4><ul>${e.valores.map(([a, b]) => `<li>${a}: <b>${b}</b></li>`).join('')}</ul>` : '') + (e.exemplo ? `<h4>Exemplo</h4><p>${e.exemplo}</p>` : '') + (e.erros ? `<h4>Erros comuns</h4><ul>${e.erros.map(t => `<li>${t}</li>`).join('')}</ul>` : '');
   const htmlNorma = n => `<details><summary>${n.code}<small>${n.title}</small></summary><p>${n.note || 'Sem resumo cadastrado.'}</p><p><small>${n.org}</small></p></details>`;
-  fetch('/bolso-dados.json').then(r => r.json()).then(d => {
+  DADOS.then(d => {
     d.g.forEach(x => { x.b = sem(x.t + ' ' + x.en + ' ' + x.tema + ' ' + x.def); });
     d.n.forEach(x => { x.b = sem(x.code + ' ' + x.title + ' ' + (x.note || '')); });
     const fT = () => lista($('listaTermos'), d.g.filter(x => casa(x.b, $('bTermo').value)), htmlTermo);
@@ -632,7 +716,7 @@
       else { grupo = h.g; montarGrupo(); $('valor').value = h.val; $('de').value = h.de; calcular(); abrir('conversor'); }
     }
   });
-  fetch('/bolso-dados.json').then(r => r.json()).then(d => {
+  DADOS.then(d => {
     CHECKS = d.c;
     $('ck').innerHTML = CHECKS.map(c => `<option value="${c[0]}">${c[1]}</option>`).join('');
     ckDesenha(); pintarInicio();
@@ -690,7 +774,7 @@
 
   // Materiais e preços
   const htmlMat = m => `<details><summary>${m.n}<small>${m.c}</small></summary><p>${m.d}</p>${m.a ? `<p>Aplicações: ${m.a}</p>` : ''}${m.f.length ? `<p>Fabricantes: ${m.f.join(', ')}</p>` : ''}<p><a href="/materiais/${m.id}">Ver ficha completa no portal</a></p><button type="button" class="mini" data-mat="${esc(m.n)}">Adicionar à lista</button></details>`;
-  fetch('/bolso-dados.json').then(r => r.json()).then(d => {
+  DADOS.then(d => {
     SIN = d.s;
     d.m.forEach(x => { x.b = sem(x.n + ' ' + x.c + ' ' + x.a + ' ' + x.d + ' ' + x.f.join(' ')); });
     const ins = Object.entries(SIN.ins).map(([c, x]) => ({ c, n: x[0], u: x[1], b: sem(x[0] + ' ' + c) }));
@@ -719,7 +803,7 @@
     { titulo: 'Apoios de tubo PPR a 20 °C', colunas: ['DN', 'Distância máxima'], linhas: [['20', '60 cm'], ['25', '70 cm'], ['32', '80 cm'], ['40', '100 cm'], ['50', '110 cm']], nota: 'Tabela de fabricante, a 20 °C. A distância diminui com a temperatura: use a tabela da linha instalada.' },
   ];
   const htmlErro = p => `<details><summary>${p.t}<small>${p.tema}${p.sev === 'alta' ? ' · gravidade alta' : ''}</small></summary><h4>Sintoma</h4><p>${p.sint}</p><h4>Causa</h4><p>${p.causa}</p><h4>Solução</h4><p>${p.sol}</p></details>`;
-  fetch('/bolso-dados.json').then(r => r.json()).then(d => {
+  DADOS.then(d => {
     const tabs = [...TAB_CAMPO, ...d.t.map(x => ({ ...x, nota: 'Tabela do portal, da ficha ' + x.ficha + '.' }))];
     const pintarTab = () => {
       const t = tabs[+$('tab').value];
@@ -828,12 +912,13 @@
   const ic = n => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
   const NAV_IC = { inicio: 'casa', conversor: 'conv', tubos: 'tubo', calc: 'calc', obra: 'obra', termos: 'lupa' };
   document.querySelectorAll('nav button').forEach(b => { b.innerHTML = `${ic(NAV_IC[b.dataset.aba])}<span>${b.textContent}</span>`; });
-  const TILES = [['conversor', 'Conversor', 'conv'], ['tubos', 'Tubos', 'tubo'], ['tabelas', 'Tabelas', 'tab'], ['calc', 'Cálculos', 'calc'], ['*dim', 'Dimensionar', 'regua'], ['nivel', 'Nível digital', 'nivel'], ['obra', 'Checklists', 'obra'], ['diario', 'Diário de obra', 'foto'], ['lista', 'Lista', 'lista'], ['termos', 'Glossário', 'livro'], ['normas', 'Normas', 'norma'], ['materiais', 'Materiais', 'mat'], ['precos', 'Preços', 'preco'], ['erros', 'Erros e soluções', 'erro']];
-  $('tiles').innerHTML = TILES.map(([a, t, i]) => `<button type="button" class="tile" data-tile="${a}">${ic(i)}<span>${t}</span></button>`).join('');
+  Object.assign(IC, { det: 'M4 4h16v16H4zM4 15h6v5M10 15l5-5M15 10h5M15 10V4', guia: 'M4 5l4 3-4 3zM11 8h9M4 15l4 3-4 3zM11 18h9', video: 'M3 6h18v12H3zM10 9l5 3-5 3z', comp: 'M12 3v18M4 7h16M7 7l-3 7a3 3 0 006 0zM17 7l-3 7a3 3 0 006 0z', news: 'M4 5h13v14H6a2 2 0 01-2-2zM17 9h3v8a2 2 0 01-2 2M8 9h5M8 13h5', curso: 'M3 9l9-5 9 5-9 5zM7 12v5c3 2 7 2 10 0v-5', vaga: 'M4 8h16v11H4zM9 8V5h6v3M4 13h16' });
+  const TILES = [['Ferramentas', [['conversor', 'Conversor', 'conv'], ['tubos', 'Tubos', 'tubo'], ['tabelas', 'Tabelas', 'tab'], ['calc', 'Cálculos', 'calc'], ['*dim', 'Dimensionar', 'regua'], ['nivel', 'Nível digital', 'nivel']]], ['Na obra', [['obra', 'Checklists', 'obra'], ['diario', 'Diário de obra', 'foto'], ['lista', 'Lista', 'lista'], ['detalhes', 'Detalhes típicos', 'det'], ['guias', 'Guias', 'guia'], ['videos', 'Vídeos', 'video']]], ['Consulta', [['termos', 'Glossário', 'livro'], ['normas', 'Normas', 'norma'], ['materiais', 'Materiais', 'mat'], ['precos', 'Preços', 'preco'], ['erros', 'Erros e soluções', 'erro'], ['comparativos', 'Comparativos', 'comp']]], ['Setor', [['noticias', 'Notícias', 'news'], ['cursos', 'Cursos e eventos', 'curso'], ['vagas', 'Vagas', 'vaga']]]];
+  $('tiles').innerHTML = TILES.map(([g, l]) => `<h3>${g}</h3>` + l.map(([a, t, i]) => `<button type="button" class="tile" data-tile="${a}">${ic(i)}<span>${t}</span></button>`).join('')).join('');
   $('tiles').addEventListener('click', e => { const b = e.target.closest('[data-tile]'); if (!b) return; if (b.dataset.tile === '*dim') abrirCalc('Dimensionamento resumido'); else abrir(b.dataset.tile); });
   let INDICE = [];
   const irPara = (aba, campo, termo) => { $(campo).value = termo; $(campo).dispatchEvent(new Event('input', { bubbles: true })); abrir(aba); };
-  fetch('/bolso-dados.json').then(r => r.json()).then(d => {
+  DADOS.then(d => {
     $('iniNews').innerHTML = d.ntc.map(n => `<a class="news" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.titulo)}</b><small>${n.data.split('-').reverse().join('/')} · ${esc(n.fonte)}</small></a>`).join('') || '<p class="vazio">Sem notícias.</p>';
     INDICE = [
       ...CALCS.map(c => ({ g: 'Cálculos', t: c.t, ir: () => abrirCalc(c.t) })),
@@ -843,6 +928,11 @@
       ...d.m.map(x => ({ g: 'Materiais', t: x.n, b: x.c, ir: () => irPara('materiais', 'bMat', x.n) })),
       ...d.p.map(x => ({ g: 'Erros e soluções', t: x.t, ir: () => irPara('erros', 'bErro', x.t) })),
       ...Object.entries(d.s.ins).map(([c, x]) => ({ g: 'Preços', t: x[0], ir: () => irPara('precos', 'bPreco', x[0]) })),
+      ...DETALHES.map(x => ({ g: 'Detalhes típicos', t: x.titulo, b: x.desc, ir: () => irPara('detalhes', 'b_detalhes', x.titulo) })),
+      ...d.gu.map(x => ({ g: 'Guias', t: x.titulo, b: x.tema, ir: () => irPara('guias', 'b_guias', x.titulo) })),
+      ...d.v.map(x => ({ g: 'Vídeos', t: x.t, b: x.canal, ir: () => irPara('videos', 'b_videos', x.t) })),
+      ...d.cm.map(x => ({ g: 'Comparativos', t: x.titulo, b: x.tema, ir: () => irPara('comparativos', 'b_comparativos', x.titulo) })),
+      ...d.nt.map(x => ({ g: 'Notícias', t: x.titulo, b: x.fonte, ir: () => irPara('noticias', 'b_noticias', x.titulo) })),
     ].map(x => ({ ...x, s: sem(x.t + ' ' + (x.b || '')) }));
   }).catch(() => { $('iniNews').innerHTML = '<p class="vazio">Abra uma vez com internet para ver as notícias.</p>'; });
   $('bTudo').addEventListener('input', () => {
@@ -871,9 +961,46 @@
   $('fecharBoas').addEventListener('click', () => { $('boas').hidden = true; gravar('boasvindas', true); });
   if (!ler_('boasvindas', false)) abrirBoas();
 
+  // Conteúdo do portal: seções de lista com busca, todas no mesmo molde
+  const SECOES = [['comparativos', 'consulta', 'Comparativos de materiais', 'Ex.: água quente'], ['detalhes', 'consulta', 'Detalhes típicos', 'Ex.: caixa de gordura'], ['guias', 'consulta', 'Guias passo a passo', 'Ex.: estanqueidade'], ['videos', 'consulta', 'Vídeos de fabricantes', 'Ex.: PVC'], ['noticias', 'setor', 'Notícias do setor', 'Ex.: saneamento'], ['cursos', 'setor', 'Cursos e eventos', 'Ex.: Florianópolis'], ['vagas', 'setor', 'Vagas do setor', 'Ex.: encanador']];
+  document.querySelector('main').insertAdjacentHTML('beforeend', SECOES.map(([id, tr, t, ph]) => `<section id="aba-${id}" hidden><div class="grupos" data-troca="${tr}"></div><h2>${t}</h2><p class="ajuda" id="i_${id}">Carregando…</p><div class="cartao"><label for="b_${id}">Buscar</label><input id="b_${id}" type="search" autocomplete="off" placeholder="${ph}"></div><div class="cartao" id="l_${id}"></div></section>`).join(''));
+  const brData = s => s.split('-').reverse().join('/');
+  const tira = s => String(s).replace(/\{[^}]+\}/g, '');
+  const ligaSecao = (id, itens, html, info, campos) => {
+    itens.forEach(x => { x.b_ = sem(campos(x)); });
+    const f = () => lista($('l_' + id), itens.filter(x => casa(x.b_, $('b_' + id).value)), html);
+    $('i_' + id).textContent = info; $('b_' + id).addEventListener('input', f); f();
+  };
+  const htmlDet = x => `<details data-fig="${x.id}"><summary>${x.titulo}<small>${x.normas}</small></summary><div class="fig"></div><p>${x.desc}</p><p><a href="/materiais/${x.mat}">Ficha do material no portal</a></p><div class="btn-linha"><button type="button" class="mini" data-dxf="${x.id}">Baixar DXF</button><button type="button" class="mini" data-svgb="${x.id}">Baixar SVG</button></div></details>`;
+  $('l_detalhes').addEventListener('toggle', e => { const d = e.target; if (d.open && d.dataset.fig && !d.querySelector('.fig svg')) d.querySelector('.fig').innerHTML = detSVG(DETALHES.find(x => x.id === d.dataset.fig)); }, true);
+  const entregar = (txt, nome) => {
+    const f = new File([txt], nome, { type: 'text/plain' });
+    if (navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f] }).catch(() => {}); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = nome; a.click();
+  };
+  $('l_detalhes').addEventListener('click', e => { const b = e.target.closest('[data-dxf],[data-svgb]'); if (!b) return; if (b.dataset.dxf) entregar(detDXF(DETALHES.find(x => x.id === b.dataset.dxf)), `pipesystem-detalhe-${b.dataset.dxf}.dxf`); else entregar(detSVG(DETALHES.find(x => x.id === b.dataset.svgb), false), `pipesystem-detalhe-${b.dataset.svgb}.svg`); });
+  ligaSecao('detalhes', DETALHES, htmlDet, DETALHES.length + ' detalhes com desenho e DXF, disponíveis também sem internet.', x => x.titulo + ' ' + x.desc + ' ' + x.normas);
+  const ytb = id => `https://www.youtube.com/watch?v=${id}`;
+  DADOS.then(d => {
+    const porV = Object.fromEntries(d.v.map(x => [x.k, x]));
+    const ul = (t, a) => a && a.length ? `<h4>${t}</h4><ul>${a.map(i => `<li>${i}</li>`).join('')}</ul>` : '';
+    ligaSecao('guias', d.gu, g => `<details><summary>${g.titulo}<small>${g.tema} · ${g.tempo} · ${g.nivel}</small></summary><p>${g.resumo}</p>${g.norma ? `<p>Norma: ${g.norma}</p>` : ''}${ul('Separe antes', g.separar)}<h4>Passo a passo</h4><ol>${g.passos.map(p => `<li>${p}</li>`).join('')}</ol>${ul('Atenção', g.atencao)}${ul('Vídeos', (g.videos || []).filter(k => porV[k]).map(k => `<a href="${ytb(porV[k].id)}" target="_blank" rel="noopener">${porV[k].t}</a>`))}${ul('Materiais', (g.mats || []).map(([n, s]) => `<a href="/materiais/${s}">${n}</a>`))}</details>`, d.gu.length + ' guias, disponíveis também sem internet.', x => x.titulo + ' ' + x.tema + ' ' + x.resumo);
+    ligaSecao('videos', d.v, x => `<a class="news" href="${ytb(x.id)}" target="_blank" rel="noopener"><b>${x.t}</b><small>${x.canal} · ${x.dur} · ${x.tema}</small><p class="vazio" style="margin-top:4px">${x.d}</p></a>`, d.v.length + ' vídeos. Assistir exige internet.', x => x.t + ' ' + x.canal + ' ' + x.tema + ' ' + x.d);
+    ligaSecao('comparativos', d.cm, c => {
+      const nomes = c.opcoes.map(o => o[0]), APPS = { casa: 'Casa', predio: 'Prédio', hospital: 'Hospital', industria: 'Indústria', comercial: 'Comercial' };
+      return `<details><summary>${c.titulo}<small>${c.tema}</small></summary><p>${tira(c.resumo)}</p>${c.linhas.map(([k, v]) => `<h4>${k}</h4><ul>${v.map((t, i) => `<li><b>${nomes[i]}:</b> ${tira(t)}</li>`).join('')}</ul>`).join('')}${(c.pros || []).map((p, i) => ul(`${nomes[i]}: a favor`, p[0]) + ul(`${nomes[i]}: contra`, p[1])).join('')}${ul('Erros comuns', c.erros)}${c.apps ? ul('Onde usar', Object.entries(c.apps).map(([k, t]) => `<b>${APPS[k] || k}:</b> ${tira(t)}`)) : ''}<p><a href="/comparativos/${c.id}">Ver no portal, com fontes e preços</a></p></details>`;
+    }, d.cm.length + ' comparativos, disponíveis também sem internet.', x => x.titulo + ' ' + x.tema + ' ' + x.resumo);
+    ligaSecao('noticias', d.nt, n => `<a class="news" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.titulo)}</b><small>${brData(n.data)} · ${esc(n.fonte)}${n.uf ? ' · ' + esc(n.uf) : ''}</small>${n.resumo ? `<p class="vazio" style="margin-top:4px">${esc(n.resumo)}</p>` : ''}<span class="tag">${esc(n.categoria)}</span></a>`, d.nt.length + ' notícias. Abrir a matéria exige internet.', x => x.titulo + ' ' + x.resumo + ' ' + x.categoria + ' ' + x.uf + ' ' + x.fonte);
+    const hoje_ = new Date().toISOString().slice(0, 10);
+    const cur = d.cu.filter(c => !c.inicio || (c.fim || c.inicio) >= hoje_);
+    ligaSecao('cursos', cur, c => `<a class="news" href="${esc(c.link)}" target="_blank" rel="noopener"><b>${esc(c.titulo)}</b><small>${esc(c.quando || 'Programa contínuo')}${c.detalhe ? ' · ' + esc(c.detalhe) : ''}</small><p class="vazio" style="margin-top:4px">${esc(c.entidade)} · ${esc(c.local || '')}${c.carga ? ' · ' + esc(c.carga) : ''}</p>${c.situacao === 'conf' ? '<span class="tag">Confirmar data com o organizador</span>' : ''}</a>`, cur.length + ' cursos e eventos. Abrir a inscrição exige internet.', x => [x.titulo, x.entidade, x.local, x.tipo, x.uf].join(' '));
+    const vag = d.va.filter(v => v.fim >= hoje_);
+    ligaSecao('vagas', vag, v => `<a class="news" href="${esc(v.link)}" target="_blank" rel="noopener"><b>${esc(v.titulo)}</b><small>${esc(v.empresa)} · ${esc(v.local)}</small><p class="vazio" style="margin-top:4px">${esc(v.contrato || '')}${v.obs ? ' · ' + esc(v.obs) : ''}</p><span class="tag">Publicada em ${brData(v.publicada)}</span></a>`, vag.length + ' vagas. A candidatura é feita no site que publicou.', x => [x.titulo, x.empresa, x.local, x.area].join(' '));
+  }).catch(() => {});
+
   // Abas e abas internas
-  const TROCAS = { consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços'], ['erros', 'Erros e soluções']], obra: [['obra', 'Checklists'], ['lista', 'Lista'], ['diario', 'Diário']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']], calc: [['calc', 'Cálculos'], ['nivel', 'Nível digital']] };
-  const NAV_DE = { normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', diario: 'obra', tabelas: 'tubos', nivel: 'calc' };
+  const TROCAS = { setor: [['noticias', 'Notícias'], ['cursos', 'Cursos'], ['vagas', 'Vagas']], consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços'], ['erros', 'Erros e soluções'], ['comparativos', 'Comparativos'], ['detalhes', 'Detalhes'], ['guias', 'Guias'], ['videos', 'Vídeos']], obra: [['obra', 'Checklists'], ['lista', 'Lista'], ['diario', 'Diário']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']], calc: [['calc', 'Cálculos'], ['nivel', 'Nível digital']] };
+  const NAV_DE = { comparativos: 'termos', detalhes: 'termos', guias: 'termos', videos: 'termos', noticias: 'inicio', cursos: 'inicio', vagas: 'inicio', normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', diario: 'obra', tabelas: 'tubos', nivel: 'calc' };
   document.querySelectorAll('[data-troca]').forEach(el => { const dono = el.closest('section').id.slice(4); el.innerHTML = TROCAS[el.dataset.troca].map(([a, t]) => `<button type="button" data-ir="${a}" aria-pressed="${a === dono}">${t}</button>`).join(''); });
   pintarLista();
   function abrir(a) {
@@ -881,6 +1008,8 @@
     const alvo = NAV_DE[a] || a;
     document.querySelectorAll('nav button').forEach(b => b.dataset.aba === alvo ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
     if (a === 'inicio') pintarInicio();
+    const chip = document.querySelector(`#aba-${a} .grupos[data-troca="consulta"] [aria-pressed="true"]`);
+    if (chip) chip.parentNode.scrollLeft = chip.offsetLeft - 16;
     if (a === 'diario') pdfVelho();   // checklists e lista podem ter mudado nas outras telas
     window.scrollTo(0, 0);
   }
