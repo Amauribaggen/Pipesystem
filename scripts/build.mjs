@@ -50,6 +50,7 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
   const vistas = new Set();
   writeFileSync(join(out, 'bolso-dados.json'), JSON.stringify({
     g: D.GLOSSARIO.map(x => ({ id: x.id, t: x.t, en: x.en, tema: x.tema, def: x.def, exp: x.exp, f: x.f, norma: x.norma, x: GLOSSARIO_EXTRA[x.id] })),
+    ntc: JSON.parse(readFileSync(join(src, 'noticias.json'), 'utf8')).itens.slice().sort((x, y) => y.data.localeCompare(x.data)).slice(0, 5).map(({ titulo, link, data, fonte }) => ({ titulo, link, data, fonte })),
     c: CHECKS,
     p: vm.runInNewContext(guias.slice(guias.indexOf('const PATS'), guias.indexOf('];', guias.indexOf('const PATS')) + 2) + ';PATS').map(({ tema, sev, t, sint, causa, sol }) => ({ tema, sev, t, sint, causa, sol })),
     t: D.CATALOG.flatMap(m => (m.tabelas || []).map(x => ({ titulo: x.titulo, colunas: x.colunas, linhas: x.linhas, ficha: m.name }))),

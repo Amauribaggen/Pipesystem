@@ -98,6 +98,34 @@
   nav button[aria-current="page"] { color: var(--ciano); box-shadow: inset 0 3px 0 var(--ciano); }
   #estado { display: none; padding: 7px 16px; background: var(--laranja); color: #0a2240; font-size: .82rem; font-weight: 600; text-align: center; }
   #estado.ver { display: block; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 86px; padding: 8px 4px; border: 1px solid var(--linha); border-radius: 14px; background: var(--cartao); color: var(--texto); font: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; }
+  .tile svg { width: 28px; height: 28px; color: var(--ciano); }
+  svg.ic { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  nav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+  nav button svg { width: 22px; height: 22px; pointer-events: none; }
+  nav button span { pointer-events: none; }
+  textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--linha); border-radius: 10px; background: var(--fundo); color: var(--texto); font: inherit; resize: vertical; }
+  .news { display: block; padding: 10px 2px; border-top: 1px solid var(--linha); color: var(--texto); text-decoration: none; }
+  .news:first-child { border-top: 0; }
+  .news b { display: block; font-size: .93rem; font-weight: 600; }
+  .news small { color: var(--suave); }
+  .res-g { margin: 10px 0 2px; color: var(--ciano); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+  .res-g:first-child { margin-top: 0; }
+  .nivel { text-align: center; }
+  .nivel__pct b { display: block; font-size: 3.4rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .nivel__pct span, .nivel__mm { color: var(--suave); font-size: .9rem; }
+  .nivel__mm { margin: 4px 0 12px; }
+  .nivel__trilho { position: relative; height: 26px; border: 1px solid var(--linha); border-radius: 99px; background: var(--fundo); }
+  .nivel__trilho::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--linha); }
+  .nivel__trilho i { position: absolute; top: 3px; left: 50%; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--laranja); }
+  .nivel__status { margin: 12px 0 0; font-weight: 700; }
+  .entrada { padding: 12px 2px; border-top: 1px solid var(--linha); }
+  .entrada:first-child { border-top: 0; }
+  .entrada small { color: var(--suave); }
+  .entrada p { margin: 4px 0 8px; font-size: .94rem; white-space: pre-wrap; }
+  .entrada img, #dPrevia { display: block; width: 100%; max-height: 260px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+  .ck-foto { margin: -4px 0 8px 36px; }
   /* Letra grande */
   :root[data-letra] { font-size: 118%; }
   :root[data-letra] nav button { font-size: clamp(9.6px, 2.85vw, 12.5px); }
@@ -132,8 +160,11 @@
 
 <main>
   <section id="aba-inicio">
-    <h2>Início</h2>
-    <p class="ajuda">Seus atalhos ficam guardados neste aparelho.</p>
+    <div class="cartao"><label for="bTudo">Buscar em tudo</label><input id="bTudo" type="search" autocomplete="off" placeholder="Ex.: válvula, NBR 5626, cavitação"></div>
+    <div class="cartao" id="resTudo" hidden></div>
+    <div class="tiles" id="tiles"></div>
+    <h3>Notícias do setor</h3>
+    <div class="cartao" id="iniNews"><p class="vazio">Carregando…</p></div>
     <h3>Favoritos</h3>
     <div class="cartao" id="iniFav"></div>
     <h3>Obras em andamento</h3>
@@ -198,7 +229,41 @@
     <p class="nota">A medida é aproximada: confira a linha do fabricante, porque conexões de sistemas diferentes podem não ser compatíveis.</p>
   </section>
 
+  <section id="aba-nivel" hidden>
+    <div class="grupos" data-troca="calc"></div>
+    <h2>Nível digital</h2>
+    <p class="ajuda">Apoie o celular deitado sobre o tubo, com o comprimento do aparelho no sentido do tubo.</p>
+    <div class="cartao nivel">
+      <div class="nivel__pct"><b id="nvPct">—</b><span>% de declividade</span></div>
+      <p id="nvMm" class="nivel__mm">Toque em Ativar sensor</p>
+      <div class="nivel__trilho" aria-hidden="true"><i id="nvBolha"></i></div>
+      <p id="nvStatus" class="nivel__status" role="status"></p>
+    </div>
+    <div class="cartao"><label for="nvMin">Tubo de esgoto</label><select id="nvMin"><option value="2">Até DN 75 (mínima de 2%)</option><option value="1">DN 100 ou maior (mínima de 1%)</option></select></div>
+    <button type="button" class="acao" id="nvAtivar">Ativar sensor</button>
+    <button type="button" class="acao acao--leve" id="nvZerar">Zerar em superfície nivelada</button>
+    <p class="nota">O sensor do celular é uma ajuda rápida e não é instrumento de medição. Capas, tubos curvos e apoio irregular alteram a leitura: confirme com nível de bolha antes de fechar a instalação.</p>
+  </section>
+
+  <section id="aba-diario" hidden>
+    <div class="grupos" data-troca="obra"></div>
+    <h2>Diário de obra</h2>
+    <p class="ajuda">Anotações e fotos ficam só neste aparelho. Gere o relatório para guardar uma cópia.</p>
+    <div class="cartao"><div class="campo"><label for="dObra">Obra</label><input id="dObra" type="text" autocomplete="off"></div><div class="campo"><label for="dEmpresa">Empresa ou responsável</label><input id="dEmpresa" type="text" autocomplete="off"></div></div>
+    <div class="cartao">
+      <div class="campo"><label for="dTexto">Nova anotação</label><textarea id="dTexto" rows="3"></textarea></div>
+      <img id="dPrevia" alt="Prévia da foto" hidden>
+      <label class="acao acao--leve acao--link" for="dFoto" style="margin:8px 0 0">Anexar foto</label><input id="dFoto" type="file" accept="image/*" hidden>
+      <button type="button" class="acao" id="dSalvar" style="margin:10px 0 0">Salvar no diário</button>
+    </div>
+    <div class="cartao" id="dLista"></div>
+    <button type="button" class="acao" id="dGerar">Gerar relatório em PDF</button>
+    <button type="button" class="acao" id="dShare" hidden>Compartilhar PDF</button>
+    <p class="nota">O relatório reúne a obra, os checklists iniciados, a lista de materiais e o diário. Registro de acompanhamento, sem valor de laudo.</p>
+  </section>
+
   <section id="aba-calc" hidden>
+    <div class="grupos" data-troca="calc"></div>
     <h2>Calculadoras de campo</h2>
     <p class="ajuda">Contas rápidas para conferência. Não substituem o projeto.</p>
     <div class="cartao"><label for="calc">Cálculo</label><select id="calc"></select><button type="button" class="acao acao--fav" id="fav" aria-pressed="false"></button></div>
@@ -296,6 +361,8 @@
     <button type="button" class="acao" id="fecharBoas">Entendi</button>
   </div>
 </div>
+<input id="fotoCk" type="file" accept="image/*" hidden>
+<script src="/bolso-pdf.js"></script>
 <div id="toast" role="status" aria-live="polite"></div>
 <nav aria-label="Ferramentas">
   <button type="button" data-aba="inicio" aria-current="page">Início</button>
@@ -522,7 +589,7 @@
     let n = 0;
     $('ckLead').textContent = c[2];
     window.ckTextos = ckItens(c);
-    $('ckGrupos').innerHTML = c[3].map(([t, itens]) => `<h3>${t}</h3><div class="cartao">${itens.map(i => `<label class="item"><input type="checkbox" data-n="${n++}"${feitos.includes(i) ? ' checked' : ''}><span>${i}</span></label>`).join('')}</div>`).join('');
+    $('ckGrupos').innerHTML = c[3].map(([t, itens]) => `<h3>${t}</h3><div class="cartao">${itens.map(i => `<label class="item"><input type="checkbox" data-n="${n}"${feitos.includes(i) ? ' checked' : ''}><span>${i}</span></label><button type="button" class="mini ck-foto" data-fotock="${n++}">Foto</button>`).join('')}</div>`).join('');
     ckConta();
   }
   $('ck').addEventListener('change', ckDesenha);
@@ -667,6 +734,124 @@
     $('bErro').addEventListener('input', fE); fE();
   }).catch(() => {});
 
+  // Nível digital: usa a inclinação frontal do aparelho, com média das últimas leituras
+  let nvOff = ler_('nivelOff', 0), nvAng = null, nvBuf = [], nvOuve = false;
+  function nvPinta() {
+    if (nvAng === null) return;
+    const pct = Math.tan((nvAng - nvOff) * Math.PI / 180) * 100, a = Math.abs(pct), min = +$('nvMin').value;
+    $('nvPct').textContent = num(a, 1).replace(/^(\d+)$/, '$1,0');
+    $('nvMm').textContent = `${num(a * 10, 0)} mm por metro · topo do celular mais ${pct >= 0 ? 'alto' : 'baixo'}`;
+    $('nvBolha').style.left = `calc(50% + ${Math.max(-46, Math.min(46, pct * 9))}%)`;
+    $('nvStatus').textContent = a < min ? `Abaixo da mínima de ${min}%` : a > 5 ? 'Acima de 5%: confira o projeto' : `Atende à mínima de ${min}%`;
+    $('nvStatus').style.color = a < min ? 'var(--laranja)' : 'var(--ciano)';
+  }
+  function nvLeitura(e) { if (e.beta === null || e.beta === undefined) return; nvBuf.push(e.beta); if (nvBuf.length > 12) nvBuf.shift(); nvAng = nvBuf.reduce((s, x) => s + x, 0) / nvBuf.length; nvPinta(); }
+  $('nvMin').addEventListener('change', nvPinta);
+  $('nvAtivar').addEventListener('click', async () => {
+    try {
+      if (typeof DeviceOrientationEvent === 'undefined') throw 0;
+      if (DeviceOrientationEvent.requestPermission && await DeviceOrientationEvent.requestPermission() !== 'granted') { avisar('Permissão do sensor negada.'); return; }
+      if (!nvOuve) { addEventListener('deviceorientation', nvLeitura); nvOuve = true; }
+      $('nvAtivar').hidden = true;
+      setTimeout(() => { if (nvAng === null) { $('nvMm').textContent = 'Este aparelho não enviou dados do sensor.'; $('nvAtivar').hidden = false; } }, 2500);
+    } catch (err) { $('nvMm').textContent = 'Sensor indisponível neste aparelho.'; }
+  });
+  $('nvZerar').addEventListener('click', () => { if (nvAng === null) return avisar('Ative o sensor antes de zerar.'); nvOff = nvAng; gravar('nivelOff', nvOff); nvPinta(); avisar('Nível zerado.'); });
+
+  // Diário de obra: fotos no IndexedDB, porque não cabem no armazenamento simples
+  const abrirDB = () => new Promise((ok, erro) => { const r = indexedDB.open('bolso', 1); r.onupgradeneeded = () => r.result.createObjectStore('diario', { keyPath: 'id' }); r.onsuccess = () => ok(r.result); r.onerror = () => erro(r.error); });
+  const dbFaz = async (modo, f) => { const db = await abrirDB(); return new Promise((ok, erro) => { const t = db.transaction('diario', modo), r = f(t.objectStore('diario')); t.oncomplete = () => ok(r.result); t.onerror = () => erro(t.error); }); };
+  const reduzir = arq => new Promise((ok, erro) => {
+    const u = URL.createObjectURL(arq), im = new Image();
+    im.onload = () => { const k = Math.min(1, 1280 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u); c.toBlob(async b => ok({ foto: await b.arrayBuffer(), w: c.width, h: c.height }), 'image/jpeg', .72); };
+    im.onerror = () => { URL.revokeObjectURL(u); erro(new Error('imagem')); };
+    im.src = u;
+  });
+  const dataBR = t => new Date(t).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  const urlsDiario = [];
+  async function pintarDiario() {
+    urlsDiario.splice(0).forEach(u => URL.revokeObjectURL(u));
+    let itens = [];
+    try { itens = await dbFaz('readonly', s => s.getAll()); } catch (e) { $('dLista').innerHTML = '<p class="vazio">O armazenamento de fotos não está disponível neste aparelho.</p>'; return; }
+    itens.sort((a, b) => b.id - a.id);
+    $('dLista').innerHTML = itens.length ? itens.map(x => { let img = ''; if (x.foto) { const u = URL.createObjectURL(new Blob([x.foto], { type: 'image/jpeg' })); urlsDiario.push(u); img = `<img src="${u}" alt="Foto do diário">`; } return `<div class="entrada"><small>${dataBR(x.id)}</small>${x.tag ? `<p><b>${esc(x.tag)}</b></p>` : ''}${x.texto ? `<p>${esc(x.texto)}</p>` : ''}${img}<button type="button" class="mini" data-apaga="${x.id}">Apagar</button></div>`; }).join('') : '<p class="vazio">Nenhuma anotação ainda.</p>';
+  }
+  const dGrava = async reg => { await dbFaz('readwrite', s => s.put({ id: Date.now(), ...reg })); await pintarDiario(); };
+  let fotoNova = null;
+  $('dObra').value = ler_('obra', ''); $('dEmpresa').value = ler_('empresa', '');
+  $('dObra').addEventListener('input', () => gravar('obra', $('dObra').value));
+  $('dEmpresa').addEventListener('input', () => gravar('empresa', $('dEmpresa').value));
+  $('dFoto').addEventListener('change', async () => {
+    const a = $('dFoto').files[0]; if (!a) return;
+    try { fotoNova = await reduzir(a); $('dPrevia').src = URL.createObjectURL(new Blob([fotoNova.foto], { type: 'image/jpeg' })); $('dPrevia').hidden = false; avisar('Foto anexada. Toque em Salvar no diário.'); } catch (e) { avisar('Não foi possível abrir essa foto.'); }
+    $('dFoto').value = '';
+  });
+  $('dSalvar').addEventListener('click', async () => {
+    const texto = $('dTexto').value.trim();
+    if (!texto && !fotoNova) return avisar('Escreva uma anotação ou anexe uma foto.');
+    try { await dGrava({ texto, ...(fotoNova || {}) }); $('dTexto').value = ''; fotoNova = null; $('dPrevia').hidden = true; avisar('Salvo no diário.'); } catch (e) { avisar('Não foi possível salvar. O aparelho pode estar sem espaço.'); }
+  });
+  $('dLista').addEventListener('click', async e => { const id = e.target.dataset.apaga; if (id && confirm('Apagar esta anotação?')) { await dbFaz('readwrite', s => s.delete(+id)); pintarDiario(); } });
+  let fotoItem = null;
+  $('ckGrupos').addEventListener('click', e => { if (e.target.dataset.fotock !== undefined) { fotoItem = window.ckTextos[+e.target.dataset.fotock]; $('fotoCk').click(); } });
+  $('fotoCk').addEventListener('change', async () => {
+    const a = $('fotoCk').files[0]; if (!a) return;
+    try { await dGrava({ tag: `${ckAtual()[1]}: ${fotoItem}`, texto: '', ...(await reduzir(a)) }); avisar('Foto salva no Diário.'); } catch (e) { avisar('Não foi possível salvar a foto.'); }
+    $('fotoCk').value = '';
+  });
+  let pdfPronto = null;
+  $('dGerar').addEventListener('click', async () => {
+    try {
+      const b = [{ h: 'Relatório de obra' }, { p: `Obra: ${$('dObra').value || 'não informada'}\nEmpresa ou responsável: ${$('dEmpresa').value || 'não informado'}\nEmitido em: ${dataBR(Date.now())}` }];
+      CHECKS.filter(c => (marcas[c[0]] || []).length).forEach(c => { const t = ckItens(c), f = marcas[c[0]]; b.push({ h: `Checklist: ${c[1]}` }, { p: `${t.filter(i => f.includes(i)).length} de ${t.length} itens conferidos` }, { p: t.map(i => `[${f.includes(i) ? 'X' : ' '}] ${i}`).join('\n') }); });
+      if (lista_.length) b.push({ h: 'Lista de materiais' }, { p: textoLista() });
+      const itens = (await dbFaz('readonly', s => s.getAll())).sort((x, y) => x.id - y.id);
+      if (itens.length) b.push({ h: 'Diário de obra' });
+      itens.forEach(x => { b.push({ p: [dataBR(x.id), x.tag, x.texto].filter(Boolean).join(' - ') }); if (x.foto) b.push({ img: new Uint8Array(x.foto), w: x.w, h_: x.h }); });
+      b.push({ h: 'Aviso' }, { p: 'Registro de acompanhamento. Não substitui projeto, laudo ou responsabilidade técnica de profissional habilitado.' });
+      pdfPronto = new File([BolsoPDF.gerar(b, 'Gerado no PipeSystem de Bolso')], 'relatorio-de-obra.pdf', { type: 'application/pdf' });
+      $('dShare').hidden = false;
+      avisar('Relatório pronto. Toque em Compartilhar PDF.');
+    } catch (e) { avisar('Não foi possível gerar o relatório.'); }
+  });
+  $('dShare').addEventListener('click', () => {
+    if (!pdfPronto) return;
+    if (navigator.canShare && navigator.canShare({ files: [pdfPronto] })) { navigator.share({ files: [pdfPronto] }).catch(() => {}); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(pdfPronto); a.download = pdfPronto.name; a.click();
+  });
+  pintarDiario();
+
+  // Início: ícones, busca única e notícias
+  const IC = { casa: 'M3 11l9-8 9 8M5 10v10h14V10', conv: 'M4 8h13l-3-3M20 16H7l3 3', tubo: 'M3 8h18v8H3zM8 8v8M16 8v8', tab: 'M4 5h16v14H4zM4 10h16M10 5v14', calc: 'M6 3h12v18H6zM9 7h6M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01', obra: 'M8 4h8v3H8zM6 5H5v16h14V5h-1M9 13l2 2 4-4', lupa: 'M11 18a7 7 0 100-14 7 7 0 000 14zM21 21l-5-5', nivel: 'M3 9h18v6H3zM9 9v6M15 9v6M12 12h.01', foto: 'M4 8h4l2-3h4l2 3h4v11H4zM12 16a3 3 0 100-6 3 3 0 000 6z', lista: 'M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01', livro: 'M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3zM5 17a3 3 0 013-3h11', norma: 'M7 3h8l4 4v14H7zM15 3v4h4M10 12h6M10 16h6', mat: 'M12 3v6M8 3h8M4 9v8l8-4 8 4V9l-8 4z', preco: 'M12 3v18M16 7h-6a3 3 0 000 6h4a3 3 0 010 6H8', erro: 'M12 4l9 16H3zM12 10v4M12 17h.01', regua: 'M3 17L17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2' };
+  const ic = n => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
+  const NAV_IC = { inicio: 'casa', conversor: 'conv', tubos: 'tubo', calc: 'calc', obra: 'obra', termos: 'lupa' };
+  document.querySelectorAll('nav button').forEach(b => { b.innerHTML = `${ic(NAV_IC[b.dataset.aba])}<span>${b.textContent}</span>`; });
+  const TILES = [['conversor', 'Conversor', 'conv'], ['tubos', 'Tubos', 'tubo'], ['tabelas', 'Tabelas', 'tab'], ['calc', 'Cálculos', 'calc'], ['*dim', 'Dimensionar', 'regua'], ['nivel', 'Nível digital', 'nivel'], ['obra', 'Checklists', 'obra'], ['diario', 'Diário de obra', 'foto'], ['lista', 'Lista', 'lista'], ['termos', 'Glossário', 'livro'], ['normas', 'Normas', 'norma'], ['materiais', 'Materiais', 'mat'], ['precos', 'Preços', 'preco'], ['erros', 'Erros e soluções', 'erro']];
+  $('tiles').innerHTML = TILES.map(([a, t, i]) => `<button type="button" class="tile" data-tile="${a}">${ic(i)}<span>${t}</span></button>`).join('');
+  $('tiles').addEventListener('click', e => { const b = e.target.closest('[data-tile]'); if (!b) return; if (b.dataset.tile === '*dim') abrirCalc('Dimensionamento resumido'); else abrir(b.dataset.tile); });
+  let INDICE = [];
+  const irPara = (aba, campo, termo) => { $(campo).value = termo; $(campo).dispatchEvent(new Event('input', { bubbles: true })); abrir(aba); };
+  fetch('/bolso-dados.json').then(r => r.json()).then(d => {
+    $('iniNews').innerHTML = d.ntc.map(n => `<a class="news" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.titulo)}</b><small>${n.data.split('-').reverse().join('/')} · ${esc(n.fonte)}</small></a>`).join('') || '<p class="vazio">Sem notícias.</p>';
+    INDICE = [
+      ...CALCS.map(c => ({ g: 'Cálculos', t: c.t, ir: () => abrirCalc(c.t) })),
+      ...d.c.map(c => ({ g: 'Checklists', t: c[1], ir: () => { $('ck').value = c[0]; ckDesenha(); abrir('obra'); } })),
+      ...d.g.map(x => ({ g: 'Glossário', t: x.t, b: x.en + ' ' + x.def, ir: () => irPara('termos', 'bTermo', x.t) })),
+      ...d.n.map(x => ({ g: 'Normas', t: `${x.code}: ${x.title}`, ir: () => irPara('normas', 'bNorma', x.code) })),
+      ...d.m.map(x => ({ g: 'Materiais', t: x.n, b: x.c, ir: () => irPara('materiais', 'bMat', x.n) })),
+      ...d.p.map(x => ({ g: 'Erros e soluções', t: x.t, ir: () => irPara('erros', 'bErro', x.t) })),
+      ...Object.entries(d.s.ins).map(([c, x]) => ({ g: 'Preços', t: x[0], ir: () => irPara('precos', 'bPreco', x[0]) })),
+    ].map(x => ({ ...x, s: sem(x.t + ' ' + (x.b || '')) }));
+  }).catch(() => { $('iniNews').innerHTML = '<p class="vazio">Abra uma vez com internet para ver as notícias.</p>'; });
+  $('bTudo').addEventListener('input', () => {
+    const q = $('bTudo').value.trim(), el = $('resTudo');
+    el.hidden = !q;
+    if (!q) return;
+    const achou = INDICE.filter(x => casa(x.s, q)), grupos = [...new Set(achou.map(x => x.g))];
+    el.innerHTML = achou.length ? grupos.map(g => `<p class="res-g">${g}</p>` + achou.filter(x => x.g === g).slice(0, 5).map(x => `<button type="button" class="atalho" data-res="${INDICE.indexOf(x)}"><b>${esc(x.t)}</b></button>`).join('')).join('') : '<p class="vazio">Nada encontrado.</p>';
+  });
+  $('resTudo').addEventListener('click', e => { const b = e.target.closest('[data-res]'); if (b) INDICE[+b.dataset.res].ir(); });
+
   // Ajustes de leitura
   const raiz = document.documentElement;
   const ajuste = (id, chave, dado) => {
@@ -685,8 +870,8 @@
   if (!ler_('boasvindas', false)) abrirBoas();
 
   // Abas e abas internas
-  const TROCAS = { consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços'], ['erros', 'Erros e soluções']], obra: [['obra', 'Checklists'], ['lista', 'Lista']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']] };
-  const NAV_DE = { normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', tabelas: 'tubos' };
+  const TROCAS = { consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços'], ['erros', 'Erros e soluções']], obra: [['obra', 'Checklists'], ['lista', 'Lista'], ['diario', 'Diário']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']], calc: [['calc', 'Cálculos'], ['nivel', 'Nível digital']] };
+  const NAV_DE = { normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', diario: 'obra', tabelas: 'tubos', nivel: 'calc' };
   document.querySelectorAll('[data-troca]').forEach(el => { const dono = el.closest('section').id.slice(4); el.innerHTML = TROCAS[el.dataset.troca].map(([a, t]) => `<button type="button" data-ir="${a}" aria-pressed="${a === dono}">${t}</button>`).join(''); });
   pintarLista();
   function abrir(a) {
@@ -696,7 +881,7 @@
     if (a === 'inicio') pintarInicio();
     window.scrollTo(0, 0);
   }
-  document.querySelector('nav').addEventListener('click', e => { if (e.target.dataset.aba) abrir(e.target.dataset.aba); });
+  document.querySelector('nav').addEventListener('click', e => { const b = e.target.closest('[data-aba]'); if (b) abrir(b.dataset.aba); });
   document.querySelector('main').addEventListener('click', e => { if (e.target.dataset.ir) abrir(e.target.dataset.ir); });
   pintarInicio();
 
