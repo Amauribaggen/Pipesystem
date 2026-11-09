@@ -8,6 +8,7 @@ import { BASE, SIZES, loadData, generate, sitemap, ultimasNoticiasHTML } from '.
 import { imageSizes, minify } from './optimize.mjs';
 import { separar } from './secoes.mjs';
 import { gerarRevisoes } from './revisoes.mjs';
+import vm from 'node:vm';
 import { GLOSSARIO_EXTRA } from './glossario-extra.mjs';
 import { datasPaginas } from './datas.mjs';
 import { avisarIndexNow } from './indexnow.mjs';
@@ -43,9 +44,13 @@ Object.assign(SIZES, imageSizes(src));
 writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SIZES) + ';\n');
 // PipeSystem de Bolso: glossário e normas num arquivo só, guardado no aparelho para uso sem internet
 {
+  // Checklists: só o trecho de dados do guias.js, que no resto mexe na página
+  const guias = readFileSync(join(src, 'guias.js'), 'utf8'), ini = guias.indexOf('const CHECK_ENTREGA'), fim = guias.indexOf('(() => {', guias.indexOf('const CHECKS'));
+  const CHECKS = vm.runInNewContext(guias.slice(ini, fim) + ';CHECKS');
   const vistas = new Set();
   writeFileSync(join(out, 'bolso-dados.json'), JSON.stringify({
     g: D.GLOSSARIO.map(x => ({ id: x.id, t: x.t, en: x.en, tema: x.tema, def: x.def, exp: x.exp, f: x.f, norma: x.norma, x: GLOSSARIO_EXTRA[x.id] })),
+    c: CHECKS,
     n: D.NORM_GROUPS.flatMap(g => g.normas).filter(n => !vistas.has(n.code) && vistas.add(n.code)).map(n => ({ code: n.code, org: n.org, title: n.title, note: n.note })),
   }));
 }
