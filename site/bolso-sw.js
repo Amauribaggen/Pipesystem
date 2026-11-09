@@ -1,7 +1,7 @@
 // PipeSystem de Bolso: guarda a página no aparelho para funcionar sem internet.
 // Com internet, busca a versão nova e atualiza a cópia; sem internet, usa a cópia.
-const CACHE = 'bolso-v1';
-const ARQUIVOS = ['/bolso', '/bolso.webmanifest', '/img/icons/icon-192.png', '/img/icons/favicon-32.png'];
+const CACHE = 'bolso-v2';
+const ARQUIVOS = ['/bolso', '/bolso.webmanifest', '/bolso-dados.json', '/img/icons/icon-192.png', '/img/icons/favicon-32.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARQUIVOS)).then(() => self.skipWaiting()));
