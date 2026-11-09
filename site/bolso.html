@@ -57,6 +57,10 @@
   .item:first-of-type { border-top: 0; }
   .item input { flex: none; width: 24px; height: 24px; min-height: 0; margin: 0; accent-color: #f2a03d; }
   .item:has(input:checked) span { color: var(--suave); text-decoration: line-through; }
+  button, a, summary, input, select { touch-action: manipulation; }
+  #toast { position: fixed; left: 16px; right: 16px; bottom: calc(74px + env(safe-area-inset-bottom)); z-index: 9; padding: 12px 14px; border-radius: 12px; background: var(--laranja); color: #0a2240; font-size: .95rem; font-weight: 700; text-align: center; box-shadow: 0 8px 24px rgba(0, 0, 0, .45); opacity: 0; pointer-events: none; transition: opacity .15s; }
+  #toast.ver { opacity: 1; }
+  .mini.feito { border-color: var(--laranja); background: var(--laranja); color: #0a2240; }
   .acao--link { display: flex; align-items: center; justify-content: center; text-decoration: none; }
   .mini { min-height: 38px; margin-top: 8px; padding: 0 14px; border: 1px solid var(--ciano); border-radius: 9px; background: none; color: var(--ciano); font: inherit; font-size: .86rem; font-weight: 600; cursor: pointer; }
   .preco { display: flex; justify-content: space-between; gap: 10px; margin-top: 6px; }
@@ -227,6 +231,7 @@
   </section>
 </main>
 
+<div id="toast" role="status" aria-live="polite"></div>
 <nav aria-label="Ferramentas">
   <button type="button" data-aba="inicio" aria-current="page">Início</button>
   <button type="button" data-aba="conversor">Conversor</button>
@@ -485,7 +490,10 @@
   // Lista de materiais: guardada no aparelho; itens do SINAPI levam o código para somar o valor de referência
   let lista_ = ler_('lista', []), SIN = null;
   const salvarLista = () => { gravar('lista', lista_); pintarLista(); };
-  const aviso = t => { $('listaAviso').textContent = t; };
+  let esperaToast;
+  const avisar = t => { $('toast').textContent = t; $('toast').classList.add('ver'); clearTimeout(esperaToast); esperaToast = setTimeout(() => $('toast').classList.remove('ver'), 2600); };
+  const aviso = t => { $('listaAviso').textContent = t; if (t) avisar(t); };
+  const marcarFeito = b => { b.textContent = '✓ Na lista'; b.classList.add('feito'); };
   const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const ufIdx = () => SIN ? SIN.ufs.indexOf($('uf').value) : -1;
   const precoDe = c => { const x = SIN && SIN.ins[c]; return x ? x[2 + ufIdx()] : null; };
@@ -499,18 +507,24 @@
     }).join('');
     $('itens').innerHTML = tem ? html + (com ? `<p class="total"><span>Referência SINAPI ${esc($('uf').value)} (${com} de ${tem} itens, sem BDI)</span><b>${brl(total)}</b></p>` : '') : '<p class="vazio">Lista vazia.</p>';
     ['enviarCot', 'shareLista', 'limparLista'].forEach(id => { $(id).hidden = !tem; });
+    document.querySelectorAll('[data-ir="lista"]').forEach(b => { b.textContent = tem ? `Lista (${tem})` : 'Lista'; });
   }
   const adicionar = (n, q, u, c) => {
     const j = lista_.find(x => x.n === n);
     if (j) j.q = String(ler(j.q) + ler(q)).replace('.', ','); else lista_.push({ n, q: String(q).replace('.', ','), u, c });
     salvarLista();
+    avisar(`Adicionado. A lista tem ${lista_.length} ${lista_.length > 1 ? 'itens' : 'item'}: veja em Obra > Lista`);
   };
   const textoLista = () => lista_.map(it => `- ${it.q} ${it.u} de ${it.n}`).join('\n');
   $('addItem').addEventListener('click', () => {
     const n = $('novoItem').value.trim();
-    if (!n || isNaN(ler($('novoQtd').value))) return aviso('Informe o item e a quantidade.');
-    adicionar(n, $('novoQtd').value, $('novoUn').value); $('novoItem').value = ''; $('novoQtd').value = '1'; aviso('');
+    if (!n) { aviso('Digite o nome do item antes de adicionar.'); $('novoItem').focus(); return; }
+    if (isNaN(ler($('novoQtd').value))) { aviso('Informe a quantidade.'); return; }
+    $('listaAviso').textContent = '';
+    adicionar(n, $('novoQtd').value, $('novoUn').value); $('novoItem').value = ''; $('novoQtd').value = '1';
+    $('novoItem').blur();
   });
+  $('novoItem').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('addItem').click(); } });
   $('itens').addEventListener('input', e => { if (e.target.dataset.q !== undefined) { lista_[+e.target.dataset.q].q = e.target.value; gravar('lista', lista_); } });
   $('itens').addEventListener('change', () => pintarLista());
   $('itens').addEventListener('click', e => { if (e.target.dataset.rem !== undefined) { lista_.splice(+e.target.dataset.rem, 1); salvarLista(); } });
@@ -540,8 +554,8 @@
     };
     $('bMat').addEventListener('input', fM); $('bPreco').addEventListener('input', fP);
     $('uf').addEventListener('change', () => { gravar('uf', $('uf').value); fP(); pintarLista(); });
-    $('listaMat').addEventListener('click', e => { if (e.target.dataset.mat) { adicionar(e.target.dataset.mat, 1, 'un'); e.target.textContent = 'Adicionado'; } });
-    $('listaPreco').addEventListener('click', e => { const c = e.target.dataset.ins; if (c) { adicionar(SIN.ins[c][0], 1, SIN.ins[c][1], c); e.target.textContent = 'Adicionado'; } });
+    $('listaMat').addEventListener('click', e => { const b = e.target.closest('[data-mat]'); if (b) { adicionar(b.dataset.mat, 1, 'un'); marcarFeito(b); } });
+    $('listaPreco').addEventListener('click', e => { const b = e.target.closest('[data-ins]'); if (b) { const x = SIN.ins[b.dataset.ins]; adicionar(x[0], 1, x[1], b.dataset.ins); marcarFeito(b); } });
     fM(); fP(); pintarLista();
   }).catch(() => {});
   pintarLista();
@@ -550,6 +564,7 @@
   const TROCAS = { consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços']], obra: [['obra', 'Checklists'], ['lista', 'Lista']] };
   const NAV_DE = { normas: 'termos', materiais: 'termos', precos: 'termos', lista: 'obra' };
   document.querySelectorAll('[data-troca]').forEach(el => { const dono = el.closest('section').id.slice(4); el.innerHTML = TROCAS[el.dataset.troca].map(([a, t]) => `<button type="button" data-ir="${a}" aria-pressed="${a === dono}">${t}</button>`).join(''); });
+  pintarLista();
   function abrir(a) {
     document.querySelectorAll('main section').forEach(s => { s.hidden = s.id !== 'aba-' + a; });
     const alvo = NAV_DE[a] || a;
