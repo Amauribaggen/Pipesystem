@@ -602,7 +602,9 @@
   const lista = (el, itens, html) => { el.innerHTML = itens.length ? itens.slice(0, limite).map(html).join('') + (itens.length > limite ? `<p class="nota">Mostrando ${limite} de ${itens.length}. Refine a busca.</p>` : '') : '<p class="nota">Nada encontrado.</p>'; };
   const htmlTermo = x => `<details><summary>${x.t}<small>${x.tema}</small></summary><p>${x.def}</p>${x.exp ? `<p>${x.exp}</p>` : ''}${x.f ? `<p class="formula">${x.f[0]}<small>${x.f[1]}</small></p>` : ''}${x.x ? extra(x.x) : ''}${x.norma ? `<p>Norma: ${x.norma}</p>` : ''}<p><a href="/glossario/${x.id}">Ver no portal</a></p></details>`;
   const extra = e => (e.pratica ? `<h4>Na prática</h4><p>${e.pratica}</p>` : '') + (e.valores ? `<h4>Valores de referência</h4><ul>${e.valores.map(([a, b]) => `<li>${a}: <b>${b}</b></li>`).join('')}</ul>` : '') + (e.exemplo ? `<h4>Exemplo</h4><p>${e.exemplo}</p>` : '') + (e.erros ? `<h4>Erros comuns</h4><ul>${e.erros.map(t => `<li>${t}</li>`).join('')}</ul>` : '');
-  const htmlNorma = n => `<details><summary>${n.code}<small>${n.title}</small></summary><p>${n.note || 'Sem resumo cadastrado.'}</p><p><small>${n.org}</small></p></details>`;
+  const SITE_ORG = { ABNT: 'https://www.abnt.org.br/' };   // o nome da entidade leva ao site dela; o botão, à norma
+  const linkDim = t => t.replace(/Dimensionamento Inteligente/g, '<a href="/dimensionamento">Dimensionamento Inteligente</a>');
+  const htmlNorma = n => `<details><summary>${n.code}<small>${n.title}</small></summary><p>${linkDim(n.note || 'Sem resumo cadastrado.')}</p><p><a href="${SITE_ORG[n.org] || n.home}" target="_blank" rel="noopener">${n.org}</a></p><a class="mini acao--link" style="display:inline-flex" href="${n.url}" target="_blank" rel="noopener">${n.acao}</a></details>`;
   DADOS.then(d => {
     d.g.forEach(x => { x.b = sem(x.t + ' ' + x.en + ' ' + x.tema + ' ' + x.def); });
     d.n.forEach(x => { x.b = sem(x.code + ' ' + x.title + ' ' + (x.note || '')); });
