@@ -48,6 +48,18 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
   const guias = readFileSync(join(src, 'guias.js'), 'utf8'), ini = guias.indexOf('const CHECK_ENTREGA'), fim = guias.indexOf('(() => {', guias.indexOf('const CHECKS'));
   const CHECKS = vm.runInNewContext(guias.slice(ini, fim) + ';CHECKS');
   const LN = vm.runInNewContext(readFileSync(join(src, 'normas.js'), 'utf8') + ';({ normUrl, NORM_SOURCES })', { URL, console });
+  // Revistas e artigos vêm do script.js; entidades e feiras, do HTML da página inicial
+  const scr = readFileSync(join(src, 'script.js'), 'utf8'), html = readFileSync(join(src, 'index.html'), 'utf8');
+  const lista = n => vm.runInNewContext(scr.slice(scr.indexOf('const ' + n + ' ='), scr.indexOf('\n];', scr.indexOf('const ' + n + ' =')) + 3) + ';' + n);
+  const txt = t => String(t).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+  const ini_ = html.indexOf('id="associacoes"'), trecho = html.slice(ini_, html.indexOf('</section>', ini_));
+  const ents = trecho.split('<h4 class="ulinks__grupo"').slice(1).flatMap(c => {
+    const grupo = txt(c.slice(c.indexOf('>') + 1, c.indexOf('</h4>')));
+    return [...c.matchAll(/<li id="ent-[^"]+"><a href="([^"]+)"[^>]*>.*?<b[^>]*>(.*?)<\/b><span>(.*?)<\/span>/gs)].map(m => ({ grupo, u: m[1], n: txt(m[2]), d: txt(m[3]) }));
+  });
+  const feiras = [...html.matchAll(/<article class="fair">(.*?)<\/article>/gs)].map(([, a]) => ({ seg: txt((a.match(/fair__seg[^>]*>(.*?)</s) || [])[1] || ''), n: txt((a.match(/fair__name">(.*?)<time/s) || [])[1] || ''), dt: (a.match(/datetime="([^"]+)"/) || [])[1] || '', q: txt((a.match(/<time[^>]*>(.*?)<\/time>/s) || [])[1] || ''), d: txt((a.match(/<p>(.*?)<\/p>/s) || [])[1] || ''), l: txt((a.match(/fair__loc">(.*?)<\/p>/s) || [])[1] || ''), u: (a.match(/fair__link" href="([^"]+)"/) || [])[1] || '' }));
+  const fabs = new Map();
+  Object.entries(D.MANUFACTURERS).forEach(([id, l]) => { const nome = (D.CATALOG.find(m => m.id === id) || {}).name; l.forEach(f => { const k = f[0].split(' (')[0], x = fabs.get(k) || { n: k, u: f[1], o: f[2], m: [] }; if (nome && x.m.length < 6) x.m.push(nome); fabs.set(k, x); }); });
   const vistas = new Set();
   writeFileSync(join(out, 'bolso-dados.json'), JSON.stringify({
     g: D.GLOSSARIO.map(x => ({ id: x.id, t: x.t, en: x.en, tema: x.tema, def: x.def, exp: x.exp, f: x.f, norma: x.norma, x: GLOSSARIO_EXTRA[x.id] })),
@@ -58,6 +70,9 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
     nt: JSON.parse(readFileSync(join(src, 'noticias.json'), 'utf8')).itens.slice().sort((x, y) => y.data.localeCompare(x.data)),
     cu: JSON.parse(readFileSync(join(src, 'cursos.json'), 'utf8')).itens,
     va: (V => V.itens.map(x => ({ ...x, fim: x.ate || new Date(Date.parse(x.publicada) + (V.validadePadrao || 30) * 864e5).toISOString().slice(0, 10) })))(JSON.parse(readFileSync(join(src, 'vagas.json'), 'utf8'))),
+    rv: lista('MAGAZINES'), ar: lista('ARTICLES'), en: ents, fe: feiras, fb: [...fabs.values()].sort((a, b) => a.n.localeCompare(b.n, 'pt-BR')),
+    bim: D.BIM_LIBS.map(({ nome, orig, cat, desc, fmts, acesso, links }) => ({ nome, orig, cat, desc, fmts, acesso, links })),
+    wt: D.WEB_TOOLS, si: D.SYSTEMS.map(({ id, name, desc, componentes, cuidados, normas }) => ({ id, name, desc, componentes, cuidados, normas })),
     c: CHECKS,
     p: vm.runInNewContext(guias.slice(guias.indexOf('const PATS'), guias.indexOf('];', guias.indexOf('const PATS')) + 2) + ';PATS').map(({ tema, sev, t, sint, causa, sol }) => ({ tema, sev, t, sint, causa, sol })),
     t: D.CATALOG.flatMap(m => (m.tabelas || []).map(x => ({ titulo: x.titulo, colunas: x.colunas, linhas: x.linhas, ficha: m.name }))),

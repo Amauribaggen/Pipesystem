@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PipeSystem Pro (protótipo)</title>
+<title>PipeSystem Pro</title>
 <meta name="description" content="Conversor de unidades e tabela de tubos para usar na obra, inclusive sem internet.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#061527">
@@ -128,8 +128,8 @@
   .ck-foto { margin: -4px 0 8px 36px; }
   .pro { color: var(--laranja); }
   .tiles h3 { grid-column: 1 / -1; margin: 6px 0 -2px; }
-  .grupos[data-troca="consulta"] { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
-  .grupos[data-troca="consulta"] button { flex: 0 0 auto; padding: 0 14px; }
+  .grupos[data-troca="consulta"], .grupos[data-troca="setor"] { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+  .grupos[data-troca="consulta"] button, .grupos[data-troca="setor"] button { flex: 0 0 auto; padding: 0 14px; }
   .fig { margin: 8px 0; border-radius: 10px; overflow: hidden; background: #fff; }
   .fig { padding: 8px; }
   .fig svg { display: block; width: 100%; height: auto; }
@@ -174,9 +174,7 @@
 <body>
 <header>
   <img src="/img/icons/icon-192.png" alt="" width="30" height="30">
-  <h1>PipeSystem <span class="pro">Pro</span></h1>
-  <span class="selo">Protótipo</span>
-</header>
+  <h1>PipeSystem <span class="pro">Pro</span></h1></header>
 <div id="estado" role="status">Sem internet: as ferramentas continuam funcionando.</div>
 
 <main>
@@ -914,8 +912,8 @@
   const ic = n => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
   const NAV_IC = { inicio: 'casa', conversor: 'conv', tubos: 'tubo', calc: 'calc', obra: 'obra', termos: 'lupa' };
   document.querySelectorAll('nav button').forEach(b => { b.innerHTML = `${ic(NAV_IC[b.dataset.aba])}<span>${b.textContent}</span>`; });
-  Object.assign(IC, { det: 'M4 4h16v16H4zM4 15h6v5M10 15l5-5M15 10h5M15 10V4', guia: 'M4 5l4 3-4 3zM11 8h9M4 15l4 3-4 3zM11 18h9', video: 'M3 6h18v12H3zM10 9l5 3-5 3z', comp: 'M12 3v18M4 7h16M7 7l-3 7a3 3 0 006 0zM17 7l-3 7a3 3 0 006 0z', news: 'M4 5h13v14H6a2 2 0 01-2-2zM17 9h3v8a2 2 0 01-2 2M8 9h5M8 13h5', curso: 'M3 9l9-5 9 5-9 5zM7 12v5c3 2 7 2 10 0v-5', vaga: 'M4 8h16v11H4zM9 8V5h6v3M4 13h16' });
-  const TILES = [['Ferramentas', [['conversor', 'Conversor', 'conv'], ['tubos', 'Tubos', 'tubo'], ['tabelas', 'Tabelas', 'tab'], ['calc', 'Cálculos', 'calc'], ['*dim', 'Dimensionar', 'regua'], ['nivel', 'Nível digital', 'nivel']]], ['Na obra', [['obra', 'Checklists', 'obra'], ['diario', 'Diário de obra', 'foto'], ['lista', 'Lista', 'lista'], ['detalhes', 'Detalhes típicos', 'det'], ['guias', 'Guias', 'guia'], ['videos', 'Vídeos', 'video']]], ['Consulta', [['termos', 'Glossário', 'livro'], ['normas', 'Normas', 'norma'], ['materiais', 'Materiais', 'mat'], ['precos', 'Preços', 'preco'], ['erros', 'Erros e soluções', 'erro'], ['comparativos', 'Comparativos', 'comp']]], ['Setor', [['noticias', 'Notícias', 'news'], ['cursos', 'Cursos e eventos', 'curso'], ['vagas', 'Vagas', 'vaga']]]];
+  Object.assign(IC, { det: 'M4 4h16v16H4zM4 15h6v5M10 15l5-5M15 10h5M15 10V4', guia: 'M4 5l4 3-4 3zM11 8h9M4 15l4 3-4 3zM11 18h9', video: 'M3 6h18v12H3zM10 9l5 3-5 3z', comp: 'M12 3v18M4 7h16M7 7l-3 7a3 3 0 006 0zM17 7l-3 7a3 3 0 006 0z', news: 'M4 5h13v14H6a2 2 0 01-2-2zM17 9h3v8a2 2 0 01-2 2M8 9h5M8 13h5', curso: 'M3 9l9-5 9 5-9 5zM7 12v5c3 2 7 2 10 0v-5', vaga: 'M4 8h16v11H4zM9 8V5h6v3M4 13h16', rev: 'M6 3h12v18H6zM9 7h6M9 11h6M9 15h4', art: 'M5 3h10l4 4v14H5zM8 12h8M8 16h8M8 8h3', ent: 'M3 21h18M5 21V10l7-5 7 5v11M10 21v-6h4v6', bim: 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5', ferr: 'M15 5a4 4 0 00-5 5l-6 6 3 3 6-6a4 4 0 005-5l-3 3-3-3z', fab: 'M3 21V10l6 4v-4l6 4V5h6v16z', feira: 'M4 6h16v15H4zM4 10h16M8 3v5M16 3v5', sist: 'M6 3v8a3 3 0 003 3h6a3 3 0 013 3v4M3 3h6M15 21h6' });
+  const TILES = [['Ferramentas', [['conversor', 'Conversor', 'conv'], ['tubos', 'Tubos', 'tubo'], ['tabelas', 'Tabelas', 'tab'], ['calc', 'Cálculos', 'calc'], ['*dim', 'Dimensionar', 'regua'], ['nivel', 'Nível digital', 'nivel']]], ['Na obra', [['obra', 'Checklists', 'obra'], ['diario', 'Diário de obra', 'foto'], ['lista', 'Lista', 'lista'], ['detalhes', 'Detalhes típicos', 'det'], ['guias', 'Guias', 'guia'], ['videos', 'Vídeos', 'video']]], ['Consulta', [['termos', 'Glossário', 'livro'], ['normas', 'Normas', 'norma'], ['materiais', 'Materiais', 'mat'], ['precos', 'Preços', 'preco'], ['erros', 'Erros e soluções', 'erro'], ['comparativos', 'Comparativos', 'comp'], ['sistemas', 'Sistemas', 'sist'], ['bim', 'BIM e CAD', 'bim'], ['ferramentas', 'Ferramentas on-line', 'ferr']]], ['Setor', [['noticias', 'Notícias', 'news'], ['cursos', 'Cursos e eventos', 'curso'], ['vagas', 'Vagas', 'vaga'], ['feiras', 'Feiras', 'feira'], ['revistas', 'Revistas', 'rev'], ['artigos', 'Artigos técnicos', 'art'], ['entidades', 'Entidades', 'ent'], ['fabricantes', 'Fabricantes', 'fab']]]];
   $('tiles').innerHTML = TILES.map(([g, l]) => `<h3>${g}</h3>` + l.map(([a, t, i]) => `<button type="button" class="tile" data-tile="${a}">${ic(i)}<span>${t}</span></button>`).join('')).join('');
   $('tiles').addEventListener('click', e => { const b = e.target.closest('[data-tile]'); if (!b) return; if (b.dataset.tile === '*dim') abrirCalc('Dimensionamento resumido'); else abrir(b.dataset.tile); });
   let INDICE = [];
@@ -935,6 +933,14 @@
       ...d.v.map(x => ({ g: 'Vídeos', t: x.t, b: x.canal, ir: () => irPara('videos', 'b_videos', x.t) })),
       ...d.cm.map(x => ({ g: 'Comparativos', t: x.titulo, b: x.tema, ir: () => irPara('comparativos', 'b_comparativos', x.titulo) })),
       ...d.nt.map(x => ({ g: 'Notícias', t: x.titulo, b: x.fonte, ir: () => irPara('noticias', 'b_noticias', x.titulo) })),
+      ...d.si.map(x => ({ g: 'Sistemas', t: x.name, ir: () => irPara('sistemas', 'b_sistemas', x.name) })),
+      ...d.bim.map(x => ({ g: 'BIM e CAD', t: x.nome, b: x.desc, ir: () => irPara('bim', 'b_bim', x.nome) })),
+      ...d.wt.map(x => ({ g: 'Ferramentas on-line', t: x.name, b: x.cat, ir: () => irPara('ferramentas', 'b_ferramentas', x.name) })),
+      ...d.en.map(x => ({ g: 'Entidades', t: x.n, b: x.d, ir: () => irPara('entidades', 'b_entidades', x.n) })),
+      ...d.rv.map(x => ({ g: 'Revistas', t: x.nome, b: x.resumo, ir: () => irPara('revistas', 'b_revistas', x.nome) })),
+      ...d.ar.map(x => ({ g: 'Artigos', t: x.title, b: x.tema, ir: () => irPara('artigos', 'b_artigos', x.title) })),
+      ...d.fb.map(x => ({ g: 'Fabricantes', t: x.n, ir: () => irPara('fabricantes', 'b_fabricantes', x.n) })),
+      ...d.fe.map(x => ({ g: 'Feiras', t: x.n, b: x.seg, ir: () => irPara('feiras', 'b_feiras', x.n) })),
     ].map(x => ({ ...x, s: sem(x.t + ' ' + (x.b || '')) }));
   }).catch(() => { $('iniNews').innerHTML = '<p class="vazio">Abra uma vez com internet para ver as notícias.</p>'; });
   $('bTudo').addEventListener('input', () => {
@@ -964,7 +970,7 @@
   if (!ler_('boasvindas', false)) abrirBoas();
 
   // Conteúdo do portal: seções de lista com busca, todas no mesmo molde
-  const SECOES = [['comparativos', 'consulta', 'Comparativos de materiais', 'Ex.: água quente'], ['detalhes', 'consulta', 'Detalhes típicos', 'Ex.: caixa de gordura'], ['guias', 'consulta', 'Guias passo a passo', 'Ex.: estanqueidade'], ['videos', 'consulta', 'Vídeos de fabricantes', 'Ex.: PVC'], ['noticias', 'setor', 'Notícias do setor', 'Ex.: saneamento'], ['cursos', 'setor', 'Cursos e eventos', 'Ex.: Florianópolis'], ['vagas', 'setor', 'Vagas do setor', 'Ex.: encanador']];
+  const SECOES = [['comparativos', 'consulta', 'Comparativos de materiais', 'Ex.: água quente'], ['detalhes', 'consulta', 'Detalhes típicos', 'Ex.: caixa de gordura'], ['guias', 'consulta', 'Guias passo a passo', 'Ex.: estanqueidade'], ['videos', 'consulta', 'Vídeos de fabricantes', 'Ex.: PVC'], ['noticias', 'setor', 'Notícias do setor', 'Ex.: saneamento'], ['cursos', 'setor', 'Cursos e eventos', 'Ex.: Florianópolis'], ['vagas', 'setor', 'Vagas do setor', 'Ex.: encanador'], ['sistemas', 'consulta', 'Sistemas de aplicação', 'Ex.: piscinas'], ['bim', 'consulta', 'Bibliotecas BIM e CAD', 'Ex.: Tigre, Revit'], ['ferramentas', 'consulta', 'Ferramentas on-line grátis', 'Ex.: aquecedor'], ['feiras', 'setor', 'Feiras do setor', 'Ex.: FENASAN'], ['revistas', 'setor', 'Revistas especializadas', 'Ex.: saneamento'], ['artigos', 'setor', 'Artigos técnicos', 'Ex.: perda de carga'], ['entidades', 'setor', 'Associações e entidades', 'Ex.: ABNT'], ['fabricantes', 'setor', 'Fabricantes', 'Ex.: Tigre']];
   document.querySelector('main').insertAdjacentHTML('beforeend', SECOES.map(([id, tr, t, ph]) => `<section id="aba-${id}" hidden><div class="grupos" data-troca="${tr}"></div><h2>${t}</h2><p class="ajuda" id="i_${id}">Carregando…</p><div class="cartao"><label for="b_${id}">Buscar</label><input id="b_${id}" type="search" autocomplete="off" placeholder="${ph}"></div><div class="cartao" id="l_${id}"></div></section>`).join(''));
   const brData = s => s.split('-').reverse().join('/');
   const tira = s => String(s).replace(/\{[^}]+\}/g, '');
@@ -997,12 +1003,25 @@
     const cur = d.cu.filter(c => !c.inicio || (c.fim || c.inicio) >= hoje_);
     ligaSecao('cursos', cur, c => `<a class="news" href="${esc(c.link)}" target="_blank" rel="noopener"><b>${esc(c.titulo)}</b><small>${esc(c.quando || 'Programa contínuo')}${c.detalhe ? ' · ' + esc(c.detalhe) : ''}</small><p class="vazio" style="margin-top:4px">${esc(c.entidade)} · ${esc(c.local || '')}${c.carga ? ' · ' + esc(c.carga) : ''}</p>${c.situacao === 'conf' ? '<span class="tag">Confirmar data com o organizador</span>' : ''}</a>`, cur.length + ' cursos e eventos. Abrir a inscrição exige internet.', x => [x.titulo, x.entidade, x.local, x.tipo, x.uf].join(' '));
     const vag = d.va.filter(v => v.fim >= hoje_);
+    const lst = v => Array.isArray(v) ? v : [];
+    const cartao = (u, t, sub, d, tag) => `<a class="news" href="${esc(u)}" target="_blank" rel="noopener"><b>${esc(t)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}${d ? `<p class="vazio" style="margin-top:4px">${esc(d)}</p>` : ''}${tag ? `<span class="tag">${esc(tag)}</span>` : ''}</a>`;
+    const itemTxt = x => typeof x === 'string' ? x : Array.isArray(x) ? x.join(': ') : (x.nome || x.name || x.t || JSON.stringify(x));
+    ligaSecao('sistemas', d.si, s => `<details><summary>${s.name}</summary><p>${s.desc}</p>${ul('Componentes', lst(s.componentes).map(itemTxt))}${ul('Cuidados', lst(s.cuidados).map(itemTxt))}${ul('Normas', lst(s.normas).map(itemTxt))}<p><a href="/sistemas/${s.id.replace(/^sis-/, '')}">Ver no portal</a></p></details>`, d.si.length + ' sistemas, disponíveis também sem internet.', x => x.name + ' ' + x.desc);
+    const linkBim = l => Array.isArray(l) ? [l[0], l[1]] : [l.t || l.nome || l.label || 'Abrir', l.u || l.url || l.href];
+    ligaSecao('bim', d.bim, b => `<details><summary>${esc(b.nome)}<small>${esc(lst(b.fmts).join(', '))} · ${esc(b.acesso || '')}</small></summary><p>${esc(b.desc)}</p>${ul('Áreas', lst(b.cat).map(esc))}${ul('Baixar', lst(b.links).map(linkBim).filter(l => l[1]).map(([t, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`))}</details>`, d.bim.length + ' bibliotecas. Baixar exige internet.', x => [x.nome, x.desc, lst(x.fmts).join(' '), lst(x.cat).join(' ')].join(' '));
+    ligaSecao('ferramentas', d.wt, x => cartao(x.url, x.name, `${x.cat} · ${x.tipo}`, x.desc), d.wt.length + ' ferramentas de terceiros. Usar exige internet.', x => [x.name, x.cat, x.desc].join(' '));
+    const fei = d.fe.filter(f => !f.dt || f.dt >= hoje_).sort((a, b) => a.dt.localeCompare(b.dt));
+    ligaSecao('feiras', fei, f => cartao(f.u || '#', f.n, `${f.q} · ${f.l}`, f.d, f.seg), fei.length + ' feiras futuras. Abrir o site exige internet.', x => [x.n, x.seg, x.l, x.d].join(' '));
+    ligaSecao('revistas', d.rv, r => cartao(r.edicaoUrl || r.url, r.nome, `${r.pais}${r.edicao ? ' · ' + r.edicao : ''}`, r.resumo), d.rv.length + ' revistas. Ler exige internet.', x => [x.nome, x.pais, x.resumo].join(' '));
+    ligaSecao('artigos', d.ar, a => cartao(a.url, a.title, `${a.autores} · ${a.fonte}, ${a.ano}`, a.resumo, a.tema), d.ar.length + ' artigos. Ler exige internet.', x => [x.title, x.tema, x.autores, x.fonte, x.resumo].join(' '));
+    ligaSecao('entidades', d.en, e => cartao(e.u, e.n, e.grupo, e.d), d.en.length + ' associações e entidades. Abrir o site exige internet.', x => [x.n, x.grupo, x.d].join(' '));
+    ligaSecao('fabricantes', d.fb, f => f.u ? cartao(f.u, f.n, f.o === 'N' ? 'Nacional' : 'Internacional', f.m.join(', ')) : `<div class="news"><b>${esc(f.n)}</b><p class="vazio">${esc(f.m.join(', '))}</p></div>`, d.fb.length + ' fabricantes. Abrir o site exige internet.', x => x.n + ' ' + x.m.join(' '));
     ligaSecao('vagas', vag, v => `<a class="news" href="${esc(v.link)}" target="_blank" rel="noopener"><b>${esc(v.titulo)}</b><small>${esc(v.empresa)} · ${esc(v.local)}</small><p class="vazio" style="margin-top:4px">${esc(v.contrato || '')}${v.obs ? ' · ' + esc(v.obs) : ''}</p><span class="tag">Publicada em ${brData(v.publicada)}</span></a>`, vag.length + ' vagas. A candidatura é feita no site que publicou.', x => [x.titulo, x.empresa, x.local, x.area].join(' '));
   }).catch(() => {});
 
   // Abas e abas internas
-  const TROCAS = { setor: [['noticias', 'Notícias'], ['cursos', 'Cursos'], ['vagas', 'Vagas']], consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços'], ['erros', 'Erros e soluções'], ['comparativos', 'Comparativos'], ['detalhes', 'Detalhes'], ['guias', 'Guias'], ['videos', 'Vídeos']], obra: [['obra', 'Checklists'], ['lista', 'Lista'], ['diario', 'Diário']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']], calc: [['calc', 'Cálculos'], ['nivel', 'Nível digital']] };
-  const NAV_DE = { comparativos: 'termos', detalhes: 'termos', guias: 'termos', videos: 'termos', noticias: 'inicio', cursos: 'inicio', vagas: 'inicio', normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', diario: 'obra', tabelas: 'tubos', nivel: 'calc' };
+  const TROCAS = { setor: [['noticias', 'Notícias'], ['cursos', 'Cursos'], ['vagas', 'Vagas'], ['feiras', 'Feiras'], ['revistas', 'Revistas'], ['artigos', 'Artigos'], ['entidades', 'Entidades'], ['fabricantes', 'Fabricantes']], consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['sistemas', 'Sistemas'], ['precos', 'Preços'], ['erros', 'Erros e soluções'], ['comparativos', 'Comparativos'], ['detalhes', 'Detalhes'], ['guias', 'Guias'], ['videos', 'Vídeos'], ['bim', 'BIM e CAD'], ['ferramentas', 'Ferramentas']], obra: [['obra', 'Checklists'], ['lista', 'Lista'], ['diario', 'Diário']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']], calc: [['calc', 'Cálculos'], ['nivel', 'Nível digital']] };
+  const NAV_DE = { sistemas: 'termos', bim: 'termos', ferramentas: 'termos', feiras: 'inicio', revistas: 'inicio', artigos: 'inicio', entidades: 'inicio', fabricantes: 'inicio', comparativos: 'termos', detalhes: 'termos', guias: 'termos', videos: 'termos', noticias: 'inicio', cursos: 'inicio', vagas: 'inicio', normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', diario: 'obra', tabelas: 'tubos', nivel: 'calc' };
   document.querySelectorAll('[data-troca]').forEach(el => { const dono = el.closest('section').id.slice(4); el.innerHTML = TROCAS[el.dataset.troca].map(([a, t]) => `<button type="button" data-ir="${a}" aria-pressed="${a === dono}">${t}</button>`).join(''); });
   pintarLista();
   function abrir(a) {
@@ -1010,7 +1029,7 @@
     const alvo = NAV_DE[a] || a;
     document.querySelectorAll('nav button').forEach(b => b.dataset.aba === alvo ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
     if (a === 'inicio') pintarInicio();
-    const chip = document.querySelector(`#aba-${a} .grupos[data-troca="consulta"] [aria-pressed="true"]`);
+    const chip = document.querySelector(`#aba-${a} .grupos [aria-pressed="true"]`);
     if (chip) chip.parentNode.scrollLeft = chip.offsetLeft - 16;
     if (a === 'diario') pdfVelho();   // checklists e lista podem ter mudado nas outras telas
     window.scrollTo(0, 0);
