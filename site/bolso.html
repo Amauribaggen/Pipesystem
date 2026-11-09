@@ -131,7 +131,18 @@
     <button type="button" class="acao" id="shareConv">Compartilhar resultado</button>
   </section>
 
+  <section id="aba-tabelas" hidden>
+    <div class="grupos" data-troca="tubos"></div>
+    <h2>Tabelas de campo</h2>
+    <p class="ajuda">Roscas, flanges, suportes e tubos do portal.</p>
+    <div class="cartao"><label for="tab">Tabela</label><select id="tab"></select></div>
+    <div class="rolagem"><table><thead id="tabHead"></thead><tbody id="tabBody"></tbody></table></div>
+    <p class="nota" id="tabNota"></p>
+    <p class="nota">Em revisão pela equipe Pipesystem.</p>
+  </section>
+
   <section id="aba-tubos" hidden>
+    <div class="grupos" data-troca="tubos"></div>
     <h2>Tubos de aço por Schedule</h2>
     <p class="ajuda">Escolha o diâmetro e a espessura para ver as medidas.</p>
     <div class="cartao">
@@ -219,6 +230,14 @@
     <p class="ajuda" id="matInfo">Carregando…</p>
     <div class="cartao"><label for="bMat">Buscar material</label><input id="bMat" type="search" autocomplete="off" placeholder="Ex.: válvula de retenção"></div>
     <div class="cartao" id="listaMat"></div>
+  </section>
+
+  <section id="aba-erros" hidden>
+    <div class="grupos" data-troca="consulta"></div>
+    <h2>Erros e patologias</h2>
+    <p class="ajuda" id="errosInfo">Carregando…</p>
+    <div class="cartao"><label for="bErro">Buscar problema</label><input id="bErro" type="search" autocomplete="off" placeholder="Ex.: mau cheiro"></div>
+    <div class="cartao" id="listaErros"></div>
   </section>
 
   <section id="aba-precos" hidden>
@@ -318,6 +337,24 @@
         return [['Peso total', num(P, 1)], ['Vazão de água fria', num(q) + ' L/s'], ['PVC soldável (mínimo por velocidade)', P === 0 ? '—' : tubo ? `${tubo[0]} mm (${tubo[1]}) · ${num(vel(tubo[2]), 1)} m/s` : 'Acima de 110 mm'], ['Contribuição de esgoto', num(U, 0) + ' UHC'], ['Ramal de esgoto único', dn], ['Reservatório', num(v.g * v.co * v.di, 0) + ' L']];
       },
       n: 'Pré-dimensionamento de um ramal. Vazão Q = 0,3√ΣP (NBR 5626) e V ≤ 3 m/s; esgoto pela NBR 8160. Não verifica pressão nem perda de carga.' },
+    { t: 'Reservatório', c: [['g', 'Pessoas atendidas', 4], ['co', 'Consumo (L por pessoa por dia)', 200], ['di', 'Dias de reserva', 2], ['inf', 'Parcela no inferior (%)', 60], ['rti', 'Reserva de incêndio (L)', 0]],
+      f: v => { const CX = [500, 1000, 1500, 2000, 3000, 5000, 7500, 10000, 15000, 20000], cx = L => { if (L <= 0) return '—'; const c = CX.find(x => x >= L); return c ? `1 de ${num(c, 0)} L` : `${Math.ceil(L / 20000)} de 20.000 L`; }, dia = v.g * v.co, tot = dia * v.di, inf = tot * v.inf / 100, sup = tot - inf + v.rti;
+        return [['Consumo diário', num(dia, 0) + ' L'], ['Total de reserva', num(tot, 0) + ' L'], ['Inferior', `${num(inf, 0)} L · ${cx(inf)}`], ['Superior', `${num(sup, 0)} L · ${cx(sup)}`]]; },
+      n: 'Mesma conta do portal. Consumos por pessoa são valores usuais; a reserva de incêndio segue a norma e o Corpo de Bombeiros do estado.' },
+    { t: 'Recalque (Bresse)', c: [['cd', 'Consumo diário (L)', 1600], ['h', 'Horas de bombeamento por dia', 6]],
+      f: v => { const q = v.cd / 1000 / (v.h * 3600), d = 1.3 * Math.sqrt(q) * (v.h / 24) ** .25 * 1000; return [['Vazão de recalque', num(q * 1000) + ' L/s'], ['Diâmetro teórico', num(d, 1) + ' mm']]; },
+      n: 'D = 1,3 × √Q × (h/24)^0,25. Adote o diâmetro comercial igual ou acima; a sucção costuma ser um diâmetro maior.' },
+    { t: 'Gás: vazão e diâmetro', c: [['kw', 'Potência instalada (kW)', 44], ['g', 'Gás', 0, [['Natural', 0], ['GLP', 1]]], ['m', 'Tubo', 0, [['Cobre', 0], ['Aço', 1]]], ['l', 'Comprimento (m)', 20], ['ex', 'Acréscimo por conexões (%)', 20], ['pe', 'Perda admitida (%)', 10]],
+      f: v => {
+        const G = [{ pci: 8600, s: .6, p: 2.2 }, { pci: 24000, s: 1.8, p: 2.8 }][v.g], T = [[['15 mm', 13.6], ['22 mm', 20.2], ['28 mm', 26.2], ['35 mm', 32.8], ['42 mm', 39.8], ['54 mm', 51.6]], [['1/2"', 15.8], ['3/4"', 21], ['1"', 26.6], ['1 1/4"', 35.1], ['1 1/2"', 40.9], ['2"', 52.5]]][v.m];
+        const C = v.kw * 860 / 60, F = C < 350 ? 100 : C < 9612 ? 100 / (1 + .001 * (C - 349) ** .8712) : C < 20000 ? 100 / (1 + .4705 * (C - 1055) ** .19931) : 23, Vz = C * F / 100 * 60 / G.pci, L = v.l * (1 + v.ex / 100), max = G.p * 1000 * v.pe / 100;
+        const r = T.map(([nome, d]) => ({ nome, dp: 23200 * G.s * L * Vz ** 1.82 * d ** -4.82 * 100, vel: Vz / 3600 / (Math.PI * (d / 1000) ** 2 / 4) })), ok = r.find(x => x.dp <= max && x.vel <= 20);
+        return [['Fator de simultaneidade', num(F, 0) + ' %'], ['Vazão', num(Vz) + ' m³/h'], ['Diâmetro', ok ? ok.nome : 'Acima do maior'], ['Perda', ok ? num(ok.dp, 0) + ' Pa' : '—']];
+      },
+      n: 'Mesma conta do portal (NBR 15526 e Renouard, baixa pressão, até 20 m/s). Confira a potência na placa de cada aparelho.' },
+    { t: 'Sprinklers: vazão', c: [['de', 'Densidade (mm/min)', 5], ['ar', 'Área de operação (m²)', 140], ['ab', 'Área por bico (m²)', 12], ['k', 'Fator K', 80], ['pm', 'Pressão mínima (bar)', .5], ['re', 'Hidrantes e mangotinhos (L/min)', 0]],
+      f: v => { const nb = Math.ceil(v.ar / v.ab), pd = (v.de * v.ab / v.k) ** 2, pb = Math.max(pd, v.pm), qb = v.k * Math.sqrt(pb), qt = nb * qb + v.re; return [['Bicos na área', nb + ''], ['Vazão por bico', num(qb, 1) + ' L/min'], ['Pressão no bico', num(pb) + ' bar'], ['Vazão total', num(qt, 0) + ' L/min']]; },
+      n: 'Estimativa, com todos os bicos na vazão do mais desfavorável. A classe de risco e o cálculo bico a bico vêm da NBR 10897 ou da Instrução Técnica do estado.' },
     { t: 'Velocidade da água', c: [Q, D], f: v => [['Velocidade', num(v.q / 1000 / (Math.PI * (v.d / 1000) ** 2 / 4)) + ' m/s']],
       n: 'V = Q / A. Em água fria predial, a referência usual é de até 3 m/s.' },
     { t: 'Perda de carga (Hazen-Williams)', c: [Q, D, ['l', 'Comprimento (m)', 50], ['C', 'Material', 140, [['PVC e plásticos (C 140)', 140], ['Cobre (C 130)', 130], ['Aço novo (C 120)', 120], ['Aço usado (C 100)', 100]]]],
@@ -560,9 +597,33 @@
   }).catch(() => {});
   pintarLista();
 
+  // Tabelas de campo e erros comuns
+  const TAB_CAMPO = [
+    { titulo: 'Roscas BSP (ISO 228 / ISO 7)', colunas: ['Rosca', 'Fios/pol', 'Passo mm', 'Ø maior mm'], linhas: [['1/2"', '14', '1,814', '20,955'], ['3/4"', '14', '1,814', '26,441'], ['1"', '11', '2,309', '33,249'], ['1 1/4"', '11', '2,309', '41,910'], ['1 1/2"', '11', '2,309', '47,803'], ['2"', '11', '2,309', '59,614']], nota: 'A partir de 1", BSP tem 11 fios por polegada e NPT tem 11,5: não são intercambiáveis.' },
+    { titulo: 'Roscas NPT', colunas: ['Rosca', 'Fios/pol', 'Ø externo mm'], linhas: [['1/2"', '14', '21,3'], ['3/4"', '14', '26,7'], ['1"', '11,5', '33,4'], ['1 1/4"', '11,5', '42,2'], ['1 1/2"', '11,5', '48,3'], ['2"', '11,5', '60,3']], nota: 'Rosca cônica. Diâmetro externo do tubo de mesma bitola.' },
+    { titulo: 'Flanges ASME B16.5, classe 150', colunas: ['NPS', 'Círculo mm', 'Furos', 'Parafuso', 'Furo'], linhas: [['1/2"', '60,3', '4', '1/2"', '5/8"'], ['3/4"', '69,9', '4', '1/2"', '5/8"'], ['1"', '79,4', '4', '1/2"', '5/8"'], ['1 1/2"', '98,4', '4', '1/2"', '5/8"'], ['2"', '120,7', '4', '5/8"', '3/4"'], ['3"', '152,4', '4', '5/8"', '3/4"'], ['4"', '190,5', '8', '5/8"', '3/4"'], ['6"', '241,3', '8', '3/4"', '7/8"'], ['8"', '298,5', '8', '3/4"', '7/8"'], ['10"', '362', '12', '7/8"', '1"'], ['12"', '431,8', '12', '7/8"', '1"']], nota: 'Círculo de furação convertido de polegadas. Confira o desenho do flange do fabricante.' },
+    { titulo: 'Apoios de tubo PPR a 20 °C', colunas: ['DN', 'Distância máxima'], linhas: [['20', '60 cm'], ['25', '70 cm'], ['32', '80 cm'], ['40', '100 cm'], ['50', '110 cm']], nota: 'Tabela de fabricante, a 20 °C. A distância diminui com a temperatura: use a tabela da linha instalada.' },
+  ];
+  const htmlErro = p => `<details><summary>${p.t}<small>${p.tema}${p.sev === 'alta' ? ' · gravidade alta' : ''}</small></summary><h4>Sintoma</h4><p>${p.sint}</p><h4>Causa</h4><p>${p.causa}</p><h4>Solução</h4><p>${p.sol}</p></details>`;
+  fetch('/bolso-dados.json').then(r => r.json()).then(d => {
+    const tabs = [...TAB_CAMPO, ...d.t.map(x => ({ ...x, nota: 'Tabela do portal, da ficha ' + x.ficha + '.' }))];
+    const pintarTab = () => {
+      const t = tabs[+$('tab').value];
+      $('tabHead').innerHTML = '<tr>' + t.colunas.map(c => `<th scope="col">${esc(c)}</th>`).join('') + '</tr>';
+      $('tabBody').innerHTML = t.linhas.map(l => '<tr>' + l.map(x => `<td>${esc(x)}</td>`).join('') + '</tr>').join('');
+      $('tabNota').textContent = t.nota;
+    };
+    $('tab').innerHTML = tabs.map((t, i) => `<option value="${i}">${esc(t.titulo)}</option>`).join('');
+    $('tab').addEventListener('change', pintarTab); pintarTab();
+    d.p.forEach(x => { x.b = sem(x.t + ' ' + x.tema + ' ' + x.sint + ' ' + x.causa + ' ' + x.sol); });
+    $('errosInfo').textContent = d.p.length + ' problemas com causa e solução, disponíveis também sem internet.';
+    const fE = () => lista($('listaErros'), d.p.filter(x => casa(x.b, $('bErro').value)), htmlErro);
+    $('bErro').addEventListener('input', fE); fE();
+  }).catch(() => {});
+
   // Abas e abas internas
-  const TROCAS = { consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços']], obra: [['obra', 'Checklists'], ['lista', 'Lista']] };
-  const NAV_DE = { normas: 'termos', materiais: 'termos', precos: 'termos', lista: 'obra' };
+  const TROCAS = { consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços'], ['erros', 'Erros e soluções']], obra: [['obra', 'Checklists'], ['lista', 'Lista']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']] };
+  const NAV_DE = { normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', tabelas: 'tubos' };
   document.querySelectorAll('[data-troca]').forEach(el => { const dono = el.closest('section').id.slice(4); el.innerHTML = TROCAS[el.dataset.troca].map(([a, t]) => `<button type="button" data-ir="${a}" aria-pressed="${a === dono}">${t}</button>`).join(''); });
   pintarLista();
   function abrir(a) {
