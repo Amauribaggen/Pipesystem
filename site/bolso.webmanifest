@@ -1,7 +1,7 @@
 {
   "name": "PipeSystem Pro",
   "short_name": "PipeSystem Pro",
-  "description": "Conversor de unidades e tabela de tubos para usar na obra, inclusive sem internet.",
+  "description": "Calculadoras, normas, tabelas, checklists e diário de obra para hidráulica, até sem internet.",
   "lang": "pt-BR",
   "id": "/bolso",
   "start_url": "/bolso",

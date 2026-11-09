@@ -2242,3 +2242,32 @@ a.gl:hover { color: var(--teal-d); }
 .sitenums__list { gap: 0; background: rgba(7, 26, 49, .7); backdrop-filter: blur(6px); }
 .sitenums__list li { box-shadow: 1px 0 0 rgba(255, 255, 255, .1), 0 1px 0 rgba(255, 255, 255, .1); }
 .sitenums__list a { background: transparent; backdrop-filter: none; }
+
+/* Destaque do aplicativo PipeSystem Pro na abertura */
+.proapp { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 28px; align-items: center; margin-top: 26px; padding: 26px 30px; border: 1.5px solid #f2a03d; border-radius: 20px; background: linear-gradient(120deg, rgba(242, 160, 61, .17), rgba(10, 34, 64, .86) 55%); box-shadow: 0 20px 50px -24px rgba(0, 0, 0, .75); }
+.proapp__tag { margin: 0 0 8px; color: #bfd0e2; font-size: .85rem; font-weight: 600; }
+.proapp__tag span { display: inline-block; margin-right: 6px; padding: 2px 9px; border-radius: 99px; background: #f2a03d; color: #0a2240; font-size: .74rem; font-weight: 800; }
+.proapp h2 { margin: 0 0 6px; color: #fff; font-size: clamp(1.9rem, 4vw, 2.8rem); }
+.proapp em, .proapp__marca em { color: #f2a03d; font-style: normal; }
+.proapp__lead { margin: 0 0 16px; color: #dfe9f3; font-size: 1.12rem; }
+.proapp__lead b { color: #7ee7f2; }
+.proapp__lista { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 16px; margin: 0 0 18px; padding: 0; list-style: none; color: #cdd9e6; font-size: .9rem; }
+.proapp__lista b { color: #fff; }
+.proapp__acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.proapp__acoes span { flex: 1 1 220px; color: #9fb4cc; font-size: .8rem; }
+.proapp__btn { background: #f2a03d; color: #0a2240; font-weight: 800; }
+.proapp__cel { justify-self: center; width: 190px; padding: 9px; border-radius: 28px; background: #030c18; box-shadow: 0 0 0 2px #2c4764, 0 18px 40px -14px #000; transform: rotate(3deg); }
+.proapp__tela { padding: 13px 10px 16px; border-radius: 20px; background: #061527; }
+.proapp__marca { margin: 0 0 8px; color: #fff; font-family: var(--display); font-size: .92rem; font-weight: 700; }
+.proapp__busca { margin-bottom: 9px; padding: 6px 8px; border-radius: 8px; background: #0f2845; color: #7f96ae; font-size: .64rem; }
+.proapp__grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.proapp__grade i { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 1px; border-radius: 8px; background: #0f2845; color: #eef4fa; font-size: .54rem; font-style: normal; font-weight: 600; }
+.proapp__grade svg { width: 17px; height: 17px; fill: none; stroke: #7ee7f2; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 760px) {
+  .proapp { grid-template-columns: 1fr; padding: 20px 18px; }
+  .proapp__lista { grid-template-columns: 1fr 1fr; }
+  .proapp__btn { width: 100%; text-align: center; }
+  .proapp__cel { display: none; }
+}
+.proapp__env { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55); font-weight: 700; }
+@media (max-width: 760px) { .proapp__env { width: 100%; } }

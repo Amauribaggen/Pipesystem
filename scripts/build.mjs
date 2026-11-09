@@ -102,6 +102,13 @@ const marcarNofollow = dir => readdirSync(dir, { withFileTypes: true }).forEach(
 marcarNofollow(out);
 
 // Data real de cada página: o build local atualiza scripts/datas-paginas.json; a Vercel só lê
+// PipeSystem Pro: endereço oficial /pro. O /bolso continua de pé, fora do Google, para quem já instalou por ele
+{
+  const h = readFileSync(join(out, 'bolso.html'), 'utf8');
+  writeFileSync(join(out, 'pro.html'), h.replace('<meta name="robots" content="noindex, nofollow">', '').replace('/bolso.webmanifest', '/pro.webmanifest').replace("scope: '/bolso'", "scope: '/pro'"));
+  writeFileSync(join(out, 'pro.webmanifest'), readFileSync(join(out, 'bolso.webmanifest'), 'utf8').split('"/bolso"').join('"/pro"'));
+  pages.push({ url: '/pro', images: [] });
+}
 const { datas, mudou } = datasPaginas(out, ['/', ...pages.map(p => p.url)], !process.env.VERCEL);
 console.log(`Páginas com conteúdo alterado: ${mudou}`);
 sitemap(pages, [`${BASE}/img/og-pipesystem.jpg`, ...fotos], out, datas);

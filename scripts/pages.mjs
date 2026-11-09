@@ -89,7 +89,7 @@ const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><pa
 // Menu principal das páginas próprias: os mesmos itens, na mesma ordem, do menu da página inicial (site/index.html)
 const MENU = [['/cotacoes', 'Cotações', 'pg-top__hot'], ['/sistemas', 'Sistemas'], ['/materiais', 'Materiais'], ['/dimensionamento', 'Dimensionamento'],
   ['/bim-cad', 'BIM/CAD'], ['/guias-praticos', 'Guias práticos'], ['/normas', 'Normas'], ['/artigos', 'Notícias'], ['/feiras', 'Feiras'],
-  ['/anuncie', 'Anuncie'], ['/quem-somos', 'Quem somos'], ['/#contato', 'Cadastre-se', 'btn btn--sm']];
+  ['/pro', 'PipeSystem Pro', '', true], ['/anuncie', 'Anuncie'], ['/quem-somos', 'Quem somos'], ['/#contato', 'Cadastre-se', 'btn btn--sm']];
 // Item do menu marcado como atual em cada página própria
 const secaoAtual = url => url.startsWith('/sistemas') ? '/sistemas' : url.startsWith('/materiais') ? '/materiais'
   : /^\/(comparativos|glossario)/.test(url) ? '/guias-praticos' : url === '/noticias' ? '/artigos' : '';
@@ -147,7 +147,7 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
     <a href="/" class="logo" aria-label="PIPESYSTEM — página inicial">${LOGO}</a>
     <button class="pg-top__toggle" id="pgToggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="pgNav"><span></span><span></span><span></span></button>
     <nav class="pg-top__nav" id="pgNav" aria-label="Seções do portal">
-      ${MENU.map(([href, nome, cls]) => `<a href="${href}"${cls ? ` class="${cls}"` : ''}${href === secaoAtual(url) ? ' aria-current="page"' : ''}>${nome}</a>`).join('')}
+      ${MENU.map(([href, nome, cls, novo]) => `<a href="${href}"${cls ? ` class="${cls}"` : ''}${novo ? ' data-novo' : ''}${href === secaoAtual(url) ? ' aria-current="page"' : ''}>${nome}</a>`).join('')}
     </nav>
     ${IDIOMA}
   </div>

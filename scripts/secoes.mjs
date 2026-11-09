@@ -121,7 +121,7 @@ function indiceBusca(out, secoes) {
       if (a > -1 && b > a) secoes.push({ path, nome, html: h.slice(a, b) });
     } catch {}
   }
-  const itens = [];
+  const itens = [{ p: '/pro', s: 'Aplicativo', id: '', t: 'PipeSystem Pro: aplicativo gratuito', x: 'Aplicativo gratuito de hidráulica para celular, com calculadoras, normas, tabelas, checklists, diário de obra, nível digital e preços SINAPI, funcionando até sem internet. App, instalar no celular, iPhone, Android.' }];
   for (const { path, nome, html } of secoes) {
     // sem scripts, estilos, SVG e formulários (só o texto que o visitante lê)
     const limpo = html.replace(/<(script|style|svg|select|template)\b[\s\S]*?<\/\1>/gi, ' ');

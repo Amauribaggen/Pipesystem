@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PipeSystem Pro</title>
-<meta name="description" content="Conversor de unidades e tabela de tubos para usar na obra, inclusive sem internet.">
+<title>PipeSystem Pro: aplicativo gratuito de hidráulica</title>
+<link rel="canonical" href="https://www.pipesystem.com.br/pro">
+<meta name="description" content="Aplicativo gratuito de hidráulica para celular: calculadoras, normas, tabelas, checklists, diário de obra, nível digital e preços SINAPI, até sem internet.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#061527">
 <link rel="manifest" href="/bolso.webmanifest">
@@ -643,7 +644,7 @@
   let favs = ler_('favs', []), hist = ler_('hist', []), marcas = ler_('marcas', {});
 
   // Compartilhar: folha do sistema no celular; sem ela, abre o WhatsApp
-  const ASSINA = 'Conta de conferência, não substitui o projeto.\nPipeSystem Pro: https://www.pipesystem.com.br/bolso';
+  const ASSINA = 'Conta de conferência, não substitui o projeto.\nPipeSystem Pro: https://www.pipesystem.com.br/pro';
   const compartilhar = texto => {
     if (navigator.share) navigator.share({ text: texto }).catch(() => {});
     else open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank', 'noopener');
@@ -708,7 +709,7 @@
   $('limparCk').addEventListener('click', () => { if (confirm('Desmarcar todos os itens deste checklist?')) { delete marcas[ckAtual()[0]]; gravar('marcas', marcas); ckDesenha(); } });
   $('shareCk').addEventListener('click', () => {
     const c = ckAtual(), feitos = marcas[c[0]] || [], todos = ckItens(c), falta = todos.filter(i => !feitos.includes(i));
-    compartilhar(`Checklist: ${c[1]}\n${todos.length - falta.length} de ${todos.length} itens conferidos\n\n${falta.length ? 'Pendentes:\n' + falta.map(i => '- ' + i).join('\n') : 'Nenhum item pendente.'}\n\nPipeSystem Pro: https://www.pipesystem.com.br/bolso`);
+    compartilhar(`Checklist: ${c[1]}\n${todos.length - falta.length} de ${todos.length} itens conferidos\n\n${falta.length ? 'Pendentes:\n' + falta.map(i => '- ' + i).join('\n') : 'Nenhum item pendente.'}\n\nPipeSystem Pro: https://www.pipesystem.com.br/pro`);
   });
 
   // Início
@@ -786,7 +787,7 @@
   $('itens').addEventListener('change', () => pintarLista());
   $('itens').addEventListener('click', e => { if (e.target.dataset.rem !== undefined) { lista_.splice(+e.target.dataset.rem, 1); salvarLista(); } });
   $('limparLista').addEventListener('click', () => { if (confirm('Apagar toda a lista?')) { lista_ = []; salvarLista(); aviso(''); } });
-  $('shareLista').addEventListener('click', () => compartilhar(`Lista de materiais\n${textoLista()}\n\nPipeSystem Pro: https://www.pipesystem.com.br/bolso`));
+  $('shareLista').addEventListener('click', () => compartilhar(`Lista de materiais\n${textoLista()}\n\nPipeSystem Pro: https://www.pipesystem.com.br/pro`));
   $('enviarCot').addEventListener('click', () => {
     if (!navigator.onLine) return aviso('Sem internet: a lista fica guardada. Envie quando a conexão voltar.');
     const url = '/?assunto=' + encodeURIComponent('Cotação de materiais') + '&msg=' + encodeURIComponent('Cotação de materiais:\n' + textoLista() + '\n\nLocal de entrega: ') + '#contato';

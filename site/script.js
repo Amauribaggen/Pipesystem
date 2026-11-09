@@ -1688,3 +1688,15 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   campo.addEventListener('input', aplica);
   document.querySelectorAll('.leiloes__chips [data-termo]').forEach(b => b.addEventListener('click', () => { campo.value = b.dataset.termo; aplica(); }));
 })();
+
+// Destaque do PipeSystem Pro: enviar a um amigo pela folha de compartilhamento do celular ou pelo WhatsApp
+(() => {
+  const b = document.getElementById('proEnviar');
+  if (!b) return;
+  const texto = 'Conheça o PipeSystem Pro, aplicativo gratuito de hidráulica com calculadoras, normas, tabelas e checklists, que funciona até sem internet:';
+  const url = 'https://www.pipesystem.com.br/pro';
+  b.addEventListener('click', () => {
+    if (navigator.share) navigator.share({ title: 'PipeSystem Pro', text: texto, url }).catch(() => {});
+    else window.open('https://wa.me/?text=' + encodeURIComponent(texto + ' ' + url), '_blank', 'noopener');
+  });
+})();
