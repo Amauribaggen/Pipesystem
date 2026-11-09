@@ -138,7 +138,6 @@
     <div class="cartao"><label for="tab">Tabela</label><select id="tab"></select></div>
     <div class="rolagem"><table><thead id="tabHead"></thead><tbody id="tabBody"></tbody></table></div>
     <p class="nota" id="tabNota"></p>
-    <p class="nota">Em revisão pela equipe Pipesystem.</p>
   </section>
 
   <section id="aba-tubos" hidden>
@@ -157,7 +156,7 @@
       <thead><tr><th scope="col">DN (pol)</th><th scope="col">Ext. mm</th><th scope="col">Parede mm</th><th scope="col">Int. mm</th><th scope="col">kg/m</th></tr></thead>
       <tbody id="tabela"></tbody>
     </table></div>
-    <p class="nota">Referência: dimensões da ASME B36.10M para tubos de aço carbono. Massa calculada para aço. Em revisão pela equipe Pipesystem: confira o certificado do fabricante antes de usar em projeto.</p>
+    <p class="nota">Referência: dimensões da ASME B36.10M para tubos de aço carbono. Massa calculada para aço. Confira o certificado do fabricante antes de usar em projeto.</p>
 
     <h3>Equivalência de tubos plásticos</h3>
     <div class="rolagem"><table>
@@ -175,7 +174,6 @@
     <div class="cartao"><ul class="result" id="res" aria-live="polite"></ul></div>
     <button type="button" class="acao" id="shareCalc">Compartilhar resultado</button>
     <p class="nota" id="calcNota"></p>
-    <p class="nota">Em revisão pela equipe Pipesystem.</p>
     <a class="acao acao--leve acao--link" href="/dimensionamento">Abrir o Dimensionamento completo no portal</a>
   </section>
 
@@ -403,7 +401,7 @@
   const limite = 40;
   const lista = (el, itens, html) => { el.innerHTML = itens.length ? itens.slice(0, limite).map(html).join('') + (itens.length > limite ? `<p class="nota">Mostrando ${limite} de ${itens.length}. Refine a busca.</p>` : '') : '<p class="nota">Nada encontrado.</p>'; };
   const htmlTermo = x => `<details><summary>${x.t}<small>${x.tema}</small></summary><p>${x.def}</p>${x.exp ? `<p>${x.exp}</p>` : ''}${x.f ? `<p class="formula">${x.f[0]}<small>${x.f[1]}</small></p>` : ''}${x.x ? extra(x.x) : ''}${x.norma ? `<p>Norma: ${x.norma}</p>` : ''}<p><a href="/glossario/${x.id}">Ver no portal</a></p></details>`;
-  const extra = e => (e.pratica ? `<h4>Na prática</h4><p>${e.pratica}</p>` : '') + (e.valores ? `<h4>Valores de referência</h4><ul>${e.valores.map(([a, b]) => `<li>${a}: <b>${b}</b></li>`).join('')}</ul>` : '') + (e.exemplo ? `<h4>Exemplo</h4><p>${e.exemplo}</p>` : '') + (e.erros ? `<h4>Erros comuns</h4><ul>${e.erros.map(t => `<li>${t}</li>`).join('')}</ul>` : '') + '<p><small>Em revisão pela equipe Pipesystem.</small></p>';
+  const extra = e => (e.pratica ? `<h4>Na prática</h4><p>${e.pratica}</p>` : '') + (e.valores ? `<h4>Valores de referência</h4><ul>${e.valores.map(([a, b]) => `<li>${a}: <b>${b}</b></li>`).join('')}</ul>` : '') + (e.exemplo ? `<h4>Exemplo</h4><p>${e.exemplo}</p>` : '') + (e.erros ? `<h4>Erros comuns</h4><ul>${e.erros.map(t => `<li>${t}</li>`).join('')}</ul>` : '');
   const htmlNorma = n => `<details><summary>${n.code}<small>${n.title}</small></summary><p>${n.note || 'Sem resumo cadastrado.'}</p><p><small>${n.org}</small></p></details>`;
   fetch('/bolso-dados.json').then(r => r.json()).then(d => {
     d.g.forEach(x => { x.b = sem(x.t + ' ' + x.en + ' ' + x.tema + ' ' + x.def); });

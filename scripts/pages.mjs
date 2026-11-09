@@ -335,7 +335,7 @@ export function generate(D, outDir) {
     }) });
   }
   for (const id of Object.keys(GLOSSARIO_EXTRA)) if (!gById[id]) throw new Error('Termo inexistente em glossario-extra: ' + id);
-  const extraGlossario = e => !e ? '' : ['<p class="glpage__rev">Em revisão pela equipe Pipesystem</p>', e.pratica && `<h2 class="page__h">Na prática</h2><p class="sheet__desc">${e.pratica}</p>`,
+  const extraGlossario = e => !e ? '' : [e.pratica && `<h2 class="page__h">Na prática</h2><p class="sheet__desc">${e.pratica}</p>`,
     e.valores && `<h2 class="page__h">Valores de referência</h2><dl class="glpage__valores">${e.valores.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`,
     e.exemplo && `<h2 class="page__h">Exemplo</h2><p class="sheet__desc">${e.exemplo}</p>`,
     e.erros && `<h2 class="page__h">Erros comuns</h2><ul class="glpage__erros">${e.erros.map(t => `<li>${t}</li>`).join('')}</ul>`].filter(Boolean).join(' ');
