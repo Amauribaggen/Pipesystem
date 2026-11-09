@@ -2237,3 +2237,8 @@ a.gl:hover { color: var(--teal-d); }
 .glpage__erros li + li { margin-top: 6px; }
 @media (max-width: 600px) { .glpage__valores div { grid-template-columns: 1fr; gap: 2px; } }
 .glpage__rev { display: inline-block; margin: 14px 0 0; padding: 4px 12px; border-radius: 999px; background: #f2a03d; color: #0a2240; font-size: .78rem; font-weight: 700; }
+
+/* Resumo numérico: o fundo fica na lista, para o espaço vazio da última linha ter a mesma cor dos cartões */
+.sitenums__list { gap: 0; background: rgba(7, 26, 49, .7); backdrop-filter: blur(6px); }
+.sitenums__list li { box-shadow: 1px 0 0 rgba(255, 255, 255, .1), 0 1px 0 rgba(255, 255, 255, .1); }
+.sitenums__list a { background: transparent; backdrop-filter: none; }
