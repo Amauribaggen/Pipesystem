@@ -248,6 +248,25 @@
     <p class="nota">A medida é aproximada: confira a linha do fabricante, porque conexões de sistemas diferentes podem não ser compatíveis.</p>
   </section>
 
+  <section id="aba-leiloes" hidden>
+    <div class="grupos" data-troca="setor"></div>
+    <h2>Negócios e leilões</h2>
+    <p class="ajuda">Pesquise lotes de materiais hidráulicos, novos e usados, nas plataformas de leilão, ou anuncie o seu. Exige internet.</p>
+    <div class="cartao">
+      <div class="campo"><label for="leilaoT">O que você procura?</label><input id="leilaoT" type="search" value="válvulas" maxlength="60" autocomplete="off"></div>
+      <div class="btn-linha" id="leilaoChips"><button type="button" class="mini" data-t="válvulas">Válvulas</button><button type="button" class="mini" data-t="tubos">Tubos</button><button type="button" class="mini" data-t="conexões">Conexões</button><button type="button" class="mini" data-t="bombas">Bombas</button></div>
+    </div>
+    <div class="cartao">
+      <a class="news" data-leilao="https://www.sold.com.br/busca/{t}" target="_blank" rel="noopener nofollow"><b>Buscar na Sold</b></a>
+      <a class="news" data-leilao="https://www.superbid.net/busca/{t}" target="_blank" rel="noopener nofollow"><b>Buscar na Superbid</b></a>
+      <a class="news" data-leilao="https://www.deseulance.com/pesquisar/lot-search/searchbox-action?text={t}" target="_blank" rel="noopener nofollow"><b>Buscar na Deseulance</b></a>
+      <a class="news" href="https://petrobras.com.br/negocios/leiloes" target="_blank" rel="noopener nofollow"><b>Leilões da Petrobras</b></a>
+    </div>
+    <a class="acao acao--link" href="/?assunto=Neg%C3%B3cios%20%26%20leil%C3%B5es&amp;msg=Quero%20anunciar%20um%20lote%20(itens%2C%20estado%2C%20quantidade%20e%20local)%3A%20#contato">Anunciar um lote</a>
+    <button type="button" class="acao acao--leve" id="leilaoNews">Ver notícias de leilões e concessões</button>
+    <p class="nota">O PipeSystem não é leiloeiro e não participa desses leilões. Confira o edital, o estado do lote e as taxas no site de cada plataforma.</p>
+  </section>
+
   <section id="aba-nivel" hidden>
     <div class="grupos" data-troca="calc"></div>
     <h2>Nível digital</h2>
@@ -912,8 +931,8 @@
   const ic = n => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
   const NAV_IC = { inicio: 'casa', conversor: 'conv', tubos: 'tubo', calc: 'calc', obra: 'obra', termos: 'lupa' };
   document.querySelectorAll('nav button').forEach(b => { b.innerHTML = `${ic(NAV_IC[b.dataset.aba])}<span>${b.textContent}</span>`; });
-  Object.assign(IC, { det: 'M4 4h16v16H4zM4 15h6v5M10 15l5-5M15 10h5M15 10V4', guia: 'M4 5l4 3-4 3zM11 8h9M4 15l4 3-4 3zM11 18h9', video: 'M3 6h18v12H3zM10 9l5 3-5 3z', comp: 'M12 3v18M4 7h16M7 7l-3 7a3 3 0 006 0zM17 7l-3 7a3 3 0 006 0z', news: 'M4 5h13v14H6a2 2 0 01-2-2zM17 9h3v8a2 2 0 01-2 2M8 9h5M8 13h5', curso: 'M3 9l9-5 9 5-9 5zM7 12v5c3 2 7 2 10 0v-5', vaga: 'M4 8h16v11H4zM9 8V5h6v3M4 13h16', rev: 'M6 3h12v18H6zM9 7h6M9 11h6M9 15h4', art: 'M5 3h10l4 4v14H5zM8 12h8M8 16h8M8 8h3', ent: 'M3 21h18M5 21V10l7-5 7 5v11M10 21v-6h4v6', bim: 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5', ferr: 'M15 5a4 4 0 00-5 5l-6 6 3 3 6-6a4 4 0 005-5l-3 3-3-3z', fab: 'M3 21V10l6 4v-4l6 4V5h6v16z', feira: 'M4 6h16v15H4zM4 10h16M8 3v5M16 3v5', sist: 'M6 3v8a3 3 0 003 3h6a3 3 0 013 3v4M3 3h6M15 21h6' });
-  const TILES = [['Ferramentas', [['conversor', 'Conversor', 'conv'], ['tubos', 'Tubos', 'tubo'], ['tabelas', 'Tabelas', 'tab'], ['calc', 'Cálculos', 'calc'], ['*dim', 'Dimensionar', 'regua'], ['nivel', 'Nível digital', 'nivel']]], ['Na obra', [['obra', 'Checklists', 'obra'], ['diario', 'Diário de obra', 'foto'], ['lista', 'Lista', 'lista'], ['detalhes', 'Detalhes típicos', 'det'], ['guias', 'Guias', 'guia'], ['videos', 'Vídeos', 'video']]], ['Consulta', [['termos', 'Glossário', 'livro'], ['normas', 'Normas', 'norma'], ['materiais', 'Materiais', 'mat'], ['precos', 'Preços', 'preco'], ['erros', 'Erros e soluções', 'erro'], ['comparativos', 'Comparativos', 'comp'], ['sistemas', 'Sistemas', 'sist'], ['bim', 'BIM e CAD', 'bim'], ['ferramentas', 'Ferramentas on-line', 'ferr']]], ['Setor', [['noticias', 'Notícias', 'news'], ['cursos', 'Cursos e eventos', 'curso'], ['vagas', 'Vagas', 'vaga'], ['feiras', 'Feiras', 'feira'], ['revistas', 'Revistas', 'rev'], ['artigos', 'Artigos técnicos', 'art'], ['entidades', 'Entidades', 'ent'], ['fabricantes', 'Fabricantes', 'fab']]]];
+  Object.assign(IC, { det: 'M4 4h16v16H4zM4 15h6v5M10 15l5-5M15 10h5M15 10V4', guia: 'M4 5l4 3-4 3zM11 8h9M4 15l4 3-4 3zM11 18h9', video: 'M3 6h18v12H3zM10 9l5 3-5 3z', comp: 'M12 3v18M4 7h16M7 7l-3 7a3 3 0 006 0zM17 7l-3 7a3 3 0 006 0z', news: 'M4 5h13v14H6a2 2 0 01-2-2zM17 9h3v8a2 2 0 01-2 2M8 9h5M8 13h5', curso: 'M3 9l9-5 9 5-9 5zM7 12v5c3 2 7 2 10 0v-5', vaga: 'M4 8h16v11H4zM9 8V5h6v3M4 13h16', rev: 'M6 3h12v18H6zM9 7h6M9 11h6M9 15h4', art: 'M5 3h10l4 4v14H5zM8 12h8M8 16h8M8 8h3', ent: 'M3 21h18M5 21V10l7-5 7 5v11M10 21v-6h4v6', bim: 'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5', ferr: 'M15 5a4 4 0 00-5 5l-6 6 3 3 6-6a4 4 0 005-5l-3 3-3-3z', fab: 'M3 21V10l6 4v-4l6 4V5h6v16z', feira: 'M4 6h16v15H4zM4 10h16M8 3v5M16 3v5', sist: 'M6 3v8a3 3 0 003 3h6a3 3 0 013 3v4M3 3h6M15 21h6', leilao: 'M14 4l6 6M11 7l6 6M12.5 5.5l6 6M13 9l-8 8 2 2 8-8M4 21h9' });
+  const TILES = [['Ferramentas', [['conversor', 'Conversor', 'conv'], ['tubos', 'Tubos', 'tubo'], ['tabelas', 'Tabelas', 'tab'], ['calc', 'Cálculos', 'calc'], ['*dim', 'Dimensionar', 'regua'], ['nivel', 'Nível digital', 'nivel']]], ['Na obra', [['obra', 'Checklists', 'obra'], ['diario', 'Diário de obra', 'foto'], ['lista', 'Lista', 'lista'], ['detalhes', 'Detalhes típicos', 'det'], ['guias', 'Guias', 'guia'], ['videos', 'Vídeos', 'video']]], ['Consulta', [['termos', 'Glossário', 'livro'], ['normas', 'Normas', 'norma'], ['materiais', 'Materiais', 'mat'], ['precos', 'Preços', 'preco'], ['erros', 'Erros e soluções', 'erro'], ['comparativos', 'Comparativos', 'comp'], ['sistemas', 'Sistemas', 'sist'], ['bim', 'BIM e CAD', 'bim'], ['ferramentas', 'Ferramentas on-line', 'ferr']]], ['Setor', [['noticias', 'Notícias', 'news'], ['cursos', 'Cursos e eventos', 'curso'], ['vagas', 'Vagas', 'vaga'], ['leiloes', 'Negócios e leilões', 'leilao'], ['feiras', 'Feiras', 'feira'], ['revistas', 'Revistas', 'rev'], ['artigos', 'Artigos técnicos', 'art'], ['entidades', 'Entidades', 'ent'], ['fabricantes', 'Fabricantes', 'fab']]]];
   $('tiles').innerHTML = TILES.map(([g, l]) => `<h3>${g}</h3>` + l.map(([a, t, i]) => `<button type="button" class="tile" data-tile="${a}">${ic(i)}<span>${t}</span></button>`).join('')).join('');
   $('tiles').addEventListener('click', e => { const b = e.target.closest('[data-tile]'); if (!b) return; if (b.dataset.tile === '*dim') abrirCalc('Dimensionamento resumido'); else abrir(b.dataset.tile); });
   let INDICE = [];
@@ -921,6 +940,7 @@
   DADOS.then(d => {
     $('iniNews').innerHTML = d.ntc.map(n => `<a class="news" href="${esc(n.link)}" target="_blank" rel="noopener"><b>${esc(n.titulo)}</b><small>${n.data.split('-').reverse().join('/')} · ${esc(n.fonte)}</small></a>`).join('') || '<p class="vazio">Sem notícias.</p>';
     INDICE = [
+      { g: 'Negócios e leilões', t: 'Negócios e leilões', b: 'leilão lote comprar vender usados', ir: () => abrir('leiloes') },
       ...CALCS.map(c => ({ g: 'Cálculos', t: c.t, ir: () => abrirCalc(c.t) })),
       ...d.c.map(c => ({ g: 'Checklists', t: c[1], ir: () => { $('ck').value = c[0]; ckDesenha(); abrir('obra'); } })),
       ...d.g.map(x => ({ g: 'Glossário', t: x.t, b: x.en + ' ' + x.def, ir: () => irPara('termos', 'bTermo', x.t) })),
@@ -1019,9 +1039,16 @@
     ligaSecao('vagas', vag, v => `<a class="news" href="${esc(v.link)}" target="_blank" rel="noopener"><b>${esc(v.titulo)}</b><small>${esc(v.empresa)} · ${esc(v.local)}</small><p class="vazio" style="margin-top:4px">${esc(v.contrato || '')}${v.obs ? ' · ' + esc(v.obs) : ''}</p><span class="tag">Publicada em ${brData(v.publicada)}</span></a>`, vag.length + ' vagas. A candidatura é feita no site que publicou.', x => [x.titulo, x.empresa, x.local, x.area].join(' '));
   }).catch(() => {});
 
+  // Negócios e leilões: leva o termo digitado para a busca de cada plataforma
+  const aplicaLeilao = () => { const t = encodeURIComponent($('leilaoT').value.trim() || 'válvulas'); document.querySelectorAll('[data-leilao]').forEach(a => { a.href = a.dataset.leilao.replace('{t}', t); }); };
+  $('leilaoT').addEventListener('input', aplicaLeilao);
+  $('leilaoChips').addEventListener('click', e => { if (e.target.dataset.t) { $('leilaoT').value = e.target.dataset.t; aplicaLeilao(); } });
+  $('leilaoNews').addEventListener('click', () => irPara('noticias', 'b_noticias', 'leilões e concessões'));
+  aplicaLeilao();
+
   // Abas e abas internas
-  const TROCAS = { setor: [['noticias', 'Notícias'], ['cursos', 'Cursos'], ['vagas', 'Vagas'], ['feiras', 'Feiras'], ['revistas', 'Revistas'], ['artigos', 'Artigos'], ['entidades', 'Entidades'], ['fabricantes', 'Fabricantes']], consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['sistemas', 'Sistemas'], ['precos', 'Preços'], ['erros', 'Erros e soluções'], ['comparativos', 'Comparativos'], ['detalhes', 'Detalhes'], ['guias', 'Guias'], ['videos', 'Vídeos'], ['bim', 'BIM e CAD'], ['ferramentas', 'Ferramentas']], obra: [['obra', 'Checklists'], ['lista', 'Lista'], ['diario', 'Diário']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']], calc: [['calc', 'Cálculos'], ['nivel', 'Nível digital']] };
-  const NAV_DE = { sistemas: 'termos', bim: 'termos', ferramentas: 'termos', feiras: 'inicio', revistas: 'inicio', artigos: 'inicio', entidades: 'inicio', fabricantes: 'inicio', comparativos: 'termos', detalhes: 'termos', guias: 'termos', videos: 'termos', noticias: 'inicio', cursos: 'inicio', vagas: 'inicio', normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', diario: 'obra', tabelas: 'tubos', nivel: 'calc' };
+  const TROCAS = { setor: [['noticias', 'Notícias'], ['cursos', 'Cursos'], ['vagas', 'Vagas'], ['leiloes', 'Leilões'], ['feiras', 'Feiras'], ['revistas', 'Revistas'], ['artigos', 'Artigos'], ['entidades', 'Entidades'], ['fabricantes', 'Fabricantes']], consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['sistemas', 'Sistemas'], ['precos', 'Preços'], ['erros', 'Erros e soluções'], ['comparativos', 'Comparativos'], ['detalhes', 'Detalhes'], ['guias', 'Guias'], ['videos', 'Vídeos'], ['bim', 'BIM e CAD'], ['ferramentas', 'Ferramentas']], obra: [['obra', 'Checklists'], ['lista', 'Lista'], ['diario', 'Diário']], tubos: [['tubos', 'Tubos'], ['tabelas', 'Tabelas']], calc: [['calc', 'Cálculos'], ['nivel', 'Nível digital']] };
+  const NAV_DE = { leiloes: 'inicio', sistemas: 'termos', bim: 'termos', ferramentas: 'termos', feiras: 'inicio', revistas: 'inicio', artigos: 'inicio', entidades: 'inicio', fabricantes: 'inicio', comparativos: 'termos', detalhes: 'termos', guias: 'termos', videos: 'termos', noticias: 'inicio', cursos: 'inicio', vagas: 'inicio', normas: 'termos', materiais: 'termos', precos: 'termos', erros: 'termos', lista: 'obra', diario: 'obra', tabelas: 'tubos', nivel: 'calc' };
   document.querySelectorAll('[data-troca]').forEach(el => { const dono = el.closest('section').id.slice(4); el.innerHTML = TROCAS[el.dataset.troca].map(([a, t]) => `<button type="button" data-ir="${a}" aria-pressed="${a === dono}">${t}</button>`).join(''); });
   pintarLista();
   function abrir(a) {
