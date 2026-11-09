@@ -51,6 +51,8 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
   writeFileSync(join(out, 'bolso-dados.json'), JSON.stringify({
     g: D.GLOSSARIO.map(x => ({ id: x.id, t: x.t, en: x.en, tema: x.tema, def: x.def, exp: x.exp, f: x.f, norma: x.norma, x: GLOSSARIO_EXTRA[x.id] })),
     c: CHECKS,
+    m: D.CATALOG.map(m => ({ id: m.id.replace(/^mat-/, ''), n: m.name, c: m.cat, a: m.apps || '', d: m.desc || '', f: [...new Set((D.MANUFACTURERS[m.id] || []).map(f => f[0].split(' (')[0]))].slice(0, 8) })),
+    s: (({ ref, ufs, ins }) => ({ ref, ufs, ins }))(vm.runInNewContext(readFileSync(join(src, 'sinapi-precos.js'), 'utf8') + ';SINAPI_PRECOS')),
     n: D.NORM_GROUPS.flatMap(g => g.normas).filter(n => !vistas.has(n.code) && vistas.add(n.code)).map(n => ({ code: n.code, org: n.org, title: n.title, note: n.note })),
   }));
 }

@@ -57,6 +57,18 @@
   .item:first-of-type { border-top: 0; }
   .item input { flex: none; width: 24px; height: 24px; min-height: 0; margin: 0; accent-color: #f2a03d; }
   .item:has(input:checked) span { color: var(--suave); text-decoration: line-through; }
+  .acao--link { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+  .mini { min-height: 38px; margin-top: 8px; padding: 0 14px; border: 1px solid var(--ciano); border-radius: 9px; background: none; color: var(--ciano); font: inherit; font-size: .86rem; font-weight: 600; cursor: pointer; }
+  .preco { display: flex; justify-content: space-between; gap: 10px; margin-top: 6px; }
+  .preco b { color: var(--laranja); white-space: nowrap; }
+  .linha-lista { padding: 11px 2px; border-top: 1px solid var(--linha); }
+  .linha-lista:first-child { border-top: 0; }
+  .linha-lista p { margin: 0 0 6px; font-size: .93rem; }
+  .linha-lista div { display: flex; align-items: center; gap: 8px; color: var(--suave); font-size: .86rem; }
+  .linha-lista input { width: 92px; min-height: 42px; }
+  .linha-lista .rem { margin: 0 0 0 auto; border-color: var(--linha); color: var(--suave); }
+  .total { display: flex; justify-content: space-between; gap: 12px; margin: 10px 0 0; padding-top: 10px; border-top: 1px solid var(--linha); }
+  .total b { color: var(--laranja); }
   .progresso { height: 8px; margin: 10px 0 2px; border-radius: 99px; background: var(--fundo); overflow: hidden; }
   .progresso i { display: block; height: 100%; background: var(--laranja); }
   .grupos button { flex: 1; min-height: 44px; border: 1px solid var(--linha); border-radius: 10px; background: transparent; color: var(--texto); font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; }
@@ -149,9 +161,27 @@
     <button type="button" class="acao" id="shareCalc">Compartilhar resultado</button>
     <p class="nota" id="calcNota"></p>
     <p class="nota">Em revisão pela equipe Pipesystem.</p>
+    <a class="acao acao--leve acao--link" href="/dimensionamento">Abrir o Dimensionamento completo no portal</a>
+  </section>
+
+  <section id="aba-lista" hidden>
+    <div class="grupos" data-troca="obra"></div>
+    <h2>Lista de materiais</h2>
+    <p class="ajuda">Monte a lista mesmo sem sinal. Adicione itens em Consulta ou digite abaixo.</p>
+    <div class="cartao">
+      <div class="campo"><label for="novoItem">Novo item</label><input id="novoItem" type="text" autocomplete="off" placeholder="Ex.: Joelho 90° PVC 25 mm"></div>
+      <div class="duas"><div><label for="novoQtd">Quantidade</label><input id="novoQtd" type="text" inputmode="decimal" value="1" autocomplete="off"></div><div><label for="novoUn">Unidade</label><select id="novoUn"><option>un</option><option>m</option><option>barra</option><option>cj</option><option>kg</option></select></div></div>
+      <button type="button" class="acao" id="addItem" style="margin:12px 0 0">Adicionar</button>
+    </div>
+    <div class="cartao" id="itens"></div>
+    <button type="button" class="acao" id="enviarCot">Pedir cotação no PipeSystem</button>
+    <button type="button" class="acao" id="shareLista">Compartilhar lista</button>
+    <button type="button" class="acao acao--leve" id="limparLista">Apagar lista</button>
+    <p class="nota" id="listaAviso" role="status"></p>
   </section>
 
   <section id="aba-obra" hidden>
+    <div class="grupos" data-troca="obra"></div>
     <h2>Checklists de obra</h2>
     <p class="ajuda">As marcações ficam guardadas neste aparelho, mesmo sem internet.</p>
     <div class="cartao"><label for="ck">Checklist</label><select id="ck"></select>
@@ -163,7 +193,7 @@
   </section>
 
   <section id="aba-termos" hidden>
-    <div class="grupos"><button type="button" data-ir="termos" aria-pressed="true">Glossário</button><button type="button" data-ir="normas" aria-pressed="false">Normas</button></div>
+    <div class="grupos" data-troca="consulta"></div>
     <h2>Glossário técnico</h2>
     <p class="ajuda" id="termosInfo">Carregando…</p>
     <div class="cartao"><label for="bTermo">Buscar termo</label><input id="bTermo" type="search" autocomplete="off" placeholder="Ex.: cavitação"></div>
@@ -171,12 +201,29 @@
   </section>
 
   <section id="aba-normas" hidden>
-    <div class="grupos"><button type="button" data-ir="termos" aria-pressed="false">Glossário</button><button type="button" data-ir="normas" aria-pressed="true">Normas</button></div>
+    <div class="grupos" data-troca="consulta"></div>
     <h2>Normas técnicas</h2>
     <p class="ajuda" id="normasInfo">Carregando…</p>
     <div class="cartao"><label for="bNorma">Buscar norma</label><input id="bNorma" type="search" autocomplete="off" placeholder="Ex.: NBR 5626 ou sprinkler"></div>
     <div class="cartao" id="listaNormas"></div>
     <p class="nota">Resumos do PipeSystem. O texto completo das normas é vendido pelas entidades que as publicam.</p>
+  </section>
+
+  <section id="aba-materiais" hidden>
+    <div class="grupos" data-troca="consulta"></div>
+    <h2>Materiais</h2>
+    <p class="ajuda" id="matInfo">Carregando…</p>
+    <div class="cartao"><label for="bMat">Buscar material</label><input id="bMat" type="search" autocomplete="off" placeholder="Ex.: válvula de retenção"></div>
+    <div class="cartao" id="listaMat"></div>
+  </section>
+
+  <section id="aba-precos" hidden>
+    <div class="grupos" data-troca="consulta"></div>
+    <h2>Preços SINAPI</h2>
+    <p class="ajuda" id="precoInfo">Carregando…</p>
+    <div class="cartao"><div class="duas"><div><label for="uf">Estado</label><select id="uf"></select></div><div><label for="bPreco">Buscar insumo</label><input id="bPreco" type="search" autocomplete="off" placeholder="Ex.: joelho PVC"></div></div></div>
+    <div class="cartao" id="listaPreco"></div>
+    <p class="nota">Preço de referência da Caixa, sem desoneração, na capital do estado e sem BDI. Não é preço de venda: cote com fornecedores.</p>
   </section>
 </main>
 
@@ -255,7 +302,17 @@
 
   // Calculadoras: campos [id, rótulo, valor inicial, opções] e função que devolve os resultados
   const Q = ['q', 'Vazão (L/s)', 1], D = ['d', 'Diâmetro interno (mm)', 25];
+  const PVC_DI = [[20, '1/2"', 17], [25, '3/4"', 21.6], [32, '1"', 27.8], [40, '1 1/4"', 35.2], [50, '1 1/2"', 44], [60, '2"', 53.4], [75, '2 1/2"', 66.6], [85, '3"', 75.6], [110, '4"', 97.8]];
   const CALCS = [
+    { t: 'Dimensionamento resumido', c: [['b', 'Bacias sanitárias com caixa', 1], ['l', 'Lavatórios', 1], ['ce', 'Chuveiros elétricos', 1], ['cq', 'Chuveiros de água aquecida', 0], ['p', 'Pias de cozinha', 1], ['ta', 'Tanques', 1], ['ma', 'Máquinas de lavar roupa', 1], ['g', 'Pessoas atendidas', 4], ['co', 'Consumo (L por pessoa por dia)', 200], ['di', 'Dias de reserva', 2]],
+      f: v => {
+        const P = v.b * .3 + v.l * .3 + v.ce * .1 + v.cq * .4 + v.p * .7 + v.ta * .7 + v.ma * 1, q = .3 * Math.sqrt(P);
+        const vel = d => q / 1000 / (Math.PI * (d / 1000) ** 2 / 4), tubo = PVC_DI.find(x => vel(x[2]) <= 3);
+        const U = v.b * 6 + v.l + (v.ce + v.cq) * 2 + v.p * 3 + v.ta * 3 + v.ma * 3;
+        const dn = U === 0 ? '—' : U > 160 ? 'Acima de DN 100: use o completo' : 'DN ' + (v.b > 0 || U > 20 ? 100 : U > 6 ? 75 : U > 3 ? 50 : 40);
+        return [['Peso total', num(P, 1)], ['Vazão de água fria', num(q) + ' L/s'], ['PVC soldável (mínimo por velocidade)', P === 0 ? '—' : tubo ? `${tubo[0]} mm (${tubo[1]}) · ${num(vel(tubo[2]), 1)} m/s` : 'Acima de 110 mm'], ['Contribuição de esgoto', num(U, 0) + ' UHC'], ['Ramal de esgoto único', dn], ['Reservatório', num(v.g * v.co * v.di, 0) + ' L']];
+      },
+      n: 'Pré-dimensionamento de um ramal. Vazão Q = 0,3√ΣP (NBR 5626) e V ≤ 3 m/s; esgoto pela NBR 8160. Não verifica pressão nem perda de carga.' },
     { t: 'Velocidade da água', c: [Q, D], f: v => [['Velocidade', num(v.q / 1000 / (Math.PI * (v.d / 1000) ** 2 / 4)) + ' m/s']],
       n: 'V = Q / A. Em água fria predial, a referência usual é de até 3 m/s.' },
     { t: 'Perda de carga (Hazen-Williams)', c: [Q, D, ['l', 'Comprimento (m)', 50], ['C', 'Material', 140, [['PVC e plásticos (C 140)', 140], ['Cobre (C 130)', 130], ['Aço novo (C 120)', 120], ['Aço usado (C 100)', 100]]]],
@@ -300,6 +357,7 @@
 
   // Glossário e normas: arquivo gerado no build e guardado no aparelho
   const sem = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const casa = (base, busca) => sem(busca).split(/\s+/).filter(Boolean).every(p => base.includes(p));   // todas as palavras, em qualquer ordem
   const limite = 40;
   const lista = (el, itens, html) => { el.innerHTML = itens.length ? itens.slice(0, limite).map(html).join('') + (itens.length > limite ? `<p class="nota">Mostrando ${limite} de ${itens.length}. Refine a busca.</p>` : '') : '<p class="nota">Nada encontrado.</p>'; };
   const htmlTermo = x => `<details><summary>${x.t}<small>${x.tema}</small></summary><p>${x.def}</p>${x.exp ? `<p>${x.exp}</p>` : ''}${x.f ? `<p class="formula">${x.f[0]}<small>${x.f[1]}</small></p>` : ''}${x.x ? extra(x.x) : ''}${x.norma ? `<p>Norma: ${x.norma}</p>` : ''}<p><a href="/glossario/${x.id}">Ver no portal</a></p></details>`;
@@ -308,8 +366,8 @@
   fetch('/bolso-dados.json').then(r => r.json()).then(d => {
     d.g.forEach(x => { x.b = sem(x.t + ' ' + x.en + ' ' + x.tema + ' ' + x.def); });
     d.n.forEach(x => { x.b = sem(x.code + ' ' + x.title + ' ' + (x.note || '')); });
-    const fT = () => { const q = sem($('bTermo').value.trim()); lista($('listaTermos'), d.g.filter(x => x.b.includes(q)), htmlTermo); };
-    const fN = () => { const q = sem($('bNorma').value.trim()); lista($('listaNormas'), d.n.filter(x => x.b.includes(q)), htmlNorma); };
+    const fT = () => lista($('listaTermos'), d.g.filter(x => casa(x.b, $('bTermo').value)), htmlTermo);
+    const fN = () => lista($('listaNormas'), d.n.filter(x => casa(x.b, $('bNorma').value)), htmlNorma);
     $('termosInfo').textContent = d.g.length + ' termos, disponíveis também sem internet.';
     $('normasInfo').textContent = d.n.length + ' normas resumidas, disponíveis também sem internet.';
     $('bTermo').addEventListener('input', fT); $('bNorma').addEventListener('input', fN);
@@ -424,10 +482,77 @@
     ckDesenha(); pintarInicio();
   }).catch(() => {});
 
-  // Abas
+  // Lista de materiais: guardada no aparelho; itens do SINAPI levam o código para somar o valor de referência
+  let lista_ = ler_('lista', []), SIN = null;
+  const salvarLista = () => { gravar('lista', lista_); pintarLista(); };
+  const aviso = t => { $('listaAviso').textContent = t; };
+  const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const ufIdx = () => SIN ? SIN.ufs.indexOf($('uf').value) : -1;
+  const precoDe = c => { const x = SIN && SIN.ins[c]; return x ? x[2 + ufIdx()] : null; };
+  function pintarLista() {
+    const tem = lista_.length;
+    let total = 0, com = 0;
+    const html = lista_.map((it, i) => {
+      const p = it.c ? precoDe(it.c) : null;
+      if (p) { total += p * ler(it.q); com++; }
+      return `<div class="linha-lista"><p>${esc(it.n)}</p><div><input type="text" inputmode="decimal" aria-label="Quantidade de ${esc(it.n)}" data-q="${i}" value="${esc(it.q)}"><span>${esc(it.u)}${p ? ' · ' + brl(p) : ''}</span><button type="button" class="mini rem" data-rem="${i}">Remover</button></div></div>`;
+    }).join('');
+    $('itens').innerHTML = tem ? html + (com ? `<p class="total"><span>Referência SINAPI ${esc($('uf').value)} (${com} de ${tem} itens, sem BDI)</span><b>${brl(total)}</b></p>` : '') : '<p class="vazio">Lista vazia.</p>';
+    ['enviarCot', 'shareLista', 'limparLista'].forEach(id => { $(id).hidden = !tem; });
+  }
+  const adicionar = (n, q, u, c) => {
+    const j = lista_.find(x => x.n === n);
+    if (j) j.q = String(ler(j.q) + ler(q)).replace('.', ','); else lista_.push({ n, q: String(q).replace('.', ','), u, c });
+    salvarLista();
+  };
+  const textoLista = () => lista_.map(it => `- ${it.q} ${it.u} de ${it.n}`).join('\n');
+  $('addItem').addEventListener('click', () => {
+    const n = $('novoItem').value.trim();
+    if (!n || isNaN(ler($('novoQtd').value))) return aviso('Informe o item e a quantidade.');
+    adicionar(n, $('novoQtd').value, $('novoUn').value); $('novoItem').value = ''; $('novoQtd').value = '1'; aviso('');
+  });
+  $('itens').addEventListener('input', e => { if (e.target.dataset.q !== undefined) { lista_[+e.target.dataset.q].q = e.target.value; gravar('lista', lista_); } });
+  $('itens').addEventListener('change', () => pintarLista());
+  $('itens').addEventListener('click', e => { if (e.target.dataset.rem !== undefined) { lista_.splice(+e.target.dataset.rem, 1); salvarLista(); } });
+  $('limparLista').addEventListener('click', () => { if (confirm('Apagar toda a lista?')) { lista_ = []; salvarLista(); aviso(''); } });
+  $('shareLista').addEventListener('click', () => compartilhar(`Lista de materiais\n${textoLista()}\n\nPipeSystem de Bolso: https://www.pipesystem.com.br/bolso`));
+  $('enviarCot').addEventListener('click', () => {
+    if (!navigator.onLine) return aviso('Sem internet: a lista fica guardada. Envie quando a conexão voltar.');
+    const url = '/?assunto=' + encodeURIComponent('Cotação de materiais') + '&msg=' + encodeURIComponent('Cotação de materiais:\n' + textoLista() + '\n\nLocal de entrega: ') + '#contato';
+    if (url.length > 6000) return aviso('A lista é longa demais para o formulário. Use Compartilhar lista.');
+    location.href = url;
+  });
+
+  // Materiais e preços
+  const htmlMat = m => `<details><summary>${m.n}<small>${m.c}</small></summary><p>${m.d}</p>${m.a ? `<p>Aplicações: ${m.a}</p>` : ''}${m.f.length ? `<p>Fabricantes: ${m.f.join(', ')}</p>` : ''}<p><a href="/materiais/${m.id}">Ver ficha completa no portal</a></p><button type="button" class="mini" data-mat="${esc(m.n)}">Adicionar à lista</button></details>`;
+  fetch('/bolso-dados.json').then(r => r.json()).then(d => {
+    SIN = d.s;
+    d.m.forEach(x => { x.b = sem(x.n + ' ' + x.c + ' ' + x.a + ' ' + x.d + ' ' + x.f.join(' ')); });
+    const ins = Object.entries(SIN.ins).map(([c, x]) => ({ c, n: x[0], u: x[1], b: sem(x[0] + ' ' + c) }));
+    $('uf').innerHTML = SIN.ufs.map(u => `<option>${u}</option>`).join('');
+    $('uf').value = ler_('uf', 'SC');
+    $('matInfo').textContent = d.m.length + ' materiais, disponíveis também sem internet.';
+    $('precoInfo').textContent = `${ins.length} insumos. Referência SINAPI ${SIN.ref}, disponível também sem internet.`;
+    const fM = () => lista($('listaMat'), d.m.filter(x => casa(x.b, $('bMat').value)), htmlMat);
+    const fP = () => {
+      const t = sem($('bPreco').value.trim()).split(/\s+/).filter(Boolean);
+      lista($('listaPreco'), ins.filter(x => t.every(p => x.b.includes(p)) && precoDe(x.c)), x => `<details open><summary>${esc(x.n)}</summary><div class="preco"><span>${esc(x.u)} · código ${x.c}</span><b>${brl(precoDe(x.c))}</b></div><button type="button" class="mini" data-ins="${x.c}">Adicionar à lista</button></details>`);
+    };
+    $('bMat').addEventListener('input', fM); $('bPreco').addEventListener('input', fP);
+    $('uf').addEventListener('change', () => { gravar('uf', $('uf').value); fP(); pintarLista(); });
+    $('listaMat').addEventListener('click', e => { if (e.target.dataset.mat) { adicionar(e.target.dataset.mat, 1, 'un'); e.target.textContent = 'Adicionado'; } });
+    $('listaPreco').addEventListener('click', e => { const c = e.target.dataset.ins; if (c) { adicionar(SIN.ins[c][0], 1, SIN.ins[c][1], c); e.target.textContent = 'Adicionado'; } });
+    fM(); fP(); pintarLista();
+  }).catch(() => {});
+  pintarLista();
+
+  // Abas e abas internas
+  const TROCAS = { consulta: [['termos', 'Glossário'], ['normas', 'Normas'], ['materiais', 'Materiais'], ['precos', 'Preços']], obra: [['obra', 'Checklists'], ['lista', 'Lista']] };
+  const NAV_DE = { normas: 'termos', materiais: 'termos', precos: 'termos', lista: 'obra' };
+  document.querySelectorAll('[data-troca]').forEach(el => { const dono = el.closest('section').id.slice(4); el.innerHTML = TROCAS[el.dataset.troca].map(([a, t]) => `<button type="button" data-ir="${a}" aria-pressed="${a === dono}">${t}</button>`).join(''); });
   function abrir(a) {
     document.querySelectorAll('main section').forEach(s => { s.hidden = s.id !== 'aba-' + a; });
-    const alvo = a === 'normas' ? 'termos' : a;
+    const alvo = NAV_DE[a] || a;
     document.querySelectorAll('nav button').forEach(b => b.dataset.aba === alvo ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
     if (a === 'inicio') pintarInicio();
     window.scrollTo(0, 0);
