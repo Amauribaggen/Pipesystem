@@ -90,7 +90,7 @@
   tr.atual td { background: rgba(242, 160, 61, .18); font-weight: 700; }
   .nota { margin: 12px 0 0; color: var(--suave); font-size: .78rem; }
   nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; padding-bottom: env(safe-area-inset-bottom); background: var(--cartao); border-top: 1px solid var(--linha); }
-  nav button { flex: 1; min-width: 0; min-height: 62px; padding: 0 2px; border: 0; background: none; color: var(--suave); font: inherit; font-size: .72rem; font-weight: 600; cursor: pointer; }
+  nav button { flex: 1 1 0; min-width: 0; min-height: 62px; padding: 0; overflow: hidden; white-space: nowrap; letter-spacing: -.01em; border: 0; background: none; color: var(--suave); font: inherit; font-size: clamp(.6rem, 2.85vw, .78rem); font-weight: 600; cursor: pointer; }
   nav button[aria-current="page"] { color: var(--ciano); box-shadow: inset 0 3px 0 var(--ciano); }
   #estado { display: none; padding: 7px 16px; background: var(--laranja); color: #0a2240; font-size: .82rem; font-weight: 600; text-align: center; }
   #estado.ver { display: block; }
