@@ -776,11 +776,12 @@
     itens.sort((a, b) => b.id - a.id);
     $('dLista').innerHTML = itens.length ? itens.map(x => { let img = ''; if (x.foto) { const u = URL.createObjectURL(new Blob([x.foto], { type: 'image/jpeg' })); urlsDiario.push(u); img = `<img src="${u}" alt="Foto do diário">`; } return `<div class="entrada"><small>${dataBR(x.id)}</small>${x.tag ? `<p><b>${esc(x.tag)}</b></p>` : ''}${x.texto ? `<p>${esc(x.texto)}</p>` : ''}${img}<button type="button" class="mini" data-apaga="${x.id}">Apagar</button></div>`; }).join('') : '<p class="vazio">Nenhuma anotação ainda.</p>';
   }
-  const dGrava = async reg => { await dbFaz('readwrite', s => s.put({ id: Date.now(), ...reg })); await pintarDiario(); };
+  function pdfVelho() { pdfPronto = null; $('dShare').hidden = true; }   // qualquer mudança exige gerar o relatório de novo
+  const dGrava = async reg => { await dbFaz('readwrite', s => s.put({ id: Date.now(), ...reg })); pdfVelho(); await pintarDiario(); };
   let fotoNova = null;
   $('dObra').value = ler_('obra', ''); $('dEmpresa').value = ler_('empresa', '');
-  $('dObra').addEventListener('input', () => gravar('obra', $('dObra').value));
-  $('dEmpresa').addEventListener('input', () => gravar('empresa', $('dEmpresa').value));
+  $('dObra').addEventListener('input', () => { gravar('obra', $('dObra').value); pdfVelho(); });
+  $('dEmpresa').addEventListener('input', () => { gravar('empresa', $('dEmpresa').value); pdfVelho(); });
   $('dFoto').addEventListener('change', async () => {
     const a = $('dFoto').files[0]; if (!a) return;
     try { fotoNova = await reduzir(a); $('dPrevia').src = URL.createObjectURL(new Blob([fotoNova.foto], { type: 'image/jpeg' })); $('dPrevia').hidden = false; avisar('Foto anexada. Toque em Salvar no diário.'); } catch (e) { avisar('Não foi possível abrir essa foto.'); }
@@ -791,7 +792,7 @@
     if (!texto && !fotoNova) return avisar('Escreva uma anotação ou anexe uma foto.');
     try { await dGrava({ texto, ...(fotoNova || {}) }); $('dTexto').value = ''; fotoNova = null; $('dPrevia').hidden = true; avisar('Salvo no diário.'); } catch (e) { avisar('Não foi possível salvar. O aparelho pode estar sem espaço.'); }
   });
-  $('dLista').addEventListener('click', async e => { const id = e.target.dataset.apaga; if (id && confirm('Apagar esta anotação?')) { await dbFaz('readwrite', s => s.delete(+id)); pintarDiario(); } });
+  $('dLista').addEventListener('click', async e => { const id = e.target.dataset.apaga; if (id && confirm('Apagar esta anotação?')) { await dbFaz('readwrite', s => s.delete(+id)); pdfVelho(); pintarDiario(); } });
   let fotoItem = null;
   $('ckGrupos').addEventListener('click', e => { if (e.target.dataset.fotock !== undefined) { fotoItem = window.ckTextos[+e.target.dataset.fotock]; $('fotoCk').click(); } });
   $('fotoCk').addEventListener('change', async () => {
@@ -879,6 +880,7 @@
     const alvo = NAV_DE[a] || a;
     document.querySelectorAll('nav button').forEach(b => b.dataset.aba === alvo ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
     if (a === 'inicio') pintarInicio();
+    if (a === 'diario') pdfVelho();   // checklists e lista podem ter mudado nas outras telas
     window.scrollTo(0, 0);
   }
   document.querySelector('nav').addEventListener('click', e => { const b = e.target.closest('[data-aba]'); if (b) abrir(b.dataset.aba); });
