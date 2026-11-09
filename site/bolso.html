@@ -264,7 +264,7 @@
     { t: 'Golpe de aríete (Joukowsky)', c: [['a', 'Material', 1200, [['Aço (a ≈ 1.200 m/s)', 1200], ['PVC (a ≈ 400 m/s)', 400], ['PEAD (a ≈ 300 m/s)', 300]]], ['dv', 'Variação de velocidade (m/s)', 1.5]],
       f: v => { const h = v.a * v.dv / 9.81; return [['Sobrepressão máxima', num(h, 0) + ' mca'], ['Em bar', num(h * .0980665, 1) + ' bar']]; },
       n: 'ΔH = a × ΔV / g, para fechamento mais rápido que o período crítico. Celeridade aproximada.' },
-    { t: 'NPSH disponível', c: [['alt', 'Altitude do local (m)', 0], ['pv', 'Temperatura da água', .24, [['20 °C', .24], ['40 °C', .75], ['60 °C', 2.03], ['80 °C', 4.83]]], ['hs', 'Nível abaixo do eixo da bomba (m; negativo se acima)', 3], ['per', 'Perda na sucção (mca)', 1]],
+    { t: 'NPSH disponível', c: [['alt', 'Altitude do local (m)', 0], ['pv', 'Temperatura da água', .24, [['20 °C', .24], ['40 °C', .76], ['60 °C', 2.07], ['80 °C', 4.97]]], ['hs', 'Nível abaixo do eixo da bomba (m; negativo se acima)', 3], ['per', 'Perda na sucção (mca)', 1]],
       f: v => { const pa = 10.33 * (1 - 2.2558e-5 * v.alt) ** 5.2559; return [['Pressão atmosférica', num(pa) + ' mca'], ['NPSH disponível', num(pa - v.pv - v.hs - v.per) + ' mca']]; },
       n: 'Compare com o NPSH requerido da curva da bomba, com folga (é comum ao menos 0,5 m).' },
     { t: 'Potência da bomba', c: [Q, ['h', 'Altura manométrica (mca)', 30], ['e', 'Rendimento (%)', 65]],
@@ -274,7 +274,7 @@
       n: 'NBR 8160: mínima de 2% até DN 75 e de 1% a partir de DN 100.' },
     { t: 'Vazão de chuva', c: [['a', 'Área de contribuição (m²)', 200], ['i', 'Intensidade (mm/h)', 150]], f: v => { const q = v.a * v.i / 60; return [['Vazão', num(q, 0) + ' L/min'], ['Em L/s', num(q / 60, 1) + ' L/s']]; },
       n: 'NBR 10844: Q = I × A / 60. Use a intensidade da sua região.' },
-    { t: 'Dilatação térmica', c: [['m', 'Material', .15, [['PPR (0,15 mm/m·°C)', .15], ['CPVC (0,065 mm/m·°C)', .065], ['Multicamada (0,025 mm/m·°C)', .025], ['Cobre (0,017 mm/m·°C)', .017], ['Aço carbono (0,012 mm/m·°C)', .012]]], ['l', 'Comprimento (m)', 20], ['t', 'Variação de temperatura (°C)', 50]],
+    { t: 'Dilatação térmica', c: [['m', 'Material', .15, [['PPR (0,15 mm/m·°C)', .15], ['CPVC (0,065 mm/m·°C)', .065], ['Multicamada com alumínio (0,025 mm/m·°C)', .025], ['Cobre (0,017 mm/m·°C)', .017], ['Aço carbono (0,012 mm/m·°C)', .012]]], ['l', 'Comprimento (m)', 20], ['t', 'Variação de temperatura (°C)', 50]],
       f: v => [['Dilatação', num(v.m * v.l * v.t, 1) + ' mm']], n: 'ΔL = α × L × ΔT. Coeficientes aproximados: confira o catálogo do fabricante.' },
   ];
   const ler = s => parseFloat(String(s).replace(',', '.'));

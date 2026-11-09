@@ -3,7 +3,7 @@
 export const GLOSSARIO_EXTRA = {
   cavitacao: {
     pratica: 'Para evitar a cavitação, a energia disponível na sucção (NPSH disponível, ou NPSHd) precisa superar a exigida pela bomba (NPSH requerido, ou NPSHr, informado na curva do fabricante), com folga. O risco cresce com água quente, porque a pressão de vapor sobe, e em altitude, porque a pressão atmosférica cai.',
-    valores: [['Pressão de vapor da água a 20 °C', '≈ 0,24 mca'], ['Pressão de vapor da água a 60 °C', '≈ 2,0 mca'], ['Pressão de vapor da água a 80 °C', '≈ 4,9 mca'], ['Pressão atmosférica ao nível do mar', '≈ 10,3 mca'], ['Pressão atmosférica a 1.000 m de altitude', '≈ 9,2 mca']],
+    valores: [['Pressão de vapor da água a 20 °C', '≈ 0,24 mca'], ['Pressão de vapor da água a 60 °C', '≈ 2,1 mca'], ['Pressão de vapor da água a 80 °C', '≈ 5,0 mca'], ['Pressão atmosférica ao nível do mar', '≈ 10,3 mca'], ['Pressão atmosférica a 1.000 m de altitude', '≈ 9,2 mca']],
     exemplo: 'Bomba ao nível do mar, água a 20 °C, nível do líquido 3 m abaixo do eixo e 1,0 m de perda de carga na sucção: NPSHd = 10,3 − 0,24 − 3,0 − 1,0 ≈ 6,1 mca. Essa bomba serve se o NPSHr no ponto de operação for menor que esse valor, com margem de segurança (é comum adotar ao menos 0,5 m).',
     erros: ['Usar redução concêntrica na sucção horizontal, o que forma bolsa de ar; o indicado é a excêntrica, com o lado reto para cima.', 'Regular a vazão estrangulando a válvula da sucção; o ajuste deve ser feito no recalque.', 'Instalar curva logo na entrada da bomba, o que desequilibra o fluxo no rotor.', 'Calcular o NPSHd com água fria quando o sistema trabalha com água quente.'],
   },
@@ -26,7 +26,7 @@ export const GLOSSARIO_EXTRA = {
   },
   'bomba-jockey': {
     pratica: 'Sem a jockey, qualquer microvazamento derrubaria a pressão da rede e acionaria a bomba principal à toa. Ela é pequena, de baixa vazão e alta pressão, e parte antes da principal. O escalonamento das pressões garante essa ordem de partida. Partidas muito frequentes costumam indicar vazamento na rede, e o caminho é localizá-lo, não trocar a bomba.',
-    valores: [['Parada da jockey (referência do anexo da NFPA 20)', 'pressão de fechamento da bomba principal + pressão estática mínima de sucção'], ['Partida da jockey', 'cerca de 0,7 bar (10 psi) abaixo da parada'], ['Partida da bomba principal', 'cerca de 0,35 bar (5 psi) abaixo da partida da jockey'], ['Vazão', 'suficiente para repor os vazamentos admissíveis da rede, sem atender a um hidrante ou sprinkler aberto']],
+    valores: [['Parada da jockey (referência do anexo da NFPA 20)', 'pressão de fechamento da bomba principal + pressão estática mínima de sucção'], ['Partida da jockey (prática comum; confira o projeto)', 'cerca de 0,7 bar (10 psi) abaixo da parada'], ['Partida da bomba principal (prática comum; confira o projeto)', 'cerca de 0,35 bar (5 psi) abaixo da partida da jockey'], ['Vazão', 'repor os vazamentos admissíveis em até 10 minutos ou 1 gpm, o que for maior, sem atender a um hidrante ou sprinkler aberto']],
     erros: ['Ajustar os pressostatos com diferença pequena, fazendo a principal partir junto com a jockey.', 'Superdimensionar a jockey a ponto de ela mascarar a abertura de um sprinkler.', 'Ignorar um número alto de partidas por dia.', 'Não testar periodicamente a sequência de partida.'],
   },
   'valvula-redutora': {
@@ -47,8 +47,8 @@ export const GLOSSARIO_EXTRA = {
   },
   'comprimento-equivalente': {
     pratica: 'O método transforma cada conexão em metros de tubo reto, e a soma entra no cálculo da perda de carga como comprimento virtual. Os valores variam com material, diâmetro e tipo de peça, por isso devem vir da tabela da norma ou do fabricante. Em trechos curtos e com muitas conexões, como barriletes e casas de bombas, as peças podem pesar mais do que o próprio tubo.',
-    valores: [['Joelho 90° PVC soldável DN 25', 'da ordem de 1,5 m'], ['Tê com saída lateral PVC soldável DN 25', 'da ordem de 3,1 m'], ['Tê de passagem direta PVC soldável DN 25', 'da ordem de 0,9 m'], ['Registro de gaveta aberto DN 25', 'da ordem de 0,3 m']],
-    exemplo: 'Trecho de 20 m em PVC DN 25 com 4 joelhos de 90°, 1 tê de saída lateral e 2 registros de gaveta: 20 + (4 × 1,5) + 3,1 + (2 × 0,3) = 29,7 m. A perda de carga é calculada com 29,7 m, e não com 20 m.',
+    valores: [['Joelho 90° em PVC soldável 25 mm (3/4")', 'da ordem de 1,2 m'], ['Tê com saída lateral em PVC soldável 25 mm', 'da ordem de 2,4 m'], ['Tê de passagem direta em PVC soldável 25 mm', 'da ordem de 0,8 m'], ['Registro de gaveta aberto 25 mm', 'da ordem de 0,2 m']],
+    exemplo: 'Trecho de 20 m em PVC soldável 25 mm com 4 joelhos de 90°, 1 tê de saída lateral e 2 registros de gaveta: 20 + (4 × 1,2) + 2,4 + (2 × 0,2) = 27,6 m. A perda de carga é calculada com 27,6 m, e não com 20 m.',
     erros: ['Usar a tabela de um material em outro (PVC em aço, por exemplo).', 'Considerar um registro de globo como se fosse de gaveta, que tem perda muito menor.', 'Contar apenas o tubo em trechos com muitas conexões.'],
   },
   declividade: {
@@ -70,13 +70,13 @@ export const GLOSSARIO_EXTRA = {
   },
   'pressao-dinamica': {
     pratica: 'Dois pontos podem ter a mesma pressão estática e desempenhos bem diferentes, porque a perda de carga depende do caminho e da vazão. O caso mais crítico costuma ser o ponto mais alto e mais distante do reservatório, com outros aparelhos em uso. Medir exige um manômetro no ponto, com a água correndo.',
-    valores: [['Mínima nos pontos de utilização (confira a edição vigente da NBR 5626)', '1 mca'], ['Válvula de descarga (referência usual)', 'cerca de 1,5 mca, conforme o modelo'], ['Duchas e aquecedores', 'muitas vezes exigem mais; ver o manual do fabricante']],
+    valores: [['Mínima nos pontos de utilização (confira a edição vigente da NBR 5626)', '1 mca'], ['Válvula de descarga', 'conforme o modelo; ver o manual do fabricante'], ['Duchas e aquecedores', 'muitas vezes exigem mais; ver o manual do fabricante']],
     exemplo: 'Chuveiro 6 m abaixo do fundo do reservatório, com 2,5 mca de perda de carga no caminho: pressão dinâmica = 6 − 2,5 = 3,5 mca.',
     erros: ['Medir com o registro fechado, o que mostra só a pressão estática.', 'Calcular considerando apenas um aparelho aberto em ramais de uso simultâneo.', 'Não verificar o aquecedor, cuja perda interna pode ser alta.'],
   },
   uhc: {
     pratica: 'As UHC já consideram que os aparelhos não descarregam todos ao mesmo tempo, por isso não são litros por segundo. Além da soma, cada aparelho tem um diâmetro mínimo próprio de ramal. A tabela usada muda conforme o trecho: ramal, tubo de queda ou coletor.',
-    valores: [['Bacia sanitária', '6 UHC'], ['Chuveiro residencial', '2 UHC'], ['Lavatório residencial', '1 UHC'], ['Pia de cozinha residencial', '3 UHC'], ['Ramal DN 50 (limite da NBR 8160)', '6 UHC'], ['Ramal DN 75', '20 UHC'], ['Ramal DN 100', '160 UHC']],
+    valores: [['Bacia sanitária', '6 UHC'], ['Chuveiro residencial', '2 UHC'], ['Lavatório residencial', '1 UHC'], ['Lavatório de uso geral', '2 UHC'], ['Pia de cozinha residencial', '3 UHC'], ['Ramal DN 50 (limite da NBR 8160)', '6 UHC'], ['Ramal DN 75', '20 UHC'], ['Ramal DN 100', '160 UHC']],
     exemplo: 'Banheiro com bacia (6), lavatório (1) e chuveiro (2) soma 9 UHC. Pela soma, caberia em DN 75, mas o ramal que recebe a bacia deve ser DN 100, porque esse é o mínimo da peça.',
     erros: ['Dimensionar só pela soma e esquecer o diâmetro mínimo de cada aparelho.', 'Confundir UHC com o peso relativo usado na água fria.', 'Ler a tabela de ramais para dimensionar o tubo de queda.'],
   },
@@ -88,7 +88,7 @@ export const GLOSSARIO_EXTRA = {
   },
   'dilatacao-termica': {
     pratica: 'Se o tubo não tiver como se movimentar, o esforço vai para conexões, suportes e paredes. Em trechos retos longos, são usadas liras, braços flexíveis, curvas de expansão ou juntas de dilatação. Os pontos fixos dividem o trecho e direcionam o movimento para os compensadores, e os demais suportes precisam permitir o deslizamento.',
-    valores: [['Aço carbono', '≈ 0,012 mm/m·°C'], ['Cobre', '≈ 0,017 mm/m·°C'], ['Tubos plásticos multicamada com alumínio', '≈ 0,025 mm/m·°C'], ['CPVC', '≈ 0,06 a 0,07 mm/m·°C'], ['PPR', '≈ 0,15 mm/m·°C']],
+    valores: [['Aço carbono', '≈ 0,012 mm/m·°C'], ['Cobre', '≈ 0,017 mm/m·°C'], ['Tubos multicamada com alumínio', '≈ 0,025 mm/m·°C; varia por fabricante'], ['CPVC', '≈ 0,06 a 0,07 mm/m·°C'], ['PPR', '≈ 0,15 mm/m·°C']],
     exemplo: 'Trecho de 20 m com variação de 50 °C: em PPR, ΔL = 0,15 × 20 × 50 = 150 mm; em cobre, 0,017 × 20 × 50 ≈ 17 mm.',
     erros: ['Embutir tubo rígido sem espaço ou proteção para o movimento.', 'Colocar todos os suportes fixos, impedindo a dilatação.', 'Usar a variação entre a água e o ambiente sem considerar a temperatura de montagem.'],
   },
