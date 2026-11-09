@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PipeSystem de Bolso (protótipo)</title>
+<meta name="description" content="Conversor de unidades e tabela de tubos para usar na obra, inclusive sem internet.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#061527">
+<link rel="manifest" href="/bolso.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PipeSystem">
+<style>
+  :root { --fundo: #061527; --cartao: #0f2845; --linha: rgba(255, 255, 255, .13); --texto: #eef4fa; --suave: #9fb4cc; --ciano: #7ee7f2; --laranja: #f2a03d; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100vh; background: var(--fundo); color: var(--texto); font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 10px; padding: calc(10px + env(safe-area-inset-top)) 16px 10px; background: var(--fundo); border-bottom: 1px solid var(--linha); }
+  header img { width: 30px; height: 30px; border-radius: 7px; }
+  header h1 { flex: 1; margin: 0; font-size: 1.05rem; }
+  .selo { padding: 3px 9px; border-radius: 99px; background: var(--laranja); color: #0a2240; font-size: .7rem; font-weight: 700; white-space: nowrap; }
+  main { max-width: 640px; margin: 0 auto; padding: 16px; }
+  section[hidden] { display: none; }
+  h2 { margin: 0 0 4px; font-size: 1.2rem; }
+  .ajuda { margin: 0 0 14px; color: var(--suave); font-size: .88rem; }
+  .cartao { padding: 14px; border: 1px solid var(--linha); border-radius: 14px; background: var(--cartao); margin-bottom: 14px; }
+  label { display: block; margin-bottom: 4px; color: var(--suave); font-size: .82rem; }
+  input, select { width: 100%; min-height: 48px; padding: 8px 12px; border: 1px solid var(--linha); border-radius: 10px; background: var(--fundo); color: var(--texto); font: inherit; font-size: 1.05rem; }
+  input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--ciano); outline-offset: 1px; }
+  .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grupos { display: flex; gap: 6px; margin-bottom: 12px; }
+  .grupos button { flex: 1; min-height: 44px; border: 1px solid var(--linha); border-radius: 10px; background: transparent; color: var(--texto); font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; }
+  .grupos button[aria-pressed="true"] { background: var(--ciano); border-color: var(--ciano); color: #0a2240; }
+  .result { margin: 0; padding: 0; list-style: none; }
+  .result li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 11px 2px; border-top: 1px solid var(--linha); }
+  .result li:first-child { border-top: 0; }
+  .result span { color: var(--suave); }
+  .result b { font-size: 1.15rem; font-variant-numeric: tabular-nums; text-align: right; }
+  .rolagem { overflow-x: auto; border: 1px solid var(--linha); border-radius: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; font-variant-numeric: tabular-nums; }
+  th, td { padding: 9px 8px; text-align: right; white-space: nowrap; border-top: 1px solid var(--linha); }
+  thead th { border-top: 0; color: var(--ciano); font-size: .76rem; }
+  th:first-child, td:first-child { text-align: left; }
+  tr.atual td { background: rgba(242, 160, 61, .18); font-weight: 700; }
+  .nota { margin: 12px 0 0; color: var(--suave); font-size: .78rem; }
+  nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; padding-bottom: env(safe-area-inset-bottom); background: var(--cartao); border-top: 1px solid var(--linha); }
+  nav button { flex: 1; min-height: 62px; border: 0; background: none; color: var(--suave); font: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; }
+  nav button[aria-current="page"] { color: var(--ciano); box-shadow: inset 0 3px 0 var(--ciano); }
+  #estado { display: none; padding: 7px 16px; background: var(--laranja); color: #0a2240; font-size: .82rem; font-weight: 600; text-align: center; }
+  #estado.ver { display: block; }
+</style>
+</head>
+<body>
+<header>
+  <img src="/img/icons/icon-192.png" alt="" width="30" height="30">
+  <h1>PipeSystem de Bolso</h1>
+  <span class="selo">Protótipo</span>
+</header>
+<div id="estado" role="status">Sem internet: as ferramentas continuam funcionando.</div>
+
+<main>
+  <section id="aba-conversor">
+    <h2>Conversor de unidades</h2>
+    <p class="ajuda">Digite o valor; os resultados aparecem na hora.</p>
+    <div class="grupos" id="grupos"></div>
+    <div class="cartao">
+      <div class="duas">
+        <div><label for="valor">Valor</label><input id="valor" type="text" inputmode="decimal" value="10" autocomplete="off"></div>
+        <div><label for="de">Unidade</label><select id="de"></select></div>
+      </div>
+    </div>
+    <div class="cartao"><ul class="result" id="saida" aria-live="polite"></ul></div>
+  </section>
+
+  <section id="aba-tubos" hidden>
+    <h2>Tubos de aço por Schedule</h2>
+    <p class="ajuda">Escolha o diâmetro e a espessura para ver as medidas.</p>
+    <div class="cartao">
+      <div class="duas">
+        <div><label for="dn">Diâmetro</label><select id="dn"></select></div>
+        <div><label for="sch">Schedule</label><select id="sch"><option>40</option><option>80</option><option>160</option></select></div>
+      </div>
+    </div>
+    <div class="cartao"><ul class="result" id="medidas" aria-live="polite"></ul></div>
+    <div class="rolagem"><table>
+      <thead><tr><th scope="col">DN (pol)</th><th scope="col">Ext. mm</th><th scope="col">Parede mm</th><th scope="col">Int. mm</th><th scope="col">kg/m</th></tr></thead>
+      <tbody id="tabela"></tbody>
+    </table></div>
+    <p class="nota">Referência: dimensões da ASME B36.10M para tubos de aço carbono. Massa calculada para aço. Em revisão pela equipe Pipesystem: confira o certificado do fabricante antes de usar em projeto.</p>
+  </section>
+</main>
+
+<nav aria-label="Ferramentas">
+  <button type="button" data-aba="conversor" aria-current="page">Conversor</button>
+  <button type="button" data-aba="tubos">Tubos</button>
+</nav>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const num = (v, c = 2) => v.toLocaleString('pt-BR', { maximumFractionDigits: c });
+  const sig = v => {           // até 4 algarismos significativos, sem notação científica
+    if (!isFinite(v)) return '—';
+    if (v === 0) return '0';
+    const a = Math.abs(v), c = a >= 1000 ? 0 : a >= 100 ? 1 : a >= 10 ? 2 : a >= 1 ? 3 : a >= .01 ? 4 : 6;
+    return num(v, c);
+  };
+
+  // Fator de cada unidade para a unidade-base do grupo
+  const GRUPOS = {
+    Pressão: { base: 'kPa', u: { mca: 9.80665, bar: 100, kPa: 1, psi: 6.894757, 'kgf/cm²': 98.0665 } },
+    Vazão: { base: 'L/s', u: { 'L/s': 1, 'L/min': 1 / 60, 'm³/h': 1 / 3.6, 'gpm (EUA)': 3.785412 / 60 } },
+    Comprimento: { base: 'mm', u: { mm: 1, m: 1000, pol: 25.4, pés: 304.8 } },
+  };
+  let grupo = 'Pressão';
+
+  function calcular() {
+    const g = GRUPOS[grupo], v = parseFloat($('valor').value.replace(/\./g, '').replace(',', '.'));
+    const base = v * g.u[$('de').value];
+    $('saida').innerHTML = isNaN(v)
+      ? '<li><span>Digite um número</span></li>'
+      : Object.keys(g.u).filter(u => u !== $('de').value).map(u => `<li><span>${u}</span><b>${sig(base / g.u[u])}</b></li>`).join('');
+  }
+  function montarGrupo() {
+    $('de').innerHTML = Object.keys(GRUPOS[grupo].u).map(u => `<option>${u}</option>`).join('');
+    document.querySelectorAll('#grupos button').forEach(b => b.setAttribute('aria-pressed', b.textContent === grupo));
+    calcular();
+  }
+  $('grupos').innerHTML = Object.keys(GRUPOS).map(g => `<button type="button">${g}</button>`).join('');
+  $('grupos').addEventListener('click', e => { if (e.target.tagName === 'BUTTON') { grupo = e.target.textContent; montarGrupo(); } });
+  $('valor').addEventListener('input', calcular);
+  $('de').addEventListener('change', calcular);
+  montarGrupo();
+
+  // DN, polegadas, diâmetro externo (mm) e espessura (mm) em SCH 40, 80 e 160
+  const TUBOS = [
+    [15, '1/2"', 21.3, 2.77, 3.73, 4.78], [20, '3/4"', 26.7, 2.87, 3.91, 5.56], [25, '1"', 33.4, 3.38, 4.55, 6.35],
+    [32, '1 1/4"', 42.2, 3.56, 4.85, 6.35], [40, '1 1/2"', 48.3, 3.68, 5.08, 7.14], [50, '2"', 60.3, 3.91, 5.54, 8.74],
+    [65, '2 1/2"', 73, 5.16, 7.01, 9.53], [80, '3"', 88.9, 5.49, 7.62, 11.13], [100, '4"', 114.3, 6.02, 8.56, 13.49],
+    [125, '5"', 141.3, 6.55, 9.53, 15.88], [150, '6"', 168.3, 7.11, 10.97, 18.26], [200, '8"', 219.1, 8.18, 12.7, 23.01],
+    [250, '10"', 273, 9.27, 15.09, 28.58], [300, '12"', 323.8, 10.31, 17.48, 33.32],
+  ];
+  const COL = { 40: 3, 80: 4, 160: 5 };
+  const massa = (d, e) => (d - e) * e * 0.02466;     // kg/m, aço carbono
+  $('dn').innerHTML = TUBOS.map((t, i) => `<option value="${i}">DN ${t[0]} (${t[1]})</option>`).join('');
+  $('dn').value = 5;
+
+  function medir() {
+    const t = TUBOS[+$('dn').value], c = COL[$('sch').value], d = t[2], e = t[c], di = d - 2 * e;
+    $('medidas').innerHTML = [['Diâmetro externo', num(d, 1) + ' mm'], ['Parede', num(e) + ' mm'], ['Diâmetro interno', num(di) + ' mm'], ['Área interna', num(Math.PI * di * di / 400, 1) + ' cm²'], ['Massa', num(massa(d, e), 1) + ' kg/m']]
+      .map(([k, v]) => `<li><span>${k}</span><b>${v}</b></li>`).join('');
+    $('tabela').innerHTML = TUBOS.map((x, i) => `<tr${i === +$('dn').value ? ' class="atual"' : ''}><td>${x[0]} (${x[1]})</td><td>${num(x[2], 1)}</td><td>${num(x[c])}</td><td>${num(x[2] - 2 * x[c])}</td><td>${num(massa(x[2], x[c]), 1)}</td></tr>`).join('');
+  }
+  $('dn').addEventListener('change', medir);
+  $('sch').addEventListener('change', medir);
+  medir();
+
+  // Abas
+  document.querySelector('nav').addEventListener('click', e => {
+    const a = e.target.dataset.aba;
+    if (!a) return;
+    document.querySelectorAll('main section').forEach(s => { s.hidden = s.id !== 'aba-' + a; });
+    document.querySelectorAll('nav button').forEach(b => b === e.target ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
+    window.scrollTo(0, 0);
+  });
+
+  // Sem internet
+  const estado = () => $('estado').classList.toggle('ver', !navigator.onLine);
+  addEventListener('online', estado); addEventListener('offline', estado); estado();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/bolso-sw.js', { scope: '/bolso' }).catch(() => {});
+})();
+</script>
+</body>
+</html>
