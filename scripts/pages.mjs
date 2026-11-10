@@ -95,7 +95,7 @@ const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><pa
 // Menu principal das páginas próprias: os mesmos itens, na mesma ordem, do menu da página inicial (site/index.html)
 const MENU = [['/cotacoes', 'Cotações', 'pg-top__hot'], ['/sistemas', 'Sistemas'], ['/materiais', 'Materiais'], ['/dimensionamento', 'Dimensionamento'],
   ['/bim-cad', 'BIM/CAD'], ['/guias-praticos', 'Guias práticos'], ['/normas', 'Normas'], ['/artigos', 'Notícias'], ['/feiras', 'Feiras'],
-  ['/pro', 'PipeSystem Pro', '', true], ['/anuncie', 'Anuncie'], ['/quem-somos', 'Quem somos'], ['/#contato', 'Cadastre-se', 'btn btn--sm']];
+  ['/pro', 'Pro', '', true], ['/anuncie', 'Anuncie'], ['/quem-somos', 'Quem somos'], ['/#contato', 'Cadastre-se', 'btn btn--sm']];
 // Item do menu marcado como atual em cada página própria
 const secaoAtual = url => url.startsWith('/sistemas') ? '/sistemas' : url.startsWith('/materiais') ? '/materiais'
   : /^\/(comparativos|glossario)/.test(url) ? '/guias-praticos' : url === '/noticias' ? '/artigos' : '';
