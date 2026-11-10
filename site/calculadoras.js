@@ -328,14 +328,19 @@
   // espessuras de parede Sch 40 e Sch 80 (ASME B36.10) por diâmetro externo
   const SCH = { 21.3: [2.77, 3.73], 26.7: [2.87, 3.91], 33.4: [3.38, 4.55], 42.2: [3.56, 4.85], 48.3: [3.68, 5.08], 60.3: [3.91, 5.54], 73: [5.16, 7.01],
     88.9: [5.49, 7.62], 114.3: [6.02, 8.56], 168.3: [7.11, 10.97], 219.1: [8.18, 12.70], 273: [9.27, 15.09], 323.8: [10.31, 17.48] };
+  // espessuras das classes leve e média da NBR 5580 (tubo com costura), pelo mesmo diâmetro nominal; 0 = não há na classe
+  const N5580 = { 21.3: [2.25, 2.65], 26.7: [2.25, 2.65], 33.4: [2.65, 3.35], 42.2: [2.65, 3.35], 48.3: [3, 3.35], 60.3: [3, 3.75], 73: [3.35, 3.75],
+    88.9: [3.35, 4], 114.3: [3.75, 4.5], 168.3: [0, 5] };
   function calcEsp() {
     const D = parseFloat($('epNps').value), P = v('epP') / 10, S = v('epS'), E = parseFloat($('epE').value), c = v('epC'), tol = v('epTol') / 100;
-    if (!(P > 0 && S > 0)) { ['epT', 'epTm', 'epTn', 'epSch'].forEach(id => set(id, '—')); return; }
+    if (!(P > 0 && S > 0)) { ['epT', 'epTm', 'epTn', 'epSch', 'epNbr'].forEach(id => set(id, '—')); return; }
     const t = P * D / (2 * (S * E + P * 0.4)), tm = t + c, tn = tm / (1 - tol), [s40, s80] = SCH[D];
     set('epT', `${n(t, 2)} mm`);
     set('epTm', `${n(tm, 2)} mm`);
     set('epTn', `${n(tn, 2)} mm`);
     set('epSch', tn <= s40 ? `Sch 40 (${n(s40, 2)} mm)` : tn <= s80 ? `Sch 80 (${n(s80, 2)} mm)` : `acima do Sch 80 (${n(s80, 2)} mm)`);
+    const [cl, cm] = N5580[D] || [0, 0];
+    set('epNbr', !cm ? 'não há neste diâmetro' : cl && tn <= cl ? `classe leve (${n(cl, 2)} mm)` : tn <= cm ? `classe média (${n(cm, 2)} mm)` : `acima da classe média (${n(cm, 2)} mm)`);
     hint('epHint', 'A tensão admissível S depende do material e da temperatura de projeto: confira na Tabela A-1 da ASME B31.3 (aço-carbono A106 Gr. B e A53 Gr. B ficam em torno de 138 MPa até cerca de 200 °C). Fórmula para t < D/6; acima disso, ou com cargas externas, vácuo e flexão, o cálculo é mais completo. Verificação de apoio, não substitui o projeto.', tn > s80);
   }
   on('calcEsp', calcEsp);

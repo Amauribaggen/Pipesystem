@@ -240,12 +240,12 @@
 
   <section id="aba-tubos" hidden>
     <div class="grupos" data-troca="tubos"></div>
-    <h2>Tubos de aço por Schedule</h2>
-    <p class="ajuda">Escolha o diâmetro e a espessura para ver as medidas.</p>
+    <h2>Tubos de aço: medidas por norma</h2>
+    <p class="ajuda">Escolha o diâmetro e a norma (Schedule ou classe da NBR 5580) para ver as medidas.</p>
     <div class="cartao">
       <div class="duas">
         <div><label for="dn">Diâmetro</label><select id="dn"></select></div>
-        <div><label for="sch">Schedule</label><select id="sch"><option>40</option><option>80</option><option>160</option></select></div>
+        <div><label for="sch">Norma e espessura</label><select id="sch"><optgroup label="ASTM A53 / A106 e NBR 5590"><option value="40">Schedule 40</option><option value="80">Schedule 80</option><option value="160">Schedule 160</option></optgroup><optgroup label="NBR 5580 (com costura)"><option value="L">Classe leve (L)</option><option value="M">Classe média (M)</option></optgroup></select></div>
       </div>
     </div>
     <div class="cartao"><ul class="result" id="medidas" aria-live="polite"></ul></div>
@@ -254,7 +254,7 @@
       <thead><tr><th scope="col">DN (pol)</th><th scope="col">Ext. mm</th><th scope="col">Parede mm</th><th scope="col">Int. mm</th><th scope="col">kg/m</th></tr></thead>
       <tbody id="tabela"></tbody>
     </table></div>
-    <p class="nota">Referência: dimensões da ASME B36.10M para tubos de aço carbono. Massa calculada para aço. Confira o certificado do fabricante antes de usar em projeto.</p>
+    <p class="nota" id="tuboNota"></p>
 
     <h3>Equivalência de tubos plásticos</h3>
     <div class="rolagem"><table>
@@ -475,16 +475,30 @@
     [125, '5"', 141.3, 6.55, 9.53, 15.88], [150, '6"', 168.3, 7.11, 10.97, 18.26], [200, '8"', 219.1, 8.18, 12.7, 23.01],
     [250, '10"', 273, 9.27, 15.09, 28.58], [300, '12"', 323.8, 10.31, 17.48, 33.32],
   ];
-  const COL = { 40: 3, 80: 4, 160: 5 };
+  // NBR 5580 (tubo com costura, preto ou galvanizado): DN, polegadas, diâmetro externo e espessura nas classes leve e média
+  const T5580 = [
+    [15, '1/2"', 21.3, 2.25, 2.65], [20, '3/4"', 26.9, 2.25, 2.65], [25, '1"', 33.7, 2.65, 3.35], [32, '1 1/4"', 42.4, 2.65, 3.35],
+    [40, '1 1/2"', 48.3, 3, 3.35], [50, '2"', 60.3, 3, 3.75], [65, '2 1/2"', 76.1, 3.35, 3.75], [80, '3"', 88.9, 3.35, 4],
+    [90, '3 1/2"', 101.6, 3.75, 4.25], [100, '4"', 114.3, 3.75, 4.5], [125, '5"', 139.7, 0, 4.75], [150, '6"', 165.1, 0, 5],
+  ];
+  const COL = { 40: 3, 80: 4, 160: 5, L: 3, M: 4 };
+  const NOTA_TUBO = {
+    astm: 'Referência: dimensões da ASME B36.10M, adotadas pelas ASTM A53 e A106 e pela NBR 5590. Massa calculada para aço carbono. Confira o certificado do fabricante antes de usar em projeto.',
+    nbr: 'Referência: NBR 5580, tubo de aço com costura, classes leve e média, de 1/2" a 6" (a classe leve vai até 4"). Massa do tubo preto; o galvanizado pesa cerca de 3 a 5% a mais. Confira o certificado do fabricante antes de usar em projeto.',
+  };
   const massa = (d, e) => (d - e) * e * 0.02466;     // kg/m, aço carbono
   $('dn').innerHTML = TUBOS.map((t, i) => `<option value="${i}">DN ${t[0]} (${t[1]})</option>`).join('');
   $('dn').value = 5;
 
   function medir() {
-    const t = TUBOS[+$('dn').value], c = COL[$('sch').value], d = t[2], e = t[c], di = d - 2 * e;
+    const nbr = isNaN($('sch').value), lista = nbr ? T5580 : TUBOS, sel = TUBOS[+$('dn').value];
+    const t = lista.find(x => x[0] === sel[0]), c = COL[$('sch').value];
+    $('tuboNota').textContent = NOTA_TUBO[nbr ? 'nbr' : 'astm'];
+    $('tabela').innerHTML = lista.filter(x => x[c]).map(x => `<tr${x[0] === sel[0] ? ' class="atual"' : ''}><td>${x[0]} (${x[1]})</td><td>${num(x[2], 1)}</td><td>${num(x[c])}</td><td>${num(x[2] - 2 * x[c])}</td><td>${num(massa(x[2], x[c]), 1)}</td></tr>`).join('');
+    if (!t || !t[c]) { $('medidas').innerHTML = `<li><span>DN ${sel[0]} (${sel[1]})</span><b>Não há nesta classe</b></li>`; return; }
+    const d = t[2], e = t[c], di = d - 2 * e;
     $('medidas').innerHTML = [['Diâmetro externo', num(d, 1) + ' mm'], ['Parede', num(e) + ' mm'], ['Diâmetro interno', num(di) + ' mm'], ['Área interna', num(Math.PI * di * di / 400, 1) + ' cm²'], ['Massa', num(massa(d, e), 1) + ' kg/m']]
       .map(([k, v]) => `<li><span>${k}</span><b>${v}</b></li>`).join('');
-    $('tabela').innerHTML = TUBOS.map((x, i) => `<tr${i === +$('dn').value ? ' class="atual"' : ''}><td>${x[0]} (${x[1]})</td><td>${num(x[2], 1)}</td><td>${num(x[c])}</td><td>${num(x[2] - 2 * x[c])}</td><td>${num(massa(x[2], x[c]), 1)}</td></tr>`).join('');
   }
   $('dn').addEventListener('change', medir);
   $('sch').addEventListener('change', medir);
@@ -601,7 +615,7 @@
       f: v => { const C = [160, 130, 100, 100, 80][v.ti], cd = v.n * C, [, T] = [[1500, 1], [3000, .92], [4500, .83], [6000, .75], [7500, .67], [9000, .58], [Infinity, .5]].find(x => cd <= x[0]), K = [[94, 65, 57], [134, 105, 97], [174, 145, 137], [214, 185, 177], [254, 225, 217]][v.int][v.te], V = 1000 + v.n * (C * T + K); return [['Contribuição', num(cd, 0) + ' L/dia'], ['Detenção', num(T) + ' dia'], ['Lodo fresco e K', '1 L · K ' + K], ['Volume útil', num(V, 0) + ' L']]; },
       n: 'Método da NBR 7229, cancelada em 2024 e substituída pela NBR 17076: confira a norma vigente.' },
     { t: 'Espessura de parede', c: [['d', 'Tubo', 114.3, [['1/2" (21,3 mm)', 21.3], ['3/4" (26,7 mm)', 26.7], ['1" (33,4 mm)', 33.4], ['1 1/4" (42,2 mm)', 42.2], ['1 1/2" (48,3 mm)', 48.3], ['2" (60,3 mm)', 60.3], ['2 1/2" (73 mm)', 73], ['3" (88,9 mm)', 88.9], ['4" (114,3 mm)', 114.3], ['6" (168,3 mm)', 168.3], ['8" (219,1 mm)', 219.1], ['10" (273 mm)', 273], ['12" (323,8 mm)', 323.8]]], ['p', 'Pressão de projeto (bar)', 40], ['s', 'Tensão admissível S (MPa)', 138], ['e', 'Eficiência', 1, [['1,00 sem costura', 1], ['0,85 com costura', .85]]], ['c', 'Sobrespessura de corrosão (mm)', 1.5], ['to', 'Tolerância de fabricação (%)', 12.5]],
-      f: v => { const P = v.p / 10, t = P * v.d / (2 * (v.s * v.e + P * .4)), tm = t + v.c, tn = tm / (1 - v.to / 100), x = TUBOS.find(y => y[2] === v.d || (y[2] === 219.1 && v.d === 219.1)), a = x[3], b = x[4]; return [['Espessura de pressão', num(t) + ' mm'], ['Com corrosão', num(tm) + ' mm'], ['Nominal mínima', num(tn) + ' mm'], ['Schedule', tn <= a ? `SCH 40 (${num(a)} mm)` : tn <= b ? `SCH 80 (${num(b)} mm)` : 'Acima de SCH 80']]; },
+      f: v => { const P = v.p / 10, t = P * v.d / (2 * (v.s * v.e + P * .4)), tm = t + v.c, tn = tm / (1 - v.to / 100), x = TUBOS.find(y => y[2] === v.d || (y[2] === 219.1 && v.d === 219.1)), a = x[3], b = x[4]; return [['Espessura de pressão', num(t) + ' mm'], ['Com corrosão', num(tm) + ' mm'], ['Nominal mínima', num(tn) + ' mm'], ['Schedule', tn <= a ? `SCH 40 (${num(a)} mm)` : tn <= b ? `SCH 80 (${num(b)} mm)` : 'Acima de SCH 80'], ['NBR 5580', (n => !n ? 'Não há neste diâmetro' : n[3] && tn <= n[3] ? `Classe leve (${num(n[3])} mm)` : tn <= n[4] ? `Classe média (${num(n[4])} mm)` : 'Acima da classe média')(T5580.find(y => y[0] === x[0]))]]; },
       n: 'ASME B31.3, Y = 0,4 e W = 1. Tensão S conforme material e temperatura. Verificação de apoio.' },
     { t: 'Aquecimento de ambiente', c: [['a', 'Área (m²)', 16], ['h', 'Pé-direito (m)', 2.6], ['i', 'Isolamento', 40, [['Bom', 30], ['Médio', 40], ['Ruim', 50]]], ['cl', 'Clima', 1, [['Ameno', .7], ['Frio', 1], ['Muito frio', 1.25]]]],
       f: v => { const kcal = v.a * v.h * v.i * v.cl, W = kcal * 1.163; return [['Potência', num(W / 1000, 1) + ' kW'], ['Em BTU/h', num(W * 3.412, 0)]]; },
@@ -682,7 +696,7 @@
   $('campos').addEventListener('change', anotarCalc);
 
   $('shareConv').addEventListener('click', () => compartilhar(`${$('valor').value} ${$('de').value} equivale a:\n${linhas($('saida'))}\n\n${ASSINA}`));
-  $('shareTubo').addEventListener('click', () => compartilhar(`Tubo de aço ${$('dn').selectedOptions[0].text}, SCH ${$('sch').value}:\n${linhas($('medidas'))}\n\n${ASSINA}`));
+  $('shareTubo').addEventListener('click', () => compartilhar(`Tubo de aço ${$('dn').selectedOptions[0].text}, ${isNaN($('sch').value) ? 'NBR 5580 ' : ''}${$('sch').selectedOptions[0].text}:\n${linhas($('medidas'))}\n\n${ASSINA}`));
   $('shareCalc').addEventListener('click', () => {
     const c = CALCS[+$('calc').value];
     const dados = c.c.map(([id, r]) => { const e = $('c_' + id); return `${r}: ${e.tagName === 'SELECT' ? e.selectedOptions[0].text : e.value}`; }).join('\n');
