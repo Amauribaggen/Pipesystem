@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { BASE, SIZES, loadData, generate, sitemap, ultimasNoticiasHTML } from './pages.mjs';
 import { imageSizes, minify } from './optimize.mjs';
 import { acabamento } from './acabamento.mjs';
+import { llms } from './llms.mjs';
 import { separar } from './secoes.mjs';
 import { gerarRevisoes } from './revisoes.mjs';
 import vm from 'node:vm';
@@ -122,6 +123,7 @@ console.log(`JS e CSS compactados: ${(m.before / 1024).toFixed(0)} KB -> ${(m.af
 // Medidas nas imagens e versão no endereço de scripts e estilos (depois de compactar: a versão é do arquivo final)
 const ac = acabamento(out);
 console.log(`Acabamento: ${ac.imagens} imagens com medidas, ${ac.versoes} endereços versionados`);
+console.log(`llms.txt: ${llms(out)} seções`);
 
 // Resumo do que foi gerado
 let files = 0, bytes = 0;
