@@ -20,6 +20,14 @@ export async function POST(request) {
   const chave = process.env.RESEND_API_KEY;
   if (!chave) return json(500, { ok: false, erro: 'Envio não configurado.' });
 
+  // Só aceita envios feitos a partir do próprio site (navegadores sempre mandam Origin em POST)
+  const origem = request.headers.get('origin');
+  if (origem) {
+    let host = '';
+    try { host = new URL(origem).hostname; } catch { /* origem inválida */ }
+    if (!/(^|\.)pipesystem\.com\.br$|\.vercel\.app$|^localhost$/.test(host)) return json(403, { ok: false, erro: 'Origem não permitida.' });
+  }
+
   let dados;
   try { dados = await request.formData(); } catch { return json(400, { ok: false, erro: 'Formulário inválido.' }); }
 
@@ -48,9 +56,9 @@ export async function POST(request) {
     attachments.push({ filename: arq.name.replace(/[^\w.\- ()]/g, '_'), content: Buffer.from(await arq.arrayBuffer()).toString('base64') });
   }
 
-  const assunto = tipo === 'artigo'
+  const assunto = (tipo === 'artigo'
     ? `[Site] Artigo técnico: ${limpa(dados.get('titulo'), 150) || 'sem título'}`
-    : `[Site] ${limpa(dados.get('assunto'), 150) || 'Contato'} — ${nome}`;
+    : `[Site] ${limpa(dados.get('assunto'), 150) || 'Contato'} — ${nome}`).replace(/\s+/g, ' ');
   const texto = campos.map(([k, v]) => `${k}: ${v}`).join('\n') + (attachments.length ? `\n\nArquivo anexado: ${attachments[0].filename}` : '');
   const html = `<h2 style="font-family:Arial,sans-serif;color:#0a2240">${esc(tipo === 'artigo' ? 'Novo artigo enviado pelo site' : 'Nova mensagem pelo site')}</h2>
 <table style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">${campos.map(([k, v]) =>
