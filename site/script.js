@@ -1606,7 +1606,7 @@ function loadTools() {
   // fora da página de Dimensionamento só os preços SINAPI interessam (custos dos comparativos)
   const lista = document.getElementById('ferramentas') ? TOOLS_JS : ['sinapi-precos.js'];
   return toolsP || (toolsP = lista.reduce((p, src) => p.then(() => new Promise(ok => {
-    const s = document.createElement('script'); s.src = '/' + src; s.onload = s.onerror = ok; document.body.append(s);
+    const s = document.createElement('script'); s.src = '/' + src + '?v=__VERSAO__'; s.onload = s.onerror = ok; document.body.append(s);
   })), Promise.resolve()).then(() => document.dispatchEvent(new Event('ferramentas-prontas'))));
 }
 const toolsSection = document.getElementById('ferramentas');

@@ -1,10 +1,10 @@
 // PipeSystem Pro: guarda a página no aparelho para funcionar sem internet.
 // Com internet, busca a versão nova e atualiza a cópia; sem internet, usa a cópia.
-const CACHE = 'bolso-v20';
+const CACHE = 'bolso-v21';
 const ARQUIVOS = [self.registration.scope.endsWith('/pro') ? '/pro' : '/bolso', self.registration.scope.endsWith('/pro') ? '/pro.webmanifest' : '/bolso.webmanifest', '/bolso-dados.json', '/bolso-pdf.js', '/detalhes.js', '/img/icons/icon-192.png', '/img/icons/favicon-32.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARQUIVOS)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARQUIVOS.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {

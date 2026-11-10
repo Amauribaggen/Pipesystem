@@ -31,6 +31,12 @@ function cut(text, max) {
   if (t.length <= max) return t;
   const s = t.slice(0, max - 1); return s.slice(0, s.lastIndexOf(' ')).replace(/[,;:.\s]+$/, '') + '…';
 }
+// Título da página: a primeira opção que cabe no resultado do Google (65 caracteres); se nenhuma couber, a última
+const titulo = (...opcoes) => opcoes.find(t => t.length <= 65) || opcoes[opcoes.length - 1];
+const semParenteses = s => s.replace(/\s*\([^)]*\)/g, '');
+// Parte principal de um título de comparativo: até a primeira pergunta ou até os dois-pontos
+const ateInterrogacao = s => s.includes('?') ? s.slice(0, s.indexOf('?') + 1) : s;
+const ateDoisPontos = s => s.split(':')[0].replace(/\?$/, '');
 const abs = src => src.startsWith('http') ? src : `${BASE}/${src.replace(/^\//, '')}`;
 const rel = src => src.startsWith('http') ? src : '/' + src.replace(/^\//, '');
 
@@ -239,7 +245,7 @@ export function generate(D, outDir) {
       </div>`;
     pages.push({ url, images: fotos.map(f => abs(f.src)), html: page({
       url, body, reviewed: D.revisaoData(s),
-      title: `${s.name} — sistema hidráulico: componentes e normas | PipeSystem`,
+      title: titulo(`${s.name} — sistema hidráulico: componentes e normas | PipeSystem`, `${s.name} — componentes e normas | PipeSystem`, `${s.name} — sistema hidráulico | PipeSystem`, `${s.name} | PipeSystem`, `${semParenteses(s.name)} | PipeSystem`),
       description: cut(`${plain(s.desc)}`, 158),
       image: fotos[0] && abs(fotos[0].src), imageAlt: fotos[0] && fotos[0].alt, keywords: [s.name, ...s.normas].join(', '),
       crumbs: [{ name: 'Início', url: '/' }, { name: 'Sistemas hidráulicos', url: '/sistemas' }, { name: s.name, url }],
@@ -300,7 +306,7 @@ export function generate(D, outDir) {
     const capa = fotos ? fotos[0] : foto;
     pages.push({ url, images: imgs, html: page({
       url, body, wide: !!((p && p.tabelas) || m.tabelas), reviewed: D.revisaoData(m),
-      title: `${m.name} — dados técnicos, tipos, normas e fabricantes | PipeSystem`,
+      title: titulo(`${m.name} — dados técnicos, tipos, normas e fabricantes | PipeSystem`, `${m.name} — tipos, normas e fabricantes | PipeSystem`, `${m.name} — ficha técnica | PipeSystem`, `${m.name} | PipeSystem`, `${semParenteses(m.name)} — ficha técnica | PipeSystem`, `${semParenteses(m.name)} | PipeSystem`, semParenteses(m.name)),
       description: cut(`${plain(m.desc)} Dados técnicos, normas e ${importers ? 'importadores' : 'fabricantes'}.`, 158),
       image: capa && abs(capa.src), imageAlt: capa && capa.alt, keywords: [...new Set([m.name, m.cat, ...normas, ...(m.chaves || []), ...fabs.map(f => f[0])])].join(', '),
       crumbs: [{ name: 'Início', url: '/' }, { name: 'Catálogo de produtos e materiais', url: '/materiais' }, { name: m.name, url }],
@@ -327,7 +333,7 @@ export function generate(D, outDir) {
         <a href="${contato('Consulta técnica', 'Sugestão de termo para o glossário: ')}" class="btn btn--ghost">Sugerir um termo</a>
       </div>`;
     pages.push({ url, images: [], html: page({ url, body, glossSkip: '-',
-      title: 'Glossário técnico da hidráulica e condução de fluidos | PipeSystem',
+      title: 'Glossário de hidráulica e condução de fluidos | PipeSystem',
       description: cut(`${G.length} termos de instalações hidráulicas explicados: perda de carga, golpe de aríete, NPSH, fecho hídrico, SDR, UHC, termofusão e mais, com fórmulas e normas.`, 158),
       crumbs: gCrumbs,
       ld: [{ '@type': 'DefinedTermSet', '@id': SET_ID, name: 'Glossário técnico PipeSystem', url: BASE + url, inLanguage: 'pt-BR',
@@ -358,7 +364,7 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
         <a href="${contato('Consulta técnica', `Dúvida sobre ${x.t}: `)}" class="btn btn--ghost">Fazer uma pergunta</a>
       </div>`;
     pages.push({ url, images: [], html: page({ url, body, glossSkip: x.id,
-      title: `${x.t}: o que é — Glossário técnico | PipeSystem`,
+      title: titulo(`${x.t}: o que é — Glossário técnico | PipeSystem`, `${x.t}: o que é — Glossário | PipeSystem`, `${x.t}: o que é | PipeSystem`, `${x.t} | PipeSystem`),
       description: cut(`${plain(x.def)} ${plain(x.exp || '')}`, 158),
       keywords: [x.t, x.en, x.tema, x.norma].filter(Boolean).join(', '),
       crumbs: [...gCrumbs, { name: x.t, url }],
@@ -387,7 +393,7 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
       <p class="cp-note">Custos em Santa Catarina. Na <a href="/guias-praticos">página de Guias práticos</a> você escolhe o estado.</p>
       <h2 class="page__h">Outros comparativos</h2>${links(outros.map(x => ['/comparativos/' + x.id, x.titulo]))}`;
       pages.push({ url: u, images: [], html: page({ url: u, body, wide: true, reviewed: D.revisaoData({}),
-        title: `${c.titulo} Comparativo | PipeSystem`,
+        title: titulo(`${c.titulo} Comparativo | PipeSystem`, `${c.titulo} | PipeSystem`, `${ateInterrogacao(c.titulo)} Comparativo | PipeSystem`, `${ateInterrogacao(c.titulo)} | PipeSystem`, `${ateDoisPontos(c.titulo)} — comparativo | PipeSystem`, `${ateDoisPontos(c.titulo)} | PipeSystem`, `${semParenteses(ateDoisPontos(c.titulo))} | PipeSystem`),
         description: cut(plain(c.resumo.replace(/\{\w+\}/g, '')), 158),
         keywords: [...new Set([c.tema, ...c.opcoes.map(o => o[0]), ...(c.chaves || [])])].join(', '),
         crumbs: [...cCrumbs, { name: c.titulo, url: u }] }) });
@@ -455,7 +461,7 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
       ${cursosHTML()}
       ${vagasHTML()}`;
     pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
-      title: 'Notícias do setor: hidráulica, saneamento, gás e construção | PipeSystem',
+      title: 'Notícias de hidráulica, saneamento, gás e construção | PipeSystem',
       description: cut('Investimentos, obras, leilões, lançamentos e normas de saneamento, instalações hidráulicas, gás, indústria e combate a incêndio, selecionados toda semana.', 158),
       keywords: ['notícias', 'saneamento', 'hidráulica', 'construção', 'leilão', 'investimento', 'lançamento', ...cats,
         'cursos', 'treinamentos', 'eventos', 'feiras', 'capacitação', 'curso de instalador hidráulico', 'curso de encanador', 'NBR 5626', 'sprinklers', 'bombas',
