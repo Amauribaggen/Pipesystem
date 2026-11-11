@@ -270,7 +270,7 @@
       const A = Math.max(200, v('lgArea')), peG = Math.max(4, v('lgPe') || 10), est = v('lgEstoq'), esc = v('lgEsc');
       const F = Math.max(1, Math.round(v('lgFunc'))), tur = Math.min(3, Math.max(1, Math.round(v('lgTurnos') || 1)));
       const ref = $('lgRef').value, docas = Math.round(v('lgDocas')), patio = v('lgPatio'), sif = $('lgPluv').value === 'sif';
-      const spkG = $('lgSpk').value, hid = $('lgHid').checked, groove = $('lgIncMat').value === 'groove', chuvaG = $('lgChuva').checked;
+      const spkG = $('lgSpk').value, hid = $('lgHid').checked, sch10 = $('lgIncMat').value === 'groove10', groove = sch10 || $('lgIncMat').value === 'groove', chuvaG = $('lgChuva').checked;
       const Lg = Math.sqrt(2 * A), Wg = A / Lg, Pg = 2 * (Lg + Wg);   // planta retangular 2:1
       const heavy = gt === 'industrial' || gt === 'refrigerado';
       const cam = gt === 'refrigerado' ? Math.min(A, v('lgCam')) : 0, cong = gt === 'refrigerado' && $('lgTemp').value === 'congelado';
@@ -435,8 +435,8 @@
 
       // Incêndio: hidrantes em anel e sprinklers (controle ou ESFR)
       const steel = (g, pol, dn, trecho, m, tes, curvas) => {
-        add(g, `Tubo de aço ${groove ? 'galvanizado leve ranhurado' : 'galvanizado'} ${pol}" (DN ${dn}) — ${trecho}`, m, 'm',
-          { pack: ['barra', 6], note: groove ? 'Classe leve NBR 5580, ranhura laminada' : 'Classe média NBR 5580, roscável' });
+        add(g, `Tubo de aço ${sch10 ? 'SCH 10 ranhurado' : groove ? 'galvanizado leve ranhurado' : 'galvanizado'} ${pol}" (DN ${dn}) — ${trecho}`, m, 'm',
+          { pack: ['barra', 6], note: sch10 ? 'NBR 5590 Schedule 10, parede fina: só ranhura laminada, não aceita rosca' : groove ? 'Classe leve NBR 5580, ranhura laminada' : 'Classe média NBR 5580, roscável' });
         if (!groove) return add(g, `Conexões galvanizadas ${pol}" (tês, joelhos, uniões)`, tes + curvas + Math.ceil(m / 6));
         if (tes) add(g, `Tê ranhurado ${pol}" (DN ${dn})`, tes);
         if (curvas) add(g, `Curva 90° ranhurada ${pol}" (DN ${dn})`, curvas);
@@ -1092,10 +1092,11 @@
       const areaGar = vagas * 25, garFloors = vagas ? Math.max(1, pisosGar) : 0; // 25 m² por vaga, com circulação
       // tubulação da rede de incêndio: aço galvanizado classe média roscado, ou classe leve ranhurado (Grooved) com acoplamento em cada emenda
       // (a ranhura laminada não corta a parede, por isso o sistema ranhurado aceita o tubo leve)
-      const groove = $('lmIncMat').value === 'groove';
+      // no ranhurado o tubo pode ser também o NBR 5590 Schedule 10, de parede fina
+      const sch10 = $('lmIncMat').value === 'groove10', groove = sch10 || $('lmIncMat').value === 'groove';
       const steel = (g, pol, dn, trecho, m, tes, curvas) => {
-        add(g, `Tubo de aço ${groove ? 'galvanizado leve ranhurado' : 'galvanizado'} ${pol}" (DN ${dn}) — ${trecho}`, m, 'm',
-          { pack: ['barra', 6], note: groove ? 'Classe leve NBR 5580, ranhura laminada' : 'Classe média NBR 5580, roscável' });
+        add(g, `Tubo de aço ${sch10 ? 'SCH 10 ranhurado' : groove ? 'galvanizado leve ranhurado' : 'galvanizado'} ${pol}" (DN ${dn}) — ${trecho}`, m, 'm',
+          { pack: ['barra', 6], note: sch10 ? 'NBR 5590 Schedule 10, parede fina: só ranhura laminada, não aceita rosca' : groove ? 'Classe leve NBR 5580, ranhura laminada' : 'Classe média NBR 5580, roscável' });
         if (!groove) return add(g, `Conexões galvanizadas ${pol}" (tês, joelhos, uniões)`, tes + curvas + Math.ceil(m / 6));
         add(g, `Tê ranhurado ${pol}" (DN ${dn})`, tes);
         add(g, `Curva 90° ranhurada ${pol}" (DN ${dn})`, curvas);

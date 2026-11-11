@@ -62,7 +62,7 @@ const SYSTEMS = [
 
   { id: 'sis-incendio', name: 'Rede de incêndio', color: '#e5534b',
     desc: 'Os sistemas hidráulicos de combate a incêndio combinam hidrantes e mangotinhos com chuveiros automáticos (sprinklers). Eles são alimentados por uma reserva técnica de incêndio e por bombas dedicadas. O que cada edificação precisa ter é definido pelas Instruções Técnicas do Corpo de Bombeiros de cada estado.',
-    componentes: ['Reserva técnica de incêndio', 'Bomba principal, bomba jockey e, quando exigida, bomba a combustão', 'Rede em aço com conexões ranhuradas ou roscadas', 'Hidrantes, mangueiras e esguichos', 'Sprinklers, válvula de governo e alarme', 'Registro de recalque no passeio'],
+    componentes: ['Reserva técnica de incêndio', 'Bomba principal, bomba jockey e, quando exigida, bomba a combustão', 'Rede em aço com conexões ranhuradas ou roscadas; no ranhurado, tubo NBR 5580 classe leve ou NBR 5590 Schedule 10', 'Hidrantes, mangueiras e esguichos', 'Sprinklers, válvula de governo e alarme', 'Registro de recalque no passeio'],
     cuidados: ['Projeto aprovado pelo Corpo de Bombeiros', 'Pressão e vazão mínimas no hidrante mais desfavorável', 'Inspeções e testes periódicos de bombas e válvulas', 'Tubulação aparente identificada em vermelho'],
     normas: ['NBR 13714', 'NBR 10897', 'NFPA 13', 'NFPA 20'],
     produtos: ['tubos-aco', 'conexoes-ranhuradas', 'sprinklers', 'bombas', 'valvulas', 'mat-hidrantes', 'mat-reservatorios'],

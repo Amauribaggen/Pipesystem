@@ -13,7 +13,7 @@ const NORM_GROUPS = [
     { code: 'NBR 15939-1', org: 'ABNT', title: 'Sistemas de tubulações plásticas para instalações prediais de água quente e fria — Polietileno reticulado (PE-X) — Parte 1: Requisitos e métodos de ensaio', note: 'No Dimensionamento Inteligente: tubos e conexões de PEX da água quente.' },
     { code: 'NBR 13206', org: 'ABNT', title: 'Tubo de cobre leve, médio e pesado, sem costura, para condução de fluidos', note: 'No Dimensionamento Inteligente: tubos de cobre classe E (água quente) e classe A (gás).' },
     { code: 'NBR 11720', org: 'ABNT', title: 'Conexões para união de tubos de cobre por soldagem ou brasagem capilar', note: 'No Dimensionamento Inteligente: joelhos, tês e conectores de cobre.' },
-    { code: 'NBR 5580', org: 'ABNT', title: 'Tubos de aço-carbono para usos comuns na condução de fluidos', note: 'No Dimensionamento Inteligente: tubos galvanizados classe média (roscados) e classe leve (ranhurados) de recalque, gás e incêndio.' },
+    { code: 'NBR 5580', org: 'ABNT', title: 'Tubos de aço-carbono para usos comuns na condução de fluidos', note: 'No Dimensionamento Inteligente: tubos galvanizados classe média (roscados) e classe leve (ranhurados) de recalque, gás e incêndio. No ranhurado, o tubo NBR 5590 Schedule 10 é alternativa ao classe leve.' },
     { code: 'NBR 6943', org: 'ABNT', title: 'Conexões de ferro fundido com rosca ABNT NBR NM ISO 7-1 para tubulações', note: 'No Dimensionamento Inteligente: conexões galvanizadas roscadas e bujões dos pontos de espera.' },
     { code: 'NBR NM ISO 7-1', org: 'ABNT', title: 'Rosca para tubos onde a junta de vedação sob pressão é feita pela rosca (BSP cônica)', note: 'No Dimensionamento Inteligente: rosca das conexões galvanizadas, saídas com bucha de latão e bujões.' },
     { code: 'AWWA C606', org: 'AWWA', title: 'Grooved and Shouldered Joints', note: 'No Dimensionamento Inteligente: tês, curvas e acoplamentos do sistema ranhurado (Grooved) da rede de incêndio.' },
@@ -152,7 +152,7 @@ const NORM_GROUPS = [
   ]},
   { id: 'metalicos', tipo: 'produto', name: 'Tubos metálicos', normas: [
     { code: 'NBR 5580', org: 'ABNT', title: 'Tubos de aço-carbono para usos comuns na condução de fluidos' },
-    { code: 'NBR 5590', org: 'ABNT', title: 'Tubos de aço-carbono com ou sem solda longitudinal, pretos ou galvanizados' },
+    { code: 'NBR 5590', org: 'ABNT', title: 'Tubos de aço-carbono com ou sem solda longitudinal, pretos ou galvanizados', note: 'Tubos por Schedule. O Schedule 10, de parede fina, é alternativa ao tubo classe leve da NBR 5580 nas redes de incêndio com conexões ranhuradas (Grooved).' },
     { code: 'ASTM A53', org: 'ASTM', title: 'Pipe, Steel, Black and Hot-Dipped, Zinc-Coated, Welded and Seamless' },
     { code: 'ASTM A106', org: 'ASTM', title: 'Seamless Carbon Steel Pipe for High-Temperature Service' },
     { code: 'API 5L', org: 'API', title: 'Line Pipe — tubos de aço para dutos, com e sem costura' },

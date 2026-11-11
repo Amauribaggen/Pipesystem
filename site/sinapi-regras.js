@@ -97,6 +97,7 @@ const SINAPI_REGRAS = (() => {
     [/^Tubo PEAD corrugado 300/, '41780'], [/^Tubo PEAD corrugado 400/, '41781'],
     [/^Tubo de cobre 28 mm — drenos/, '12744'],
     [/^Tubo de aço carbono DN (\d+)/, { by: { 50: '21148', 65: '21147', 80: '42576', 100: '21151', 150: '7672', 200: '7661' }, g: 1, nota: 'tubo sem costura schedule 40' }],
+    [/^Tubo de aço SCH 10 ranhurado 6"/, { c: '7695', nota: 'referência aproximada: tubo galvanizado 6" classe média; o SINAPI não tem insumo de tubo SCH 10' }],
     [/^Tubo de aço galvanizado leve ranhurado 6"/, { c: '7695', nota: 'tubo galvanizado 6" classe média; sem classe leve nesta bitola' }],
     // Reservação e recalque
     [/^Reservatório (inferior|superior)|^Cisterna de água de chuva/, { c: '43982', f: 1 / 20, nota: 'reservatório em fibra de vidro 20.000 L ÷ 20 m³' }],
@@ -124,6 +125,7 @@ const SINAPI_REGRAS = (() => {
     [/^Conexões PPR 25 e 32/, { c: ['36360', '36298', '38434', '38456'] }],
     [/^Conexões PPR 25 mm/, { c: ['36360', '36298'] }],
     // Incêndio em aço ranhurado (Grooved): tubo de aço carbono schedule 40 ranhurado; peças de ferro fundido
+    [/^Tubo de aço SCH 10 ranhurado ([\d /]+)"/, { by: { '1': '21010', '1 1/4': '21011', '1 1/2': '21012', '2': '21013', '2 1/2': '21014', '3': '21015', '4': '21016' }, g: 1, nota: 'referência aproximada: tubo galvanizado classe leve NBR 5580; o SINAPI não tem insumo de tubo SCH 10' }],
     [/^Tubo de aço galvanizado leve ranhurado ([\d /]+)"/, { by: { '1': '21010', '1 1/4': '21011', '1 1/2': '21012', '2': '21013', '2 1/2': '21014', '3': '21015', '4': '21016' }, g: 1, nota: 'tubo galvanizado classe leve NBR 5580' }],
     [/^Tê ranhurado ([\d /]+)"/, { by: { '2': '40419', '2 1/2': '40420', '3': '40421' }, g: 1 }],
     [/^Curva 90° ranhurada ([\d /]+)"/, { by: { '2': '40413', '2 1/2': '40415', '3': '40417' }, g: 1 }],

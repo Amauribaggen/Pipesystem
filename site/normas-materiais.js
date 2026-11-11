@@ -19,6 +19,7 @@ const NORMAS_MATERIAIS = [
   [/^Ralo hemisférico|^Calha|^Bocal de calha|^Caixa de areia/, 'ABNT NBR 10844 (sistema)'],
   // Aço
   [/^Tubo de aço galvanizado/, 'ABNT NBR 5580'],
+  [/^Tubo de aço SCH 10 ranhurado/, 'ABNT NBR 5590'],
   [/^Tubo de aço carbono/, 'ASTM A106'],
   [/^Conexões galvanizadas|^Bujão de ferro galvanizado/, 'ABNT NBR 6943'],
   [/ranhurad|^Acoplamento rígido/, 'AWWA C606'],

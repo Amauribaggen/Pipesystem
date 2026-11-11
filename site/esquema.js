@@ -12,7 +12,7 @@
 
   // ---------- leitura do resultado ----------
   // nome curto do tubo a partir do material da lista: "Tubo PVC soldável 60 mm (2\") — colunas" → "PVC soldável 60 mm (2\")"
-  const tubo = r => r ? r.item.split(' — ')[0].replace(/^Tubo (de )?/, '').replace(/^aço galvanizado leve ranhurado/, 'aço ranhurado') : '';
+  const tubo = r => r ? r.item.split(' — ')[0].replace(/^Tubo (de )?/, '').replace(/^aço galvanizado leve ranhurado/, 'aço ranhurado').replace(/^aço SCH 10 ranhurado/, 'aço SCH 10 ranhurado') : '';
   function dados() {
     const L = window.lmatApi?.last?.(); if (!L) return null;
     const rows = L.rows, find = re => rows.find(r => re.test(r.item)), sum = re => rows.filter(r => re.test(r.item)).reduce((s, r) => s + r.qty, 0);

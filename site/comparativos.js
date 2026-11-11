@@ -237,6 +237,7 @@ const CMPS = [
       ['Pressão / temperatura', ['Conforme schedule e acoplamento', 'Conforme schedule', '175 psi a 150 °F (≈ 12 bar a 65 °C) segundo literatura de fabricante {ftCpvc}']],
       ['Incêndio', ['Incombustível', 'Incombustível', 'Exige proteção (forro/barreira) e não pode ficar aparente em muitos casos {nyc}']],
       ['Junta', ['Ranhura + acoplamento com anel', 'Rosca ou solda', 'Soldável com adesivo específico']],
+      ['Tubo', ['NBR 5580 classe leve ou NBR 5590 Schedule 10 (parede fina, ranhura laminada)', 'NBR 5580 classe média ou Schedule 40', 'CPVC listado para sprinklers']],
       ['Mão de obra', ['Rápida, sem solda no local', 'Soldador/rosqueadeira; trabalho a quente', 'Leve e rápida; atenção a produtos incompatíveis']],
       ['Normas', ['NBR 10897 · NBR 13714', 'NBR 10897 · NBR 13714', 'NFPA 13/13R/13D · UL 1821']],
       ['Custo de referência (tubo 2", por metro)', [{ ins: '21013', d: 'galvanizado classe leve, base do ranhurado' }, { ins: '21148', d: 'aço carbono SCH 40' }, null]],
@@ -245,7 +246,7 @@ const CMPS = [
       [['Solução tradicional, aceita em todos os riscos'], ['Trabalho a quente na obra', 'Mais mão de obra']],
       [['Leve, rápido, não corrói'], ['Restrito a riscos leves e à listagem', 'Incompatível com alguns óleos e selantes']]],
     erros: ['Usar CPVC fora da listagem (risco, área ou exposição)', 'Misturar acoplamentos e tubos de fabricantes sem compatibilidade declarada', 'Deixar a reserva técnica de incêndio ser consumida pelo uso diário'],
-    apps: { casa: 'Raramente exigido; em residências com sprinkler, CPVC listado.', predio: 'Aço ranhurado nas prumadas; CPVC listado em apartamentos (risco leve), se aceito pelo Corpo de Bombeiros local.', hospital: 'Aço, pelo risco e pela exigência de incombustibilidade.', industria: 'Aço (ranhurado ou soldado) conforme o risco.' },
+    apps: { casa: 'Raramente exigido; em residências com sprinkler, CPVC listado.', predio: 'Aço ranhurado nas prumadas, em tubo NBR 5580 classe leve ou NBR 5590 Schedule 10; CPVC listado em apartamentos (risco leve), se aceito pelo Corpo de Bombeiros local.', hospital: 'Aço, pelo risco e pela exigência de incombustibilidade.', industria: 'Aço (ranhurado ou soldado) conforme o risco.' },
     fontes: ['nbr10897', 'nbr13714', 'ul1821', 'nyc', 'ftCpvc', 'sinapi'] },
 
   { id: 'sprinklers-tipos', tema: 'Combate a incêndio', titulo: 'Sprinklers (chuveiros automáticos): qual tipo usar? Posição de montagem e tipo de resposta',

@@ -12,7 +12,7 @@ const PRODUCTS = [
   // Tubos
   { id: 'tubos-aco', g: 'tubos', name: 'Tubos de Aço',
     desc: 'Aço-carbono preto ou galvanizado, com ou sem costura, para incêndio, vapor, gás, ar comprimido e processos industriais.',
-    tipos: ['Com costura e sem costura', 'Preto e galvanizado', 'Schedule 40 e 80', 'Classes leve, média e pesada', 'Pontas roscadas, chanfradas ou ranhuradas', 'Tubos API 5L (line pipe) e API 5CT (revestimento e produção de poços) para petróleo e gás'],
+    tipos: ['Com costura e sem costura', 'Preto e galvanizado', 'Schedule 40 e 80 (ASTM A53 e NBR 5590)', 'Schedule 10 (NBR 5590), de parede fina, para sistemas ranhurados', 'Classes leve, média e pesada (NBR 5580)', 'Pontas roscadas, chanfradas ou ranhuradas', 'Tubos API 5L (line pipe) e API 5CT (revestimento e produção de poços) para petróleo e gás'],
     escolha: ['Espessura (schedule ou classe) conforme pressão e temperatura', 'Galvanizado para água e incêndio; preto para vapor e gás industrial', 'Tipo de união: rosca, solda ou ranhura', 'Proteção anticorrosiva em áreas externas'],
     normas: ['NBR 5580', 'NBR 5590', 'ASTM A53', 'ASTM A106', 'API 5L', 'API 5CT'],
     fotos: [
@@ -138,7 +138,7 @@ const PRODUCTS = [
   { id: 'conexoes-ranhuradas', g: 'conexoes', name: 'Conexões Ranhuradas',
     desc: 'Uniões por acoplamento mecânico em tubos com ranhura: montagem rápida, sem solda, muito usadas em redes de incêndio.',
     tipos: ['Acoplamentos rígidos e flexíveis', 'Cotovelos, tês e reduções ranhurados', 'Tês mecânicos para derivações', 'Adaptadores flange-ranhura', 'Tê mecânico (derivação sem solda)', 'Tê com saída para sprinkler'],
-    escolha: ['Aprovações UL/FM para sistemas de incêndio', 'Ranhura laminada ou usinada conforme a espessura do tubo', 'Junta EPDM para água; nitrílica para óleo'],
+    escolha: ['Aprovações UL/FM para sistemas de incêndio', 'Ranhura laminada ou usinada conforme a espessura do tubo', 'Tubo NBR 5580 classe leve ou NBR 5590 Schedule 10: só com ranhura laminada, não aceitam rosca nem ranhura usinada', 'Junta EPDM para água; nitrílica para óleo'],
     normas: ['AWWA C606', 'UL 213', 'FM 1920'],
     fotos: [
       { src: 'img/produtos/conexoes-ranhuradas-1.webp', alt: 'Tubulação com acoplamentos ranhurados em casa de bombas', legenda: 'Casa de bombas', autor: 'frozen-tundra', licenca: 'CC BY 2.0', licUrl: 'https://creativecommons.org/licenses/by/2.0', fonte: 'https://commons.wikimedia.org/wiki/File:VictaulicPiping.jpg' },
