@@ -177,7 +177,7 @@ const PRODUCTS = [
           ['Globo', 'Bloqueio + regulagem', 4, 5, 0, 'Vapor, utilidades, processos, bypass, controle manual', 'Excelente capacidade de estrangulamento'],
           ['Borboleta', 'Bloqueio + modulação', 4, 3, 0, 'Água, HVAC, mineração, saneamento, processos', 'Compacta, leve e competitiva em grandes DN'],
           ['Retenção', 'Impedir fluxo reverso', 0, 0, 5, 'Bombas, compressores, linhas de processo, água, óleo & gás', 'Deve ser dimensionada considerando velocidade e transientes'],
-          ['Esfera monobloco', 'Bloqueio', 5, 2, 0, 'Gás, água, utilidades, instrumentação, processos', 'Compacta, econômica e baixa manutenção'],
+          ['Esfera monobloco', 'Bloqueio', 5, 2, 0, 'Gás, água, utilidades, instrumentação, processos', 'Compacta, econômica e baixa manutenção; no latão, passagem plena ou reduzida'],
           ['Esfera tripartida', 'Bloqueio', 5, 2, 0, 'Química, petroquímica, óleo & gás, processos críticos', 'Manutenção facilitada sem retirar o corpo da linha'],
         ] },
       { titulo: 'Materiais de corpo e aplicações',
@@ -198,7 +198,7 @@ const PRODUCTS = [
     ] },
   { id: 'registros-latao', g: 'valvulas', name: 'Registros de Latão',
     desc: 'Registros de gaveta, pressão e esfera em latão ou bronze para instalações hidráulicas prediais.',
-    tipos: ['Registro de gaveta (bruto ou com acabamento)', 'Registro de pressão (chuveiros e pontos de uso)', 'Registro de esfera', 'Registro para gás'],
+    tipos: ['Registro de gaveta (bruto ou com acabamento)', 'Registro de pressão (chuveiros e pontos de uso)', 'Registro de esfera de passagem plena (PP)', 'Registro de esfera de passagem reduzida (standard)', 'Registro para gás'],
     escolha: ['Gaveta para bloqueio de ramais; pressão para controle nos pontos de uso', 'Bitola e rosca compatíveis', 'Para gás, usar registro certificado para esse uso'],
     normas: ['NBR 15704-1', 'NBR 15705'],
     fotos: [

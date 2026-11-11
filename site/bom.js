@@ -334,7 +334,7 @@
           const nAq = Math.ceil(nChu / 3);
           add(Q_, 'Aquecedor de passagem a gás 33 L/min (vestiários)', nAq, 'un', { loss: false, note: 'Um para cada 3 chuveiros em uso simultâneo' });
           add(Q_, 'Duto de exaustão do aquecedor (kit chaminé)', nAq, 'un', { loss: false });
-          if (hasGas) { add(G_, 'Tubo de cobre classe A 22 mm (gás dos aquecedores)', nAq * 15, 'm', { pack: ['barra', 5] }); add(G_, 'Registro de esfera para gás 3/4"', nAq, 'un', { loss: false }); plugT(G_, 'Bujão de ferro galvanizado 3/4" para ponto de gás', nAq, 'NBR 15526'); ptG += nAq; }
+          if (hasGas) { add(G_, 'Tubo de cobre classe A 22 mm (gás dos aquecedores)', nAq * 15, 'm', { pack: ['barra', 5] }); add(G_, 'Registro de esfera para gás 3/4"', nAq, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' }); plugT(G_, 'Bujão de ferro galvanizado 3/4" para ponto de gás', nAq, 'NBR 15526'); ptG += nAq; }
         }
         if (aq === 'central') add(Q_, 'Boiler / acumulador e aquecimento central dos vestiários (dimensionar à parte)', 1, 'cj', { loss: false });
         threads += nChu;
@@ -375,7 +375,7 @@
           if (hasGas) {
             add(G_, 'Tubo de aço galvanizado 1" (DN 25) — rede de gás da cozinha', 40, 'm', { pack: ['barra', 6] });
             add(G_, 'Conexões galvanizadas 1" (gás)', 16);
-            add(G_, 'Registro de esfera para gás 1/2" (fogão, forno, caldeirão)', 4, 'un', { loss: false });
+            add(G_, 'Registro de esfera para gás 1/2" (fogão, forno, caldeirão)', 4, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
             add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', 4, 'un', { loss: false });
             plug(G_, 4, true);
             add(G_, 'Detector de vazamento de gás com válvula de bloqueio', 1, 'un', { loss: false });
@@ -496,7 +496,7 @@
           add(PR_, `Conjunto de pressurização com 2 bombas (≈ ${num(proc / 16, 1)} m³/h)`, 1, 'cj', { loss: false, note: 'Processo em 16 h por dia' });
           add(PR_, 'Tubo de aço galvanizado 2" (DN 50) — rede de água de processo', Lg + 40, 'm', { pack: ['barra', 6] });
           add(PR_, 'Conexões galvanizadas 2" (tês, joelhos, uniões)', Math.ceil((Lg + 40) / 6) + 10);
-          add(PR_, 'Registro de esfera 2"', 6, 'un', { loss: false });
+          add(PR_, 'Registro de esfera 2"', 6, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
           add(PR_, 'Filtro Y 2"', 1, 'un', { loss: false });
           add(PR_, 'Hidrômetro da água de processo 2"', 1, 'un', { loss: false });
           plugT(PR_, 'Bujão de ferro galvanizado 1" para ponto de água de processo', 6, 'NBR 5626');
@@ -514,7 +514,7 @@
           add(AR_, 'Conjunto filtro, regulador e lubrificador (FRL) 1/2"', nAr, 'un', { loss: false });
           add(AR_, 'Engate rápido 1/2"', nAr, 'un', { loss: false });
           plugT(AR_, 'Bujão de ferro galvanizado 1/2" para ponto de ar comprimido', nAr, 'teste de pressão da rede de ar');
-          add(AR_, 'Válvula de esfera 1/2"', nAr + 4, 'un', { loss: false });
+          add(AR_, 'Válvula de esfera 1/2"', nAr + 4, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
           add(AR_, 'Purgador automático de condensado', Math.ceil(anel / 30) + 1, 'un', { loss: false });
           horizontal += anel;
         }
@@ -529,7 +529,7 @@
       if (emerg) {
         add(SE_, 'Chuveiro de emergência com lava-olhos (ANSI Z358.1)', emerg, 'un', { loss: false, note: $('lgBat').checked && gt !== 'comercial' ? 'Inclui a sala de recarga de baterias' : '' });
         af(SE_, '32 mm (1") — alimentação dos chuveiros de emergência', emerg * 15);
-        add(SE_, 'Registro de esfera 1" (sempre aberto, com lacre)', emerg, 'un', { loss: false });
+        add(SE_, 'Registro de esfera 1" (sempre aberto, com lacre)', emerg, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
         plugT(SE_, 'Bujão de ferro galvanizado 1" para ponto do chuveiro de emergência', emerg, 'NBR 5626');
         add(SE_, 'Ralo com grelha 150 x 150 mm', emerg, 'un', { loss: false });
         esg(SE_, 100, emerg * 6);
@@ -617,7 +617,7 @@
         add(X_, 'Conexões soldáveis 32 e 25 mm', Math.ceil(lRede / 3));
         add(X_, 'Fita de identificação de tubulação "Água não potável" (rolo 30 m)', Math.ceil(lRede / 30), 'un');
         add(X_, 'Válvula de retenção 1"', 2, 'un', { loss: false });
-        add(X_, 'Registro de esfera 1"', 3, 'un', { loss: false });
+        add(X_, 'Registro de esfera 1"', 3, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
         warn.push('Água de chuva: a rede não potável deve ser separada da potável, identificada e sem conexão cruzada (NBR 15527 e NBR 5626).');
         joints += Math.ceil(lRede / 3);
       }
@@ -781,7 +781,7 @@
         add(G_, 'Conexões de cobre 15 mm para gás (joelhos, tês)', (gPts * 3 + gPts - 1) * U);
         add(G_, 'Conector terminal de cobre 15 mm x 1/2"', gPts * U);
         plug(G_, gPts * U, true);
-        add(G_, 'Registro de esfera para gás 1/2"', (gPts + 1) * U, 'un', { loss: false, note: 'Um por aparelho e um de corte da unidade' });
+        add(G_, 'Registro de esfera para gás 1/2"', (gPts + 1) * U, 'un', { loss: false, note: 'Um por aparelho e um de corte da unidade. Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
         add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', gPts * U, 'un', { loss: false });
         add(G_, gas === 'p13' ? 'Regulador de pressão para botijão P13 (NBR 8473)' : 'Regulador de pressão de 2º estágio', U, 'un', { loss: false });
         if (gas === 'p13') add(G_, 'Botijão P13 (vasilhame) e abrigo externo ventilado', U, 'un', { loss: false });
@@ -852,7 +852,7 @@
       if (hasGas) {
         add(G_, 'Tubo de aço galvanizado 1" (DN 25) — rede de gás da cozinha', KZ.gasL * N, 'm', { pack: ['barra', 6] });
         add(G_, 'Conexões galvanizadas 1" (gás)', 16 * N);
-        add(G_, 'Registro de esfera para gás 1/2" (fogão, forno, caldeirão)', KZ.gasPt * N, 'un', { loss: false });
+        add(G_, 'Registro de esfera para gás 1/2" (fogão, forno, caldeirão)', KZ.gasPt * N, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
         add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', KZ.gasPt * N, 'un', { loss: false });
         plug(G_, KZ.gasPt * N, true);
         add(G_, 'Detector de vazamento de gás com válvula de bloqueio', N, 'un', { loss: false });
@@ -1209,7 +1209,7 @@
         if (hasGas) {
           add(G_, 'Tubo de cobre classe A 15 mm (gás)', n * 12, 'm', { pack: ['barra', 5] });
           plug(G_, n, true);
-          add(G_, 'Registro de esfera para gás 1/2"', n, 'un', { loss: false });
+          add(G_, 'Registro de esfera para gás 1/2"', n, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
           add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', n, 'un', { loss: false });
         }
         if (loucas) {
@@ -1294,7 +1294,7 @@
           if (churN) {
             add(G_, 'Tubo de cobre classe A 15 mm (gás)', churN * 15, 'm', { pack: ['barra', 5] });
             plug(G_, churN, true);
-            add(G_, 'Registro de esfera para gás 1/2"', churN, 'un', { loss: false });
+            add(G_, 'Registro de esfera para gás 1/2"', churN, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
             add(G_, 'Flexível metálico para gás 1/2" (NBR 14177)', churN, 'un', { loss: false });
           }
           add(J_, 'Churrasqueira a gás (queimadores, equipamento)', churN + nChurVar, 'un', { loss: false, note: nChurVar ? `${int(nChurVar)} nas varandas, ponto de gás incluído em Gás` : '' });
@@ -1318,7 +1318,7 @@
       plug(X_, casa ? 2 * nCasas : 4 + 2 * pisosGar);
       add(X_, 'Fita de identificação de tubulação "Água não potável" (rolo 30 m)', Math.ceil(lRede / 30), 'un');
       add(X_, 'Válvula de retenção 1"', casa ? nCasas : 2, 'un', { loss: false });
-      add(X_, 'Registro de esfera 1"', (casa ? nCasas : 1) * 3, 'un', { loss: false });
+      add(X_, 'Registro de esfera 1"', (casa ? nCasas : 1) * 3, 'un', { loss: false, note: 'Latão ou bronze: informe na cotação se a passagem é plena (PP) ou reduzida; o preço muda' });
       warn.push('Água de chuva: a rede não potável deve ser totalmente separada da potável, identificada e sem conexão cruzada (NBR 15527 e NBR 5626).');
       joints += Math.ceil(lRede / 3);
     }
