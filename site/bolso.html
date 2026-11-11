@@ -405,6 +405,7 @@
     <p>Conversor, tabelas, cálculos, checklists, lista de materiais e consulta técnica para usar na obra, inclusive sem internet.</p>
     <div id="boasInstala">
       <h3>Instale no celular</h3>
+      <p>O PipeSystem Pro é um aplicativo para instalar no celular. Aqui no navegador ele funciona normalmente, mas instalado abre direto da tela inicial e funciona sem internet. No celular, abra <b>pipesystem.com.br/pro</b> e siga os passos:</p>
       <p><b>iPhone:</b> abra no Safari, toque em Compartilhar e depois em Adicionar à Tela de Início.</p>
       <p><b>Android:</b> abra no Chrome, toque no menu de três pontos e depois em Instalar aplicativo ou Adicionar à tela inicial.</p>
       <p>Abra uma vez com internet para guardar os dados no aparelho.</p>
@@ -1013,12 +1014,14 @@
   ajuste('ajLetra', 'letra', 'letra');
   ajuste('ajSol', 'sol', 'sol');
 
-  // Boas-vindas: aparece na primeira abertura; depois, pelo botão em Início
+  // Boas-vindas: no navegador (aplicativo ainda não instalado) aparece uma vez a cada visita, para explicar a instalação;
+  // no aplicativo instalado, só na primeira abertura. Sempre disponível pelo botão em Início
   const instalado = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
   const abrirBoas = () => { $('boasInstala').hidden = instalado; $('boas').hidden = false; $('fecharBoas').focus(); };
   $('abrirBoas').addEventListener('click', abrirBoas);
-  $('fecharBoas').addEventListener('click', () => { $('boas').hidden = true; gravar('boasvindas', true); });
-  if (!ler_('boasvindas', false)) abrirBoas();
+  const visita = v => { try { return v ? sessionStorage.setItem('bolso:boasvisita', '1') : sessionStorage.getItem('bolso:boasvisita'); } catch { return v ? null : '1'; } };
+  $('fecharBoas').addEventListener('click', () => { $('boas').hidden = true; gravar('boasvindas', true); visita(true); });
+  if (instalado ? !ler_('boasvindas', false) : !visita()) abrirBoas();
 
   // Conteúdo do portal: seções de lista com busca, todas no mesmo molde
   const SECOES = [['comparativos', 'consulta', 'Comparativos de materiais', 'Ex.: água quente'], ['detalhes', 'consulta', 'Detalhes típicos', 'Ex.: caixa de gordura'], ['guias', 'consulta', 'Guias passo a passo', 'Ex.: estanqueidade'], ['videos', 'consulta', 'Vídeos de fabricantes', 'Ex.: PVC'], ['noticias', 'setor', 'Notícias do setor', 'Ex.: saneamento'], ['cursos', 'setor', 'Cursos e eventos', 'Ex.: Florianópolis'], ['vagas', 'setor', 'Vagas do setor', 'Ex.: encanador'], ['sistemas', 'consulta', 'Sistemas de aplicação', 'Ex.: piscinas'], ['bim', 'consulta', 'Bibliotecas BIM e CAD', 'Ex.: Tigre, Revit'], ['ferramentas', 'consulta', 'Ferramentas on-line grátis', 'Ex.: aquecedor'], ['feiras', 'setor', 'Feiras do setor', 'Ex.: FENASAN'], ['revistas', 'setor', 'Revistas especializadas', 'Ex.: saneamento'], ['artigos', 'setor', 'Artigos técnicos', 'Ex.: perda de carga'], ['entidades', 'setor', 'Associações e entidades', 'Ex.: ABNT'], ['fabricantes', 'setor', 'Fabricantes', 'Ex.: Tigre']];
