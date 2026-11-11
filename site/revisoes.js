@@ -2,7 +2,7 @@
 const REVISOES = {
   'mat-abracadeiras-reparo': '2026-11-07',
   'mat-acessorios-sprinkler': '2026-11-07',
-  'mat-aco': '2026-11-07',
+  'mat-aco': '2026-11-11',
   'mat-aco-sem-costura': '2026-11-07',
   'mat-agua-chuva': '2026-11-01',
   'mat-agulha': '2026-11-07',
