@@ -17,6 +17,9 @@
   ],
   "redirects": [
     { "source": "/ferramentas", "destination": "/dimensionamento", "permanent": true },
+    { "source": "/Utilidades/Calculadora/:arquivo*", "destination": "/dimensionamento", "permanent": true },
+    { "source": "/Download/:arquivo*", "destination": "/bim-cad", "permanent": true },
+    { "source": "/Artigos_", "destination": "/artigos", "permanent": true },
     { "source": "/produtos", "destination": "/materiais", "permanent": true },
     { "source": "/produtos/tubos-aco", "destination": "/materiais/aco", "permanent": true },
     { "source": "/produtos/tubos-pvc", "destination": "/materiais/pvc", "permanent": true },
