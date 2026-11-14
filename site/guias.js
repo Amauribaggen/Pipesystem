@@ -127,6 +127,17 @@ const GUIAS = [
       '<b>Confira vazamentos</b>: água escorrendo na louça sem acionar indica reparo mal assentado.'],
     atencao: ['Sujeira da obra é a principal causa de válvula que não fecha: lave a rede antes de instalar o reparo.', 'Bacias de 6 litros exigem válvula ou caixa compatível.'],
     videos: ['valvula', 'valvulaMan', 'descargaTigre'], mats: [['Registros', 'registros']] },
+  { id: 'cheiro-esgoto', tema: 'Esgoto', tema2: ['Metais sanitários'], titulo: 'Cheiro de esgoto em casa: como achar a origem e resolver', resumo: 'Quase sempre é um fecho hídrico seco, um sifão sem curva ou uma saída de máquina sem vedação.',
+    tempo: '30 minutos a 2 horas', nivel: 'Básico', norma: 'NBR 8160',
+    separar: ['Lanterna', 'Balde com água', 'Anel de vedação para vaso sanitário, se for o caso', 'Vedação de borracha ou adaptador para a saída da máquina', 'Sifão novo, se o atual for reto ou estiver trincado'],
+    passos: ['<b>Descubra de onde vem o cheiro.</b> Cheire de perto cada ralo, pia, tanque e vaso sanitário do ambiente. O cheiro é mais forte junto da peça com problema.',
+      '<b>Ralos pouco usados:</b> a água que fica dentro do ralo sifonado (o fecho hídrico) é o que segura o cheiro, e ela evapora. Em ralos de áreas pouco usadas, jogue água periodicamente, por exemplo uma vez por semana.',
+      '<b>Pias e lavatórios:</b> confira se o sifão faz a curva que guarda água. Sifão reto, esticado demais ou sem água deixa o cheiro voltar. A NBR 8160 pede fecho hídrico de no mínimo 50 mm.',
+      '<b>Máquina de lavar roupa ou louça:</b> não basta encaixar a mangueira de descarga no cano da parede. A mangueira costuma ser mais fina e sobra uma folga em volta, por onde o cheiro sai. Vede essa folga com uma vedação de borracha ou um adaptador próprio para a saída da máquina.',
+      '<b>Vaso sanitário:</b> cheiro na base do vaso indica anel de vedação gasto ou mal assentado. Trocar o anel resolve.',
+      '<b>Se o cheiro continuar:</b> confira as tampas das caixas de inspeção e de gordura e, nos prédios e casas maiores, a ventilação do esgoto, que mantém a água dos sifões no lugar quando outro aparelho descarrega.'],
+    atencao: ['Desinfetante e aromatizante só disfarçam: o cheiro volta enquanto a causa continuar.', 'Ralo comum (sem sifão) ligado direto ao esgoto sempre deixa passar cheiro: troque por ralo sifonado ou caixa sifonada.', 'Cheiro que aparece só quando outro aparelho descarrega (o ralo "borbulha") costuma ser falta de ventilação: nesse caso, chame um encanador ou o projetista.'],
+    videos: [], mats: [['Sifões', 'sifoes'], ['Ralos', 'ralos']] },
   // fig: desenho (SVG) · quadros: tabelas comuns ({ titulo, cols, linhas, nota }) · calc: calculadora do guia ('api570')
   // tabelas: amostras de cor (as cores na tela são aproximadas; o padrão Munsell está na norma) · refs: fontes do guia
   { id: 'cores-tubulacoes', tema: 'Identificação', tema2: ['Gás'], titulo: 'Identificação de tubulações por cores (NBR 6493)', resumo: 'Qual cor usar em cada fluido, como pintar ou aplicar faixas, setas de sentido e rótulos.',
