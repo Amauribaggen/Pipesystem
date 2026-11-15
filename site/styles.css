@@ -1964,6 +1964,26 @@ a.gl:hover { color: var(--teal-d); }
 .cur__meta b { color: var(--ink); font-weight: 600; }
 .cur__obs { margin: 4px 0 0; font-size: .82rem; color: #9a5b00; }
 #vagaUf { margin-top: 8px; }
+/* Guia de fornecedores (esboço) */
+.gf__exemplos { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; margin-top: 32px; align-items: start; }
+.gf__perfil, .gf__rel { border: 1.5px solid var(--box-line); border-radius: 14px; background: #fff; padding: 18px; color: var(--ink); }
+.gf__perfil p, .gf__rel p, .gf__arquivos { color: #3d4c60; }
+.gf__topo { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.gf__perfil .gf__topo h3 { margin: 0; font-size: 1.1rem; color: var(--ink); }
+.gf__topo p { margin: 2px 0 0; color: var(--muted); font-size: .88rem; }
+.gf__topo .adpolicy__tag { margin-left: auto; }
+.gf__logo { width: 52px; height: 52px; border-radius: 10px; display: grid; place-items: center; background: var(--teal-d); color: #fff; font-weight: 800; flex: none; }
+.gf__cats { display: flex; flex-wrap: wrap; gap: 6px; }
+.gf__cats span { font-size: .8rem; padding: 3px 10px; border-radius: 999px; background: #eef6f7; color: var(--teal-d); font-weight: 600; }
+.gf__fotos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
+.gf__fotos span { aspect-ratio: 4 / 3; border-radius: 8px; background: repeating-linear-gradient(45deg, #eef1f4 0 8px, #e3e8ed 8px 16px); }
+.gf__arquivos { margin: 0 0 12px; padding-left: 18px; font-size: .9rem; }
+.gf__acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+.gf__rel { border-left: 4px solid #d99a00; }
+.gf__rel p { margin: 0 0 6px; font-size: .92rem; }
+.gf__relrot { display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: .8rem !important; text-transform: uppercase; letter-spacing: .04em; }
+.gf__link { font-weight: 600; color: var(--teal-d); font-size: .9rem; }
+@media (max-width: 760px) { .gf__exemplos { grid-template-columns: 1fr; } }
 .vg__uf[hidden], .vg__cid[hidden] { display: none; }
 .vg__uf .cur__sub { font-size: .95rem; color: var(--ink); scroll-margin-top: 96px; }
 .vg__n { color: var(--muted); font-weight: 600; text-transform: none; letter-spacing: 0; }
