@@ -100,7 +100,7 @@ const REVISOES = {
   'mat-irrigacao': '2026-11-05',
   'mat-isolamento': '2026-11-07',
   'mat-juntas': '2026-10-28',
-  'mat-juntas-expansao': '2026-11-07',
+  'mat-juntas-expansao': '2026-11-15',
   'mat-juntas-expansao-tipos': '2026-11-03',
   'mat-latao': '2026-11-07',
   'mat-latao-rosca': '2026-11-07',
