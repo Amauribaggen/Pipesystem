@@ -3,6 +3,7 @@
 const GP_TEMAS = ['Água fria e quente', 'Esgoto', 'Gás', 'Reservatórios', 'Metais sanitários', 'Testes e entrega', 'Identificação', 'Indústria'];
 
 const VIDEOS = {
+  apresentacao: { id: 'RbApp0_Nf_Q', t: 'PipeSystem: um passeio pelo portal', canal: 'PipeSystem', dur: '2:27', tema: 'Apresentação', d: 'Apresentação narrada do portal: cotações, sistemas, catálogo de materiais, Dimensionamento Inteligente, BIM e CAD, guias, normas, notícias e vagas, PipeSystem Pro e guia de fornecedores.' },
   pvc: { id: 'p_fwj2fG9_Y', t: 'Como instalar PVC soldável', canal: 'Tigre', dur: '2:10', tema: 'Água fria e quente', d: 'Corte, lixamento, limpeza e solda de tubos e conexões de PVC marrom.' },
   pvcAmanco: { id: 'UGn-qr7lF4M', t: 'Água fria soldável e roscável', canal: 'Amanco Wavin', dur: '4:21', tema: 'Água fria e quente', d: 'Execução de juntas soldáveis e roscáveis, com os cuidados de cada uma.' },
   cpvc: { id: 'Wj8G3noWT8U', t: 'Como instalar tubo CPVC', canal: 'Tigre', dur: '1:56', tema: 'Água fria e quente', d: 'Preparação e solda do CPVC para água quente.' },
