@@ -529,6 +529,9 @@ function cursosHTML() {
 // Cada vaga sai sozinha no build depois do prazo (`ate`) ou, sem prazo, depois de `validadePadrao` dias da publicação
 const VAGA_AREA = { predial: 'Instalações prediais', industrial: 'Tubulação industrial e caldeiraria', bombas: 'Manutenção e bombas',
   incendio: 'Combate a incêndio', saneamento: 'Saneamento', projeto: 'Projeto', vendas: 'Vendas técnicas' };
+const UF_NOME = { AC: 'Acre', AL: 'Alagoas', AP: 'Amapá', AM: 'Amazonas', BA: 'Bahia', CE: 'Ceará', DF: 'Distrito Federal', ES: 'Espírito Santo', GO: 'Goiás',
+  MA: 'Maranhão', MT: 'Mato Grosso', MS: 'Mato Grosso do Sul', MG: 'Minas Gerais', PA: 'Pará', PB: 'Paraíba', PR: 'Paraná', PE: 'Pernambuco', PI: 'Piauí',
+  RJ: 'Rio de Janeiro', RN: 'Rio Grande do Norte', RS: 'Rio Grande do Sul', RO: 'Rondônia', RR: 'Roraima', SC: 'Santa Catarina', SP: 'São Paulo', SE: 'Sergipe', TO: 'Tocantins' };
 function vagasData() {
   if (!existsSync('site/vagas.json')) return null;
   const V = JSON.parse(readFileSync('site/vagas.json', 'utf8')), hoje = new Date().toISOString().slice(0, 10);
@@ -540,22 +543,40 @@ function vagasHTML() {
   if (!V || !V.itens.length) return '';
   const br = d => d.split('-').reverse().join('/');
   const areas = Object.keys(VAGA_AREA).filter(k => V.itens.some(v => v.area === k));
-  const item = v => `<li class="cur__item" data-a="${v.area}">
+  const item = v => `<li class="cur__item" data-a="${v.area}" data-uf="${v.uf || ''}">
           <div class="cur__quando"><b>${br(v.publicada)}</b><small>publicação${v.ate ? ` · inscrições até ${br(v.ate)}` : ''}</small></div>
           <div><p class="nt__meta"><span class="nt__tag nt__tag--cat">${VAGA_AREA[v.area]}</span></p>
-          <h4 class="cur__titulo" id="vaga-${curSlug(v.titulo + '-' + v.local)}"><a href="${esc(v.link)}" target="_blank" rel="noopener nofollow">${esc(v.titulo)}</a></h4>
+          <h5 class="cur__titulo" id="vaga-${curSlug(v.titulo + '-' + v.local)}"><a href="${esc(v.link)}" target="_blank" rel="noopener nofollow">${esc(v.titulo)}</a></h5>
           <p class="cur__meta"><b>${esc(v.empresa)}</b> · ${esc(v.local)} · ${esc(v.contrato)}</p>${v.obs ? `<p class="cur__meta">${esc(v.obs)}</p>` : ''}</div></li>`;
+  // Agrupa por estado e, dentro dele, por município (vagas em vários municípios e local a confirmar vão por último)
+  const n = k => `${k} ${k === 1 ? 'vaga' : 'vagas'}`;
+  const ufs = [...new Set(V.itens.map(v => v.uf || ''))].sort((a, b) => !a - !b || (UF_NOME[a] || a).localeCompare(UF_NOME[b] || b, 'pt'));
+  const ultimo = c => c === 'Vários municípios' || !c;
+  const grupos = ufs.map(uf => {
+    const doUf = V.itens.filter(v => (v.uf || '') === uf);
+    const cids = [...new Set(doUf.map(v => v.cidade || ''))].sort((a, b) => ultimo(a) - ultimo(b) || a.localeCompare(b, 'pt'));
+    return `<div class="vg__uf" data-uf="${uf}"><h3 class="cur__sub" id="vagas-${uf ? uf.toLowerCase() : 'local-a-confirmar'}">${uf ? `${UF_NOME[uf] || uf} (${uf})` : 'Local a confirmar'} · <span class="vg__n">${n(doUf.length)}</span></h3>${cids.map(c => {
+      const its = doUf.filter(v => (v.cidade || '') === c);
+      return `<div class="vg__cid">${uf ? `<h4 class="vg__cidnome">${esc(c)} <small>${n(its.length)}</small></h4>` : ''}<ol class="cur__lista">${its.map(item).join('')}</ol></div>`;
+    }).join('')}</div>`;
+  }).join('');
+  const ufsCom = ufs.filter(Boolean);
   return `<section class="cur" id="vagas">
         <h2 class="cur__h2">Vagas do setor</h2>
-        <p class="cur__lead">Vagas de emprego para encanadores, bombeiros hidráulicos, tubulação industrial, manutenção e bombas, combate a incêndio, saneamento, projeto e vendas técnicas de materiais hidráulicos, publicadas em portais de emprego e empresas. Da mais recente para a mais antiga.</p>
-        <div class="nt__chips" id="vagaArea" role="group" aria-label="Filtrar vagas por área"><button type="button" class="nt__chip" aria-pressed="true" data-a="">Todas (${V.itens.length})</button>${areas.map(k => `<button type="button" class="nt__chip" aria-pressed="false" data-a="${k}">${VAGA_AREA[k]} (${V.itens.filter(v => v.area === k).length})</button>`).join('')}</div>
-        <ol class="cur__lista">${V.itens.map(item).join('')}</ol>
+        <p class="cur__lead">Vagas de emprego para encanadores, bombeiros hidráulicos, tubulação industrial, manutenção e bombas, combate a incêndio, saneamento, projeto e vendas técnicas de materiais hidráulicos, publicadas em portais de emprego e empresas. Separadas por estado e município, da mais recente para a mais antiga.</p>
+        <div class="nt__chips" id="vagaArea" role="group" aria-label="Filtrar vagas por área"><button type="button" class="nt__chip" aria-pressed="true" data-a="">Todas as áreas (${V.itens.length})</button>${areas.map(k => `<button type="button" class="nt__chip" aria-pressed="false" data-a="${k}">${VAGA_AREA[k]} (${V.itens.filter(v => v.area === k).length})</button>`).join('')}</div>
+        <div class="nt__chips" id="vagaUf" role="group" aria-label="Filtrar vagas por estado"><button type="button" class="nt__chip" aria-pressed="true" data-uf="">Todos os estados</button>${ufsCom.map(uf => `<button type="button" class="nt__chip" aria-pressed="false" data-uf="${uf}">${UF_NOME[uf] || uf} (${V.itens.filter(v => v.uf === uf).length})</button>`).join('')}</div>
+        ${grupos}
         <p class="nt__nota">A candidatura é feita no site que publicou a vaga. O PipeSystem não participa da seleção. As vagas saem da lista depois do prazo ou cerca de 30 dias após a publicação; confirme na página da vaga se ela continua aberta. Sua empresa tem uma vaga no setor? <a href="${contato('Divulgação de vaga', 'Cargo, cidade, contrato e link da vaga: ')}">Envie para nós</a>.</p>
         <script>
         (() => {
-          const box = document.getElementById('vagaArea'), itens = [...document.querySelectorAll('#vagas .cur__item')];
-          box.addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (!b) return; box.querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b));
-            itens.forEach(li => { li.hidden = !!b.dataset.a && li.dataset.a !== b.dataset.a; }); });
+          const sec = document.getElementById('vagas'), itens = [...sec.querySelectorAll('.cur__item')], f = { a: '', uf: '' };
+          const aplica = () => {
+            itens.forEach(li => { li.hidden = (f.a && li.dataset.a !== f.a) || (f.uf && li.dataset.uf !== f.uf); });
+            sec.querySelectorAll('.vg__cid, .vg__uf').forEach(g => { g.hidden = !g.querySelector('.cur__item:not([hidden])'); });
+          };
+          [['vagaArea', 'a'], ['vagaUf', 'uf']].forEach(([id, k]) => { const box = document.getElementById(id);
+            box.addEventListener('click', e => { const b = e.target.closest('.nt__chip'); if (!b) return; box.querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b)); f[k] = b.dataset[k]; aplica(); }); });
         })();
         </script>
       </section>`;

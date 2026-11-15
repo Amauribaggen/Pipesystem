@@ -1963,6 +1963,12 @@ a.gl:hover { color: var(--teal-d); }
 .cur__meta { margin: 0; font-size: .88rem; color: var(--muted); }
 .cur__meta b { color: var(--ink); font-weight: 600; }
 .cur__obs { margin: 4px 0 0; font-size: .82rem; color: #9a5b00; }
+#vagaUf { margin-top: 8px; }
+.vg__uf[hidden], .vg__cid[hidden] { display: none; }
+.vg__uf .cur__sub { font-size: .95rem; color: var(--ink); scroll-margin-top: 96px; }
+.vg__n { color: var(--muted); font-weight: 600; text-transform: none; letter-spacing: 0; }
+.cur .vg__cidnome { font-family: var(--font); font-size: .95rem; font-weight: 700; margin: 14px 0 0; color: var(--teal-d); letter-spacing: 0; text-transform: none; }
+.vg__cidnome small { color: var(--muted); font-weight: 500; font-size: .8rem; margin-left: 4px; }
 @media (max-width: 560px) { .cur__item { grid-template-columns: 1fr; gap: 6px; } .cur__quando { border-right: 0; border-bottom: 1px solid var(--line); padding: 0 0 6px; } }
 .ntc__sub { display: flex; align-items: baseline; gap: 12px; margin: 22px 0 10px; font-size: 1rem; }
 .ntc__sub a { font-size: .85rem; font-weight: 600; color: var(--teal-d); }

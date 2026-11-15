@@ -1,7 +1,199 @@
 {
- "atualizado": "2026-10-30",
+ "atualizado": "2026-11-15",
  "validadePadrao": 30,
  "itens": [
+  {
+   "publicada": "2026-11-13",
+   "titulo": "Bombeiro Hidráulico (2 vagas)",
+   "empresa": "Instaladora elétrica",
+   "local": "Rio de Janeiro/RJ (Centro e outros bairros)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT · R$ 3.066,80 · seg. a sex., 7h às 17h",
+   "area": "predial",
+   "link": "https://riovagas.com.br/riovagas/bombeiro-hidraulico-instaladora-eletrica-r-3-06680-centro-diversos-2-vagas/",
+   "obs": "Redes de água, gás e esgoto, testes de pressão e especificação de materiais; 2 a 3 anos de experiência."
+  },
+  {
+   "publicada": "2026-11-13",
+   "titulo": "Montador Hidráulico",
+   "empresa": "Empresa confidencial",
+   "local": "Santa Bárbara d'Oeste/SP",
+   "uf": "SP",
+   "cidade": "Santa Bárbara d'Oeste",
+   "contrato": "Efetiva · R$ 2.000 a R$ 3.500",
+   "area": "industrial",
+   "link": "https://empregarmc.com.br/vagasempregos/santa-barbara-doeste-81/montador-hidraulico-2/",
+   "obs": "Sistemas hidráulicos e pneumáticos de máquinas, testes de pressão, vazão e estanqueidade."
+  },
+  {
+   "publicada": "2026-11-13",
+   "titulo": "Técnico em Alarme de Incêndio",
+   "empresa": "Empresa confidencial",
+   "local": "Sumaré/SP",
+   "uf": "SP",
+   "cidade": "Sumaré",
+   "contrato": "Efetiva · R$ 2.000 a R$ 3.500",
+   "area": "incendio",
+   "link": "https://empregarmc.com.br/vagasempregos/sumare/tecnico-em-alarme-de-incendio/",
+   "obs": "Detecção e alarme de incêndio de várias marcas e iluminação de emergência."
+  },
+  {
+   "publicada": "2026-11-12",
+   "titulo": "Bombeiro Hidráulico (temporário) — condomínio",
+   "empresa": "Construção civil",
+   "local": "Rio de Janeiro/RJ (Jacarepaguá)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT temporário · R$ 3.066,80",
+   "area": "predial",
+   "link": "https://riovagas.com.br/riovagas/bombeiro-hidraulico-temporario-construcao-civil-r-3-06680-jacarepagua/",
+   "obs": "Manutenção preventiva e corretiva, vazamentos e infiltrações em apartamentos e áreas comuns."
+  },
+  {
+   "publicada": "2026-11-12",
+   "titulo": "Bombeiro Hidráulico Pleno / Sênior",
+   "empresa": "Empresa do setor de hotelaria",
+   "local": "Rio de Janeiro/RJ (Zona Sul)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT · R$ 3.000 + comissão",
+   "area": "predial",
+   "link": "https://riovagas.com.br/riovagas/bombeiro-hidraulico-pleno-senior-empresa-setor-de-hotelaria-r-3-00000-comissao-zona-sul/",
+   "obs": "Água fria e quente, esgoto, pluviais, gás, válvulas e bombas."
+  },
+  {
+   "publicada": "2026-11-12",
+   "titulo": "Bombeiro Hidráulico (temporário, 2 vagas) — hospital",
+   "empresa": "Obra hospitalar",
+   "local": "Rio de Janeiro/RJ (São Cristóvão)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT temporário · R$ 2.447,09 · 12x36",
+   "area": "predial",
+   "link": "https://riovagas.com.br/riovagas/bombeiro-hidraulico-temporario-hospital-r-2-44709-sao-cristovao-2-vagas/",
+   "obs": "Tubulações metálicas, PVC e PPR, hidrantes e sprinklers, testes de estanqueidade."
+  },
+  {
+   "publicada": "2026-11-12",
+   "titulo": "Ajudante de Manutenção de Bombas e Motores (2 vagas)",
+   "empresa": "Empresa de engenharia",
+   "local": "Rio de Janeiro/RJ (Bonsucesso)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT · R$ 1.755,22 · seg. a sex.",
+   "area": "bombas",
+   "link": "https://riovagas.com.br/riovagas/ajudante-de-manutencao-de-bombas-e-motores-empresa-de-engenharia-r-1-75522-bonsucesso-2-vagas/",
+   "obs": "Apoio na desmontagem e montagem de bombas, troca de rolamentos e retentores."
+  },
+  {
+   "publicada": "2026-11-11",
+   "titulo": "Bombeiro Hidráulico (temporário) — obra de hospital",
+   "empresa": "Construção civil",
+   "local": "Rio de Janeiro/RJ (Jacarepaguá)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT temporário · pretensão salarial · seg. a sex.",
+   "area": "predial",
+   "link": "https://riovagas.com.br/riovagas/bombeiro-hidraulico-temporario-hospital-pretensao-salarial-jacarepagua-5-vagas/",
+   "obs": "Anúncio com 5 vagas no total, incluindo pedreiros, gesseiros e ladrilheiros."
+  },
+  {
+   "publicada": "2026-11-11",
+   "titulo": "Mecânico de Manutenção de Bombas e Motores (2 vagas)",
+   "empresa": "Empresa de engenharia",
+   "local": "Rio de Janeiro/RJ (Bonsucesso)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT · R$ 2.620 · seg. a sex.",
+   "area": "bombas",
+   "link": "https://riovagas.com.br/riovagas/mecanico-de-manutencao-de-bombas-e-motores-empresa-de-engenharia-r-2-62000-bonsucesso-2-vagas/",
+   "obs": "Recuperação de bombas, rolamentos, selos mecânicos e alinhamento."
+  },
+  {
+   "publicada": "2026-11-11",
+   "titulo": "Técnico em Sistemas de Alarme de Incêndio",
+   "empresa": "Empresa confidencial",
+   "local": "Sumaré/SP",
+   "uf": "SP",
+   "cidade": "Sumaré",
+   "contrato": "Efetiva · R$ 3.800",
+   "area": "incendio",
+   "link": "https://empregarmc.com.br/vagasempregos/sumare/tecnico-em-sistemas-de-alarme-de-incendio/",
+   "obs": "Montagem, programação e manutenção de alarme de incêndio em prédios e indústrias."
+  },
+  {
+   "publicada": "2026-11-11",
+   "titulo": "Encanador Industrial (2 vagas)",
+   "empresa": "G&S Soluções e Manutenções Industriais",
+   "local": "Vinhedo/SP",
+   "uf": "SP",
+   "cidade": "Vinhedo",
+   "contrato": "Efetiva · R$ 2.500 a R$ 4.000",
+   "area": "industrial",
+   "link": "https://empregarmc.com.br/vagasempregos/vinhedo/encanador-industrial-59/",
+   "obs": "Montagem e testes de tubulações em aço carbono e inox a partir de desenhos técnicos."
+  },
+  {
+   "publicada": "2026-11-11",
+   "titulo": "Projetista Revit MEP (2 vagas)",
+   "empresa": "Plano3D",
+   "local": "Campinas/SP",
+   "uf": "SP",
+   "cidade": "Campinas",
+   "contrato": "Efetiva · R$ 4.000 a R$ 7.000",
+   "area": "projeto",
+   "link": "https://empregarmc.com.br/vagasempregos/campinas/projetista-revit-mep/",
+   "obs": "Projetos de HVAC no Revit MEP: carga térmica, dutos e perdas de carga."
+  },
+  {
+   "publicada": "2026-11-09",
+   "titulo": "Encanador de Obras (5 vagas)",
+   "empresa": "Construção civil",
+   "local": "Rio de Janeiro/RJ (Cidade Nova)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT · R$ 15,01/hora",
+   "area": "predial",
+   "link": "https://riovagas.com.br/riovagas/encanador-de-obras-construcao-civil-r-1501-hora-cidade-nova-5-vagas/",
+   "obs": "Água, esgoto e drenagem; leitura de projeto e experiência comprovada em obra."
+  },
+  {
+   "publicada": "2026-11-09",
+   "titulo": "Projetista Cadista — sistemas contra incêndio",
+   "empresa": "Empresa de instalações",
+   "local": "Rio de Janeiro/RJ (Sampaio)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "CLT · pretensão salarial · híbrido",
+   "area": "incendio",
+   "link": "https://riovagas.com.br/riovagas/projetista-cadista-sistemas-contra-incendio-pretensao-salarial-sampaio/",
+   "obs": "AutoCAD 2022 avançado, Excel e leitura de planta; ensino médio completo."
+  },
+  {
+   "publicada": "2026-11-09",
+   "titulo": "Estágio em Engenharia Civil — saneamento",
+   "empresa": "Empresa de saneamento",
+   "local": "Rio de Janeiro/RJ (Centro)",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro",
+   "contrato": "Estágio · R$ 1.113,20",
+   "area": "saneamento",
+   "link": "https://riovagas.com.br/riovagas/estagio-em-engenharia-civil-empresa-de-saneamento-r-1-11320-centro-rj/",
+   "obs": "Obras de rede coletora de esgoto e cadastro em planta da Cedae; a partir do 4º período."
+  },
+  {
+   "publicada": "2026-11-06",
+   "titulo": "Soldador Montador Plástico",
+   "empresa": "Nova Soluções",
+   "local": "Valinhos/SP",
+   "uf": "SP",
+   "cidade": "Valinhos",
+   "contrato": "Efetiva · R$ 4.300",
+   "area": "industrial",
+   "link": "https://empregarmc.com.br/vagasempregos/valinhos-2/soldador-montador-plastico/",
+   "obs": "Solda termoplástica de chapas e tubos de PVC e PP para tanques, dutos e lavadores de gases."
+  },
   {
    "publicada": "2026-10-30",
    "titulo": "Encanador Industrial (2 vagas)",
@@ -10,7 +202,9 @@
    "contrato": "Efetiva · R$ 2.000 a R$ 3.500",
    "area": "industrial",
    "link": "https://empregarmc.com.br/vagasempregos/paulinia-3/encanador-industrial-58/",
-   "obs": "Ensino médio com técnico em Mecânica ou Tubulação Industrial e 3 anos de experiência."
+   "obs": "Ensino médio com técnico em Mecânica ou Tubulação Industrial e 3 anos de experiência.",
+   "uf": "SP",
+   "cidade": "Paulínia"
   },
   {
    "publicada": "2026-10-30",
@@ -20,7 +214,21 @@
    "contrato": "CLT · R$ 4.200 · seg. a sex.",
    "area": "incendio",
    "link": "https://riovagas.com.br/riovagas/analista-de-seguranca-contra-incendio-escritorio-de-contabilidade-r-4-20000-nova-iguacu-2/",
-   "obs": "Projetos de prevenção e combate a incêndio e aprovação no Corpo de Bombeiros."
+   "obs": "Projetos de prevenção e combate a incêndio e aprovação no Corpo de Bombeiros.",
+   "uf": "RJ",
+   "cidade": "Nova Iguaçu"
+  },
+  {
+   "publicada": "2026-10-30",
+   "titulo": "Operador de ETE (efluentes)",
+   "empresa": "Empresa de RH",
+   "local": "São José dos Pinhais/PR",
+   "uf": "PR",
+   "cidade": "São José dos Pinhais",
+   "contrato": "R$ 2.500 · seg. a sex., 7h30 às 17h30",
+   "area": "saneamento",
+   "link": "https://www.mirojobs.com.br/2026/10/operador-de-ete-estacao-de-tratamento.html",
+   "obs": "Operação de bombas, válvulas, aeradores e dosadores; limpeza de grades e controle químico."
   },
   {
    "publicada": "2026-10-29",
@@ -30,7 +238,9 @@
    "contrato": "CLT · R$ 3.348,31 · seg. a sex., 7h às 17h",
    "area": "predial",
    "link": "https://riovagas.com.br/riovagas/bombeiro-hidraulico-empresa-de-engenharia-r-3-34831-cabo-frio/",
-   "obs": "Curso de bombeiro hidráulico desejável."
+   "obs": "Curso de bombeiro hidráulico desejável.",
+   "uf": "RJ",
+   "cidade": "Cabo Frio"
   },
   {
    "publicada": "2026-10-29",
@@ -40,7 +250,9 @@
    "contrato": "Efetiva · R$ 2.800",
    "area": "bombas",
    "link": "https://empregarmc.com.br/vagasempregos/valinhos-2/auxiliar-mecanico-hidraulico-2/",
-   "obs": "Técnico em Mecânica, CNH B e viagens de até 21 dias (MT, MS, MG e BA)."
+   "obs": "Técnico em Mecânica, CNH B e viagens de até 21 dias (MT, MS, MG e BA).",
+   "uf": "SP",
+   "cidade": "Valinhos"
   },
   {
    "publicada": "2026-10-28",
@@ -50,7 +262,9 @@
    "contrato": "Efetiva · R$ 2.900",
    "area": "vendas",
    "link": "https://empregarmc.com.br/vagasempregos/campinas/vendedor-3587/",
-   "obs": "Propostas e orçamentos técnicos; 1 ano em vendas B2B."
+   "obs": "Propostas e orçamentos técnicos; 1 ano em vendas B2B.",
+   "uf": "SP",
+   "cidade": "Campinas"
   },
   {
    "publicada": "2026-10-27",
@@ -61,7 +275,9 @@
    "area": "saneamento",
    "link": "https://conexao.grupohct.com.br/2026/10/27/aegea-saneamento-abre-vaga-para-engenheiro-junior/",
    "obs": "Engenharia Civil; acompanhamento de obras, cronogramas, custos e equipes. Link de notícia, com o caminho para a Gupy.",
-   "ate": "2026-11-15"
+   "ate": "2026-11-15",
+   "uf": "",
+   "cidade": ""
   },
   {
    "publicada": "2026-10-26",
@@ -71,7 +287,9 @@
    "contrato": "CLT · R$ 2.500 a R$ 3.750",
    "area": "bombas",
    "link": "https://riovagas.com.br/riovagas/mecanico-de-manutencao-engenharia-ate-r-3-75000-centro-2-vagas/",
-   "obs": "Técnico em Mecânica; desmontagem e montagem de bombas e sistemas hidráulicos."
+   "obs": "Técnico em Mecânica; desmontagem e montagem de bombas e sistemas hidráulicos.",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro"
   },
   {
    "publicada": "2026-10-26",
@@ -81,7 +299,9 @@
    "contrato": "Tempo integral",
    "area": "bombas",
    "link": "https://careers-bra.byd.com/jobs/8615203-mecanico-de-manutencao",
-   "obs": "Técnico em Mecânica; sistemas hidráulicos, pneumáticos e bombas."
+   "obs": "Técnico em Mecânica; sistemas hidráulicos, pneumáticos e bombas.",
+   "uf": "BA",
+   "cidade": "Camaçari"
   },
   {
    "publicada": "2026-10-23",
@@ -91,7 +311,9 @@
    "contrato": "CLT · R$ 3.200",
    "area": "predial",
    "link": "https://riovagas.com.br/riovagas/bombeiro-hidraulico-construcao-civil-r-3-20000-zona-oeste-10-vagas/",
-   "obs": "Experiência comprovada em carteira."
+   "obs": "Experiência comprovada em carteira.",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro"
   },
   {
    "publicada": "2026-10-23",
@@ -101,7 +323,9 @@
    "contrato": "Salário compatível com o mercado",
    "area": "saneamento",
    "link": "https://www.radiotaquara.com.br/novo/corsan-abre-seis-vagas-de-trabalho-em-quatro-municipios-incluindo-tres-coroas/",
-   "obs": "Notícia; candidatura por e-mail. Sem prazo informado."
+   "obs": "Notícia; candidatura por e-mail. Sem prazo informado.",
+   "uf": "RS",
+   "cidade": "Vários municípios"
   },
   {
    "publicada": "2026-10-23",
@@ -112,7 +336,9 @@
    "area": "saneamento",
    "link": "https://www.concursosbrasil.org/concurso-samasa-tres-barras-sc-8-vagas-abertas-com-salarios-de-ate-r-9-500/",
    "obs": "Prova objetiva em 13/12/2026 (banca UNESC).",
-   "ate": "2026-11-26"
+   "ate": "2026-11-26",
+   "uf": "SC",
+   "cidade": "Três Barras"
   },
   {
    "publicada": "2026-10-21",
@@ -122,7 +348,9 @@
    "contrato": "Efetiva · R$ 2.000 a R$ 3.500",
    "area": "industrial",
    "link": "https://empregarmc.com.br/vagasempregos/sumare/caldeireiro-125/",
-   "obs": "Técnico em Caldeiraria ou Soldagem e 1 ano de experiência."
+   "obs": "Técnico em Caldeiraria ou Soldagem e 1 ano de experiência.",
+   "uf": "SP",
+   "cidade": "Sumaré"
   },
   {
    "publicada": "2026-10-21",
@@ -132,7 +360,9 @@
    "contrato": "Salário compatível com o mercado",
    "area": "saneamento",
    "link": "https://tribunadejundiai.com.br/economia/empregos/vaga-operador-eta-ete-opersan-jundiai/",
-   "obs": "Notícia; currículo por e-mail ou WhatsApp. Sem prazo informado."
+   "obs": "Notícia; currículo por e-mail ou WhatsApp. Sem prazo informado.",
+   "uf": "SP",
+   "cidade": "Vários municípios"
   },
   {
    "publicada": "2026-10-20",
@@ -142,7 +372,9 @@
    "contrato": "Efetiva · R$ 3.500 a R$ 6.500 + PPR",
    "area": "projeto",
    "link": "https://empregarmc.com.br/vagasempregos/campinas/projetista-de-tubulacao/",
-   "obs": "AutoCAD Plant 3D, isométricos e ASME B31.3/BPE."
+   "obs": "AutoCAD Plant 3D, isométricos e ASME B31.3/BPE.",
+   "uf": "SP",
+   "cidade": "Campinas"
   },
   {
    "publicada": "2026-10-16",
@@ -152,7 +384,9 @@
    "contrato": "CLT · R$ 3.850",
    "area": "incendio",
    "link": "https://riovagas.com.br/riovagas/tecnico-de-manutencao-em-sistemas-de-combate-a-inc-industria-r-3-85000-sao-joao-da-barra/",
-   "obs": "Sprinklers, hidrantes e bombas de incêndio; disponibilidade para viagens."
+   "obs": "Sprinklers, hidrantes e bombas de incêndio; disponibilidade para viagens.",
+   "uf": "RJ",
+   "cidade": "São João da Barra"
   },
   {
    "publicada": "2026-10-14",
@@ -162,7 +396,9 @@
    "contrato": "CLT · R$ 2.000 + 1,5% das vendas",
    "area": "vendas",
    "link": "https://riovagas.com.br/riovagas/vendedor-loja-de-material-de-construcao-r-2-00000-comissao-camorim/",
-   "obs": "Experiência em vendas B2B é diferencial."
+   "obs": "Experiência em vendas B2B é diferencial.",
+   "uf": "RJ",
+   "cidade": "Rio de Janeiro"
   },
   {
    "publicada": "2026-10-13",
@@ -172,7 +408,9 @@
    "contrato": "Efetiva · R$ 4.193",
    "area": "industrial",
    "link": "https://empregarmc.com.br/vagasempregos/campinas/soldador-358/",
-   "obs": "Montagem e soldagem de tubulações (TIG e eletrodo revestido)."
+   "obs": "Montagem e soldagem de tubulações (TIG e eletrodo revestido).",
+   "uf": "SP",
+   "cidade": "Campinas"
   },
   {
    "publicada": "2026-10-13",
@@ -182,7 +420,9 @@
    "contrato": "Efetiva · R$ 2.000 a R$ 3.500",
    "area": "industrial",
    "link": "https://empregarmc.com.br/vagasempregos/monte-mor/caldeireiro-124/",
-   "obs": "Experiência como caldeireiro em indústria."
+   "obs": "Experiência como caldeireiro em indústria.",
+   "uf": "SP",
+   "cidade": "Monte Mor"
   },
   {
    "publicada": "2026-10-12",
@@ -192,7 +432,9 @@
    "contrato": "Efetiva · R$ 2.500 a R$ 4.000",
    "area": "industrial",
    "link": "https://www.empregasaojose.com.br/vagasempregos/jacarei/encanador-industrial-27/",
-   "obs": "Técnico em Mecânica ou Tubulação Industrial, ou 3 anos de experiência."
+   "obs": "Técnico em Mecânica ou Tubulação Industrial, ou 3 anos de experiência.",
+   "uf": "SP",
+   "cidade": "Jacareí"
   },
   {
    "publicada": "2026-10-12",
@@ -202,7 +444,9 @@
    "contrato": "Efetiva · R$ 2.801,98 · 44 h/semana",
    "area": "predial",
    "link": "https://www.empregasaojose.com.br/vagasempregos/sao-jose-dos-campos/encanador-61/",
-   "obs": "Água fria, esgoto e águas pluviais; disponibilidade para viajar."
+   "obs": "Água fria, esgoto e águas pluviais; disponibilidade para viajar.",
+   "uf": "SP",
+   "cidade": "São José dos Campos"
   },
   {
    "publicada": "2026-10-08",
@@ -212,7 +456,9 @@
    "contrato": "Salário não informado",
    "area": "projeto",
    "link": "https://www.mirojobs.com.br/2026/10/assistente-de-projetos-projetista-de.html",
-   "obs": "Engenharia Civil (cursando ou formado) ou técnico em Edificações."
+   "obs": "Engenharia Civil (cursando ou formado) ou técnico em Edificações.",
+   "uf": "PR",
+   "cidade": "Ponta Grossa"
   },
   {
    "publicada": "2026-10-05",
@@ -222,7 +468,9 @@
    "contrato": "Efetiva · R$ 2.800",
    "area": "predial",
    "link": "https://www.empregasaojose.com.br/vagasempregos/jacarei/encanador-residencial-10/",
-   "obs": "Ensino médio, CNH B, plantões e horas extras."
+   "obs": "Ensino médio, CNH B, plantões e horas extras.",
+   "uf": "SP",
+   "cidade": "Jacareí"
   },
   {
    "publicada": "2026-10-05",
@@ -232,7 +480,9 @@
    "contrato": "Efetiva · R$ 2.800",
    "area": "predial",
    "link": "https://www.empregasaojose.com.br/vagasempregos/sao-jose-dos-campos/encanador-residencial-11/",
-   "obs": "Ensino médio, CNH B, plantões e horas extras."
+   "obs": "Ensino médio, CNH B, plantões e horas extras.",
+   "uf": "SP",
+   "cidade": "São José dos Campos"
   }
  ]
 }
