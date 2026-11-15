@@ -181,7 +181,7 @@ function creditosFotos(fotos) {
 // imagens geradas por IA abaixo da foto principal da ficha (MATERIAL_EXTRA)
 const extraHTML = m => (MATERIAL_EXTRA[m.id] || []).map(f => `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar imagem: ${f.legenda}" data-legenda="${f.legenda}">
       <img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} class="inteira" loading="lazy">
-      <figcaption>${f.legenda} · ${IA_CREDITO}</figcaption>
+      <figcaption>${f.legenda} · ${f.autor ? `Foto: <a href="${f.fonte}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${f.autor}</a> (imagem de divulgação do fabricante)` : IA_CREDITO}</figcaption>
     </figure>`).join('');
 function fotosHTML(fotos, titulo = '', zoom = true) {
   if (!fotos) return '';

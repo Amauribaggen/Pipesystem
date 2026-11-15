@@ -1659,6 +1659,7 @@ const MATERIAL_EXTRA = {
   'mat-esfera-tripartida': [{ src: 'img/materiais/ia-esfera-tripartida-explodida.webp', alt: 'Desenho em vista explodida da válvula de esfera tripartida: alavanca, haste, gaxeta, corpo, esfera, sedes de PTFE, juntas, tampas e tirantes', legenda: 'Vista explodida: componentes da válvula tripartida' }],
   'mat-bombas-incendio': [{ src: 'img/sistemas/ia-casa-bombas-incendio.webp', alt: 'Casa de bombas de incêndio com duas bombas sobre base de concreto e tubulação vermelha', legenda: 'Casa de bombas de incêndio' }],
   'mat-sprinklers': [{ src: 'img/sistemas/ia-sprinkler-vga.webp', alt: 'Sprinkler na rede vermelha e válvula de governo e alarme com manômetro e chave de fluxo', legenda: 'Sprinkler e válvula de governo e alarme' }],
+  'mat-ferr-tarraxa-pvc': [{ src: 'img/materiais/mat-ferr-tarraxa-pvc-2-fab.webp', alt: 'Tarraxa Vonder para cano de PVC de 1 1/2", com cabeçote vazado e cabo de aço', legenda: 'Tarraxa para cano de PVC de 1 1/2"', autor: 'Vonder', fonte: 'https://www.vonder.com.br/produto/tarraxa_para_cano_de_pvc_112_vonder/6632' }],
   'mat-hidrantes': [{ src: 'img/sistemas/ia-hidrante-abrigo.webp', alt: 'Abrigo vermelho de hidrante com mangueira aduchada, esguicho e válvula angular de latão', legenda: 'Hidrante em abrigo' }],
 };
 const IA_CREDITO = 'Imagem gerada por IA Pipesystem';

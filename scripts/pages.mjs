@@ -272,7 +272,7 @@ export function generate(D, outDir) {
       ${D.revisaoHTML(m)}
       ${fig}${(D.MATERIAL_EXTRA[m.id] || []).map(f => `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar imagem: ${esc(plain(f.legenda))}" data-legenda="${esc(plain(f.legenda))}">
         <img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)} class="inteira" loading="lazy" decoding="async">
-        <figcaption>${f.legenda} · ${D.IA_CREDITO}</figcaption>
+        <figcaption>${f.legenda} · ${f.autor ? `Foto: <a href="${esc(f.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(f.autor)}</a> (imagem de divulgação do fabricante)` : D.IA_CREDITO}</figcaption>
       </figure>`).join('')}
       <p class="sheet__desc page__lead">${linkNorms(m.desc)}</p>
       ${p ? tabelasHTML(p.tabelas, linkNorms) : ''}
