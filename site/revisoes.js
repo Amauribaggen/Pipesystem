@@ -77,7 +77,7 @@ const REVISOES = {
   'mat-ferr-rebarbadores': '2026-11-01',
   'mat-ferr-solda-aco': '2026-11-07',
   'mat-ferr-solda-topo': '2026-11-01',
-  'mat-ferr-tarraxa-pvc': '2026-11-06',
+  'mat-ferr-tarraxa-pvc': '2026-11-15',
   'mat-ferr-tarraxas': '2026-11-01',
   'mat-ferr-termofusor': '2026-11-01',
   'mat-ferr-teste': '2026-11-01',
