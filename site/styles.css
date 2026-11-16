@@ -2010,6 +2010,11 @@ a.gl:hover { color: var(--teal-d); }
 .gpfig svg { width: 100%; height: auto; }
 .gpfig--golpe svg { display: block; max-width: 560px; margin: 0 auto; }
 .gpfig--roscas svg { display: block; max-width: 560px; margin: 0 auto; }
+.gpquadro .gpsimb { display: block; width: 72px; height: 43px; color: #14324f; }
+.gpquadro table:has(.gpsimb) td { vertical-align: middle; }
+.gpquadro table:has(.gpsimb) td:first-child { white-space: normal; }
+.gpquadro table:has(.gpsimb) td:nth-child(2) { width: 92px; }
+.gpquadro table:has(.gpsimb) td:nth-child(3) { width: 72px; font-size: .8rem; }
 @media (max-width: 560px) { .gpfig--golpe { margin-inline: -12px; padding: 8px; } }
 .gpfig figcaption { font-size: .82rem; color: var(--muted); margin-top: 6px; }
 .gpquadro { margin: 0 0 16px; }
