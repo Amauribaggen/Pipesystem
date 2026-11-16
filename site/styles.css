@@ -2009,6 +2009,7 @@ a.gl:hover { color: var(--teal-d); }
 .gpfig { margin: 0 0 16px; padding: 12px; background: #f6f9fc; border: 1.5px solid var(--box-line); border-radius: 12px; }
 .gpfig svg { width: 100%; height: auto; }
 .gpfig--golpe svg { display: block; max-width: 560px; margin: 0 auto; }
+.gpfig--roscas svg { display: block; max-width: 560px; margin: 0 auto; }
 @media (max-width: 560px) { .gpfig--golpe { margin-inline: -12px; padding: 8px; } }
 .gpfig figcaption { font-size: .82rem; color: var(--muted); margin-top: 6px; }
 .gpquadro { margin: 0 0 16px; }

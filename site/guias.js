@@ -107,6 +107,139 @@ const GUIAS = [
       '<b>Não volte a rosca</b> para "acertar a posição": isso desfaz a vedação.'],
     atencao: ['Em conexões plásticas, prefira adaptadores com rosca metálica nos pontos de metais sanitários.', 'Em gás, use somente vedante certificado para gás.', 'Não use estopa com massa em instalações novas.'],
     videos: ['pvcAmanco'], mats: [['Vedantes', 'vedantes'], ['Conexões galvanizadas', 'galv']] },
+  { id: 'medida-roscadas', tema: 'Água fria e quente', tema2: ['Gás', 'Indústria'], titulo: 'Conexões roscadas: como medir, cortar e apertar o tubo', resumo: 'Meça de centro a centro, desconte a cota Z de cada conexão, preveja uma união para fechar o trecho e aperte só o necessário. Vale para ferro maleável, galvanizado, aço, latão, inox e PVC roscável.',
+    tempo: '5 min por trecho', nivel: 'Básico', norma: 'NBR 6943 · NBR NM ISO 7-1',
+    chaves: ['aperto da rosca', 'número de voltas', 'voltas de aperto', 'aperto a chave', 'aperto excessivo', 'comprimento da chave', 'chave de grifo', 'união', 'união de ferro', 'acoplamento', 'conexão roscada', 'conexões roscadas', 'medir tubo', 'medida do tubo', 'comprimento do tubo', 'cortar tubo na medida', 'centro a centro', 'medida centro a centro', 'cota Z', 'cota A', 'centro à face', 'face a face', 'comprimento de rosca', 'rosca engatada', 'penetração da rosca', 'ferro maleável', 'conexão de ferro', 'conexão galvanizada', 'tubo galvanizado', 'niple', 'luva', 'cotovelo', 'tê', 'união', 'rosca BSP', 'rosca NPT', 'Tupy', 'Tupy BSP', 'Tupy Fix', 'GF', 'Fitting', 'NBR 6943', 'ISO 49', 'EN 10242', 'NBR NM ISO 7-1'],
+    fig: `<figure class="gpfig gpfig--roscas"><svg viewBox="0 0 420 800" role="img" font-family="inherit" aria-label="Dois desenhos de montagem roscada. No primeiro, cotovelo, união, niple e tê rosqueados direto, e um tubo até outro cotovelo: a medida total M é M1 mais H mais Zu mais Z1, e o tubo mede M1 menos Z1 e Z2. No segundo, um tê com derivação para baixo até uma luva: o tubo mede M1 menos Z1 do tê e Z2 da luva, que é metade do vão livre entre as roscas dentro da luva.">
+      <defs>
+        <pattern id="mrHach" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="#fde3c8"/><line x1="0" y1="0" x2="0" y2="4" stroke="#e07b1a" stroke-width="1.6"/></pattern>
+        <marker id="mrSeta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#14324f"/></marker>
+        <marker id="mrSetaV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#c62828"/></marker>
+        <marker id="mrSetaG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#2e7d32"/></marker>
+      </defs>
+      <g font-size="11" fill="#14324f">
+      <!-- ===== 1. ACOPLAMENTO MACHO E MACHO/FÊMEA ===== -->
+      <rect x="4" y="4" width="412" height="372" rx="12" fill="#fff" stroke="#c9d6e3" stroke-width="1.5"/>
+      <text x="16" y="26" font-size="14" font-weight="700">1. Acoplamento entre peças macho e macho/fêmea</text>
+      <text x="16" y="44" fill="#4a5a6e">Cotovelo, união e tê rosqueados direto; tubo até o outro cotovelo</text>
+      <g stroke="#1f6fb2" stroke-width="1" stroke-dasharray="5 4"><line x1="34" y1="58" x2="34" y2="256"/><line x1="196" y1="82" x2="196" y2="256"/><line x1="384" y1="58" x2="384" y2="256"/><line x1="12" y1="170" x2="408" y2="170"/></g>
+      <line x1="36" y1="66" x2="382" y2="66" stroke="#14324f" stroke-width="1.4" marker-start="url(#mrSeta)" marker-end="url(#mrSeta)"/>
+      <rect x="150" y="58" width="118" height="16" rx="3" fill="#fff"/><text x="209" y="70" text-anchor="middle" font-weight="700" font-size="12">M = centro a centro</text>
+      <line x1="198" y1="90" x2="382" y2="90" stroke="#14324f" stroke-width="1.4" marker-start="url(#mrSeta)" marker-end="url(#mrSeta)"/>
+      <rect x="236" y="82" width="110" height="16" rx="3" fill="#fff"/><text x="291" y="94" text-anchor="middle" font-weight="700">centro a centro = M₁</text>
+      <rect x="208" y="160" width="160" height="20" fill="#eef2f6" stroke="#5c6b7d" stroke-width="1.3"/>
+      <rect x="208" y="160" width="8" height="20" fill="url(#mrHach)"/><rect x="360" y="160" width="8" height="20" fill="url(#mrHach)"/>
+      <path d="M16 152 h46 v36 h-10 v24 h-36 z" fill="#2b7bc4" fill-opacity=".25" stroke="#1f6fb2" stroke-width="1.8"/>
+      <path d="M34 212 v18 q0 18 -14 18" fill="none" stroke="#5c6b7d" stroke-width="18" stroke-opacity=".18"/>
+      <circle cx="34" cy="170" r="3.5" fill="#1f6fb2"/>
+      <rect x="62" y="158" width="10" height="24" fill="url(#mrHach)" stroke="#e07b1a"/>
+      <rect x="72" y="154" width="20" height="32" rx="2" fill="#2b7bc4" fill-opacity=".25" stroke="#1f6fb2" stroke-width="1.8"/>
+      <path d="M92 146 h22 l5 8 v32 l-5 8 h-22 l-5 -8 v-32 z" fill="#2b7bc4" fill-opacity=".45" stroke="#1f6fb2" stroke-width="1.8"/>
+      <rect x="119" y="154" width="20" height="32" rx="2" fill="#2b7bc4" fill-opacity=".25" stroke="#1f6fb2" stroke-width="1.8"/>
+      <text x="104" y="138" text-anchor="middle" font-weight="700" fill="#1f6fb2">união</text>
+      <rect x="139" y="160" width="40" height="20" fill="#eef2f6" stroke="#5c6b7d" stroke-width="1.3"/>
+      <rect x="139" y="160" width="8" height="20" fill="url(#mrHach)"/><rect x="171" y="160" width="8" height="20" fill="url(#mrHach)"/>
+      <text x="159" y="152" text-anchor="middle" fill="#4a5a6e" font-size="10">niple</text>
+      <path d="M179 152 h38 v36 h-9 v22 h-24 v-22 h-5 z" fill="#2b7bc4" fill-opacity=".25" stroke="#1f6fb2" stroke-width="1.8"/>
+      <rect x="186" y="210" width="20" height="30" fill="#eef2f6" stroke="#5c6b7d" stroke-width="1.3"/>
+      <circle cx="196" cy="170" r="3.5" fill="#1f6fb2"/>
+      <text x="198" y="138" text-anchor="middle" font-weight="700" fill="#1f6fb2">tê</text>
+      <path d="M368 152 h34 v-30 h-30 v30" fill="#2b7bc4" fill-opacity=".25" stroke="#1f6fb2" stroke-width="1.8"/>
+      <path d="M368 152 h34 v36 h-34 z" fill="#2b7bc4" fill-opacity=".25" stroke="#1f6fb2" stroke-width="1.8"/>
+      <path d="M387 122 v-14 q0 -16 16 -16" fill="none" stroke="#5c6b7d" stroke-width="16" stroke-opacity=".18"/>
+      <circle cx="384" cy="170" r="3.5" fill="#1f6fb2"/>
+      <g stroke-width="1"><line x1="72" y1="188" x2="72" y2="232" stroke="#c62828"/><line x1="139" y1="188" x2="139" y2="232" stroke="#c62828"/><line x1="216" y1="182" x2="216" y2="232" stroke="#2e7d32"/><line x1="360" y1="182" x2="360" y2="232" stroke="#2e7d32"/></g>
+      <line x1="36" y1="224" x2="70" y2="224" stroke="#c62828" stroke-width="1.6" marker-start="url(#mrSetaV)" marker-end="url(#mrSetaV)"/><text x="53" y="244" text-anchor="middle" font-weight="700" fill="#c62828">H</text>
+      <line x1="74" y1="224" x2="137" y2="224" stroke="#c62828" stroke-width="1.6" marker-start="url(#mrSetaV)" marker-end="url(#mrSetaV)"/><text x="105" y="244" text-anchor="middle" font-weight="700" fill="#c62828">Zu</text>
+      <line x1="141" y1="224" x2="194" y2="224" stroke="#c62828" stroke-width="1.6" marker-start="url(#mrSetaV)" marker-end="url(#mrSetaV)"/><text x="168" y="244" text-anchor="middle" font-weight="700" fill="#c62828">Z₁</text>
+      <line x1="198" y1="252" x2="214" y2="252" stroke="#c62828" stroke-width="1.6"/><text x="206" y="246" text-anchor="middle" font-weight="700" fill="#c62828" font-size="10">Z₁</text>
+      <line x1="218" y1="224" x2="358" y2="224" stroke="#2e7d32" stroke-width="1.6" marker-start="url(#mrSetaG)" marker-end="url(#mrSetaG)"/><text x="288" y="218" text-anchor="middle" font-weight="700" fill="#2e7d32">tubo = M₁ − (Z₁ + Z₂)</text>
+      <line x1="362" y1="224" x2="382" y2="224" stroke="#c62828" stroke-width="1.6" marker-start="url(#mrSetaV)" marker-end="url(#mrSetaV)"/><text x="372" y="244" text-anchor="middle" font-weight="700" fill="#c62828">Z₂</text>
+      <rect x="222" y="252" width="138" height="16" rx="2" fill="#bfe3f7" stroke="#1f6fb2"/>
+      <g stroke="#14324f" stroke-width=".8"><path d="M230 252v6M240 252v4M250 252v6M260 252v4M270 252v6M280 252v4M290 252v6M300 252v4M310 252v6M320 252v4M330 252v6M340 252v4M350 252v6"/></g>
+      <g transform="rotate(-50 360 182)"><rect x="360" y="176" width="56" height="10" rx="2" fill="#f2c200" stroke="#8a6d00"/><path d="M360 176 l-10 5 l10 5 z" fill="#e8c9a0" stroke="#8a6d00"/></g>
+      <rect x="14" y="284" width="392" height="80" rx="8" fill="#f6f9fc" stroke="#c9d6e3"/>
+      <text x="26" y="306" font-size="13" font-weight="700">M = M₁ + H + Zu + Z₁</text>
+      <text x="26" y="326" font-size="13" font-weight="700" fill="#2e7d32">Comprimento do tubo = M₁ − (Z₁ + Z₂)</text>
+      <text x="26" y="346">H: centro do cotovelo à união · Zu: união · Z₁, Z₂: conexões</text>
+      <text x="26" y="360" fill="#4a5a6e">A união permite montar e desmontar sem girar o resto da linha.</text>
+      <!-- ===== 2. DERIVAÇÃO ATÉ UMA LUVA ===== -->
+      <rect x="4" y="388" width="412" height="350" rx="12" fill="#fff" stroke="#c9d6e3" stroke-width="1.5"/>
+      <text x="16" y="410" font-size="14" font-weight="700">2. Acoplamento entre peças fêmea e luva</text>
+      <text x="16" y="428" fill="#4a5a6e">Derivação do tê até uma luva: a medida vai até o meio da luva</text>
+      <!-- linha principal e tê -->
+      <rect x="14" y="452" width="96" height="20" fill="#eef2f6" stroke="#5c6b7d" stroke-width="1.3"/>
+      <rect x="170" y="452" width="96" height="20" fill="#eef2f6" stroke="#5c6b7d" stroke-width="1.3"/>
+      <path d="M102 444 h76 v36 h-20 v24 h-36 v-24 h-20 z" fill="#2b7bc4" fill-opacity=".25" stroke="#1f6fb2" stroke-width="1.8"/>
+      <text x="140" y="438" text-anchor="middle" font-weight="700" fill="#1f6fb2">tê</text>
+      <!-- tubo da derivação, luva e tubo seguinte -->
+      <rect x="130" y="496" width="20" height="110" fill="#eef2f6" stroke="#5c6b7d" stroke-width="1.3"/>
+      <rect x="130" y="496" width="20" height="8" fill="url(#mrHach)"/><rect x="130" y="598" width="20" height="8" fill="url(#mrHach)"/>
+      <rect x="130" y="636" width="20" height="70" fill="#eef2f6" stroke="#5c6b7d" stroke-width="1.3"/>
+      <rect x="130" y="636" width="20" height="8" fill="url(#mrHach)"/>
+      <rect x="124" y="598" width="32" height="46" rx="2" fill="#2b7bc4" fill-opacity=".3" stroke="#1f6fb2" stroke-width="1.8"/>
+      <text x="98" y="612" text-anchor="end" font-weight="700" fill="#1f6fb2">luva</text><line x1="114" y1="600" x2="114" y2="642" stroke="#14324f" stroke-width="1.2" marker-start="url(#mrSeta)" marker-end="url(#mrSeta)"/><text x="106" y="634" text-anchor="end" font-weight="700">A</text>
+      <!-- centros -->
+      <g stroke="#1f6fb2" stroke-width="1" stroke-dasharray="5 4"><line x1="140" y1="440" x2="140" y2="716"/><line x1="96" y1="462" x2="330" y2="462"/><line x1="112" y1="621" x2="330" y2="621"/></g>
+      <circle cx="140" cy="462" r="3.5" fill="#1f6fb2"/><circle cx="140" cy="621" r="3.5" fill="#1f6fb2"/>
+      <g stroke-width="1"><line x1="150" y1="504" x2="262" y2="504" stroke="#2e7d32"/><line x1="150" y1="606" x2="262" y2="606" stroke="#2e7d32"/></g>
+      <!-- cotas verticais -->
+      <line x1="322" y1="464" x2="322" y2="619" stroke="#14324f" stroke-width="1.4" marker-start="url(#mrSeta)" marker-end="url(#mrSeta)"/>
+      <text x="330" y="546" font-weight="700" font-size="12">M₁ =</text><text x="330" y="562" font-weight="700" font-size="12">centro a</text><text x="330" y="578" font-weight="700" font-size="12">centro</text>
+      <line x1="254" y1="464" x2="254" y2="502" stroke="#c62828" stroke-width="1.6" marker-start="url(#mrSetaV)" marker-end="url(#mrSetaV)"/><text x="262" y="488" font-weight="700" fill="#c62828">Z₁ (tê)</text>
+      <line x1="254" y1="506" x2="254" y2="604" stroke="#2e7d32" stroke-width="1.6" marker-start="url(#mrSetaG)" marker-end="url(#mrSetaG)"/><text x="262" y="552" font-weight="700" fill="#2e7d32">tubo</text>
+      <line x1="254" y1="608" x2="254" y2="619" stroke="#c62828" stroke-width="1.6"/><text x="262" y="618" font-weight="700" fill="#c62828">Z₂ (luva)</text>
+      <!-- régua vertical e lápis -->
+      <rect x="160" y="506" width="16" height="98" rx="2" fill="#bfe3f7" stroke="#1f6fb2"/>
+      <g stroke="#14324f" stroke-width=".8"><path d="M160 516h6M160 526h4M160 536h6M160 546h4M160 556h6M160 566h4M160 576h6M160 586h4M160 596h6"/></g>
+      <g transform="rotate(35 152 606)"><rect x="152" y="601" width="56" height="10" rx="2" fill="#f2c200" stroke="#8a6d00"/><path d="M152 601 l-10 5 l10 5 z" fill="#e8c9a0" stroke="#8a6d00"/></g>
+      <!-- fórmula -->
+            <rect x="180" y="640" width="226" height="88" rx="8" fill="#f6f9fc" stroke="#c9d6e3"/>
+      <text x="190" y="662" font-size="12.5" font-weight="700" fill="#2e7d32">Tubo = M₁ − (Z₁ + Z₂)</text>
+      <text x="190" y="682">Z₂ = (comprimento A</text>
+      <text x="190" y="698">da luva − 2 roscas) ÷ 2</text>
+      <text x="190" y="716" fill="#4a5a6e">metade do vão livre interno</text>
+      <!-- legenda e aviso -->
+      <g font-size="10.5" fill="#4a5a6e">
+        <rect x="10" y="748" width="14" height="11" fill="#2b7bc4" fill-opacity=".3" stroke="#1f6fb2"/><text x="28" y="757">Conexão</text>
+        <rect x="84" y="748" width="14" height="11" fill="#eef2f6" stroke="#5c6b7d"/><text x="102" y="757">Tubo</text>
+        <rect x="140" y="748" width="14" height="11" fill="url(#mrHach)" stroke="#e07b1a"/><text x="158" y="757">Rosca engatada</text>
+        <line x1="244" y1="754" x2="262" y2="754" stroke="#1f6fb2" stroke-dasharray="5 4"/><text x="266" y="757">Centro</text>
+        <text x="312" y="757" fill="#c62828" font-weight="700">Z</text><text x="322" y="757">desconto</text>
+      </g>
+      <rect x="4" y="766" width="412" height="30" rx="8" fill="#fdecea" stroke="#c62828" stroke-width="1.5"/>
+      <text x="210" y="786" text-anchor="middle" font-size="13" font-weight="700" fill="#c62828">ATENÇÃO: a vedação não é obtida com aperto excessivo</text>
+      </g>
+    </svg><figcaption>Desenho PipeSystem. Os valores de Z (cotovelo, tê, luva e união) estão no catálogo do fabricante das conexões.</figcaption></figure>`,
+    quadros: [
+      { titulo: 'Aperto a chave: linha ISO 7-1 (BSP)', cols: ['Tamanho nominal', 'Aperto mínimo a chave (nº de voltas)', 'Aperto máximo a chave (nº de voltas)', 'Comprimento da chave para tubo'], linhas: [
+        ['1/4" a 3/4"', '1 1/2', '2 3/4', '6"'],
+        ['1" a 1 1/4"', '1 1/2', '2 3/4', '8"'],
+        ['1 1/2"', '1 1/2', '2 3/4', '10"'],
+        ['2"', '2', '3 1/4', '12"'],
+        ['2 1/2"', '2 1/2', '4', '14"'],
+        ['3"', '2 1/2', '4', '18"'],
+        ['4"', '3', '4 1/2', '24"'],
+        ['5"', '3 1/2', '5', '36"'],
+        ['6"', '3 1/2', '5', '48"'],
+      ], nota: 'Voltas contadas com a chave depois do aperto à mão. Atenção: a vedação não é obtida com aperto excessivo. Tabela de referência para conexões de ferro maleável com rosca BSP; confira a do fabricante da linha instalada.' },
+      { titulo: 'Cotas de cotovelo 90° de ferro maleável (exemplo)', cols: ['Bitola', 'A: centro à face', 'Rosca engatada (aprox.)', 'Z = A − rosca'], linhas: [
+        ['1/2"', '28 mm', '13 mm', '15 mm'],
+        ['3/4"', '33 mm', '15 mm', '18 mm'],
+        ['1"', '38 mm', '17 mm', '21 mm'],
+      ], nota: 'Cotas A de cotovelos 90° BSP segundo as tabelas de revendedores das conexões Tupy (NBR 6943 e ISO 49); Z de referência da ISO 49 / EN 10242. Cada peça (tê, luva, união, curva) e cada fabricante têm a sua cota: use sempre a tabela do catálogo da linha instalada.' },
+    ],
+    separar: ['Trena e esquadro', 'Tabela de cotas (A e Z) do catálogo do fabricante das conexões', 'Caneta ou riscador para marcar o tubo', 'Cortador de tubos e tarraxa (ou tubos já roscados na medida)', 'Fita veda-rosca ou vedante adequado ao fluido'],
+    passos: ['<b>Meça de centro a centro (M ou M₁).</b> Na obra, marque o eixo de cada conexão, como o centro do cotovelo, do tê ou do registro, e meça entre os eixos.',
+      '<b>Ache o Z de cada conexão</b> no catálogo do fabricante: é a distância do centro da peça até a ponta do tubo rosqueado dentro dela (a cota A, do centro à face, menos a rosca engatada).',
+      '<b>Calcule o tubo:</b> comprimento = M₁ − (Z₁ + Z₂). Peças rosqueadas direto umas nas outras, sem tubo entre elas, entram somadas na medida total: M = M₁ + H + Zu + Z₁.',
+      '<b>Preveja uma união em cada trecho fechado.</b> Entre duas conexões já fixas, o último tubo não monta: ao girar para rosquear um lado, o outro desaperta. A união fecha o trecho sem girar a linha e permite desmontar depois, junto de registros, bombas e equipamentos.',
+      '<b>Na luva, meça até o meio dela.</b> O Z da luva é a metade do vão livre entre as roscas: (comprimento A − 2 roscas) ÷ 2.',
+      '<b>Corte no esquadro e abra a rosca</b> com o comprimento certo, para a ponta entrar o quanto a conexão foi feita para receber.',
+      '<b>Aperte pelo número de voltas, não pela força.</b> Rosqueie à mão até encostar e complete com a chave dentro da faixa da tabela de aperto, com a chave do comprimento indicado. A vedação vem da rosca cônica e do vedante: veja o <a href="#roscas">guia de vedação de roscas</a>.'],
+    atencao: ['A vedação não é obtida com aperto excessivo: aperto demais racha a conexão ou deforma a rosca.', 'Não volte a rosca para acertar a posição: isso desfaz a vedação. Planeje a medida antes.', 'Rosca BSP (NBR NM ISO 7-1) e NPT não se misturam: o passo e o ângulo são diferentes.', 'Em PVC roscável, use a cota da conexão de PVC e tarraxa própria para PVC.'],
+    refs: [['Catálogo técnico de conexões BSP e NPT (Tupy, 2017)', 'https://www.tupy.com.br/downloads/pdfs/catalogo_tecnico_conexoes_2017.pdf'], ['Cotovelo 90° Tupy BSP: tabela de dimensões (Valaco)', 'http://www.valaco.com.br/produtos/conexoes_fm_bsp_cotovelo_90.html'], ['ABNT NBR 6943: conexões de ferro fundido maleável com rosca (catálogo)', 'https://www.normas.com.br/visualizar/abnt-nbr-nm/6542/abnt-nbr6943-conexoes-de-ferro-fundido-maleavel-com-rosca-abnt-nbr-nm-iso-7-1-para-tubulacoes']],
+    videos: [], mats: [['Conexões galvanizadas', 'galv'], ['Tubos de aço', 'aco'], ['Vedantes', 'vedantes'], ['Tarraxas', 'ferr-tarraxas']] },
   { id: 'caixa', tema: 'Reservatórios', titulo: "Instalação da caixa d'água", resumo: 'Base plana, extravasor livre, tampa fechada e limpeza a cada 6 meses.',
     tempo: '3 a 4 horas', nivel: 'Instalador', norma: 'NBR 5626',
     separar: ['Base plana e nivelada que apoie todo o fundo', 'Adaptadores com flange e anel', 'Torneira de boia', 'Registros de saída e de limpeza'],
@@ -300,6 +433,138 @@ const GUIAS = [
     atencao: ['A corrosão sob isolamento é a falha escondida mais comum: retire o isolamento nos pontos de maior risco em vez de medir só por fora.', 'Pontos mortos e pontos de injeção corroem muito mais rápido que o resto da linha: monitore com mais pontos e mais frequência.', 'Nunca use só a taxa de longo prazo: uma aceleração recente da corrosão aparece apenas na taxa de curto prazo.', 'Reparos e alterações exigem autorização do inspetor responsável, procedimento de soldagem qualificado e, quando aplicável, teste de pressão.', 'No Brasil, as tubulações ligadas a caldeiras e vasos de pressão seguem a NR-13: o plano e os prazos são definidos por profissional habilitado.'],
     refs: [['API 570 — Piping Inspection Code: inspeção, reparo, alteração e reclassificação de tubulações em serviço (edição 2024)', 'https://hydrocarbonprocessing.com/news/2024/02/api-strengthens-piping-inspection-standards-with-new-updates/'], ['API 570: código de inspeção de tubulação (artigo técnico)', 'https://www.normas.com.br/visualizar/artigo-tecnico/4915/api-570-codigo-de-inspecao-de-tubulacao'], ['Intervalos de inspeção das API 510, 570 e 653', 'https://reliamag.com/guides/api-510-570-653-inspection-intervals/'], ['Classes de tubulação da API 570 (1 a 4)', 'https://open-exam-prep.com/study-guides/api-570/inspection-intervals-extent-of-inspection/piping-classifications'], ['Taxa de corrosão, vida remanescente e espessura mínima (API 570)', 'https://open-exam-prep.com/study-guides/api-570/calculations-remaining-life/remaining-life-retirement'], ['NR-13 — Caldeiras, vasos de pressão, tubulações e tanques metálicos', 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/norma-regulamentadora-no-13-nr-13']],
     videos: [], mats: [['Tubos de aço', 'aco'], ['Conexões para solda', 'conexoes-solda'], ['Flanges', 'flanges'], ['Isolamento térmico', 'isolamento']] },
+  { id: 'bomba-centrifuga', tema: 'Água fria e quente', tema2: ['Reservatórios', 'Indústria'], titulo: 'Instalação de bomba centrífuga: sucção, escorva e partida', resumo: 'A maioria das bombas queima por erro na sucção. Diâmetro, redução excêntrica, válvula de pé, escorva e sentido de rotação.',
+    tempo: 'Meio dia a um dia', nivel: 'Instalador e eletricista', norma: 'NBR 5626 · manual do fabricante',
+    chaves: ['bomba centrífuga', 'bomba d\'água', 'bomba de recalque', 'instalar bomba', 'instalação de bomba', 'sucção da bomba', 'tubulação de sucção', 'altura de sucção', 'bomba afogada', 'bomba não puxa água', 'bomba perdendo escorva', 'escorva', 'escorvar bomba', 'válvula de pé', 'válvula de pé com crivo', 'crivo', 'redução excêntrica', 'cavitação', 'NPSH', 'NPSH disponível', 'NPSH requerido', 'bomba fazendo barulho', 'bomba trabalhando a seco', 'sentido de rotação', 'válvula de retenção no recalque', 'registro de recalque', 'base da bomba', 'alinhamento', 'motobomba', 'recalque predial'],
+    quadros: [
+      { titulo: 'Defeitos mais comuns e onde está a causa', cols: ['Sintoma', 'Causa provável', 'O que fazer'], linhas: [
+        ['Bomba liga mas não puxa água', 'Sem escorva, entrada de ar na sucção ou válvula de pé fora da água ou entupida', 'Refaça a escorva, aperte as juntas da sucção e limpe o crivo'],
+        ['Perde a escorva depois de parada', 'Válvula de pé vazando ou junta da sucção puxando ar', 'Troque a válvula de pé e teste a sucção com água sob pressão'],
+        ['Ruído de pedras rolando e vazão caindo', 'Cavitação: sucção alta demais, tubo fino ou muitas curvas', 'Aproxime a bomba do nível da água e aumente o diâmetro da sucção'],
+        ['Vazão baixa com motor normal', 'Sentido de rotação invertido ou rotor gasto', 'Confira a seta da carcaça; no trifásico, inverta duas fases'],
+        ['Motor desarma ou esquenta', 'Tensão errada, bomba travada ou trabalhando fora da curva', 'Confira a ligação e a tensão; meça a corrente com alicate amperímetro'],
+      ], nota: 'Causas reunidas de manuais de fabricantes de bombas e da apostila de bombas da USP (EEL). Confira sempre o manual do seu modelo.' },
+    ],
+    separar: ['Manual e curva da bomba (vazão, altura e NPSH requerido)', 'Tubos da sucção com diâmetro igual ou maior que o bocal de entrada', 'Válvula de pé com crivo, redução excêntrica e luvas de união', 'Registro e válvula de retenção para o recalque', 'Base firme e nivelada, chumbadores e calços', 'Alicate amperímetro e chave de teste'],
+    passos: ['<b>Posicione a bomba o mais perto possível da água.</b> Quanto menor a altura e o comprimento da sucção, menor o risco de cavitação. Sempre que der, deixe a bomba <b>afogada</b> (abaixo do nível do reservatório).',
+      '<b>Fixe a base nivelada</b> em superfície firme, longe de umidade, com espaço para manutenção e ventilação do motor.',
+      '<b>Monte a sucção sem pontos altos.</b> O tubo deve subir sempre em direção à bomba, sem barrigas para cima, onde o ar fica preso. Use diâmetro igual ou maior que o bocal de entrada e o mínimo de curvas.',
+      '<b>Na mudança de diâmetro, use redução excêntrica</b> junto da bomba, com o lado reto para cima. A redução concêntrica forma uma bolsa de ar na entrada.',
+      '<b>Coloque a válvula de pé com crivo</b> na ponta da sucção, submersa pelo menos 0,5 m e afastada do fundo, para não puxar lodo. Ela mantém a sucção cheia quando a bomba para.',
+      '<b>No recalque, instale a válvula de retenção e o registro</b>, nessa ordem a partir da bomba. A retenção protege a bomba do retorno da coluna d\'água e do golpe de aríete.',
+      '<b>Apoie os tubos em suportes próprios.</b> O peso da tubulação não pode ficar pendurado nos bocais da bomba.',
+      '<b>Faça a escorva.</b> Com a bomba acima da água, encha a carcaça e a sucção pelo bujão de escorva até sair água sem bolhas. Com a bomba afogada, basta abrir o registro da sucção.',
+      '<b>Confira a ligação elétrica e o sentido de rotação</b>, com um toque rápido no motor. A seta na carcaça mostra o sentido certo.',
+      '<b>Dê a partida com o registro de recalque pouco aberto</b> e vá abrindo devagar. Meça a corrente e compare com a placa do motor.'],
+    atencao: ['Nunca deixe a bomba funcionar a seco, nem por poucos segundos: o selo mecânico queima.', 'Nunca regule a vazão fechando o registro da sucção: isso provoca cavitação. Regule pelo recalque.', 'Ligações elétricas e proteção do motor (disjuntor e relé de sobrecarga) devem ser feitas por eletricista.', 'Compare o NPSH disponível da instalação com o NPSH requerido da curva da bomba; o disponível precisa ser maior, com folga.'],
+    refs: [['Apostila de bombas: classificação e descrição (USP, EEL)', 'https://sistemas.eel.usp.br/docentes/arquivos/5817712/LOQ4015/capitulo3_bombasclassificacaoedescricao.pdf'], ['Apêndice técnico de bombas (Calpeda)', 'https://calpeda.com/wp-content/uploads/calpeda_prodotti/CATALOGHI_PDF/PT%20-%20Portugu%C3%AAs/singoli_PT/AP%C3%8ANDICE%20T%C3%89CNICO_PT.pdf'], ['Manual da bomba centrífuga UP 90 (Komeco)', 'https://www.komeco.com.br/arquivos/manuais/bombas-pressurizadores/bomba-centrifuga/manual-bomba-centrifuga-up-90.pdf']],
+    videos: [], mats: [['Bombas centrífugas', 'bombas'], ['Válvulas de retenção', 'retencao'], ['Medidores e manômetros', 'medidores']] },
+  { id: 'aquecedor-passagem', tema: 'Gás', tema2: ['Água fria e quente'], titulo: 'Aquecedor a gás de passagem: instalação de água, gás e chaminé', resumo: 'Lugar certo, ventilação permanente, chaminé com caimento para fora e teste de vazamento antes de acender.',
+    tempo: '3 a 6 horas', nivel: 'Profissional habilitado', norma: 'NBR 13103 · NBR 15526',
+    chaves: ['aquecedor a gás', 'aquecedor de passagem', 'aquecedor de água a gás', 'aquecedor instantâneo', 'instalar aquecedor a gás', 'chaminé do aquecedor', 'duto de exaustão', 'exaustão forçada', 'tiragem natural', 'fluxo balanceado', 'ventilação permanente', 'monóxido de carbono', 'intoxicação por monóxido', 'aquecedor em banheiro', 'área de serviço', 'GLP', 'gás natural', 'GN', 'flexível de gás', 'registro de gás', 'Rinnai', 'Komeco', 'Lorenzetti', 'Orbis', 'NBR 13103', 'NBR 15526'],
+    separar: ['Manual do aparelho (vazão, tipo de gás e distâncias mínimas)', 'Duto de exaustão do diâmetro do aparelho e terminal externo', 'Registro de gás, flexível certificado e conexões de gás', 'Ligações flexíveis de água fria e quente, registro de entrada', 'Espuma detectora de vazamento', 'Furadeira, buchas e nível'],
+    passos: ['<b>Confira o aparelho.</b> Ele precisa ser do tipo de gás da casa (GLP ou gás natural) e da vazão que o projeto pediu. Aparelho trocado de gás sem conversão autorizada é proibido.',
+      '<b>Escolha o local.</b> Prefira área de serviço ou ambiente ventilado. Siga a NBR 13103 e o manual: volume mínimo do ambiente, distâncias de janelas, de tomadas e de outros aparelhos.',
+      '<b>Garanta a ventilação permanente.</b> O aparelho de tiragem natural consome o ar do ambiente: as aberturas superior e inferior, com as áreas do manual, nunca podem ser fechadas.',
+      '<b>Fixe o aparelho</b> na parede, nivelado, na altura do manual e com as folgas laterais livres para manutenção.',
+      '<b>Monte a chaminé.</b> Duto do diâmetro do bocal, o mais curto possível, com caimento para fora no trecho horizontal e terminal do lado de fora da edificação. Não junte com a coifa do fogão ou de churrasqueira.',
+      '<b>Ligue a água.</b> Entrada de água fria com registro e saída de água quente com tubos próprios para água quente (CPVC, PPR, PEX ou cobre). Confira a pressão mínima de funcionamento do aparelho.',
+      '<b>Ligue o gás</b> com registro de fecho rápido junto do aparelho e flexível certificado, sem dobras e longe de partes quentes.',
+      '<b>Teste a estanqueidade do gás</b> com espuma em todas as juntas, com o registro aberto e o aparelho desligado. Nunca use chama.',
+      '<b>Acenda e regule</b> conforme o manual: abra uma torneira de água quente, confira a chama, a temperatura e a saída dos gases pelo terminal.',
+      '<b>Explique o uso ao morador</b> e deixe o manual e o certificado da instalação.'],
+    atencao: ['Aparelho sem chaminé ou com ventilação fechada pode matar por monóxido de carbono, um gás sem cheiro.', 'Banheiro só aceita os modelos e as condições que a norma e o manual permitem; na dúvida, instale fora dele.', 'A instalação e as conversões de gás devem ser feitas por profissional habilitado, e a concessionária pode exigir o laudo.', 'Faça a manutenção anual do aparelho e da chaminé.'],
+    refs: [['Manual do aquecedor a gás Linha Home 26 (Komeco)', 'https://www.komeco.com.br/arquivos/manuais/aquecimento-gas/home/manual-aquecimento-gas-linha-home-26.pdf'], ['Manual de instalação de aquecedor a gás (Rinnai)', 'https://www.rinnai.com.br/content/uploads/manual/136.pdf'], ['Aquecedor a gás: regras de instalação e uso em condomínios (SíndicoNet)', 'https://www.sindiconet.com.br/informese/aquecedor-de-agua-a-gas-quais-as-regras-para-instalacao-e-uso-para-moradores-manutencao']],
+    videos: ['gas'], mats: [['Aquecedores e caldeiras', 'caldeiras'], ['Válvulas para gás', 'valvulas-gas'], ['Reguladores de pressão', 'reguladores']] },
+  { id: 'pex-instalacao', tema: 'Água fria e quente', titulo: 'Tubos PEX: corte, calibragem, anel deslizante e crimpagem', resumo: 'Tubo flexível que faz as curvas sem conexão. O cuidado está no corte, na calibragem e na ferramenta certa para cada sistema.',
+    tempo: '1 a 3 min por junta', nivel: 'Instalador treinado', norma: 'NBR 15939',
+    chaves: ['PEX', 'tubo PEX', 'instalar PEX', 'instalação PEX', 'PEX água quente', 'anel deslizante', 'conexão de anel deslizante', 'crimpagem', 'anel de crimpar', 'conexão prensada PEX', 'expansor PEX', 'alicate PEX', 'calibrador PEX', 'chanfrador PEX', 'raio de curvatura PEX', 'curvar PEX', 'tubo bainha', 'tubo guia', 'distribuidor PEX', 'manifold', 'ClicPEX', 'Flextemp', 'Tigre', 'Amanco Wavin', 'Uponor', 'Viega', 'NBR 15939'],
+    separar: ['Tesoura corta-tubos própria para PEX', 'Calibrador/chanfrador do diâmetro do tubo', 'Ferramentas do sistema escolhido: expansor e alicate (anel deslizante) ou prensa/alicate de crimpar', 'Conexões e anéis da mesma marca do tubo', 'Tubo bainha (corrugado) para os trechos embutidos', 'Caneta para marcação'],
+    passos: ['<b>Escolha um sistema e fique nele.</b> Tubo, conexões, anéis e ferramentas da mesma marca. As conexões de um sistema não servem no outro.',
+      '<b>Corte no esquadro</b> com a tesoura própria, sem amassar o tubo. Serra deixa rebarba e corte torto.',
+      '<b>Calibre e chanfre a ponta.</b> O calibrador devolve a forma redonda e tira a rebarba, para o tubo não cortar os anéis de vedação.',
+      '<b>Anel deslizante:</b> passe o anel no tubo, abra a ponta com o expansor, encaixe a conexão até o fim e empurre o anel com o alicate até encostar na conexão.',
+      '<b>Crimpagem (prensagem):</b> encaixe a conexão com o anel até o batente, confira pela janela de inspeção e prense com a ferramenta e o mordente do diâmetro.',
+      '<b>Faça as curvas com o próprio tubo</b>, respeitando o raio mínimo do fabricante, em geral de 8 a 10 vezes o diâmetro externo. Curva mais fechada estrangula e enfraquece o tubo.',
+      '<b>Embutido, passe o PEX dentro do tubo bainha</b>, do distribuidor até o ponto, sem emendas na parede. Isso permite trocar o tubo sem quebrar.',
+      '<b>Fixe os trechos aparentes</b> com abraçadeiras, sem apertar a ponto de marcar o tubo, e proteja do sol.',
+      '<b>Teste a estanqueidade</b> antes de fechar a parede, como no <a href="#estanq-agua">guia de teste da água fria e quente</a>.'],
+    atencao: ['O PEX não resiste ao sol: guarde as bobinas protegidas e nunca deixe tubo aparente exposto à luz.', 'Não use chama para curvar ou amolecer o tubo.', 'Não reaproveite anéis nem conexões já prensadas.', 'Mantenha distância de chaminés, aquecedores e luminárias quentes.'],
+    refs: [['Ficha técnica PEX (Amanco Wavin)', 'https://mediahub.wavin.com/m/3ed0280a9782fb30/original/FT-PEX.pdf'], ['Manual técnico PEX (Amanco Wavin)', 'https://mediahub.wavin.com/m/b721b52c602de3b/original/Manual-Tecnico-PEX.pdf'], ['Ficha técnica ClicPEX (Tigre, jul/2025)', 'https://tigresite.s3.amazonaws.com/2025/07/FT_ClicPEX_v3_Julho-2025.pdf']],
+    videos: ['pex', 'flextemp', 'pexCorte'], mats: [['Tubos PEX', 'pex'], ['Ferramentas para PEX', 'ferr-pex']] },
+  { id: 'brasagem-cobre', tema: 'Água fria e quente', tema2: ['Gás'], titulo: 'Solda e brasagem de tubos de cobre', resumo: 'Limpeza, folga certa, fluxo e calor por igual: o metal de adição corre pela junta por capilaridade.',
+    tempo: '3 a 5 min por junta', nivel: 'Instalador treinado', norma: 'NBR 15345 · NBR 15489',
+    chaves: ['solda de cobre', 'soldar cobre', 'brasagem', 'brasagem de cobre', 'solda forte', 'solda branda', 'solda capilar', 'solda prata', 'solda foscoper', 'cobre-fósforo', 'estanho', 'vareta de solda', 'fluxo para solda', 'pasta de solda', 'maçarico', 'oxiacetileno', 'tubo de cobre', 'conexão de cobre', 'cobre água quente', 'cobre gás', 'junta capilar', 'NBR 15345', 'NBR 15489', 'NBR 11720'],
+    quadros: [
+      { titulo: 'Solda branda ou brasagem?', cols: ['', 'Solda branda (estanho)', 'Brasagem (solda forte)'], linhas: [
+        ['Fusão do metal de adição', 'Abaixo de 450 °C', 'Acima de 450 °C'],
+        ['Metal de adição', 'Ligas de estanho sem chumbo', 'Cobre-fósforo ou ligas com prata'],
+        ['Fluxo', 'Sempre', 'Dispensado entre cobre e cobre com cobre-fósforo; necessário com latão e bronze'],
+        ['Fonte de calor', 'Maçarico de GLP ou propano', 'Maçarico de maior potência (oxiacetileno ou ar-gás próprio)'],
+        ['Uso típico', 'Água fria e quente predial', 'Gás, água quente de maior temperatura, refrigeração e linhas que pedem junta mais resistente'],
+      ], nota: 'Definição de soldagem branda e brasagem pelo limite de 450 °C, usada pela AWS e pelo material de ensino do IFSC. O tipo de junta exigido em cada rede está no projeto e nas normas (NBR 15345 para a instalação, NBR 15489 para soldas e fluxos e NBR 15526 para gás).' },
+    ],
+    separar: ['Cortador de tubos de cobre e rebarbador', 'Lixa ou palha de aço própria e escova para as bolsas', 'Metal de adição e fluxo compatíveis com a norma e com o uso', 'Maçarico adequado e acendedor', 'Pano úmido, extintor e manta de proteção térmica', 'Óculos e luvas'],
+    passos: ['<b>Corte no esquadro</b> com o cortador de roletes e tire a rebarba por dentro e por fora.',
+      '<b>Limpe até brilhar</b> a ponta do tubo e a bolsa da conexão. Gordura e óxido impedem o metal de adição de correr.',
+      '<b>Confira a folga.</b> A junta capilar funciona com folga pequena entre tubo e bolsa, de cerca de 0,05 a 0,20 mm: tubo ovalizado ou bolsa gasta não soldam bem.',
+      '<b>Aplique o fluxo</b> em camada fina, só na ponta do tubo, quando o metal de adição pedir. Encaixe até o fundo e gire um pouco para espalhar.',
+      '<b>Aqueça por igual</b> o tubo e a conexão, movendo a chama, até a temperatura de trabalho do metal de adição. Aqueça mais a conexão, que tem mais massa.',
+      '<b>Encoste a vareta na junta, fora da chama.</b> Com a temperatura certa, o metal de adição derrete e é puxado para dentro por capilaridade, formando um filete contínuo.',
+      '<b>Deixe esfriar sem mexer</b> e limpe os resíduos de fluxo, que corroem o cobre com o tempo.',
+      '<b>Teste a estanqueidade</b> da rede antes de embutir, com a pressão e o tempo do projeto.'],
+    atencao: ['Proteja a parede, a madeira e a fiação próximas da chama e tenha extintor à mão.', 'Superaquecer queima o fluxo, oxida o cobre e enfraquece a junta.', 'Para água potável, use só metal de adição sem chumbo.', 'Rede de gás exige o tipo de junta definido pela NBR 15526 e pelo projeto, feita por profissional habilitado.'],
+    refs: [['ABNT NBR 15345: instalação predial de tubos e conexões de cobre (catálogo ABNT)', 'https://normas.com.br/visualizar/abnt-nbr-nm/25054/abnt-nbr15345-instalacao-predial-de-tubos-e-conexoes-de-cobre-e-ligas-de-cobre-procedimento'], ['ABNT NBR 15489: soldas e fluxos para tubos de cobre (Target)', 'https://www.target.com.br/produtos/normas-tecnicas/40403/nbr15489-soldas-e-fluxos-para-uniao-de-tubos-e-conexoes-de-cobre-e-ligas-de-cobre-especificacao'], ['Brasagem em tubos de cobre: material didático (IFSC)', 'https://wiki.sj.ifsc.edu.br/images/b/bc/Semana_4.pdf']],
+    videos: [], mats: [['Tubos de cobre', 'cobre'], ['Conexões de cobre', 'conexoes-cobre'], ['Soldas para cobre', 'soldas-cobre'], ['Maçaricos', 'ferr-macaricos']] },
+  { id: 'dilatacao-agua-quente', tema: 'Água fria e quente', tema2: ['Indústria'], titulo: 'Dilatação térmica na água quente: liras, braços e pontos fixos', resumo: 'Tubo de água quente cresce quando esquenta. Calcule quanto, e dê espaço para ele se mover sem forçar as conexões.',
+    tempo: 'Consulta e projeto', nivel: 'Instalador e projetista', norma: 'NBR 7198 · manual do fabricante',
+    chaves: ['dilatação térmica', 'dilatação da tubulação', 'expansão térmica', 'tubo dilatando', 'tubo entortando', 'lira de dilatação', 'braço de dilatação', 'braço elástico', 'compensador de dilatação', 'junta de expansão', 'ponto fixo', 'ponto deslizante', 'suporte deslizante', 'abraçadeira', 'coeficiente de dilatação', 'ΔL', 'PPR água quente', 'CPVC água quente', 'cobre água quente', 'barrilete de água quente', 'prumada de água quente', 'NBR 7198'],
+    quadros: [
+      { titulo: 'Quanto cresce um trecho de 10 m quando a água esquenta 40 °C', cols: ['Material', 'Coeficiente (mm/m·°C)', 'Dilatação no trecho'], linhas: [
+        ['PPR (PP-R)', '0,15', '60 mm'],
+        ['CPVC', '0,061', '24 mm'],
+        ['Cobre', '0,017', '7 mm'],
+        ['Aço-carbono', '0,012', '5 mm'],
+      ], nota: 'ΔL = α × L × ΔT. Coeficientes: PPR das fichas técnicas da Tigre e da Amanco Wavin; CPVC da ficha do Aquatherm (Tigre), 6,12 × 10⁻⁵ /°C; cobre e aço, valores usuais de engenharia. Tubos de PPR com fibra ou PP-RCT dilatam bem menos: veja a ficha do fabricante.' },
+      { titulo: 'Exemplo de braço de dilatação em PPR', cols: ['Dado', 'Valor'], linhas: [
+        ['Trecho reto entre pontos fixos', '10 m'],
+        ['Diâmetro externo do tubo', '25 mm'],
+        ['Dilatação (ΔT de 40 °C)', '60 mm'],
+        ['Comprimento do braço: LB = 25 × √(De × ΔL)', '25 × √(25 × 60) ≈ 970 mm'],
+      ], nota: 'Fórmula e constante C = 25 do catálogo técnico de PPR da Krona. Outros fabricantes usam constantes próprias: use sempre a do sistema instalado.' },
+    ],
+    separar: ['Planta da rede com os trechos retos e as mudanças de direção', 'Coeficiente de dilatação do tubo (ficha do fabricante)', 'Temperatura de instalação e de trabalho', 'Suportes fixos e deslizantes do sistema'],
+    passos: ['<b>Calcule a dilatação</b> de cada trecho reto: ΔL = α × L × ΔT, com α do fabricante, L em metros e ΔT entre a temperatura de instalação e a de trabalho.',
+      '<b>Divida a rede com pontos fixos.</b> Eles prendem o tubo e obrigam a dilatação a ir para onde você quer. Fique nos espaçamentos do fabricante.',
+      '<b>Aproveite as mudanças de direção.</b> Um trecho perpendicular livre (braço de dilatação) absorve o movimento dobrando um pouco. Calcule o comprimento mínimo pela fórmula do fabricante.',
+      '<b>Onde não há curva, use lira ou compensador.</b> Em trechos longos e retos, como barriletes e corredores, a lira (U) ou a junta de expansão do sistema recebe o movimento.',
+      '<b>Use suportes deslizantes entre os pontos fixos.</b> Eles seguram o peso e deixam o tubo correr no sentido do eixo.',
+      '<b>Nas prumadas,</b> ponha um ponto fixo por pavimento ou conforme o fabricante, e deixe as derivações com folga para acompanhar o movimento.',
+      '<b>Embutido na parede,</b> a dilatação é contida pela própria alvenaria em trechos curtos; nos trechos longos, siga o fabricante (tubo bainha, isolamento ou folga nas derivações).'],
+    atencao: ['Ponto fixo colado numa derivação ou num registro transfere todo o esforço para a conexão: é onde a rede racha.', 'Tubo aparente de água quente sem dilatação prevista entorta e "serpenteia" entre os suportes.', 'O isolamento térmico não impede a dilatação, só reduz a perda de calor.', 'Compare tubos pelo coeficiente: o PPR comum dilata cerca de dez vezes mais que o cobre.'],
+    refs: [['Catálogo técnico PPR 2025 (Krona)', 'https://www.krona.com.br/wp-content/uploads/2018/12/Catalogo-Tecnico-PPR-2025.pdf'], ['Ficha técnica PPR (Amanco Wavin)', 'https://mediahub.wavin.com/m/74fcd9fb35745739/original/FT-PPR.pdf'], ['Ficha técnica Aquatherm 2021 (Tigre)', 'https://tigrecombr-prod.s3.amazonaws.com/default/files/produtos/ficha-tecnica/FT_Aquatherm%202021_2.pdf']],
+    videos: [], mats: [['Tubos de PPR', 'ppr'], ['Tubos de CPVC', 'cpvc'], ['Tubos de cobre', 'cobre'], ['Juntas de expansão', 'juntas-expansao'], ['Isolamento térmico', 'isolamento']] },
+  { id: 'teste-incendio', tema: 'Testes e entrega', tema2: ['Indústria'], titulo: 'Teste hidrostático da rede de incêndio (hidrantes e sprinklers)', resumo: 'Rede cheia, sem ar, pressão de ensaio mantida pelo tempo da norma, sem vazamento e sem queda no manômetro.',
+    tempo: '3 a 6 horas por trecho', nivel: 'Profissional habilitado', norma: 'NBR 13714 · NBR 10897 · NBR 17262',
+    chaves: ['teste hidrostático', 'ensaio hidrostático', 'teste de pressão incêndio', 'teste da rede de incêndio', 'teste de hidrantes', 'teste de sprinklers', 'teste de chuveiros automáticos', 'estanqueidade incêndio', 'pressão de ensaio', 'bomba de teste', 'bomba de pressurização manual', 'manômetro', 'purga de ar', 'rede de hidrantes', 'mangotinho', 'sprinkler', 'chuveiro automático', 'AVCB', 'vistoria do Corpo de Bombeiros', 'comissionamento', 'NFPA 13', 'NBR 13714', 'NBR 10897', 'NBR 17262'],
+    quadros: [
+      { titulo: 'Referências de pressão e tempo do ensaio', cols: ['Referência', 'Pressão de ensaio', 'Tempo', 'Critério'], linhas: [
+        ['NFPA 13 (sprinklers, referência internacional)', '13,8 bar (200 psi), ou 3,4 bar (50 psi) acima da pressão de trabalho quando ela passa de 10,3 bar (150 psi)', '2 horas', 'Sem vazamento e sem queda de pressão'],
+        ['Corpo de Bombeiros de SC (rede de hidrantes, exemplo estadual)', '1.500 kPa (150 mca)', 'Pelo menos 2 horas', 'Sem perdas'],
+      ], nota: 'Valores de referência para você se orientar. A pressão, o tempo e a tolerância do ensaio da sua obra são os da NBR 13714 (hidrantes e mangotinhos), da NBR 10897 (chuveiros automáticos) e da instrução técnica do Corpo de Bombeiros do seu estado, que prevalecem.' },
+    ],
+    separar: ['Projeto aprovado com a pressão de trabalho da rede', 'Bomba de teste (manual ou elétrica) e manômetro aferido, de escala adequada', 'Tampões e flanges cegos para isolar o trecho', 'Água limpa para encher a rede', 'Formulário de registro do ensaio'],
+    passos: ['<b>Isole o trecho.</b> Feche com tampões ou flanges cegos e retire ou isole o que não aguenta a pressão de ensaio, como pressostatos, manômetros de faixa baixa e alarmes.',
+      '<b>Encha devagar pelo ponto mais baixo</b> e purgue o ar pelos pontos mais altos, até sair só água. Ar preso mascara o resultado e é perigoso sob pressão.',
+      '<b>Pressurize aos poucos</b> com a bomba de teste até a pressão de ensaio definida pela norma e pelo Corpo de Bombeiros do estado.',
+      '<b>Estabilize e anote.</b> Registre a pressão inicial, a hora e a posição do manômetro. Leve em conta a diferença de altura: o ponto mais alto da rede também precisa atingir a pressão de ensaio.',
+      '<b>Mantenha pelo tempo exigido</b> e percorra a rede procurando gotejamento em juntas, flanges, válvulas e sprinklers.',
+      '<b>Aprove só sem vazamento e sem queda no manômetro</b>, dentro da tolerância da norma. Qualquer falha reprova: corrija e repita o trecho.',
+      '<b>Despressurize devagar</b> e lave a rede (flushing) antes de colocar em operação, para tirar sujeira e cavacos.',
+      '<b>Registre o ensaio</b> em formulário assinado pelo responsável técnico. Ele é pedido na vistoria e no comissionamento.'],
+    atencao: ['Nunca teste com ar comprimido no lugar de água sem previsão da norma: ar sob pressão guarda muita energia e pode explodir uma conexão.', 'Teste antes de fechar forros, shafts e valas, para enxergar as juntas.', 'Sprinklers e válvulas instalados precisam suportar a pressão de ensaio; confira a ficha do fabricante.', 'Variação de temperatura da água muda a leitura: faça o ensaio com a rede estabilizada.'],
+    refs: [['ABNT NBR 13714: sistemas de hidrantes e de mangotinhos (catálogo)', 'https://normas.com.br/visualizar/abnt-nbr-nm/10226/abnt-nbr13714-sistemas-de-hidrantes-e-de-mangotinhos-para-combate-a-incendio'], ['ABNT NBR 17262: inspeção, teste e manutenção de sistemas hidráulicos de proteção contra incêndio', 'https://normas.com.br/visualizar/abnt-nbr-nm/14304/abnt-nbr17262-inspecao-teste-e-manutencao-de-sistemas-hidraulicos-de-protecao-contra-incendio'], ['Corpo de Bombeiros de SC: teste de pressurização da rede', 'https://documentoscbmsc.cbm.sc.gov.br/uploads/daa487dff7096bb1f885b14c168e9942.pdf'], ['Comissionamento de rede de hidrantes (UFU)', 'https://repositorio.ufu.br/bitstream/123456789/23702/1/ComissionamentoRedeHidrantes.pdf']],
+    videos: ['hidrostatico'], mats: [['Hidrantes', 'hidrantes'], ['Sprinklers', 'sprinklers'], ['Ferramentas de teste', 'ferr-teste'], ['Medidores e manômetros', 'medidores']] },
 ];
 
 // ---------- erros comuns e patologias ----------
