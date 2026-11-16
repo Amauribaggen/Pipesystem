@@ -1689,14 +1689,39 @@ const SECTION_OF_PATH = Object.fromEntries(Object.entries(SECTION_PATHS).map(([i
   document.querySelectorAll('.leiloes__chips [data-termo]').forEach(b => b.addEventListener('click', () => { campo.value = b.dataset.termo; aplica(); }));
 })();
 
-// Destaque do PipeSystem Pro: enviar a um amigo pela folha de compartilhamento do celular ou pelo WhatsApp
+// Destaque do PipeSystem Pro: enviar a um amigo por e-mail, WhatsApp, mensagem com imagem (para colar no e-mail) ou outros aplicativos
 (() => {
-  const b = document.getElementById('proEnviar');
-  if (!b) return;
-  const texto = 'Conheça o PipeSystem Pro, aplicativo gratuito de hidráulica com calculadoras, normas, tabelas e checklists, que funciona até sem internet:';
+  const b = document.getElementById('proEnviar'), menu = document.getElementById('proEnvMenu');
+  if (!b || !menu) return;
   const url = 'https://www.pipesystem.com.br/pro';
-  b.addEventListener('click', () => {
-    if (navigator.share) navigator.share({ title: 'PipeSystem Pro', text: texto, url }).catch(() => {});
-    else window.open('https://wa.me/?text=' + encodeURIComponent(texto + ' ' + url), '_blank', 'noopener');
+  const img = 'https://www.pipesystem.com.br/img/divulgacao/pro-banner-4-telas.jpg';
+  const assunto = 'Conheça o PipeSystem Pro: aplicativo gratuito de hidráulica';
+  const itens = ['26 calculadoras de campo (vazão, perda de carga, declividade e mais)', '104 normas técnicas resumidas', '160 materiais e 331 fabricantes', 'Nível digital para conferir declividade', 'Diário de obra com fotos e relatório em PDF', 'Preços de referência SINAPI por estado'];
+  const texto = ['Olá!', '', 'Quero te indicar o PipeSystem Pro, o aplicativo gratuito do portal PipeSystem para quem trabalha com hidráulica. Funciona no celular e até sem internet:', '', ...itens.map(i => '• ' + i), '', 'Acesse e instale direto pelo navegador, no iPhone ou Android, sem loja de aplicativos:', url, '', 'PipeSystem: o portal da hidráulica e da condução de fluidos', 'https://www.pipesystem.com.br'].join(String.fromCharCode(10));
+  const html = `<div style="font-family:Arial,sans-serif;font-size:15px;color:#0a2240;max-width:600px">
+<p>Olá!</p><p>Quero te indicar o <b>PipeSystem Pro</b>, o aplicativo gratuito do portal PipeSystem para quem trabalha com hidráulica. Funciona no celular e <b>até sem internet</b>:</p>
+<p><a href="${url}"><img src="${img}" alt="Telas do aplicativo PipeSystem Pro" width="560" style="width:100%;max-width:560px;border-radius:10px;border:0"></a></p>
+<ul>${itens.map(i => `<li>${i}</li>`).join('')}</ul>
+<p><a href="${url}" style="display:inline-block;background:#f2a03d;color:#0a2240;font-weight:bold;padding:12px 20px;border-radius:24px;text-decoration:none">Abrir o PipeSystem Pro</a></p>
+<p>Ou acesse: <a href="${url}">${url}</a><br>Instale direto pelo navegador, no iPhone ou Android, sem loja de aplicativos.</p>
+<p style="color:#5c6b7d;font-size:13px">PipeSystem: o portal da hidráulica e da condução de fluidos · <a href="https://www.pipesystem.com.br">www.pipesystem.com.br</a></p></div>`;
+  const aviso = document.getElementById('proEnvAviso');
+  document.getElementById('proEnvEmail').href = 'mailto:?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(texto);
+  document.getElementById('proEnvZap').href = 'https://wa.me/?text=' + encodeURIComponent(texto);
+  const abre = on => { menu.hidden = !on; b.setAttribute('aria-expanded', on); if (on) aviso.textContent = ''; };
+  b.addEventListener('click', e => { e.stopPropagation(); abre(menu.hidden); });
+  document.addEventListener('click', e => { if (!menu.hidden && !menu.contains(e.target)) abre(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) { abre(false); b.focus(); } });
+  document.getElementById('proEnvCopiar').addEventListener('click', async () => {
+    try {
+      if (window.ClipboardItem && navigator.clipboard?.write) await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([texto], { type: 'text/plain' }) })]);
+      else await navigator.clipboard.writeText(texto);
+      aviso.textContent = 'Mensagem copiada. Abra um e-mail novo e cole (Ctrl+V): a imagem e o link vão junto.';
+    } catch { aviso.textContent = 'Não foi possível copiar. Use a opção E-mail.'; }
   });
+  const mais = document.getElementById('proEnvMais');
+  if (navigator.share) {
+    mais.hidden = false;
+    mais.addEventListener('click', () => { abre(false); navigator.share({ title: assunto, text: texto }).catch(() => {}); });
+  }
 })();

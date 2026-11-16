@@ -2303,6 +2303,14 @@ a.gl:hover { color: var(--teal-d); }
 }
 .proapp__env { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55); font-weight: 700; }
 @media (max-width: 760px) { .proapp__env { width: 100%; } }
+.proenv { position: relative; }
+@media (max-width: 760px) { .proenv { width: 100%; } }
+.proenv__menu { position: absolute; z-index: 20; left: 0; top: calc(100% + 8px); min-width: 260px; padding: 8px; background: #fff; border-radius: 12px; box-shadow: 0 12px 32px rgba(0, 0, 0, .35); display: grid; gap: 4px; }
+.proenv__menu[hidden] { display: none; }
+.proenv__op { display: block; width: 100%; text-align: left; padding: 10px 12px; border: 0; border-radius: 8px; background: none; color: #0a2240; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; }
+.proenv__op:hover, .proenv__op:focus-visible { background: #eef4fb; }
+.proenv__aviso { margin: 0; padding: 0 12px; font-size: .8rem; color: #2e7d32; }
+.proenv__aviso:empty { display: none; }
 
 /* Alvos de toque: no celular, os links pequenos do rodapé e da apresentação ganham altura mínima de 24 px (WCAG 2.5.8) */
 @media (pointer: coarse) {

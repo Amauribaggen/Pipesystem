@@ -196,7 +196,16 @@
         </ul>
         <div class="proapp__acoes">
           <a class="btn proapp__btn" href="/pro">Abrir o PipeSystem Pro</a>
-          <button type="button" class="btn proapp__env" id="proEnviar">Clique para enviar a um amigo</button>
+          <div class="proenv">
+            <button type="button" class="btn proapp__env" id="proEnviar" aria-expanded="false" aria-controls="proEnvMenu">Clique para enviar a um amigo</button>
+            <div class="proenv__menu" id="proEnvMenu" hidden>
+              <a class="proenv__op" id="proEnvEmail" href="#">E-mail (Outlook, Gmail)</a>
+              <a class="proenv__op" id="proEnvZap" href="#" target="_blank" rel="noopener">WhatsApp</a>
+              <button type="button" class="proenv__op" id="proEnvCopiar">Copiar mensagem com imagem</button>
+              <button type="button" class="proenv__op" id="proEnvMais" hidden>Outros aplicativos</button>
+              <p class="proenv__aviso" id="proEnvAviso" role="status"></p>
+            </div>
+          </div>
           <span>Gratuito. Instale direto do navegador, no iPhone ou Android, sem loja de aplicativos.</span>
         </div>
       </div>
