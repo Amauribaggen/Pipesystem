@@ -231,7 +231,7 @@ export function separar(out, D, src) {
     <div class="container apres__grid">
       <div class="apres__txt">
         <p class="eyebrow">Vídeo narrado · 2 min e meio</p>
-        <h2 id="video-titulo">Conheça o portal em 2 minutos e meio</h2>
+        <h2 id="video-titulo" data-novo>Conheça o portal em 2 minutos e meio</h2>
         <p>Um passeio pelas áreas do PipeSystem: cotações, sistemas, catálogo de materiais, Dimensionamento Inteligente com o desenho em corte e em 3D, bibliotecas BIM, guias práticos, normas, notícias e vagas do setor, o aplicativo PipeSystem Pro e o guia de fornecedores.</p>
         <a class="link" href="https://www.youtube.com/watch?v=${YT}" target="_blank" rel="noopener">Assistir no YouTube ↗</a>
       </div>

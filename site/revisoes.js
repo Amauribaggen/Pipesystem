@@ -39,7 +39,7 @@ const REVISOES = {
   'mat-conexoes-forjadas': '2026-11-01',
   'mat-conexoes-inox': '2026-11-07',
   'mat-conexoes-pe': '2026-11-09',
-  'mat-conexoes-ppr': '2026-11-15',
+  'mat-conexoes-ppr': '2026-11-16',
   'mat-conexoes-pvc': '2026-11-07',
   'mat-conexoes-pvc-roscavel': '2026-11-07',
   'mat-conexoes-solda': '2026-11-07',

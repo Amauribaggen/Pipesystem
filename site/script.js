@@ -127,7 +127,7 @@ function renderCatalog() {
       <figure class="item__art${f ? ' item__art--foto' : ''}" style="--m:${m.tone}">${f
         ? `<img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} loading="lazy"${f.inteira ? ' class="inteira"' : ''}>`
         : `<svg viewBox="0 0 200 120" aria-hidden="true">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>`}</figure>
-      <small>${m.cat}</small><h3>${m.name}</h3><p>${m.apps}</p><em>Dados técnicos →</em>
+      <small>${m.cat}</small><h3${m.novo ? ' data-novo' : ''}>${m.name}</h3><p>${m.apps}</p><em>Dados técnicos →</em>
     </a>`;
   }).join('');
   emptyEl.hidden = items.length > 0;
@@ -253,7 +253,7 @@ function renderMaterial(m) {
   const importers = fabs.length > 0 && fabs.every(f => f[2] === 'M'); // lista só de importadores
   const foto = materialPhoto(m);
   sheetBody.innerHTML = `
-    <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${m.cat}</p><h3 id="sheetTitle">${m.name}</h3></div></div>
+    <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${m.cat}</p><h3 id="sheetTitle"${m.novo ? ' data-novo' : ''}>${m.name}</h3></div></div>
     ${revisaoHTML(m)}
     ${foto && foto.fab ? '' : p && p.fotos ? fotosHTML(p.fotos) : m.fotos ? fotosHTML(m.fotos) : ''}${(foto && foto.fab) || !(p && p.fotos || m.fotos) ? (foto ? `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar foto: ${foto.legenda}" data-legenda="${foto.legenda}">
       <img src="${imgUrl(foto.src)}" alt="${foto.alt}"${imgDims(foto.src)}${foto.inteira ? ' class="inteira"' : ''}>
@@ -1415,7 +1415,7 @@ if (document.querySelector('[data-num]')) {
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }], '#webtools'),
     bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS), '#bimGrid') + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS), '#bimPlats'),
     guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo })), '#comparativos') +
-      group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo })), '#gp-guias') +
+      group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo, attrs: g.novo ? ' data-novo' : '' })), '#gp-guias') +
       group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-precos', label: 'Comparativo de preços: e-commerce x SINAPI', attrs: ' data-novo' }, { href: '#gp-check', label: 'Checklist de entrega' }, ...(typeof DETALHES !== 'undefined' ? [{ href: '#gp-detalhes', label: `Detalhes típicos para baixar (${DETALHES.length})`, attrs: ' data-novo' }] : []), { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),
     normas: () => ['aplicacao', 'produto'].map(tipo =>
       group(tipo === 'aplicacao' ? 'Por aplicação' : 'Por produto', NORM_GROUPS.filter(g => g.tipo === tipo)

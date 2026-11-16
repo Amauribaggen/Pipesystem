@@ -94,7 +94,7 @@ const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><pa
 
 // Menu principal das páginas próprias: os mesmos itens, na mesma ordem, do menu da página inicial (site/index.html)
 const MENU = [['/cotacoes', 'Cotações', 'pg-top__hot'], ['/sistemas', 'Sistemas'], ['/materiais', 'Materiais'], ['/dimensionamento', 'Dimensionamento'],
-  ['/bim-cad', 'BIM/CAD'], ['/guias-praticos', 'Guias práticos'], ['/normas', 'Normas'], ['/artigos', 'Notícias'], ['/feiras', 'Feiras'],
+  ['/bim-cad', 'BIM/CAD'], ['/guias-praticos', 'Guias práticos', '', true], ['/normas', 'Normas'], ['/artigos', 'Notícias'], ['/feiras', 'Feiras'],
   ['/pro', 'Pro', '', true], ['/anuncie', 'Anuncie'], ['/quem-somos', 'Quem somos'], ['/#contato', 'Cadastre-se', 'btn btn--sm']];
 // Item do menu marcado como atual em cada página própria
 const secaoAtual = url => url.startsWith('/sistemas') ? '/sistemas' : url.startsWith('/materiais') ? '/materiais'
@@ -268,7 +268,7 @@ export function generate(D, outDir) {
         <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${esc(m.name)}">${D.MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
         <figcaption>Ilustração representativa</figcaption>
       </figure>`;
-    const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">${esc(m.name)}</h1></div><button type="button" class="sheet__print" data-imprimir>Imprimir ficha</button></div>
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title"${m.novo ? ' data-novo' : ''}>${esc(m.name)}</h1></div><button type="button" class="sheet__print" data-imprimir>Imprimir ficha</button></div>
       ${D.revisaoHTML(m)}
       ${fig}${(D.MATERIAL_EXTRA[m.id] || []).map(f => `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar imagem: ${esc(plain(f.legenda))}" data-legenda="${esc(plain(f.legenda))}">
         <img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)} class="inteira" loading="lazy" decoding="async">
@@ -424,7 +424,7 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
       return `${cab}<li class="nt__item" data-cat="${esc(n.categoria)}" data-uf="${esc(n.uf || '')}"${n.oportunidade ? ' data-op="1"' : ''}>
         <time class="nt__data" datetime="${n.data}"><b>${d}</b>${MES[m - 1]} ${a}</time>
         <div><p class="nt__meta"><span class="nt__tag nt__tag--cat">${esc(n.categoria)}</span>${n.uf ? `<span class="nt__tag">${esc(n.uf)}</span>` : ''}${n.valor ? `<span class="nt__tag nt__tag--valor">${esc(n.valor)}</span>` : ''}${n.oportunidade ? '<span class="nt__tag nt__tag--op">Oportunidade de negócio</span>' : ''}</p>
-        <h2 class="nt__titulo"><a href="${esc(n.link)}" target="_blank" rel="noopener nofollow">${esc(n.titulo)}</a></h2>
+        <h2 class="nt__titulo"${n.novo ? ' data-novo' : ''}><a href="${esc(n.link)}" target="_blank" rel="noopener nofollow">${esc(n.titulo)}</a></h2>
         ${n.resumo ? `<p class="nt__resumo">${esc(n.resumo)}</p>` : ''}
         <p class="nt__fonte"><span>Fonte: ${esc(n.fonte)}</span>${n.relacionado && relTitulo[n.relacionado] ? `<a href="${n.relacionado}">No portal: ${esc(relTitulo[n.relacionado])} →</a>` : ''}</p></div></li>`;
     }).join('');
@@ -546,7 +546,7 @@ function vagasHTML() {
   const item = v => `<li class="cur__item" data-a="${v.area}" data-uf="${v.uf || ''}">
           <div class="cur__quando"><b>${br(v.publicada)}</b><small>publicação${v.ate ? ` · inscrições até ${br(v.ate)}` : ''}</small></div>
           <div><p class="nt__meta"><span class="nt__tag nt__tag--cat">${VAGA_AREA[v.area]}</span></p>
-          <h5 class="cur__titulo" id="vaga-${curSlug(v.titulo + '-' + v.local)}"><a href="${esc(v.link)}" target="_blank" rel="noopener nofollow">${esc(v.titulo)}</a></h5>
+          <h5 class="cur__titulo" id="vaga-${curSlug(v.titulo + '-' + v.local)}"${v.novo ? ' data-novo' : ''}><a href="${esc(v.link)}" target="_blank" rel="noopener nofollow">${esc(v.titulo)}</a></h5>
           <p class="cur__meta"><b>${esc(v.empresa)}</b> · ${esc(v.local)} · ${esc(v.contrato)}</p>${v.obs ? `<p class="cur__meta">${esc(v.obs)}</p>` : ''}</div></li>`;
   // Agrupa por estado e, dentro dele, por município (vagas em vários municípios e local a confirmar vão por último)
   const n = k => `${k} ${k === 1 ? 'vaga' : 'vagas'}`;

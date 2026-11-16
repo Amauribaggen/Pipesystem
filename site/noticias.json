@@ -12,7 +12,8 @@
       "valor": "",
       "resumo": "O DAE Jundiaí concluiu a rede de água e avança agora com as obras de esgoto no Fumachi.",
       "oportunidade": true,
-      "relacionado": "/comparativos/esgoto"
+      "relacionado": "/comparativos/esgoto",
+      "novo": true
     },
     {
       "titulo": "“Entramos na era do esgoto”, diz Pellozo ao anunciar investimento de R$ 150 milhões em Canedo - veja",
@@ -24,7 +25,8 @@
       "valor": "R$ 150 milhões",
       "resumo": "A prefeitura de Senador Canedo anunciou investimento de R$ 150 milhões em esgotamento sanitário.",
       "oportunidade": true,
-      "relacionado": "/comparativos/esgoto"
+      "relacionado": "/comparativos/esgoto",
+      "novo": true
     },
     {
       "titulo": "Júlio Campos defende concessão do DAE e diz que água de VG exige R$ 1 bilhão",
@@ -36,7 +38,8 @@
       "valor": "R$ 1 bilhão",
       "resumo": "Júlio Campos defende a concessão do DAE de Várzea Grande e afirma que o abastecimento de água exige R$ 1 bilhão.",
       "oportunidade": true,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "AQUA assume água e esgoto em 151 cidades de PE com R$ 15,4 bi, vídeo e Correios",
@@ -48,7 +51,8 @@
       "valor": "R$ 15,4 bi",
       "resumo": "A AQUA assume os serviços de água e esgoto em 151 cidades de Pernambuco, com investimento previsto de R$ 15,4 bilhões; a operação começa em 23 de novembro.",
       "oportunidade": true,
-      "relacionado": "/comparativos/esgoto"
+      "relacionado": "/comparativos/esgoto",
+      "novo": true
     },
     {
       "titulo": "Palmeira será a primeira cidade de AL a cumprir o Marco Legal do Saneamento",
@@ -60,7 +64,8 @@
       "valor": "",
       "resumo": "Palmeira dos Índios deve ser a primeira cidade de Alagoas a cumprir as metas do Marco Legal do Saneamento.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Gasmig destaca a importância do Gasoduto Centro-Oeste na atração de investimentos para a região",
@@ -72,7 +77,8 @@
       "valor": "",
       "resumo": "A Gasmig aponta o Gasoduto Centro-Oeste como fator de atração de investimentos para a região.",
       "oportunidade": false,
-      "relacionado": "/comparativos/gas"
+      "relacionado": "/comparativos/gas",
+      "novo": true
     },
     {
       "titulo": "SCGÁS atinge a marca histórica de 15 bilhões de m³ distribuídos",
@@ -84,7 +90,8 @@
       "valor": "",
       "resumo": "A SCGÁS atingiu a marca de 15 bilhões de metros cúbicos de gás natural distribuídos em Santa Catarina.",
       "oportunidade": false,
-      "relacionado": "/comparativos/gas"
+      "relacionado": "/comparativos/gas",
+      "novo": true
     },
     {
       "titulo": "Inmetro consolida regras de certificação e etiquetagem de equipamentos de aquecimento solar de água",
@@ -96,7 +103,8 @@
       "valor": "",
       "resumo": "O Inmetro consolidou as regras de certificação e etiquetagem dos equipamentos de aquecimento solar de água.",
       "oportunidade": false,
-      "relacionado": "/comparativos/aquecimento"
+      "relacionado": "/comparativos/aquecimento",
+      "novo": true
     },
     {
       "titulo": "Piauí investe R$ 601 mil em sistema de água na zona rural de Teresina",
@@ -108,7 +116,8 @@
       "valor": "R$ 601 mil",
       "resumo": "O governo do Piauí investe R$ 601 mil em um sistema de abastecimento de água na zona rural de Teresina.",
       "oportunidade": true,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Construnorte 2026: Feira da construção civil reúne mais de 100 estandes",
@@ -120,7 +129,8 @@
       "valor": "",
       "resumo": "A Construnorte 2026, feira da construção civil em Manaus, reúne mais de 100 estandes.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Teresina avança na redução de perdas de água e recebe prêmio",
@@ -132,7 +142,8 @@
       "valor": "",
       "resumo": "Teresina recebeu prêmio pelos avanços na redução das perdas de água na distribuição.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Mercado de conexões tê de redução até 2035: subsistemas pré-fabricados e demanda de MRO impulsionam o crescimento - Notícias e Estatísticas",
@@ -144,7 +155,8 @@
       "valor": "",
       "resumo": "Estudo projeta o mercado de tês de redução até 2035, puxado por sistemas pré-fabricados e pela manutenção (MRO).",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Compass negocia gás para LRCap e vê novas rotas para gás da Argentina",
@@ -156,7 +168,8 @@
       "valor": "",
       "resumo": "A Compass negocia o fornecimento de gás para a LRCap e avalia novas rotas para o gás da Argentina.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Niterói conquista primeiro lugar no ranking de saneamento do Estado do Rio e anuncia investimento de R$ 300 milhões",
@@ -168,7 +181,8 @@
       "valor": "R$ 300 mi",
       "resumo": "Niterói lidera o ranking de saneamento do Estado do Rio e anuncia investimento de R$ 300 milhões.",
       "oportunidade": true,
-      "relacionado": "/comparativos/esgoto"
+      "relacionado": "/comparativos/esgoto",
+      "novo": true
     },
     {
       "titulo": "Trata Brasil premia Cuiabá como Destaque em Investimentos no saneamento básico",
@@ -180,7 +194,8 @@
       "valor": "",
       "resumo": "O Instituto Trata Brasil premiou Cuiabá como destaque em investimentos no saneamento básico.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Ivaiporã recebe investimento de R$ 13,3 milhões para ampliar rede de esgoto e elevar atendimento a 70%",
@@ -192,7 +207,8 @@
       "valor": "R$ 13,3 mi",
       "resumo": "Ivaiporã recebe R$ 13,3 milhões para ampliar a rede de esgoto e elevar o atendimento a 70%.",
       "oportunidade": true,
-      "relacionado": "/comparativos/esgoto"
+      "relacionado": "/comparativos/esgoto",
+      "novo": true
     },
     {
       "titulo": "Iguá já investiu R$ 717 milhões em concessões de saneamento",
@@ -204,7 +220,8 @@
       "valor": "R$ 717 mi",
       "resumo": "A Iguá Saneamento informa ter investido R$ 717 milhões em suas concessões.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Concessão de saneamento de Timbó de R$ 1,95 bi é contestada na Justiça",
@@ -216,7 +233,8 @@
       "valor": "R$ 1,95 bi",
       "resumo": "A concessão de água e esgoto de Timbó, de R$ 1,95 bilhão, é contestada na Justiça.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Custo da construção sobe 0,55% na Bahia em outubro e preço da tinta dispara 50% em um ano",
@@ -228,7 +246,8 @@
       "valor": "",
       "resumo": "O custo da construção na Bahia subiu 0,55% em outubro, e o preço da tinta aumentou 50% em um ano.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Saneago é premiada por investimentos no saneamento básico de Aparecida de Goiânia",
@@ -240,7 +259,8 @@
       "valor": "",
       "resumo": "A Saneago foi premiada pelos investimentos em saneamento básico em Aparecida de Goiânia.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Água e esgoto no Sertão: o que a concessionária assumiu ao vencer o leilão",
@@ -252,7 +272,8 @@
       "valor": "",
       "resumo": "Reportagem detalha os compromissos de água e esgoto assumidos pela concessionária que venceu o leilão no Sertão.",
       "oportunidade": true,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Cotia sediará audiência pública sobre o projeto de oleoduto da Petrobras",
@@ -264,7 +285,8 @@
       "valor": "",
       "resumo": "Cotia sediará audiência pública sobre o projeto de oleoduto da Petrobras.",
       "oportunidade": true,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Categoria Destaques 2026: Campinas recebe prêmio de saneamento pelo terceiro ano consecutivo",
@@ -276,7 +298,8 @@
       "valor": "",
       "resumo": "Campinas recebe prêmio de saneamento pelo terceiro ano consecutivo.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Feira em São José apresenta novidades da construção civil",
@@ -288,7 +311,8 @@
       "valor": "",
       "resumo": "Feira em São José apresenta novidades da construção civil.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Agenersa inicia apuração da 1ª Revisão Ordinária dos Blocos I, II, III e IV de concessão do saneamento",
@@ -300,7 +324,8 @@
       "valor": "",
       "resumo": "A Agenersa iniciou a primeira revisão ordinária dos blocos I a IV da concessão de saneamento do Rio de Janeiro.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "STF barra licitação de água e esgoto após diferença de R$ 48 milhões em indenização à CASAN em SC",
@@ -312,7 +337,8 @@
       "valor": "",
       "resumo": "O STF barrou uma licitação de água e esgoto em Santa Catarina por diferença de R$ 48 milhões na indenização à Casan.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Conta de água pode ficar 38% mais barata em Erechim após proposta apresentada em licitação",
@@ -324,7 +350,8 @@
       "valor": "",
       "resumo": "A proposta apresentada na licitação pode deixar a conta de água de Erechim 38% mais barata.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Abastecimento de água é retomado para 660 mil pessoas em Curitiba e Região Metropolitana após reparo de tubulação do Passaúna – CBN Curitiba – A Rádio Que Toca Notícia",
@@ -336,7 +363,8 @@
       "valor": "",
       "resumo": "O abastecimento de água foi retomado para 660 mil pessoas em Curitiba e região após o reparo de uma tubulação do sistema Passaúna.",
       "oportunidade": false,
-      "relacionado": "/comparativos/adutoras"
+      "relacionado": "/comparativos/adutoras",
+      "novo": true
     },
     {
       "titulo": "Sulgás terá novo CEO a partir de 2027",
@@ -348,7 +376,8 @@
       "valor": "",
       "resumo": "A Sulgás terá um novo CEO a partir de 2027.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Prefeitura de Caruaru avança na obra do binário do Xique-Xique com serviços de saneamento e drenagem",
@@ -360,7 +389,8 @@
       "valor": "",
       "resumo": "A Prefeitura de Caruaru avança na obra do binário do Xique-Xique com serviços de saneamento e drenagem.",
       "oportunidade": true,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "SSAM: Reunião com Águas do Pará discute investimentos e melhorias no saneamento básico",
@@ -372,7 +402,8 @@
       "valor": "",
       "resumo": "Reunião entre o SSAM e a Águas do Pará discute investimentos e melhorias no saneamento de Marabá.",
       "oportunidade": true,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Favelas cariocas recebem investimento em saneamento básico",
@@ -384,7 +415,8 @@
       "valor": "",
       "resumo": "Favelas cariocas recebem investimento em saneamento básico.",
       "oportunidade": true,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Sulgás inaugura nova sede em Caxias do Sul e reforça atuação na Serra Gaúcha",
@@ -396,7 +428,8 @@
       "valor": "",
       "resumo": "A Sulgás inaugura nova sede em Caxias do Sul e reforça a atuação na Serra Gaúcha.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Edital para nova Estação de Tratamento de Efluentes em Pelotas é lançado no valor de R$ 65 milhões",
@@ -408,7 +441,8 @@
       "valor": "R$ 65 mi",
       "resumo": "Pelotas lançou o edital da nova estação de tratamento de efluentes, no valor de R$ 65 milhões.",
       "oportunidade": true,
-      "relacionado": "/comparativos/esgoto"
+      "relacionado": "/comparativos/esgoto",
+      "novo": true
     },
     {
       "titulo": "Feira da Construção da Zona da Mata celebra 80 anos do Sinduscon-JF com sucesso de público",
@@ -420,7 +454,8 @@
       "valor": "",
       "resumo": "A Feira da Construção da Zona da Mata, em Juiz de Fora, celebrou os 80 anos do Sinduscon-JF.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Companhia de saneamento do RJ deve pagar dívidas judiciais por precatórios, decide STF",
@@ -432,7 +467,8 @@
       "valor": "",
       "resumo": "O STF decidiu que a companhia de saneamento do Rio de Janeiro deve pagar dívidas judiciais por precatórios.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Nota Pública do Sindisan cobra redução do vazamento de água na rede",
@@ -444,7 +480,8 @@
       "valor": "",
       "resumo": "Nota pública do Sindisan cobra a redução do vazamento de água na rede de distribuição.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Ijuí recebe R$ 31 milhões em investimento para ampliar saneamento",
@@ -456,7 +493,8 @@
       "valor": "R$ 31 milhões",
       "resumo": "Ijuí recebe R$ 31 milhões em investimento para ampliar o saneamento.",
       "oportunidade": true,
-      "relacionado": "/comparativos/esgoto"
+      "relacionado": "/comparativos/esgoto",
+      "novo": true
     },
     {
       "titulo": "Obra emergencial do Saae atinge duto de gás natural durante manutenção no asfalto em Sorocaba",
@@ -468,7 +506,8 @@
       "valor": "",
       "resumo": "Obra emergencial do Saae atingiu um duto de gás natural durante manutenção do asfalto em Sorocaba.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Sabesp realiza plantão de atendimento para adesão ao programa de saneamento no Ponunduva",
@@ -480,7 +519,8 @@
       "valor": "",
       "resumo": "A Sabesp realiza plantão de atendimento para adesão ao programa de saneamento no Ponunduva, em Cajamar.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Teresina sedia seminários nacionais sobre saneamento rural a partir desta terça-feira (10)",
@@ -492,7 +532,8 @@
       "valor": "",
       "resumo": "Teresina sedia seminários nacionais sobre saneamento rural a partir de 10 de novembro.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Megaobra chega a BH com gigantes da construção e feira de imóveis; veja datas e ingressos",
@@ -504,7 +545,8 @@
       "valor": "",
       "resumo": "A Megaobra chega a Belo Horizonte com grandes empresas da construção e feira de imóveis.",
       "oportunidade": false,
-      "relacionado": ""
+      "relacionado": "",
+      "novo": true
     },
     {
       "titulo": "Com cerca de 400 expositores, Expovale Construmóbil inicia na quinta-feira",
