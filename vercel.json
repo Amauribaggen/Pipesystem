@@ -53,6 +53,13 @@
   ],
   "headers": [
     {
+      "source": "/docs/i-:pasta/:arquivo*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+        { "key": "Cache-Control", "value": "private, no-store" }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {
