@@ -872,11 +872,14 @@ document.querySelectorAll('[data-ad]').forEach((el, i) => {
     const alvo = sist ? h4s.find(h => /^Produtos e materiais/.test(h.textContent))
       : (body.querySelector('ul.fabs')?.previousElementSibling || body.querySelector('.sheet__actions'));
     if (!alvo) return;
-    alvo.insertAdjacentHTML('beforebegin', adFichaHTML(sist ? 'Sistemas hidráulicos' : m[1].trim()));
+    const nome = body.querySelector('#sheetTitle')?.textContent.trim() || '';
+    alvo.insertAdjacentHTML('beforebegin', sist ? adFichaHTML('Sistemas hidráulicos') : adFichaHTML(m[1].trim(), false, nome));
   }).observe(body, { childList: true });
   // no mapa da página Anuncie: um local por categoria
   const cats = [...new Set(CATALOG.map(x => x.cat))];
   cats.forEach(c => AD_SPOTS.push({ id: null, kind: 'basico', place: lugarFicha(c), sample: '/materiais/' + CATALOG.find(x => x.cat === c).id.replace(/^mat-/, '') }));
+  const vendidas = CATALOG.filter(x => ANUNCIOS[lugarFichaUnica(x.name)]).length;
+  AD_SPOTS.push({ id: null, kind: 'basico', place: `Ficha técnica de um produto ou material, à sua escolha — patrocinador da ficha (${CATALOG.length - vendidas} de ${CATALOG.length} fichas disponíveis)`, sample: '/materiais', livre: CATALOG.length - vendidas > 0 });
   if (typeof SYSTEMS !== 'undefined' && SYSTEMS.length) AD_SPOTS.push({ id: null, kind: 'basico', place: lugarFicha('Sistemas hidráulicos'), sample: '/sistemas/' + SYSTEMS[0].id.replace(/^sis-/, '') });
 })();
 
@@ -892,6 +895,7 @@ document.querySelectorAll('[data-ad]').forEach((el, i) => {
     const href = s.sample || `${s.page && s.page !== location.pathname ? s.page : ''}#${s.id}`;
     return `<div class="admap__item">
       <span class="admap__plan admap__plan--${s.kind}">${f.plan}</span>
+      ${(s.livre ?? !ADS[s.place]) ? '<span class="admap__sit admap__sit--livre">Disponível</span>' : '<span class="admap__sit">Reservado</span>'}
       <b>${s.place}</b>
       <small>${f.size}</small>
       <span class="admap__links"><a href="${href}" data-goto-ad="${s.id || ''}">Ver o local</a><a href="#contato" data-plan="${f.plan}" data-question="Tenho interesse no espaço publicitário: ${s.place} (${f.plan}, ${f.size}). ">Pedir proposta</a></span>

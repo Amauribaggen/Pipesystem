@@ -1723,16 +1723,21 @@ function revisaoHTML(item) {
 // com mensalidade antecipada. Aparecem sempre com o rótulo "Patrocinado".
 // Exemplo: 'Fichas técnicas de válvulas — patrocinador da categoria': { img: 'img/anuncios/empresa.webp', url: 'https://empresa.com.br', anunciante: 'Empresa X' },
 const ANUNCIOS = {};
-// Patrocinador de cada categoria de fichas técnicas (materiais por categoria e sistemas), logo antes da lista de fabricantes
+// Patrocínio das fichas técnicas, logo antes da lista de fabricantes. Dois níveis, cada local exclusivo de uma empresa:
+// o patrocinador da ficha (só aquela ficha) e o patrocinador da categoria (todas as fichas da categoria).
+// Numa ficha que tem patrocinador próprio aparece ele; nas demais, o da categoria.
 const lugarFicha = categoria => `Fichas técnicas de ${categoria.toLowerCase()} — patrocinador da categoria`;
-function adFichaHTML(categoria, pagina = false) {
-  const place = lugarFicha(categoria), ad = ANUNCIOS[place];
+const lugarFichaUnica = nome => `Ficha técnica "${nome}" — patrocinador da ficha`;
+function adFichaHTML(categoria, pagina = false, nome = '') {
+  const unica = nome ? lugarFichaUnica(nome) : '', categ = lugarFicha(categoria);
+  const ad = (unica && ANUNCIOS[unica]) || ANUNCIOS[categ];
   if (ad) return `<div class="adslot adslot--sheet"><a class="ad ad--basico ad--sponsored" href="${ad.url}" target="_blank" rel="sponsored noopener">
     <span class="ad__label">Patrocinado</span><img src="/${ad.img}" alt="Anúncio: ${ad.anunciante}" loading="lazy"></a></div>`;
-  const q = `Tenho interesse no espaço publicitário: ${place} (Banner Básico, 300 × 100 px). `;
+  const alvo = unica ? `patrocinador da ficha "${nome}" ou da categoria ${categoria.toLowerCase()}` : categ;
+  const q = `Tenho interesse no espaço publicitário: ${alvo} (Banner Básico, 300 × 100 px). `;
   const href = pagina ? `/anuncie?assunto=${encodeURIComponent('Banner Básico')}&msg=${encodeURIComponent(q)}#contato` : '#contato';
-  return `<div class="adslot adslot--sheet"><a class="ad ad--basico" href="${href}" data-plan="Banner Básico" data-question="${q}">
+  return `<div class="adslot adslot--sheet"><a class="ad ad--basico" href="${href}" data-plan="Banner Básico" data-question="${q.replace(/"/g, '&quot;')}">
     <span class="ad__label">Espaço publicitário</span>
-    <span class="ad__main"><b>Seu banner aqui!</b><small>${place}</small></span>
+    <span class="ad__main"><b>Patrocine esta ficha</b><small>${unica ? 'Só esta ficha ou todas as fichas de ' + categoria.toLowerCase() : categ}</small></span>
     <span class="ad__meta"><span class="ad__size">Banner Básico · 300 × 100 px</span><span class="ad__cta">Anuncie →</span></span></a></div>`;
 }

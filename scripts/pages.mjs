@@ -289,7 +289,7 @@ export function generate(D, outDir) {
       <p class="tags tags--links">${normTags(normas)}</p>${normNote}
       ${vejas.map(veja => `<p class="relprod"><a href="${pathOf.material(veja.id)}">Veja também: ${esc(veja.name)} →</a></p>`).join('')}
       ${sist.length ? `<h2 class="page__h">Onde é usado</h2>${links(sist.map(x => [pathOf.sistema(x.id), x.name]))}` : ''}
-      ${D.adFichaHTML(m.cat, true)}
+      ${D.adFichaHTML(m.cat, true, m.name)}
       ${fabs.length ? `<h2 class="page__h">${importers ? 'Importadores' : misto ? 'Fabricantes e importadores' : 'Fabricantes'}</h2>
       <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">
         <span class="fabs__name notranslate" translate="no">${esc(n)}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span>${D.logoFab(u)}</a>`
