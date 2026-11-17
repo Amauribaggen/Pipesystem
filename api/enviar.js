@@ -7,7 +7,7 @@ const REMETENTE = 'Site PipeSystem <site@pipesystem.com.br>';
 const MAX_ARQUIVO = 4 * 1024 * 1024;   // a Vercel aceita até 4,5 MB por envio
 const TIPOS = /\.(pdf|docx?|xlsx?|csv|txt|jpe?g|png|webp)$/i;
 const ROTULOS = {
-  nome: 'Nome', email: 'E-mail', empresa: 'Empresa', perfil: 'Você é', telefone: 'Telefone', assunto: 'Assunto', mensagem: 'Mensagem',
+  nome: 'Nome', email: 'E-mail', empresa: 'Empresa', perfil: 'Perfil', telefone: 'Telefone', assunto: 'Assunto', mensagem: 'Mensagem',
   titulo: 'Título do artigo', autores: 'Autor(es)', link: 'Link', resumo: 'Resumo',
   autorizacao: 'Autorização de divulgação', privacidade: 'Aceite da Política de Privacidade',
 };

@@ -1879,12 +1879,12 @@
       </div>
       <div class="audience">
         <div><h3>Compradores</h3><p>Projetistas hidráulicos, construtoras, indústrias e empresas de petróleo, gás, saneamento e irrigação.</p>
-          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-perfil="comprador" data-question="Quero me cadastrar como comprador. Área de atuação: ">Cadastre-se aqui</a></div>
+          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-question="Quero me cadastrar como comprador. Área de atuação: ">Cadastre-se aqui</a></div>
         <div><h3>Fornecedores</h3><p>Fabricantes, instaladoras e distribuidores gerais ou especializados.</p>
           <a href="#guia-fornecedores" class="btn btn--sm">Cadastre sua empresa aqui</a>
           <a href="#assinaturas" class="qcall"><span class="qcall__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9M10 20a2 2 0 0 0 4 0"/></svg></span><span class="qcall__text"><small>Para distribuidores e revendedores</small><b>Receba as cotações do site</b></span><span class="qcall__go" aria-hidden="true">→</span></a></div>
         <div><h3>Conhecimento</h3><p>Universidades, entidades de classe, órgãos públicos e normalização, estudantes e formadores de opinião.</p>
-          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-perfil="conhecimento" data-question="Quero me cadastrar. Instituição: ">Cadastre-se aqui</a></div>
+          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-question="Quero me cadastrar. Instituição: ">Cadastre-se aqui</a></div>
       </div>
     </div>
   </section>
@@ -1944,7 +1944,7 @@
     </div>
   </section>
 
-  <!-- GUIA DE FORNECEDORES (perfil gratuito, básico e em destaque) -->
+  <!-- GUIA DE FORNECEDORES (perfil básico e em destaque) -->
   <section class="section" id="guia-fornecedores">
     <div class="container">
       <header class="section__head">
@@ -1952,25 +1952,16 @@
         <h2 data-novo>Sua empresa no guia de fornecedores do PipeSystem</h2>
         <p>Fabricantes, distribuidores e instaladoras ganham uma página própria no guia, organizada por categoria de produto e por estado. Quem pesquisa uma ficha, um guia ou uma calculadora encontra a empresa que vende ou instala aquele material.</p>
       </header>
-      <div class="grid grid--3 plans gf__planos">
-        <article class="plan">
-          <h3>Gratuito</h3>
-          <p class="plan__size">Presença no guia</p>
-          <ul>
-            <li>Nome, cidade, estado e telefone</li>
-            <li>Até 3 categorias de produto</li>
-            <li>Aparece na busca do guia</li>
-          </ul>
-          <a href="#contato" class="btn" data-subject="Guia de fornecedores" data-question="Quero o perfil gratuito no guia de fornecedores. Empresa, cidade, telefone e categorias: ">Cadastrar grátis</a>
-        </article>
+      <div class="grid plans gf__planos">
         <article class="plan">
           <h3>Básico</h3>
           <p class="plan__size">Perfil completo</p>
           <ul>
-            <li>Tudo do Gratuito</li>
+            <li>Nome, cidade, estado e telefone</li>
             <li>Logomarca, site e e-mail de contato</li>
             <li>Texto de apresentação da empresa</li>
             <li>Até 15 categorias de produto</li>
+            <li>Aparece na busca do guia, por categoria e por estado</li>
           </ul>
           <a href="#contato" class="btn" data-plan="Guia de fornecedores — Básico">Solicitar proposta</a>
         </article>
@@ -2142,11 +2133,45 @@
         <label>Empresa<input name="empresa" autocomplete="organization"></label>
         <label>Você é
           <select name="perfil" id="perfil" required>
-            <option value="">Selecione</option>
-            <option value="Comprador" data-p="comprador">Comprador: construtora, projetista, instaladora ou indústria</option>
-            <option value="Fornecedor" data-p="fornecedor">Fornecedor: fabricante, distribuidor ou revenda</option>
-            <option value="Estudante, professor ou entidade" data-p="conhecimento">Estudante, professor ou entidade</option>
-            <option value="Outro" data-p="outro">Outro</option>
+            <option value="">Selecione o seu perfil</option>
+            <optgroup label="Compra ou especifica" data-g="compra">
+              <option value="Compra: Construtora ou incorporadora">Construtora ou incorporadora</option>
+              <option value="Compra: Projetista ou escritório de projetos">Projetista ou escritório de projetos</option>
+              <option value="Compra: Instaladora ou empreiteira de instalações">Instaladora ou empreiteira de instalações</option>
+              <option value="Compra: Engenheiro(a) autônomo(a)">Engenheiro(a) autônomo(a)</option>
+              <option value="Compra: Arquiteto(a)">Arquiteto(a)</option>
+              <option value="Compra: Encanador, bombeiro hidráulico ou instalador autônomo">Encanador, bombeiro hidráulico ou instalador autônomo</option>
+              <option value="Compra: Indústria (manutenção, utilidades ou engenharia)">Indústria (manutenção, utilidades ou engenharia)</option>
+              <option value="Compra: Petróleo, gás, química ou energia">Petróleo, gás, química ou energia</option>
+              <option value="Compra: Saneamento (companhia, autarquia ou concessionária)">Saneamento (companhia, autarquia ou concessionária)</option>
+              <option value="Compra: Irrigação e agronegócio">Irrigação e agronegócio</option>
+              <option value="Compra: Hospital, hotel, shopping ou grande edificação (manutenção)">Hospital, hotel, shopping ou grande edificação (manutenção)</option>
+              <option value="Compra: Condomínio, síndico ou administradora">Condomínio, síndico ou administradora</option>
+              <option value="Compra: Compras ou suprimentos de empresa">Compras ou suprimentos de empresa</option>
+              <option value="Compra: Órgão público (obras ou compras)">Órgão público (obras ou compras)</option>
+              <option value="Compra: Pessoa física (obra ou reforma própria)">Pessoa física (obra ou reforma própria)</option>
+            </optgroup>
+            <optgroup label="Vende ou presta serviço" data-g="vende">
+              <option value="Vende: Fabricante">Fabricante</option>
+              <option value="Vende: Importador">Importador</option>
+              <option value="Vende: Distribuidor ou atacadista">Distribuidor ou atacadista</option>
+              <option value="Vende: Revenda ou loja de materiais de construção">Revenda ou loja de materiais de construção</option>
+              <option value="Vende: Representante comercial">Representante comercial</option>
+              <option value="Vende: Prestador de serviços (manutenção, testes, inspeção, desentupimento)">Prestador de serviços (manutenção, testes, inspeção, desentupimento)</option>
+              <option value="Vende: Locação de equipamentos">Locação de equipamentos</option>
+              <option value="Vende: Software, tecnologia ou automação">Software, tecnologia ou automação</option>
+              <option value="Vende: Consultoria ou engenharia de serviços">Consultoria ou engenharia de serviços</option>
+            </optgroup>
+            <optgroup label="Ensino, entidades e imprensa" data-g="ensino">
+              <option value="Ensino/entidade: Estudante">Estudante</option>
+              <option value="Ensino/entidade: Professor(a) ou pesquisador(a)">Professor(a) ou pesquisador(a)</option>
+              <option value="Ensino/entidade: Universidade, escola técnica ou instituto de pesquisa">Universidade, escola técnica ou instituto de pesquisa</option>
+              <option value="Ensino/entidade: Curso livre ou centro de treinamento">Curso livre ou centro de treinamento</option>
+              <option value="Ensino/entidade: Associação, sindicato ou conselho de classe">Associação, sindicato ou conselho de classe</option>
+              <option value="Ensino/entidade: Órgão de normalização, certificação ou laboratório">Órgão de normalização, certificação ou laboratório</option>
+              <option value="Ensino/entidade: Imprensa ou mídia especializada">Imprensa ou mídia especializada</option>
+            </optgroup>
+            <option value="Outro">Outro</option>
           </select>
         </label>
         <label>Assunto
