@@ -1718,3 +1718,21 @@ function revisaoHTML(item) {
     + `<span>Revisado pela <b>${REVISAO.por}</b> · atualizado em ${mes}</span> <a href="/politica-editorial">Política Editorial</a>${linkErro(item)}</p>`;
 }
 
+// ===== Anúncios contratados =====
+// Nome do local (o mesmo do mapa da página Anuncie) -> banner do anunciante. Cada local é exclusivo de uma empresa,
+// com mensalidade antecipada. Aparecem sempre com o rótulo "Patrocinado".
+// Exemplo: 'Fichas técnicas de válvulas — patrocinador da categoria': { img: 'img/anuncios/empresa.webp', url: 'https://empresa.com.br', anunciante: 'Empresa X' },
+const ANUNCIOS = {};
+// Patrocinador de cada categoria de fichas técnicas (materiais por categoria e sistemas), logo antes da lista de fabricantes
+const lugarFicha = categoria => `Fichas técnicas de ${categoria.toLowerCase()} — patrocinador da categoria`;
+function adFichaHTML(categoria, pagina = false) {
+  const place = lugarFicha(categoria), ad = ANUNCIOS[place];
+  if (ad) return `<div class="adslot adslot--sheet"><a class="ad ad--basico ad--sponsored" href="${ad.url}" target="_blank" rel="sponsored noopener">
+    <span class="ad__label">Patrocinado</span><img src="/${ad.img}" alt="Anúncio: ${ad.anunciante}" loading="lazy"></a></div>`;
+  const q = `Tenho interesse no espaço publicitário: ${place} (Banner Básico, 300 × 100 px). `;
+  const href = pagina ? `/anuncie?assunto=${encodeURIComponent('Banner Básico')}&msg=${encodeURIComponent(q)}#contato` : '#contato';
+  return `<div class="adslot adslot--sheet"><a class="ad ad--basico" href="${href}" data-plan="Banner Básico" data-question="${q}">
+    <span class="ad__label">Espaço publicitário</span>
+    <span class="ad__main"><b>Seu banner aqui!</b><small>${place}</small></span>
+    <span class="ad__meta"><span class="ad__size">Banner Básico · 300 × 100 px</span><span class="ad__cta">Anuncie →</span></span></a></div>`;
+}

@@ -817,9 +817,8 @@ const AD_FORMATS = {
   basico: { plan: 'Banner Básico', size: '300 × 100 px' },
   card: { plan: 'Banner Básico', size: 'cartão 300 × 250 px' },
 };
-// Anúncios contratados: o nome do espaço (data-place) -> banner do anunciante. Aparecem sempre com o rótulo "Patrocinado".
-// Exemplo: 'Fichas técnicas — patrocínio da ficha': { img: 'img/anuncios/empresa.webp', url: 'https://empresa.com.br', anunciante: 'Empresa X' },
-const ADS = {};
+// Anúncios contratados: ficam em catalog.js (ANUNCIOS), a mesma lista usada nas páginas próprias das fichas
+const ADS = ANUNCIOS;
 function adHTML(kind, place, id) {
   const f = AD_FORMATS[kind], ad = ADS[place];
   if (ad) return `<a class="ad ad--${kind} ad--sponsored" ${id ? `id="${id}"` : ''} href="${ad.url}" target="_blank" rel="sponsored noopener">
@@ -859,20 +858,26 @@ document.querySelectorAll('[data-ad]').forEach((el, i) => {
   AD_SPOTS.push({ id: 'ad-catalogo', kind: 'card', place });
 })();
 
-// Patrocínio em cada ficha técnica (produtos, sistemas e materiais)
+// Patrocínio por categoria nas fichas técnicas (materiais e sistemas): logo antes da lista de fabricantes,
+// onde quem compara fornecedores olha; nos sistemas, antes dos produtos usados
 (() => {
   const body = document.getElementById('sheetBody');
-  const place = 'Fichas técnicas — patrocínio da ficha';
   new MutationObserver(() => {
-    if (body.querySelector('.ad')) return;
-    const actions = body.querySelector('.sheet__actions');
-    if (!actions) return;
-    const wrap = document.createElement('div');
-    wrap.className = 'adslot adslot--sheet';
-    wrap.innerHTML = adHTML('basico', place);
-    actions.before(wrap);
+    if (body.querySelector('.adslot--sheet')) return;
+    const eb = body.querySelector('.sheet__head .eyebrow');
+    if (!eb) return;
+    const m = eb.textContent.match(/Catálogo · (.+)/), sist = /Sistema hidráulico/.test(eb.textContent);
+    if (!m && !sist) return;
+    const h4s = [...body.querySelectorAll('h4')];
+    const alvo = sist ? h4s.find(h => /^Produtos e materiais/.test(h.textContent))
+      : (body.querySelector('ul.fabs')?.previousElementSibling || body.querySelector('.sheet__actions'));
+    if (!alvo) return;
+    alvo.insertAdjacentHTML('beforebegin', adFichaHTML(sist ? 'Sistemas hidráulicos' : m[1].trim()));
   }).observe(body, { childList: true });
-  AD_SPOTS.push({ id: null, kind: 'basico', place, sample: '#bombas' });
+  // no mapa da página Anuncie: um local por categoria
+  const cats = [...new Set(CATALOG.map(x => x.cat))];
+  cats.forEach(c => AD_SPOTS.push({ id: null, kind: 'basico', place: lugarFicha(c), sample: '/materiais/' + CATALOG.find(x => x.cat === c).id.replace(/^mat-/, '') }));
+  if (typeof SYSTEMS !== 'undefined' && SYSTEMS.length) AD_SPOTS.push({ id: null, kind: 'basico', place: lugarFicha('Sistemas hidráulicos'), sample: '/sistemas/' + SYSTEMS[0].id.replace(/^sis-/, '') });
 })();
 
 // Mapa dos espaços na seção Anuncie

@@ -19,7 +19,7 @@ const IDIOMA = readFileSync(new URL('../site/index.html', import.meta.url), 'utf
 export function loadData(siteDir) {
   const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'revisoes.js', 'catalog.js', 'bim.js', 'glossario.js', 'sinapi-precos.js', 'comparativos.js', 'logos.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ logoFab, certFab, certNota, PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_EXTRA, IA_CREDITO, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML, NORM_GROUPS, BIM_LIBS, WEB_TOOLS });';
+    '\n;({ adFichaHTML, logoFab, certFab, certNota, PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_EXTRA, IA_CREDITO, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML, NORM_GROUPS, BIM_LIBS, WEB_TOOLS });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -237,6 +237,7 @@ export function generate(D, outDir) {
       </div>
       <h2 class="page__h">Normas de referência</h2>
       <p class="tags tags--links">${normTags(s.normas)}</p>${normNote}
+      ${D.adFichaHTML('Sistemas hidráulicos', true)}
       <h2 class="page__h">Produtos e materiais usados</h2>${links([...new Set(s.produtos.map(materialOf).filter(Boolean))].map(m => [pathOf.material(m.id), m.name]))}
       <h2 class="page__h">Outros sistemas</h2>${links(outros.map(x => [pathOf.sistema(x.id), x.name]))}
       <div class="sheet__actions">
@@ -288,6 +289,7 @@ export function generate(D, outDir) {
       <p class="tags tags--links">${normTags(normas)}</p>${normNote}
       ${vejas.map(veja => `<p class="relprod"><a href="${pathOf.material(veja.id)}">Veja também: ${esc(veja.name)} →</a></p>`).join('')}
       ${sist.length ? `<h2 class="page__h">Onde é usado</h2>${links(sist.map(x => [pathOf.sistema(x.id), x.name]))}` : ''}
+      ${D.adFichaHTML(m.cat, true)}
       ${fabs.length ? `<h2 class="page__h">${importers ? 'Importadores' : misto ? 'Fabricantes e importadores' : 'Fabricantes'}</h2>
       <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">
         <span class="fabs__name notranslate" translate="no">${esc(n)}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span>${D.logoFab(u)}</a>`
