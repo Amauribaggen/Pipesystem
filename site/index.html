@@ -1879,12 +1879,12 @@
       </div>
       <div class="audience">
         <div><h3>Compradores</h3><p>Projetistas hidráulicos, construtoras, indústrias e empresas de petróleo, gás, saneamento e irrigação.</p>
-          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-question="Quero me cadastrar como comprador. Área de atuação: ">Cadastre-se aqui</a></div>
+          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-perfil="comprador" data-question="Quero me cadastrar como comprador. Área de atuação: ">Cadastre-se aqui</a></div>
         <div><h3>Fornecedores</h3><p>Fabricantes, instaladoras e distribuidores gerais ou especializados.</p>
-          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de empresa" data-question="Quero cadastrar minha empresa como fornecedora. Produtos e serviços: ">Cadastre sua empresa aqui</a>
+          <a href="#guia-fornecedores" class="btn btn--sm">Cadastre sua empresa aqui</a>
           <a href="#assinaturas" class="qcall"><span class="qcall__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9M10 20a2 2 0 0 0 4 0"/></svg></span><span class="qcall__text"><small>Para distribuidores e revendedores</small><b>Receba as cotações do site</b></span><span class="qcall__go" aria-hidden="true">→</span></a></div>
         <div><h3>Conhecimento</h3><p>Universidades, entidades de classe, órgãos públicos e normalização, estudantes e formadores de opinião.</p>
-          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-question="Quero me cadastrar. Instituição: ">Cadastre-se aqui</a></div>
+          <a href="#contato" class="btn btn--sm" data-subject="Cadastro de usuário" data-perfil="conhecimento" data-question="Quero me cadastrar. Instituição: ">Cadastre-se aqui</a></div>
       </div>
     </div>
   </section>
@@ -2140,6 +2140,15 @@
         <label>Nome<input name="nome" required autocomplete="name"></label>
         <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
         <label>Empresa<input name="empresa" autocomplete="organization"></label>
+        <label>Você é
+          <select name="perfil" id="perfil" required>
+            <option value="">Selecione</option>
+            <option value="Comprador" data-p="comprador">Comprador: construtora, projetista, instaladora ou indústria</option>
+            <option value="Fornecedor" data-p="fornecedor">Fornecedor: fabricante, distribuidor ou revenda</option>
+            <option value="Estudante, professor ou entidade" data-p="conhecimento">Estudante, professor ou entidade</option>
+            <option value="Outro" data-p="outro">Outro</option>
+          </select>
+        </label>
         <label>Assunto
           <select name="assunto" id="assunto">
             <option>Consulta técnica</option>
@@ -2149,6 +2158,9 @@
             <option>Negócios &amp; leilões</option>
             <option>Cadastro de usuário</option>
             <option>Cadastro de empresa</option>
+            <option>Guia de fornecedores</option>
+            <option>Guia de fornecedores — Básico</option>
+            <option>Guia de fornecedores — Destaque</option>
             <option>Banner Básico</option>
             <option>Banner Padrão</option>
             <option>Banner Premium</option>
@@ -2207,6 +2219,7 @@
       <a href="#artigos">Notícias</a>
       <a href="#feiras">Feiras</a>
       <a href="#anuncie">Anuncie</a>
+      <a href="#guia-fornecedores">Guia de fornecedores</a>
       <a href="#assinaturas">Receba cotações</a>
       <a href="#sobre">Quem somos</a>
       <a href="#contato">Contato</a>

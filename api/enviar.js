@@ -7,7 +7,7 @@ const REMETENTE = 'Site PipeSystem <site@pipesystem.com.br>';
 const MAX_ARQUIVO = 4 * 1024 * 1024;   // a Vercel aceita até 4,5 MB por envio
 const TIPOS = /\.(pdf|docx?|xlsx?|csv|txt|jpe?g|png|webp)$/i;
 const ROTULOS = {
-  nome: 'Nome', email: 'E-mail', empresa: 'Empresa', telefone: 'Telefone', assunto: 'Assunto', mensagem: 'Mensagem',
+  nome: 'Nome', email: 'E-mail', empresa: 'Empresa', perfil: 'Você é', telefone: 'Telefone', assunto: 'Assunto', mensagem: 'Mensagem',
   titulo: 'Título do artigo', autores: 'Autor(es)', link: 'Link', resumo: 'Resumo',
   autorizacao: 'Autorização de divulgação', privacidade: 'Aceite da Política de Privacidade',
 };
@@ -58,7 +58,7 @@ export async function POST(request) {
 
   const assunto = (tipo === 'artigo'
     ? `[Site] Artigo técnico: ${limpa(dados.get('titulo'), 150) || 'sem título'}`
-    : `[Site] ${limpa(dados.get('assunto'), 150) || 'Contato'} — ${nome}`).replace(/\s+/g, ' ');
+    : `[Site] ${limpa(dados.get('assunto'), 150) || 'Contato'} — ${nome}${limpa(dados.get('perfil'), 60) ? ` (${limpa(dados.get('perfil'), 60)})` : ''}`).replace(/\s+/g, ' ');
   const texto = campos.map(([k, v]) => `${k}: ${v}`).join('\n') + (attachments.length ? `\n\nArquivo anexado: ${attachments[0].filename}` : '');
   const html = `<h2 style="font-family:Arial,sans-serif;color:#0a2240">${esc(tipo === 'artigo' ? 'Novo artigo enviado pelo site' : 'Nova mensagem pelo site')}</h2>
 <table style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">${campos.map(([k, v]) =>

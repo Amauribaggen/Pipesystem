@@ -481,12 +481,23 @@ document.addEventListener('click', e => {
   const a = e.target.closest('[data-plan], [data-subject]');
   if (!a) return;
   assunto.value = a.dataset.plan || a.dataset.subject;
+  const pf = document.getElementById('perfil');
+  if (pf) { const op = a.dataset.perfil ? pf.querySelector(`[data-p="${a.dataset.perfil}"]`) : a.dataset.plan || /^(Cadastro de empresa|Guia de fornecedores|Assinatura)/.test(a.dataset.subject || '') ? pf.querySelector('[data-p="fornecedor"]') : null; if (op) pf.value = op.value; }
   if (a.dataset.question) {
     const msg = document.querySelector('#contactForm textarea');
     msg.value = a.dataset.question;
     setTimeout(() => { msg.focus({ preventScroll: true }); msg.setSelectionRange(msg.value.length, msg.value.length); }, 400);
   }
 });
+
+// "Você é": fornecedor que pede cadastro de usuário vira cadastro de empresa, e o contrário
+{
+  const pf = document.getElementById('perfil');
+  if (pf) pf.addEventListener('change', () => {
+    if (pf.value === 'Fornecedor' && assunto.value === 'Cadastro de usuário') assunto.value = 'Cadastro de empresa';
+    else if (pf.value && pf.value !== 'Fornecedor' && assunto.value === 'Cadastro de empresa') assunto.value = 'Cadastro de usuário';
+  });
+}
 
 // Anexo da lista de materiais (aparece em cotações e negócios & leilões)
 const UPLOAD_SUBJECTS = ['Cotação de materiais', 'Negócios & leilões'];

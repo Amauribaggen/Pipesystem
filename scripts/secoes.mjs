@@ -52,10 +52,10 @@ export const PAGINAS = [
     resumo: 'Distribuidores e revendedores recebem os pedidos de cotação publicados no portal e respondem direto ao comprador.',
     n: (D, x) => [x.itens.assinaturas?.length, 'planos de assinatura'],
     links: [['Planos', '/assinaturas']] },
-  { id: 'anuncie', path: '/anuncie', nome: 'Anuncie', tag: 'Para fabricantes', titulo: 'Anuncie no PipeSystem: banners para o público técnico',
-    resumo: 'Banners nas páginas do portal e nos boletins técnicos, diante de projetistas, instaladores e compradores.',
+  { id: 'anuncie', path: '/anuncie', nome: 'Anuncie', tag: 'Para fabricantes', titulo: 'Anuncie no PipeSystem: banners e guia de fornecedores', extras: ['guia-fornecedores'],
+    resumo: 'Banners nas páginas do portal e perfil da empresa no guia de fornecedores, diante de projetistas, instaladores e compradores.',
     n: (D, x) => [x.itens.anuncie?.length, 'planos de banner'],
-    links: [['Planos', '/anuncie'], ['Onde aparecem', '/anuncie#adMap']] },
+    links: [['Planos', '/anuncie'], ['Onde aparecem', '/anuncie#adMap'], ['Guia de fornecedores', '/anuncie#guia-fornecedores']] },
   { id: 'sobre', path: '/quem-somos', nome: 'Quem somos', tag: 'PipeSystem', titulo: 'Quem somos — PipeSystem, o portal da hidráulica',
     resumo: 'O primeiro portal brasileiro dedicado à hidráulica e à condução de fluidos: quem faz, por que existe e como trabalhamos.',
     n: () => null, links: [['Diretoria', '/quem-somos'], ['Política editorial', '/politica-editorial']] },
@@ -182,7 +182,7 @@ export function separar(out, D, src) {
   // ids de cada página (para os links antigos) e espaços publicitários por página
   const idPagina = {}, adAll = [];
   for (const p of PAGINAS) {
-    for (const m of porId[p.id].html.matchAll(/\sid="([^"]+)"/g)) idPagina[m[1]] = p.path;
+    for (const sid of [p.id, ...(p.extras || [])]) for (const m of porId[sid].html.matchAll(/\sid="([^"]+)"/g)) idPagina[m[1]] = p.path;
   }
   for (const b of bs) {
     const pg = PAGINAS.find(p => p.id === b.id);
@@ -242,7 +242,7 @@ export function separar(out, D, src) {
     </div>
     <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'VideoObject', name: 'PipeSystem — um passeio pelo portal', description: 'Apresentação do PipeSystem, o 1º portal da hidráulica e condução de fluidos: cotações, sistemas, materiais, Dimensionamento Inteligente, BIM/CAD, guias práticos, normas, notícias e vagas, feiras, PipeSystem Pro e guia de fornecedores.', thumbnailUrl: 'https://www.pipesystem.com.br/img/video-apresentacao.jpg', uploadDate: '2026-11-15T12:00:00-03:00', duration: 'PT2M27S', embedUrl: `https://www.youtube-nocookie.com/embed/${YT}`, contentUrl: `https://www.youtube.com/watch?v=${YT}` })}</script>
   </section>`;
-  const fica = id => !PAGINAS.some(p => p.id === id);
+  const fica = id => !PAGINAS.some(p => p.id === id || (p.extras || []).includes(id));
   const home = [];
   for (const b of bs) {
     if (b.id && !fica(b.id)) continue;
@@ -273,10 +273,11 @@ export function separar(out, D, src) {
       .replace(/(<meta name="twitter:description" content=")[^"]*"/, `$1${attr(d)}"`)
       .replace('<body>', `<body data-pagina="${p.id}">`);
     const comVideo = ['sobre', 'anuncie'].includes(p.id) ? '\n  ' + video : '';   // o vídeo de apresentação também em Quem somos e Anuncie
-    pg += '\n  ' + sec + comVideo + '\n  ' + fichas + '\n  ' + contato + '\n' + depois;
+    const extras = (p.extras || []).map(id => '\n  ' + porId[id].html).join('');   // seções extras da página (ex.: guia de fornecedores em Anuncie)
+    pg += '\n  ' + sec + extras + comVideo + '\n  ' + fichas + '\n  ' + contato + '\n' + depois;
     writeFileSync(join(out, p.path.slice(1) + '.html'), comDados(pg));
     urls.push(p.path);
   }
-  indiceBusca(out, PAGINAS.map(p => ({ path: p.path, nome: p.nome, html: porId[p.id].html })));
+  indiceBusca(out, PAGINAS.map(p => ({ path: p.path, nome: p.nome, html: [p.id, ...(p.extras || [])].map(id => porId[id].html).join('\n') })));
   return urls;
 }
