@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sessão técnica: proteção hidráulica, Legionella e balanceamento | PipeSystem</title>
+<meta name="description" content="Resumo ilustrado da sessão técnica de 18/11/2026: separação hidráulica, sujeira, ar e magnetita, anticalcário eletrolítico, desinfecção térmica contra Legionella e balanceamento de circuitos.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico">
+<style>
+@font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url("/fonts/inter-latin.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 700; font-display: swap; src: url("/fonts/space-grotesk-700-latin.woff2") format("woff2"); }
+:root {
+  --navy: #0a2240; --navy2: #0f2e52; --ink: #14324f; --muted: #5c6b7d; --teal: #1fb5c9; --teal-d: #138a9b;
+  --orange: #f2a03d; --red: #d64545; --green: #2e9e5b; --line: #d6e1ec; --bg: #f4f8fb;
+  --font: "Inter", Arial, sans-serif; --display: "Space Grotesk", "Inter", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--font); color: var(--ink); background: var(--bg); line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: var(--teal-d); }
+.wrap { width: min(1120px, 100% - 32px); margin: 0 auto; }
+
+/* topo */
+.top { background: var(--navy); color: #fff; }
+.top__bar { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+.logo { font-family: var(--display); font-weight: 700; font-size: 1.25rem; letter-spacing: .02em; color: #fff; text-decoration: none; }
+.logo span { color: var(--teal); }
+.top__tag { font-size: .8rem; color: #9fb4cc; }
+.hero { position: relative; overflow: hidden; padding: 56px 0 72px; }
+.hero__eyebrow { color: var(--orange); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .8rem; margin: 0 0 12px; }
+.hero h1 { font-family: var(--display); font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.08; margin: 0 0 18px; max-width: 18ch; }
+.hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--teal), #8fd9a8, var(--orange)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero__lead { font-size: 1.12rem; color: #c6d6e8; max-width: 62ch; margin: 0 0 24px; }
+.hero__meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { display: inline-block; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); font-size: .85rem; }
+.hero__pipe { position: absolute; right: -40px; top: 20px; width: 520px; opacity: .35; pointer-events: none; }
+@media (max-width: 760px) { .hero__pipe { width: 360px; right: -140px; opacity: .2; } }
+
+/* números */
+.nums { margin-top: -36px; position: relative; z-index: 2; }
+.nums__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 860px) { .nums__grid { grid-template-columns: repeat(2, 1fr); } }
+.num { background: #fff; border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(10,34,64,.12); }
+.num b { display: block; font-family: var(--display); font-size: 1.9rem; color: var(--navy); line-height: 1.1; }
+.num span { font-size: .88rem; color: var(--muted); }
+
+/* índice */
+.toc { margin: 40px auto 8px; }
+.toc ol { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.toc a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--line); text-decoration: none; color: var(--ink); font-weight: 600; font-size: .88rem; }
+.toc a:hover { border-color: var(--teal); }
+
+/* temas */
+.tema { padding: 44px 0; border-bottom: 1px solid var(--line); }
+.tema:nth-of-type(even) { background: #fff; }
+.tema__head { margin-bottom: 18px; }
+.tema__n { font-family: var(--display); color: var(--teal-d); font-weight: 700; letter-spacing: .08em; font-size: .85rem; text-transform: uppercase; }
+.tema h2 { font-family: var(--display); font-size: clamp(1.5rem, 3.2vw, 2.1rem); line-height: 1.15; margin: 4px 0 0; color: var(--navy); }
+.tema__grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 28px; align-items: start; }
+.tema__grid--inv { grid-template-columns: .85fr 1.15fr; }
+@media (max-width: 860px) { .tema__grid, .tema__grid--inv { grid-template-columns: 1fr; } }
+.tema p { margin: 0 0 12px; }
+.destaque { border-left: 4px solid var(--orange); background: #fff7ec; padding: 12px 16px; border-radius: 0 12px 12px 0; margin: 14px 0; }
+.destaque b { color: var(--navy); }
+.lista { padding-left: 20px; margin: 0 0 12px; }
+.lista li { margin: 4px 0; }
+.fig { margin: 0; }
+.fig img { border-radius: 14px; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; box-shadow: 0 8px 24px rgba(10,34,64,.14); }
+.fig figcaption { font-size: .8rem; color: var(--muted); margin-top: 8px; }
+.fotos2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.anim { background: var(--navy); border-radius: 18px; padding: 16px; margin: 6px 0 14px; color: #fff; }
+.anim svg { width: 100%; height: auto; display: block; }
+.anim__t { font-family: var(--display); font-size: .95rem; margin: 0 0 6px; color: #fff; }
+.anim__c { font-size: .8rem; color: #9fb4cc; margin: 8px 0 0; }
+.svgtxt { font-family: var(--font); fill: #dce8f4; }
+
+/* animações (rodam sempre, também com movimento reduzido: pedido do cliente) */
+@keyframes fluir { to { stroke-dashoffset: -40; } }
+@keyframes fluirRap { to { stroke-dashoffset: -40; } }
+.flui { stroke-dasharray: 10 10; animation: fluir 1.2s linear infinite; }
+.flui--lento { animation-duration: 3.2s; }
+.flui--rap { animation-duration: .5s; }
+@keyframes pulsar { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+.pulsa { animation: pulsar 2s ease-in-out infinite; }
+@keyframes cair { 0% { transform: translate(0,0); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)); opacity: 1; } }
+.part { animation: cair 4s ease-in infinite; }
+@keyframes subir { 0% { transform: translate(0,0) scale(.4); opacity: 0; } 15% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(1.6); opacity: .9; } }
+.bolha { animation: subir 4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes crescerY { 0%,15% { transform: scaleY(.1733); } 75%,100% { transform: scaleY(1); } }
+.barY { transform-box: fill-box; transform-origin: bottom; animation: crescerY 6s ease-in-out infinite alternate; }
+@keyframes rotY { 0%,15% { opacity: 1; } 16%,100% { opacity: 0; } }
+@keyframes rotY2 { 0%,74% { opacity: 0; } 75%,100% { opacity: 1; } }
+.rotL { animation: rotY 6s infinite alternate; } .rotS { animation: rotY2 6s infinite alternate; }
+@keyframes andar { from { transform: translateX(0); } to { transform: translateX(var(--dx)); } }
+.anda { animation: andar 5s linear infinite; }
+@keyframes nivel { 0% { transform: scaleY(.12); } 45%,55% { transform: scaleY(1); } 100% { transform: scaleY(.12); } }
+.nivel { transform-box: fill-box; transform-origin: bottom; animation: nivel 10s ease-in-out infinite; }
+@keyframes bacOn { 0%,12% { opacity: .35; transform: scale(.8); } 20%,38% { opacity: 1; transform: scale(1.15); } 45%,55% { opacity: 0; transform: scale(.3); } 62%,80% { opacity: 1; transform: scale(1.15); } 88%,100% { opacity: .35; transform: scale(.8); } }
+.bac { transform-box: fill-box; transform-origin: center; animation: bacOn 10s ease-in-out infinite; }
+@keyframes zona { 0%,12% { opacity: 1; } 13%,100% { opacity: 0; } }
+.z1 { animation: zona 10s infinite; }
+@keyframes zona2 { 0%,13% { opacity: 0; } 14%,38% { opacity: 1; } 39%,100% { opacity: 0; } }
+.z2 { animation: zona2 10s infinite; }
+@keyframes zona3 { 0%,39% { opacity: 0; } 40%,60% { opacity: 1; } 61%,100% { opacity: 0; } }
+.z3 { animation: zona3 10s infinite; }
+@keyframes zona4 { 0%,61% { opacity: 0; } 62%,87% { opacity: 1; } 88%,100% { opacity: 0; } }
+.z4 { animation: zona4 10s infinite; }
+@keyframes zona5 { 0%,87% { opacity: 0; } 88%,100% { opacity: 1; } }
+.z5 { animation: zona5 10s infinite; }
+
+/* norma e fim */
+.norma { background: var(--navy); color: #fff; padding: 40px 0; }
+.norma h2 { font-family: var(--display); margin: 0 0 10px; }
+.norma p { color: #c6d6e8; max-width: 70ch; }
+.fim { padding: 40px 0 56px; }
+.fim__card { background: #fff; border-radius: 18px; padding: 26px; border: 1.5px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+@media (max-width: 760px) { .fim__card { grid-template-columns: 1fr; } }
+.fim h2 { font-family: var(--display); color: var(--navy); margin: 0 0 6px; }
+.btn { display: inline-block; padding: 12px 22px; border-radius: 999px; background: var(--orange); color: var(--navy); font-weight: 700; text-decoration: none; }
+.nota { font-size: .8rem; color: var(--muted); margin-top: 18px; }
+.rod { background: var(--navy); color: #9fb4cc; font-size: .8rem; padding: 18px 0; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top__bar">
+    <a class="logo" href="https://www.pipesystem.com.br/">PIPE<span>SYSTEM</span></a>
+    <span class="top__tag">O primeiro portal da hidráulica e sistemas de condução de fluidos</span>
+  </div>
+  <section class="hero">
+    <svg class="hero__pipe" viewBox="0 0 520 300" aria-hidden="true">
+      <path d="M0 80 H300 Q340 80 340 120 V300" fill="none" stroke="#1fb5c9" stroke-width="28" stroke-linecap="round" opacity=".5"/>
+      <path d="M0 80 H300 Q340 80 340 120 V300" fill="none" stroke="#fff" stroke-width="4" class="flui"/>
+      <path d="M520 40 H420 Q390 40 390 70 V300" fill="none" stroke="#f2a03d" stroke-width="22" stroke-linecap="round" opacity=".5"/>
+      <path d="M520 40 H420 Q390 40 390 70 V300" fill="none" stroke="#fff" stroke-width="3" class="flui flui--lento"/>
+    </svg>
+    <div class="wrap">
+      <p class="hero__eyebrow">Sessão técnica · 18 de novembro de 2026</p>
+      <h1>Proteção hidráulica, controle de <em>Legionella</em> e balanceamento</h1>
+      <p class="hero__lead">Qualidade da água, separação correta dos circuitos e controle de vazão decidem, ao mesmo tempo, a eficiência do sistema e a vida útil dos equipamentos. Este é o resumo ilustrado do encontro, com as fotos tiradas na sessão.</p>
+      <div class="hero__meta"><span class="chip">≈ 59 minutos de apresentação</span><span class="chip">Aquecimento e água quente</span><span class="chip">8 componentes mostrados ao vivo</span></div>
+    </div>
+  </section>
+</header>
+
+<section class="nums">
+  <div class="wrap nums__grid">
+    <div class="num"><b>6 a 8×</b><span>a perda de carga de um filtro Y entupido em relação ao limpo</span></div>
+    <div class="num"><b>18 L</b><span>de ar liberados por m³ de água entre 20 e 50 °C (Lei de Henry)</span></div>
+    <div class="num"><b>20%</b><span>de ar no sistema = só 80% da capacidade térmica</span></div>
+    <div class="num"><b>55–70 °C</b><span>faixa da desinfecção térmica contra a Legionella</span></div>
+  </div>
+</section>
+
+<nav class="wrap toc" aria-label="Temas da sessão">
+  <ol>
+    <li><a href="#separador">Separador hidráulico</a></li>
+    <li><a href="#sujeira">Sujeira, ar e magnetita</a></li>
+    <li><a href="#filtros">Filtro Y x separador</a></li>
+    <li><a href="#calcario">Anticalcário</a></li>
+    <li><a href="#legionella">Legionella</a></li>
+    <li><a href="#misturadora">Misturadora termostática</a></li>
+    <li><a href="#balanceamento">Balanceamento</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- 1. SEPARADOR HIDRÁULICO -->
+<section class="tema" id="separador">
+  <div class="wrap">
+    <div class="tema__head"><span class="tema__n">Tema 1</span><h2>Separador hidráulico: cada bomba na sua vazão</h2></div>
+    <div class="tema__grid">
+      <div>
+        <p>Quando há um circuito primário (com uma ou mais bombas) e circuitos secundários de distribuição, cada um com a sua bomba, é preciso um <b>separador hidráulico</b> entre eles. Sem ele, os circuitos com bombas maiores “roubam” água dos menores.</p>
+        <div class="destaque">Sem separação, uma bomba projetada para certa vazão pode trabalhar com <b>o dobro da vazão prevista</b>: gasta mais energia e tende a queimar.</div>
+        <div class="anim">
+          <p class="anim__t">Como o separador equilibra os circuitos</p>
+          <svg viewBox="0 0 520 250" role="img" aria-label="Desenho animado: à esquerda, a caldeira e o circuito primário levam água ao separador vertical; à direita, três circuitos secundários com bombas saem do separador; uma seta interna mostra o desvio que compensa a diferença de vazões.">
+            <rect x="20" y="70" width="80" height="110" rx="10" fill="#16406b" stroke="#1fb5c9" stroke-width="2"/>
+            <text class="svgtxt" x="60" y="122" text-anchor="middle" font-size="12" font-weight="700">Caldeira</text>
+            <text class="svgtxt" x="60" y="138" text-anchor="middle" font-size="10">primário</text>
+            <path d="M100 90 H230" stroke="#d64545" stroke-width="8" fill="none"/><path d="M100 90 H230" stroke="#fff" stroke-width="2" fill="none" class="flui"/>
+            <path d="M230 165 H100" stroke="#3b82c4" stroke-width="8" fill="none"/><path d="M230 165 H100" stroke="#fff" stroke-width="2" fill="none" class="flui"/>
+            <rect x="230" y="40" width="44" height="170" rx="16" fill="#0f2e52" stroke="#f2a03d" stroke-width="3"/>
+            <text class="svgtxt" x="252" y="32" text-anchor="middle" font-size="11" font-weight="700">Separador</text>
+            <path d="M252 100 V152" stroke="#f2a03d" stroke-width="3" fill="none" stroke-dasharray="6 6" class="flui flui--lento"/>
+            <path d="M246 146 L252 156 L258 146" fill="#f2a03d" class="pulsa"/>
+            <text class="svgtxt" x="252" y="228" text-anchor="middle" font-size="10">desvio interno</text>
+            <g>
+              <path d="M274 70 H480" stroke="#d64545" stroke-width="6"/><path d="M274 70 H480" stroke="#fff" stroke-width="2" class="flui"/>
+              <path d="M274 115 H480" stroke="#d64545" stroke-width="6"/><path d="M274 115 H480" stroke="#fff" stroke-width="2" class="flui"/>
+              <path d="M274 160 H480" stroke="#d64545" stroke-width="6"/><path d="M274 160 H480" stroke="#fff" stroke-width="2" class="flui"/>
+              <circle cx="360" cy="70" r="12" fill="#1fb5c9"/><circle cx="360" cy="115" r="12" fill="#1fb5c9"/><circle cx="360" cy="160" r="12" fill="#1fb5c9"/>
+              <text class="svgtxt" x="360" y="74" text-anchor="middle" font-size="10" font-weight="700" fill="#0a2240">B</text>
+              <text class="svgtxt" x="360" y="119" text-anchor="middle" font-size="10" font-weight="700" fill="#0a2240">B</text>
+              <text class="svgtxt" x="360" y="164" text-anchor="middle" font-size="10" font-weight="700" fill="#0a2240">B</text>
+              <text class="svgtxt" x="490" y="74" font-size="10">1</text><text class="svgtxt" x="490" y="119" font-size="10">2</text><text class="svgtxt" x="490" y="164" font-size="10">3</text>
+              <text class="svgtxt" x="420" y="200" text-anchor="middle" font-size="11" font-weight="700">Secundários (bombas próprias)</text>
+            </g>
+          </svg>
+          <p class="anim__c">Vazões iguais: quase nada atravessa o separador. Vazões diferentes: o desvio interno compensa a diferença, de forma totalmente mecânica.</p>
+        </div>
+        <p>Foi mostrada uma versão combinada que reúne, no mesmo corpo, <b>separação hidráulica, separação de sujeira, separação magnética e purga de ar</b>. Ela vai até 2 polegadas; acima disso, os componentes ficam separados.</p>
+      </div>
+      <figure class="fig"><img src="/img/eventos/sessao-2026-11-18/separador-combinado.webp" alt="Separador combinado preto com manômetro no topo e quatro conexões isoladas, duas em cima e duas embaixo" width="720" height="960" loading="lazy"><figcaption>Separador combinado com manômetro e quatro conexões: separação hidráulica, de sujeira, magnética e purga de ar.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 2. SUJEIRA, AR E MAGNETITA -->
+<section class="tema" id="sujeira">
+  <div class="wrap">
+    <div class="tema__head"><span class="tema__n">Tema 2</span><h2>Sujeira, ar e partículas magnéticas: separar, não filtrar</h2></div>
+    <div class="tema__grid tema__grid--inv">
+      <figure class="fig"><img src="/img/eventos/sessao-2026-11-18/separador-sujeira-interno.webp" alt="Vista interna de um separador de corpo vermelho com a malha de separação e a válvula de esfera de latão na base" width="720" height="960" loading="lazy"><figcaption>Interior de um separador: malha de separação e válvula de esfera de purga, mostrado ao vivo.</figcaption></figure>
+      <div>
+        <p>A água entra numa área maior, a velocidade cai e o movimento em vórtice leva as partículas às paredes, de onde caem por gravidade. A malha interna <b>não é uma malha de filtro</b>: a passagem é larga, porque o objetivo é separar a sujeira do fluxo, não retê-la.</p>
+        <div class="anim">
+          <p class="anim__t">Partículas descem, microbolhas sobem</p>
+          <svg viewBox="0 0 520 260" role="img" aria-label="Desenho animado: a água entra no separador pela esquerda e sai pela direita; partículas de sujeira caem até a base e as microbolhas se juntam, crescem e sobem até a purga no topo.">
+            <path d="M10 130 H190" stroke="#3b82c4" stroke-width="16"/><path d="M10 130 H190" stroke="#fff" stroke-width="2" class="flui"/>
+            <path d="M330 130 H510" stroke="#3b82c4" stroke-width="16"/><path d="M330 130 H510" stroke="#fff" stroke-width="2" class="flui flui--lento"/>
+            <rect x="190" y="30" width="140" height="200" rx="26" fill="#0f2e52" stroke="#1fb5c9" stroke-width="3"/>
+            <rect x="248" y="10" width="24" height="22" rx="4" fill="#f2a03d"/><text class="svgtxt" x="300" y="24" font-size="10">purga de ar</text>
+            <rect x="244" y="230" width="32" height="18" rx="4" fill="#c9a24d"/><text class="svgtxt" x="300" y="246" font-size="10">dreno de lodo</text>
+            <g fill="#b07a46">
+              <circle class="part" cx="205" cy="125" r="4" style="--dx:40px;--dy:90px"/>
+              <circle class="part" cx="205" cy="133" r="3" style="--dx:70px;--dy:82px;animation-delay:1s"/>
+              <circle class="part" cx="205" cy="128" r="3.5" style="--dx:55px;--dy:86px;animation-delay:2s"/>
+              <circle class="part" cx="205" cy="131" r="2.5" style="--dx:90px;--dy:80px;animation-delay:3s"/>
+            </g>
+            <g fill="#3a3a3a">
+              <rect class="part" x="205" y="127" width="5" height="5" style="--dx:30px;--dy:88px;animation-delay:.5s"/>
+              <rect class="part" x="205" y="131" width="4" height="4" style="--dx:80px;--dy:84px;animation-delay:2.5s"/>
+            </g>
+            <g fill="none" stroke="#dce8f4" stroke-width="1.5">
+              <circle class="bolha" cx="230" cy="140" r="3" style="--dx:25px;--dy:-100px"/>
+              <circle class="bolha" cx="240" cy="135" r="2.5" style="--dx:18px;--dy:-95px;animation-delay:1.3s"/>
+              <circle class="bolha" cx="250" cy="142" r="3" style="--dx:10px;--dy:-102px;animation-delay:2.6s"/>
+            </g>
+            <text class="svgtxt" x="100" y="160" text-anchor="middle" font-size="11">entrada</text>
+            <text class="svgtxt" x="420" y="160" text-anchor="middle" font-size="11">saída limpa</text>
+          </svg>
+          <p class="anim__c">A sujeira (marrom) e a magnetita (preta) vão para a base; as microbolhas se juntam, crescem e sobem até a purga.</p>
+        </div>
+        <ul class="lista">
+          <li><b>Limpeza sem parar a bomba:</b> abre-se a válvula de esfera até a água sair transparente: 1,5 a 2 minutos.</li>
+          <li><b>Microbolhas:</b> o separador apresentado retira <b>96%</b> do ar do sistema.</li>
+          <li><b>Garantia:</b> alguns fabricantes de caldeiras de condensação e bombas de calor condicionam a garantia (2, 5 ou 7 anos) à instalação de separadores de ar e de lodo.</li>
+        </ul>
+        <div class="destaque">O agente da corrosão é o <b>oxigênio</b>, somado ao lodo que cria diferenças de potencial. E o ar isola: com <b>20% de ar</b>, o sistema rende só <b>80%</b> da capacidade.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. FILTRO Y x SEPARADOR -->
+<section class="tema" id="filtros">
+  <div class="wrap">
+    <div class="tema__head"><span class="tema__n">Tema 3</span><h2>Filtro Y x separador: “o filtro limpo é um unicórnio”</h2></div>
+    <div class="tema__grid">
+      <div>
+        <p>Um filtro Y de 1 polegada, limpo, perde cerca de <b>140 a 150 mm de coluna d’água</b>. Mas ele só está limpo quando sai da caixa. Nos estudos citados, feitos em vários sistemas na Itália, o entupimento médio foi de <b>70%</b>, e a perda de carga chega a <b>cerca de 840 mm</b>.</p>
+        <div class="anim">
+          <p class="anim__t">Perda de carga ao longo do uso</p>
+          <svg viewBox="0 0 520 260" role="img" aria-label="Gráfico animado: a barra do filtro Y cresce de cerca de 145 milímetros, limpo, até cerca de 840 milímetros com 70 por cento de entupimento, enquanto a barra do separador de sujeira permanece baixa, cerca de 28 milímetros por ano.">
+            <line x1="60" y1="230" x2="500" y2="230" stroke="#5c7a99"/>
+            <line x1="60" y1="40" x2="60" y2="230" stroke="#5c7a99"/>
+            <text class="svgtxt" x="54" y="234" text-anchor="end" font-size="10">0</text>
+            <text class="svgtxt" x="54" y="84" text-anchor="end" font-size="10">840</text>
+            <line x1="60" y1="80" x2="500" y2="80" stroke="#5c7a99" stroke-dasharray="4 4"/>
+            <text class="svgtxt" x="20" y="150" font-size="10" transform="rotate(-90 20 150)" text-anchor="middle">mm de coluna d’água</text>
+            <rect class="barY" x="140" y="80" width="90" height="150" rx="6" fill="#d64545"/>
+            <text class="svgtxt" x="185" y="252" text-anchor="middle" font-size="12" font-weight="700">Filtro Y</text>
+            <text class="svgtxt rotL" x="185" y="196" text-anchor="middle" font-size="12">limpo ≈ 145</text>
+            <text class="svgtxt rotS" x="185" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#ffb4b4">70% entupido ≈ 840</text>
+            <rect x="330" y="225" width="90" height="5" rx="2" fill="#2e9e5b"/>
+            <text class="svgtxt" x="375" y="252" text-anchor="middle" font-size="12" font-weight="700">Separador de sujeira</text>
+            <text class="svgtxt" x="375" y="216" text-anchor="middle" font-size="12">≈ 28 mm/ano, quase constante</text>
+          </svg>
+          <p class="anim__c">No separador, o fluxo passa pela parte alta e a sujeira se acumula embaixo, sem contato: a perda de carga quase não muda.</p>
+        </div>
+        <ul class="lista">
+          <li>Na teoria, um filtro Y deveria ser limpo <b>uma vez por mês</b>; na prática, com sorte, uma vez por ano.</li>
+          <li>Para proteger o gerador, o separador fica <b>na linha de retorno, o mais perto possível dele</b>.</li>
+          <li>Foi mostrada ainda uma solução que combina malha fina e escovas que limpam a face filtrante.</li>
+        </ul>
+      </div>
+      <figure class="fig"><img src="/img/eventos/sessao-2026-11-18/cartucho-escovas.webp" alt="Cartucho de separador com a malha fina e as escovas de limpeza aparentes pela janela" width="720" height="960" loading="lazy"><figcaption>Cartucho com malha fina e escovas que limpam a superfície filtrante.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 4. ANTICALCÁRIO -->
+<section class="tema" id="calcario">
+  <div class="wrap">
+    <div class="tema__head"><span class="tema__n">Tema 4</span><h2>Anticalcário eletrolítico: de calcita a aragonita</h2></div>
+    <div class="tema__grid tema__grid--inv">
+      <div class="fotos2">
+        <figure class="fig"><img src="/img/eventos/sessao-2026-11-18/anticalcario-eletrolitico.webp" alt="Mostruário de parede do dispositivo anticalcário eletrolítico com filtro, com o corte do cartucho" width="720" height="960" loading="lazy"><figcaption>Dispositivo anticalcário eletrolítico com filtro (Galli 90S4, conforme a placa).</figcaption></figure>
+        <figure class="fig"><img src="/img/eventos/sessao-2026-11-18/calcita-aragonita.webp" alt="Painel ilustrado: estrutura da calcita em cima, da aragonita embaixo e o elemento de transformação ao centro" width="720" height="960" loading="lazy"><figcaption>Painel do catálogo: calcita, o elemento de transformação e a aragonita.</figcaption></figure>
+      </div>
+      <div>
+        <p>O cartucho combina <b>titânio e cobre</b> e cria uma eletrólise que transforma a <b>calcita</b> (cristais cúbicos, que grudam) em <b>aragonita</b> (laminar, que não se fixa). A água não muda de qualidade: só a cal deixa de aderir a tubos, serpentinas, atuadores e trocadores.</p>
+        <div class="anim">
+          <p class="anim__t">A cal deixa de grudar no tubo</p>
+          <svg viewBox="0 0 520 220" role="img" aria-label="Desenho animado: antes do cartucho, cristais cúbicos de calcita se prendem à parede do tubo; depois do cartucho de titânio e cobre, as partículas viram lâminas de aragonita e seguem com a água, sem grudar.">
+            <rect x="10" y="80" width="500" height="70" fill="#123a63" stroke="#1fb5c9" stroke-width="2"/>
+            <g fill="#e8e1cf">
+              <rect x="30" y="80" width="12" height="12"/><rect x="44" y="80" width="10" height="10"/><rect x="58" y="80" width="12" height="9"/><rect x="74" y="80" width="9" height="12"/><rect x="88" y="80" width="12" height="10"/><rect x="104" y="80" width="10" height="13"/><rect x="120" y="80" width="12" height="10"/><rect x="136" y="80" width="10" height="12"/><rect x="150" y="80" width="12" height="9"/>
+              <rect x="30" y="139" width="12" height="11"/><rect x="48" y="138" width="10" height="12"/><rect x="64" y="140" width="12" height="10"/><rect x="82" y="137" width="10" height="13"/><rect x="98" y="139" width="12" height="11"/><rect x="116" y="138" width="10" height="12"/><rect x="132" y="140" width="12" height="10"/><rect x="150" y="138" width="10" height="12"/>
+            </g>
+            <text class="svgtxt" x="14" y="60" font-size="12" font-weight="700">Calcita: gruda na parede</text>
+            <rect x="215" y="66" width="70" height="98" rx="10" fill="#f2a03d"/>
+            <text class="svgtxt" x="250" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#0a2240">Ti + Cu</text>
+            <text class="svgtxt" x="250" y="128" text-anchor="middle" font-size="9" fill="#0a2240">eletrólise</text>
+            <g fill="#bfe9f1">
+              <rect class="anda" x="290" y="100" width="18" height="3" rx="1" style="--dx:200px"/>
+              <rect class="anda" x="290" y="116" width="14" height="3" rx="1" style="--dx:200px;animation-delay:1.2s"/>
+              <rect class="anda" x="290" y="130" width="18" height="3" rx="1" style="--dx:200px;animation-delay:2.4s"/>
+              <rect class="anda" x="290" y="108" width="12" height="3" rx="1" style="--dx:200px;animation-delay:3.6s"/>
+            </g>
+            <text class="svgtxt" x="506" y="60" text-anchor="end" font-size="12" font-weight="700">Aragonita: segue com a água</text>
+            <text class="svgtxt" x="260" y="196" text-anchor="middle" font-size="11">Filtro de 50 µm no mesmo corpo (contra ≈ 400 µm de um filtro Y de 1")</text>
+          </svg>
+          <p class="anim__c">A calcita pode reduzir a passagem em até cerca de 90%; a aragonita, segundo o apresentador, não se fixa.</p>
+        </div>
+        <ul class="lista">
+          <li><b>Sem energia e sem produtos químicos:</b> é um equipamento mecânico.</li>
+          <li>Janela de inspeção, ferramenta própria e <b>vida útil mínima garantida de 6 anos</b> do cartucho.</li>
+          <li>Águas muito ruins podem pedir tratamento adicional.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. LEGIONELLA -->
+<section class="tema" id="legionella">
+  <div class="wrap">
+    <div class="tema__head"><span class="tema__n">Tema 5</span><h2>Desinfecção térmica contra a Legionella, com registro</h2></div>
+    <div class="tema__grid">
+      <div>
+        <p>A <b>Legionella</b> está presente em toda a água. O risco principal não é beber, e sim <b>inalar gotículas contaminadas</b>, como as do banho. Ela causa a febre de Pontiac, em geral leve, e a legionelose, que pode ser grave em quem já tem a saúde comprometida. Hospitais são a maior preocupação.</p>
+        <div class="anim">
+          <p class="anim__t">O que a temperatura faz com a bactéria</p>
+          <svg viewBox="0 0 520 280" role="img" aria-label="Desenho animado de um termômetro: a temperatura sobe de 10 a 70 graus e volta; até 20 graus a bactéria fica dormente, entre 20 e 50 graus ela se multiplica, acima de 55 a 60 graus ela é eliminada.">
+            <rect x="60" y="20" width="36" height="210" rx="18" fill="#0f2e52" stroke="#dce8f4" stroke-width="2"/>
+            <circle cx="78" cy="242" r="26" fill="#d64545"/>
+            <rect class="nivel" x="70" y="34" width="16" height="200" rx="8" fill="#d64545"/>
+            <g font-size="11" class="svgtxt">
+              <line x1="100" y1="200" x2="112" y2="200" stroke="#dce8f4"/><text class="svgtxt" x="116" y="204">20 °C</text>
+              <line x1="100" y1="110" x2="112" y2="110" stroke="#dce8f4"/><text class="svgtxt" x="116" y="114">50 °C</text>
+              <line x1="100" y1="80" x2="112" y2="80" stroke="#dce8f4"/><text class="svgtxt" x="116" y="84">55–60 °C</text>
+              <line x1="100" y1="40" x2="112" y2="40" stroke="#dce8f4"/><text class="svgtxt" x="116" y="44">70 °C</text>
+            </g>
+            <rect x="190" y="30" width="310" height="230" rx="14" fill="#123a63"/>
+            <g class="bac">
+              <rect x="300" y="100" width="34" height="14" rx="7" fill="#8fd9a8"/>
+              <rect x="340" y="118" width="34" height="14" rx="7" fill="#8fd9a8"/>
+              <rect x="318" y="136" width="34" height="14" rx="7" fill="#8fd9a8"/>
+              <rect x="360" y="96" width="34" height="14" rx="7" fill="#8fd9a8"/>
+            </g>
+            <text class="svgtxt" x="345" y="70" text-anchor="middle" font-size="14" font-weight="700">Legionella</text>
+            <g text-anchor="middle" font-size="13" font-weight="700">
+              <text class="svgtxt z1" x="345" y="200" fill="#9fb4cc">Até 20 °C: dormente</text>
+              <text class="svgtxt z2" x="345" y="200" fill="#ffd27a">20 a 50 °C: prolifera</text>
+              <text class="svgtxt z3" x="345" y="200" fill="#8fd9a8">55 a 70 °C: eliminada</text>
+              <text class="svgtxt z4" x="345" y="200" fill="#ffd27a">Esfriou: volta a proliferar</text>
+              <text class="svgtxt z5" x="345" y="200" fill="#9fb4cc">Até 20 °C: dormente</text>
+            </g>
+            <text class="svgtxt" x="345" y="232" text-anchor="middle" font-size="11">Ciclo: 30 min a 55 °C ou 5 min a 70 °C</text>
+          </svg>
+          <p class="anim__c">Por isso a desinfecção é periódica: quando a água volta à faixa de 20 a 50 °C, o risco volta.</p>
+        </div>
+        <p>No ciclo programado, o controle pede à caldeira ou à bomba de calor que eleve a temperatura, interrompe a mistura com água fria e confere, por uma <b>sonda no retorno</b>, se todo o sistema atingiu a temperatura mínima.</p>
+        <div class="destaque">O diferencial é o <b>histórico</b>: datas, periodicidade e ajustes remotos ficam registrados, o que permite provar que o controle foi feito. Um participante relatou que, nos Estados Unidos, hotéis podem ser obrigados a apresentar esse histórico.</div>
+        <ul class="lista">
+          <li><b>Frequência:</b> de uma vez por semana a uma vez por dia; redes hoteleiras seguem protocolos próprios (três ciclos por semana ou um por dia).</li>
+          <li><b>Integração:</b> protocolo aberto de comunicação, para qualquer sistema de supervisão predial (BMS) ler os dados.</li>
+          <li><b>Europa:</b> a legislação existe, mas cada país aplica à sua maneira (mais branda na Espanha, mais rígida na Itália).</li>
+        </ul>
+      </div>
+      <figure class="fig"><img src="/img/eventos/sessao-2026-11-18/legiomix-controlador.webp" alt="Controlador eletrônico Caleffi Legiomix evo com tela mostrando temperaturas de mistura e alarmes" width="720" height="960" loading="lazy"><figcaption>Controlador da válvula misturadora eletrônica (Caleffi Legiomix evo), que faz a desinfecção térmica e registra os ciclos.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 6. MISTURADORA -->
+<section class="tema" id="misturadora">
+  <div class="wrap">
+    <div class="tema__head"><span class="tema__n">Tema 6</span><h2>Misturadoras, grupos de impulsão e piso radiante</h2></div>
+    <div class="tema__grid tema__grid--inv">
+      <figure class="fig"><img src="/img/eventos/sessao-2026-11-18/misturadora-termostatica.webp" alt="Válvula misturadora termostática de latão instalada entre conexões verdes" width="720" height="960" loading="lazy"><figcaption>Válvula misturadora termostática com volante de regulagem.</figcaption></figure>
+      <div>
+        <p>A <b>misturadora termostática</b> recebe água quente e fria, com filtros e retenções nas duas entradas, e um elemento termostático em contato com a água misturada ajusta a abertura com <b>resposta instantânea</b>. O modelo mostrado usa posições numeradas de 1 a 6, cada uma com 2 a 3 °C de diferença.</p>
+        <ul class="lista">
+          <li><b>Radiadores:</b> o grupo de impulsão direto entrega 65 a 70 °C; o radiador aquece o ar e começa a funcionar em cerca de 5 minutos.</li>
+          <li><b>Piso radiante:</b> a misturadora baixa a alimentação para, no máximo, <b>42 a 43 °C</b>; o piso aquece o contrapiso e tem inércia mais lenta.</li>
+          <li><b>Curva climática:</b> tecnicamente válida, mas no piso radiante pode não compensar o custo extra.</li>
+        </ul>
+        <div class="destaque"><b>Vaso de expansão</b> compensa as dilatações, no circuito sanitário e no fechado. O <b>desconector</b> (dupla retenção contra refluxo) é exigido por lei na entrada dos edifícios na Itália; o tipo depende do risco do edifício, de residências a hospitais.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. BALANCEAMENTO -->
+<section class="tema" id="balanceamento">
+  <div class="wrap">
+    <div class="tema__head"><span class="tema__n">Tema 7</span><h2>Balanceamento: cada ramal recebe a vazão prevista</h2></div>
+    <div class="tema__grid">
+      <div>
+        <p>Em circuito fechado a pressão é uma só; o que se controla é a <b>vazão</b>. A água segue o caminho de menor resistência: o ramal mais fácil recebe mais e os outros, menos. Balancear é criar perda de carga onde for preciso para que <b>todos recebam o previsto</b>, já que todos pagam pelo mesmo sistema.</p>
+        <div class="anim">
+          <p class="anim__t">Sem e com válvula dinâmica</p>
+          <svg viewBox="0 0 520 250" role="img" aria-label="Desenho animado em dois painéis: sem balanceamento, o primeiro ramal recebe fluxo rápido e os últimos quase parados; com válvulas dinâmicas, os três ramais recebem a mesma vazão.">
+            <text class="svgtxt" x="125" y="20" text-anchor="middle" font-size="12" font-weight="700">Sem balanceamento</text>
+            <path d="M20 40 H230" stroke="#3b82c4" stroke-width="10"/><path d="M20 40 H230" stroke="#fff" stroke-width="2" class="flui"/>
+            <path d="M60 40 V210" stroke="#3b82c4" stroke-width="10"/><path d="M60 40 V210" stroke="#fff" stroke-width="3" class="flui flui--rap"/>
+            <path d="M130 40 V210" stroke="#3b82c4" stroke-width="10"/><path d="M130 40 V210" stroke="#fff" stroke-width="2" class="flui"/>
+            <path d="M200 40 V210" stroke="#3b82c4" stroke-width="10"/><path d="M200 40 V210" stroke="#fff" stroke-width="1" class="flui flui--lento"/>
+            <text class="svgtxt" x="60" y="230" text-anchor="middle" font-size="10">sobra</text>
+            <text class="svgtxt" x="130" y="230" text-anchor="middle" font-size="10">ok</text>
+            <text class="svgtxt" x="200" y="230" text-anchor="middle" font-size="10">falta</text>
+            <line x1="260" y1="20" x2="260" y2="240" stroke="#2b5480"/>
+            <text class="svgtxt" x="395" y="20" text-anchor="middle" font-size="12" font-weight="700">Com válvula dinâmica</text>
+            <path d="M290 40 H500" stroke="#3b82c4" stroke-width="10"/><path d="M290 40 H500" stroke="#fff" stroke-width="2" class="flui"/>
+            <path d="M330 40 V210" stroke="#3b82c4" stroke-width="10"/><path d="M330 40 V210" stroke="#fff" stroke-width="2" class="flui"/>
+            <path d="M400 40 V210" stroke="#3b82c4" stroke-width="10"/><path d="M400 40 V210" stroke="#fff" stroke-width="2" class="flui"/>
+            <path d="M470 40 V210" stroke="#3b82c4" stroke-width="10"/><path d="M470 40 V210" stroke="#fff" stroke-width="2" class="flui"/>
+            <g fill="#f2a03d"><path d="M320 112 L340 112 L330 128 Z M320 144 L340 144 L330 128 Z"/><path d="M390 112 L410 112 L400 128 Z M390 144 L410 144 L400 128 Z"/><path d="M460 112 L480 112 L470 128 Z M460 144 L480 144 L470 128 Z"/></g>
+            <text class="svgtxt" x="330" y="230" text-anchor="middle" font-size="10">igual</text>
+            <text class="svgtxt" x="400" y="230" text-anchor="middle" font-size="10">igual</text>
+            <text class="svgtxt" x="470" y="230" text-anchor="middle" font-size="10">igual</text>
+          </svg>
+          <p class="anim__c">A válvula dinâmica mede a diferença de pressão e muda a passagem sozinha, mantendo a vazão programada entre cerca de 15 e 200 kPa.</p>
+        </div>
+        <ul class="lista">
+          <li><b>Válvula estática (manual):</b> ajustada com medições; pode precisar de novo ajuste quando o sistema muda.</li>
+          <li><b>Válvula dinâmica (automática):</b> mantém a vazão fixa dentro da faixa de trabalho; abaixo de 15 kPa ainda não atua e acima de 200 kPa a vazão volta a subir.</li>
+          <li><b>Exemplos:</b> ramais de painéis solares com 10, 5, 3 e 2 painéis; e a entrega limitada a 50 L por apartamento, mesmo que o morador instale uma ducha maior.</li>
+        </ul>
+      </div>
+      <figure class="fig"><img src="/img/eventos/sessao-2026-11-18/valvula-balanceamento.webp" alt="Válvula de latão em tubo de inox com tomadas de medição verde e vermelha e volante verde" width="720" height="960" loading="lazy"><figcaption>Válvula com tomadas de medição (anilhas verde e vermelha), compatível com a válvula de balanceamento descrita.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<section class="norma">
+  <div class="wrap">
+    <h2>No Brasil: ABNT NBR 16824:2020</h2>
+    <p>A prevenção da legionelose em edificações tem norma brasileira desde 2020: <b>ABNT NBR 16824 — Sistemas de distribuição de água em edificações — Prevenção de legionelose — Princípios gerais e orientações</b> (1ª edição de 02/06/2020, corrigida em 26/06/2020). Na sessão, um participante com experiência em projetos de controle da Legionella observou que projetistas de hotéis e hospitais costumam prever o sistema; o ponto essencial é manter um histórico claro dos controles.</p>
+    <p>Fechamento do apresentador: projetos de alto padrão devem entregar conforto e eficiência, e não só uma instalação mais cara. O sistema precisa funcionar pelas exigências de hoje.</p>
+  </div>
+</section>
+
+<section class="fim">
+  <div class="wrap">
+    <div class="fim__card">
+      <div>
+        <h2>PipeSystem</h2>
+        <p>O primeiro portal da hidráulica e sistemas de condução de fluidos: fichas técnicas, normas resumidas, guias práticos, calculadoras de dimensionamento e cotações, em um só lugar.</p>
+      </div>
+      <a class="btn" href="https://www.pipesystem.com.br/">Conheça o portal</a>
+    </div>
+    <p class="nota">Resumo elaborado a partir da transcrição da sessão técnica de 18/11/2026 e das fotos tiradas durante a apresentação. Valores e afirmações são os citados na sessão; modelos de equipamentos foram identificados pelas placas e telas visíveis nas fotos. Este material não substitui as normas e as fichas técnicas dos fabricantes.</p>
+  </div>
+</section>
+
+<footer class="rod"><div class="wrap">© 2026 PipeSystem · www.pipesystem.com.br</div></footer>
+
+</body>
+</html>
