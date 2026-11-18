@@ -853,6 +853,7 @@ body { background: #071a31; }
 .adslot { margin-top: 28px; }
 .adslot--top { margin: 0 0 22px; }
 .adslot--side { margin-top: 8px; }
+.adslot--bim { margin: 18px 0 6px; }
 .adslot--sponsor { margin-top: 22px; max-width: 520px; }
 .adslot--sheet { margin: 4px 0 18px; }
 .ad { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 20px; border-radius: 14px; border: 2px dashed rgba(242, 160, 61, .75); background: repeating-linear-gradient(135deg, rgba(242, 160, 61, .10) 0 14px, rgba(242, 160, 61, .04) 14px 28px), rgba(10, 34, 64, .55); color: #fff; text-decoration: none; transition: border-color .2s, background-color .2s, transform .2s; }

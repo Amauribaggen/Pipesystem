@@ -819,7 +819,7 @@ const AD_FORMATS = {
 };
 // Anúncios contratados: ficam em catalog.js (ANUNCIOS), a mesma lista usada nas páginas próprias das fichas
 const ADS = ANUNCIOS;
-function adHTML(kind, place, id) {
+function adHTML(kind, place, id, titulo = 'Seu banner aqui!') {
   const f = AD_FORMATS[kind], ad = ADS[place];
   if (ad) return `<a class="ad ad--${kind} ad--sponsored" ${id ? `id="${id}"` : ''} href="${ad.url}" target="_blank" rel="sponsored noopener">
     <span class="ad__label">Patrocinado</span>
@@ -828,7 +828,7 @@ function adHTML(kind, place, id) {
   // espaço ainda livre: convite para anunciar
   return `<a class="ad ad--${kind}" ${id ? `id="${id}"` : ''} href="#contato" data-plan="${f.plan}" data-question="Tenho interesse no espaço publicitário: ${place} (${f.plan}, ${f.size}). ">
     <span class="ad__label">Espaço publicitário</span>
-    <span class="ad__main"><b>Seu banner aqui!</b><small>${place}</small></span>
+    <span class="ad__main"><b>${titulo}</b><small>${place}</small></span>
     <span class="ad__meta"><span class="ad__size">${f.plan} · ${f.size}</span><span class="ad__cta">Anuncie →</span></span>
   </a>`;
 }
@@ -836,7 +836,7 @@ const AD_SPOTS = [];
 document.querySelectorAll('[data-ad]').forEach((el, i) => {
   const kind = el.dataset.variant === 'vertical' ? 'vertical' : el.dataset.ad;
   const id = el.dataset.adId || `ad-${i + 1}`;   // data-ad-id: número fixo dado no build (o mesmo em todas as páginas)
-  el.innerHTML = adHTML(kind, el.dataset.place, id);
+  el.innerHTML = adHTML(kind, el.dataset.place, id, el.dataset.title);
   AD_SPOTS.push({ id, kind, place: el.dataset.place });
 });
 
