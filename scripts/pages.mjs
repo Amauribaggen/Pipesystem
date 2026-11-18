@@ -223,7 +223,7 @@ export function generate(D, outDir) {
     const fotos = D.SYSTEM_PHOTOS[s.id] || [];
     const outros = D.SYSTEMS.filter(x => x.id !== s.id);
     const body = `      <div class="sheet__head"><span class="sys__dot sys__dot--lg" style="--c:${s.color}"></span>
-        <div><p class="eyebrow">Sistema hidráulico</p><h1 id="sheetTitle" class="page__title">${esc(s.name)}</h1></div></div>
+        <div><p class="eyebrow">Sistema hidráulico</p><h1 id="sheetTitle" class="page__title"${s.novo ? ' data-novo' : ''}>${esc(s.name)}</h1></div></div>
       ${D.revisaoHTML(s)}
       <figure class="sysfig" style="--c:${s.color}">
         <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${esc(s.name)}">${svg}</svg>

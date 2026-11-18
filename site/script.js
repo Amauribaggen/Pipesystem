@@ -168,7 +168,7 @@ const list = items => items.map(i => `<li>${linkNorms(i)}</li>`).join('');
 const systemById = Object.fromEntries(SYSTEMS.map(s => [s.id, s]));
 const systemsEl = document.getElementById('systems');
 if (systemsEl) systemsEl.innerHTML = SYSTEMS.map(s =>
-  `<a class="sys" href="/sistemas/${s.id.slice(4)}" data-sheet="${s.id}"><span class="sys__dot" style="--c:${s.color}"></span>${s.name}<span class="sys__more" aria-hidden="true">→</span></a>`).join('');
+  `<a class="sys" href="/sistemas/${s.id.slice(4)}" data-sheet="${s.id}"><span class="sys__dot" style="--c:${s.color}"></span><span${s.novo ? ' data-novo' : ''}>${s.name}</span><span class="sys__more" aria-hidden="true">→</span></a>`).join('');
 
 // Galeria de fotos reais com créditos (licenças livres exigem a atribuição)
 // zoom (padrão): clicar na foto abre a imagem ampliada (lightbox.js)
@@ -212,7 +212,7 @@ function tabelasHTML(tabelas) {
 function renderSystem(s) {
   sheetBody.innerHTML = `
     <div class="sheet__head"><span class="sys__dot sys__dot--lg" style="--c:${s.color}"></span>
-      <div><p class="eyebrow">Sistema hidráulico</p><h3 id="sheetTitle">${s.name}</h3></div></div>
+      <div><p class="eyebrow">Sistema hidráulico</p><h3 id="sheetTitle"${s.novo ? ' data-novo' : ''}>${s.name}</h3></div></div>
     ${revisaoHTML(s)}
     <figure class="sysfig" style="--c:${s.color}">
       <svg viewBox="0 0 320 170" role="img" aria-label="Esquema ilustrativo: ${s.name}">${s.svg}</svg>
@@ -1426,7 +1426,7 @@ if (document.querySelector('[data-num]')) {
   const MENUS = {
     servicos: () => group('Serviços', tag('#servicos .svc', 'servico', 'servicos'), '#servicos') +
       group('Receber cotações', [{ href: '#assinaturas', label: 'Assinaturas para distribuidores' }, ...tag('#assinaturas .qplan', 'assinatura', 'assinaturas')], '#assinaturas'),
-    sistemas: () => group('Áreas de aplicação', SYSTEMS.map(s => ({ href: '/sistemas/' + s.id.slice(4), label: s.name, attrs: ` data-sheet="${s.id}"` })), '#systems'),
+    sistemas: () => group('Áreas de aplicação', SYSTEMS.map(s => ({ href: '/sistemas/' + s.id.slice(4), label: s.name, attrs: ` data-sheet="${s.id}"${s.novo ? ' data-novo' : ''}` })), '#systems'),
     materiais: () => [...new Set(CATALOG.map(m => m.cat))].map(cat =>
       group(cat, CATALOG.filter(m => m.cat === cat).map(m => ({ href: '/materiais/' + m.id.slice(4), label: m.name, attrs: ` data-sheet="${m.id}"` })), '#catalog', ` data-cat-filtro="${cat}"`)).join(''),
     ferramentas: () => group('', [{ href: '#lmatTool', label: 'Dimensionamento Inteligente' }]) +
