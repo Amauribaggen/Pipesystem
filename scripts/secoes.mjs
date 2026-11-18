@@ -113,7 +113,7 @@ function contaArtigos(src) {
 // Índice de busca do texto das páginas (busca.json): cada trecho vai de um título (h2 a h4) ao seguinte, com o id
 // mais próximo para o link. A busca da página inicial carrega o arquivo só quando o visitante começa a digitar.
 function indiceBusca(out, secoes) {
-  const extras = [['/noticias', 'Notícias do setor'], ['/politica-editorial', 'Política editorial'], ['/termos', 'Termos de uso'], ['/privacidade', 'Política de privacidade']];
+  const extras = [['/noticias', 'Notícias do setor'], ['/politica-editorial', 'Política editorial'], ['/termos', 'Termos de uso'], ['/privacidade', 'Política de privacidade'], ['/eventos/sessao-tecnica-2026-11-18', 'Eventos · Sessão técnica 18/11/2026']];
   for (const [path, nome] of extras) {
     try {
       const h = readFileSync(join(out, path.slice(1) + '.html'), 'utf8');
@@ -121,7 +121,8 @@ function indiceBusca(out, secoes) {
       if (a > -1 && b > a) secoes.push({ path, nome, html: h.slice(a, b) });
     } catch {}
   }
-  const itens = [{ p: '/pro', s: 'Aplicativo', id: '', t: 'PipeSystem Pro: aplicativo gratuito', x: 'Aplicativo gratuito de hidráulica para celular, com calculadoras, normas, tabelas, checklists, diário de obra, nível digital e preços SINAPI, funcionando até sem internet. App, instalar no celular, iPhone, Android.' }];
+  const itens = [{ p: '/pro', s: 'Aplicativo', id: '', t: 'PipeSystem Pro: aplicativo gratuito', x: 'Aplicativo gratuito de hidráulica para celular, com calculadoras, normas, tabelas, checklists, diário de obra, nível digital e preços SINAPI, funcionando até sem internet. App, instalar no celular, iPhone, Android.' },
+    { p: '/eventos/sessao-tecnica-2026-11-18', s: 'Eventos', id: '', t: 'Sessão técnica 18/11/2026: proteção hidráulica, Legionella e balanceamento', x: 'Evento, reunião, apresentação, palestra e sessão técnica de 18 de novembro de 2026: separador hidráulico, separador de sujeira, lodo e magnetita, separador de microbolhas e purga de ar, filtro Y e perda de carga, anticalcário eletrolítico (calcita e aragonita), vaso de expansão, desconector, grupos de impulsão, piso radiante, válvula misturadora termostática, desinfecção térmica contra a Legionella, legionelose, NBR 16824, válvula de balanceamento estática e dinâmica, Caleffi, Legiomix, Galli. Resumo ilustrado com fotos e desenhos animados.' }];
   for (const { path, nome, html } of secoes) {
     // sem scripts, estilos, SVG e formulários (só o texto que o visitante lê)
     const limpo = html.replace(/<(script|style|svg|select|template)\b[\s\S]*?<\/\1>/gi, ' ');
