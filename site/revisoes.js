@@ -141,6 +141,7 @@ const REVISOES = {
   'mat-rotametros': '2026-11-01',
   'mat-sanitarias': '2026-10-27',
   'mat-seguranca': '2026-11-18',
+  'mat-selante-rosca': '2026-11-19',
   'mat-selos-mecanicos': '2026-11-07',
   'mat-separador': '2026-11-07',
   'mat-separadores-vapor': '2026-11-03',

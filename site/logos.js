@@ -122,6 +122,7 @@ const LOGOS_FAB = {
   'leser.com': 'leser.png',
   'lincolnelectric.com': 'lincoln-electric.png',
   'loctite.com.br': 'loctite-henkel.png',
+  'next.henkel-adhesives.com': 'loctite-henkel.png',
   'lorenzetti.com.br': 'lorenzetti.png',
   'makita.com.br': 'makita.png',
   'mcelroy.com': 'mcelroy.svg',
@@ -280,9 +281,29 @@ const LOGOS_FAB = {
   'pressurecompressores.com': 'pressure.png',
   'permatex.com': 'permatex.png',
   'products.swagelok.com': 'swagelok.png',
+  'csrvalvulas.com.br': 'csr-valvulas.png',
+  'dueker.de': 'duker.svg',
+  'pevesul.com.br': 'pevesul.png',
+  'multilit.com.br': 'multilit.png',
+  'tuper.com.br': 'tuper.png',
+  'marcegaglia.com': 'marcegaglia.png',
+  'galperti.com': 'galperti.png',
+  'carel.com': 'carel.png',
+  'culligan.com': 'culligan.svg',
+  'pulsafeeder.com': 'pulsafeeder.png',
+  'warex-valve.com': 'warex-valve.png',
+  'jacuzzi.com.br': 'jacuzzi-do-brasil.png',
+  'imbil.com.br': 'imbil.png',
+  'useligas.com.br': 'useligas.png',
+  'aierpumps.com': 'aier-machinery.png',
+  'ventisol.com.br': 'ventisol.png',
+  'venax.com.br': 'venax.png',
+  'dresserutility.com': 'dresser-utility-solutions.png',
+  'wurth.com.br': 'wurth.png',
+  'permabond.com': 'permabond.png',
 };
 // Logos brancas: precisam de fundo escuro
-const LOGOS_CLARAS = new Set(['ari-armaturen-logo.svg', 'musthane.webp', 'spartan-tool.png', 'amiantit-flowtite.png', 'bermad.svg', 'cadence.svg', 'coester.svg', 'e-h-wachs.png', 'esbe.png', 'fabrimar.png', 'fortlev.svg', 'gestra.png', 'grundfos.svg', 'heliotek.png', 'hidroreader.svg', 'kanaflex.svg', 'krona.png', 'ksb.svg', 'metalcasty.png', 'paranapanema-eluma.png', 'pietro-fiorentini.svg', 'polysoude.png', 'rain-bird.png', 'renova-medicao.png', 'romac.png', 'rotork.svg', 'spirax-sarco.png', 'sumig.png', 'swagelok.png', 't-d-williamson.png', 'tigre.svg', 'tupy.svg', 'victaulic.png', 'xylem.svg', 'interativa.png', 'val-matic.png', 'charlotte-pipe.svg', 'astral-pipes.png', 'halcor.svg', 'clesse.png', 'vacuo-industrial.png', 'solid-equipment.png', 'stafsjo.svg', 'aerodinamica.svg', 'jcm-industries.svg', 'tubacex.png']);
+const LOGOS_CLARAS = new Set(['ari-armaturen-logo.svg', 'musthane.webp', 'spartan-tool.png', 'amiantit-flowtite.png', 'bermad.svg', 'cadence.svg', 'coester.svg', 'e-h-wachs.png', 'esbe.png', 'fabrimar.png', 'fortlev.svg', 'gestra.png', 'grundfos.svg', 'heliotek.png', 'hidroreader.svg', 'kanaflex.svg', 'krona.png', 'ksb.svg', 'metalcasty.png', 'paranapanema-eluma.png', 'pietro-fiorentini.svg', 'polysoude.png', 'rain-bird.png', 'renova-medicao.png', 'romac.png', 'rotork.svg', 'spirax-sarco.png', 'sumig.png', 'swagelok.png', 't-d-williamson.png', 'tigre.svg', 'tupy.svg', 'victaulic.png', 'xylem.svg', 'interativa.png', 'val-matic.png', 'charlotte-pipe.svg', 'astral-pipes.png', 'halcor.svg', 'clesse.png', 'vacuo-industrial.png', 'solid-equipment.png', 'stafsjo.svg', 'aerodinamica.svg', 'jcm-industries.svg', 'tubacex.png', 'wurth.png']);
 const logoFab = url => {
   if (!url) return '';
   const a = LOGOS_FAB[new URL(url).hostname.replace(/^www\./, '')];

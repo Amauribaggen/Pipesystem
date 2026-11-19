@@ -36,7 +36,7 @@ const SYSTEMS = [
     componentes: ['Abrigo de medidores ou central de GLP', 'Reguladores de pressão de 1º e 2º estágio', 'Rede em cobre, aço ou multicamada; PE na parte enterrada', 'Registro de bloqueio em cada ponto de consumo', 'Ventilação permanente nos ambientes com aparelhos'],
     cuidados: ['Ensaio de estanqueidade antes de liberar o gás', 'Não passar a tubulação por espaços confinados sem ventilação', 'Vedantes e registros certificados para gás', 'Projeto e execução por profissional habilitado, com ART'],
     normas: ['NBR 15526', 'NBR 13523'],
-    produtos: ['tubos-cobre', 'tubos-aco', 'conexoes-ferro', 'vedantes', 'mat-vedantes-pasta', 'valvulas', 'manometros'],
+    produtos: ['tubos-cobre', 'tubos-aco', 'conexoes-ferro', 'vedantes', 'mat-vedantes-pasta', 'mat-selante-rosca', 'valvulas', 'manometros'],
     svg: `<rect class="b" x="14" y="100" width="56" height="50" rx="4"/><text x="42" y="129">Medidor</text>
       <path class="p" d="M70 125H87M105 125H160V40H252M160 95H232"/>
       <circle class="b" cx="96" cy="125" r="9"/><text x="96" y="152">Regulador</text>
