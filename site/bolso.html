@@ -1077,7 +1077,7 @@
       const nfI = (v, c = 0) => v.toLocaleString('pt-BR', { minimumFractionDigits: c, maximumFractionDigits: c });
       const usdI = v => v >= 1e9 ? 'US$ ' + nfI(v / 1e9, 1) + ' bi' : v >= 1e6 ? 'US$ ' + nfI(v / 1e6, 1) + ' mi' : v >= 1e3 ? 'US$ ' + nfI(v / 1e3) + ' mil' : 'US$ ' + nfI(v);
       const pctI = (v, sinal = true) => (sinal && v > 0 ? '+' : '') + nfI(v * 100, Math.abs(v) < .1 ? 1 : 0) + '%';
-      const brlI = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+      const brlI = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'], mesI = ym => MES[+ym.slice(5) - 1] + '/' + ym.slice(0, 4);
       const MERC = new Set(['Argentina', 'Paraguai', 'Uruguai']), porSlug = Object.fromEntries(d.im.itens.map(x => [x.slug, x]));
       const ncmI = n => n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3');

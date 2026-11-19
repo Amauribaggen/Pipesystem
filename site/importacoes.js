@@ -205,7 +205,7 @@
     grafico($('impG3'), saz, { fmt: v => `${nf(v * 100, 1)}%`, titulo: `Sazonalidade das importações de ${m.name}`, marcaX: () => true, rotulo: p => p.x });
 
     // simulador de custo nacionalizado
-    const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: v >= 1000 ? 0 : 2 });
+    const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const pctTxt = v => `${nf(v, v % 1 ? 2 : 0)}%`;
     const custo = (p, kg, o) => {
       const fob = kg * p.f / p.kg * o.dol, fs = fob * frete, va = fob + fs;               // valor aduaneiro (CIF) em reais
