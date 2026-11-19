@@ -164,7 +164,8 @@ const REVISOES = {
   'mat-valvulas': '2026-11-07',
   'mat-valvulas-gas': '2026-11-11',
   'mat-vasos-expansao': '2026-11-07',
-  'mat-vedantes': '2026-11-18',
+  'mat-vedantes': '2026-11-19',
+  'mat-vedantes-pasta': '2026-11-19',
   'mat-ventosas': '2026-11-07',
   'mat-visores': '2026-11-18',
 };
