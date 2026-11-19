@@ -1305,12 +1305,18 @@ if (document.querySelector('[data-num]')) {
       const ja2 = new Set(groups.flatMap(g => g.items.map(i => i.href)).filter(Boolean));
       // órgãos e entidades: grupo próprio e, quando o nome coincide, no topo dos resultados
       add('Associações e entidades', pick(PAG_IDX.filter(x => x.s === 'Associações e entidades'), x => x.t + ' ' + x.x, x => ({ href: x.p + '#' + x.id, title: x.t, sub: snippet(x.x, terms, '') })).map(it => ({ ...it, score: it.score === 2 ? 3 : it.score })));
-      add('No texto das páginas', pick(PAG_IDX.filter(x => x.s !== 'Associações e entidades'), x => x.t + ' ' + x.x, x => ({ href: x.p + (x.id ? '#' + x.id : ''), title: x.t, sub: x.s + ' · ' + snippet(x.x, terms, '') }))
+      // Radar de Importações: quanto o Brasil importa do material buscado (vira um banner no topo dos resultados)
+      add('Radar de Importações', pick(PAG_IDX.filter(x => x.s === 'Radar de Importações'), x => x.t + ' ' + x.x,
+        x => ({ href: x.p, title: 'Importações de ' + x.t, sub: x.r, radar: true })).filter((it, i, a) => a.findIndex(o => o.sub === it.sub) === i).slice(0, 3));   // fichas com o mesmo NCM: uma só
+      add('No texto das páginas', pick(PAG_IDX.filter(x => x.s !== 'Associações e entidades' && x.s !== 'Radar de Importações'), x => x.t + ' ' + x.x, x => ({ href: x.p + (x.id ? '#' + x.id : ''), title: x.t, sub: x.s + ' · ' + snippet(x.x, terms, '') }))
         .filter(i => !ja2.has(i.href) && ja2.add(i.href)));
     }
     // Grupos com o termo no título dos itens vêm primeiro (ex.: "perda de carga" → calculadora)
     groups.forEach((g, i) => { g.i = g.name === 'Calculadoras on-line' ? -1 : i; g.items.forEach(it => { it.score ??= matchText(it.title, terms) ? 2 : 0; }); g.items.sort((a, b) => b.score - a.score); g.best = g.items[0].score; });
     groups.sort((a, b) => b.best - a.best || a.i - b.i);
+    // o banner do Radar de Importações vai logo depois do primeiro grupo (o mais relevante para o termo)
+    const ri = groups.findIndex(g => g.name === 'Radar de Importações');
+    if (ri > 1) groups.splice(1, 0, ...groups.splice(ri, 1));
     return { terms, groups };
   }
 
@@ -1352,6 +1358,8 @@ if (document.querySelector('[data-num]')) {
     box.innerHTML = `<div class="sresults__head"><span><b>${total}</b> resultado${total === 1 ? '' : 's'} para “${esc(q)}”</span><button type="button" class="sresults__close" aria-label="Fechar resultados">Fechar ✕</button></div>` +
       (total ? groups.map(g => {
         const shown = g.items.slice(0, 8);
+        if (g.name === 'Radar de Importações') return `<div class="sresults__group sresults__radar"><p class="sresults__gtitle">Radar de Importações <span>quanto o Brasil importa</span></p>${shown.map(it =>
+          `<a class="sresults__item sresults__radaritem" href="${esc(it.href)}"><strong>${mark(it.title, terms)}</strong><span>${esc(it.sub)}</span><em>Ver países, preço por kg e custo com impostos →</em></a>`).join('')}</div>`;
         let more = '';
         if (g.more && g.items.length > shown.length) { actions.push(g.more.run); more = `<button type="button" class="sresults__item" data-act="${actions.length - 1}"><strong>${g.more.label} (${g.items.length}) →</strong></button>`; }
         return `<div class="sresults__group"><p class="sresults__gtitle">${g.name}</p>${shown.map(item).join('')}${more}</div>`;

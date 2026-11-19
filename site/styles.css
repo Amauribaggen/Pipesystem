@@ -2473,3 +2473,12 @@ html:not(.pg-collapse) .pg-top__nav > .pg-sec { display: none; }
 /* Selo "Novo" no menu: um ponto laranja, para não alargar os itens */
 .nav__links [data-novo]::after, .nav__barra [data-novo]::after, .pg-top__nav [data-novo]::after, .pg-barra [data-novo]::after {
   content: ""; width: 7px; height: 7px; padding: 0; margin: 0 0 0 4px; vertical-align: top; }
+/* Radar de Importações na busca: banner abaixo da caixa da página inicial e destaque nos resultados */
+.heroradar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; max-width: 760px; margin: 14px 0 0; padding: 10px 14px; border: 1px solid rgba(126, 231, 242, .35); border-left: 4px solid #f2a03d; border-radius: 12px; background: rgba(6, 21, 39, .55); color: #d6e2ee; font-size: .9rem; line-height: 1.4; transition: background .15s, border-color .15s; }
+.heroradar:hover { background: rgba(6, 21, 39, .8); border-color: #7ee7f2; }
+.heroradar__tag { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #7ee7f2; }
+.heroradar__txt { flex: 1 1 300px; }
+.heroradar__btn { color: #f2a03d; white-space: nowrap; }
+.sresults__radar { background: linear-gradient(135deg, #fff6e8, #f3fafc); border: 1px solid #f2c98f; border-radius: 12px; padding: 8px 10px; margin: 6px 0; }
+.sresults__radar .sresults__gtitle span { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); margin-left: 6px; }
+.sresults__radaritem em { display: block; font-style: normal; font-size: .78rem; font-weight: 700; color: #b46a2a; margin-top: 2px; }

@@ -231,6 +231,38 @@ function impResumo(id) {
   const top = Object.entries(pais).sort((a, b) => b[1] - a[1]).slice(0, 3);
   return { f, kg, var: fa ? f / fa - 1 : null, top, c };
 }
+// Resumo compacto de cada ficha do Radar, para a busca do site (busca.json) e o PipeSystem Pro (bolso-dados.json)
+const TARIFAS = existsSync('site/importacoes-tarifas.json') ? JSON.parse(readFileSync('site/importacoes-tarifas.json', 'utf8')) : null;
+export function impResumoMateriais(D) {
+  if (!IMP) return null;
+  const ult = ultimosMeses(IMP.ultimoMes, 24), ult12 = new Set(ult.slice(12));
+  const itens = [];
+  for (const m of D.CATALOG) {
+    const r = impResumo(m.id);
+    if (!r) continue;
+    const s = {}, pais = {}; let cif = 0;
+    for (const n of r.c.ncm) {
+      for (const [ym, f, , c] of IMP.serie[n] || []) { s[ym] = (s[ym] || 0) + f; if (ult12.has(ym)) cif += c; }
+      for (const [p, f, kg] of IMP.pais[n] || []) { const x = (pais[p] ||= [0, 0]); x[0] += f; x[1] += kg; }
+    }
+    // alíquotas: média dos NCMs ponderada pelo valor importado em 12 meses
+    const peso = n => (IMP.serie[n] || []).reduce((t, [ym, f]) => t + (ult12.has(ym) ? f : 0), 0) || 1e-9;
+    const media = campo => { let a = 0, w = 0; for (const n of r.c.ncm) { const v = TARIFAS?.ncm[n]?.[campo]; if (v != null) { a += v * peso(n); w += peso(n); } } return w ? Math.round(a / w * 100) / 100 : null; };
+    itens.push({ id: m.id, slug: m.id.replace(/^mat-/, ''), n: m.name, cat: m.cat, ch: (m.chaves || []).join(' '), ncm: r.c.ncm, nota: r.c.nota || '',
+      f: Math.round(r.f), kg: Math.round(r.kg), v: r.var == null ? null : Math.round(r.var * 1000) / 1000, fr: r.f ? Math.round((cif / r.f - 1) * 1000) / 1000 : 0,
+      pa: Object.entries(pais).map(([p, [f, kg]]) => [p, Math.round(f), Math.round(kg)]).filter(x => x[2] > 0 && x[1] / r.f >= .01).sort((a, b) => b[1] - a[1]).slice(0, 8),
+      s: ult.map(ym => Math.round(s[ym] || 0)), ii: media('ii'), ipi: media('ipi') });
+  }
+  return { ultimoMes: IMP.ultimoMes, inicio: ult[0], ptax: TARIFAS?.ptax || null, itens };
+}
+// Itens do Radar no índice de busca do site
+export function impItensBusca(D) {
+  const R = impResumoMateriais(D);
+  if (!R) return [];
+  return R.itens.map(x => ({ p: `/importacoes?m=${x.slug}`, s: 'Radar de Importações', id: '', t: x.n,
+    x: `${x.n} ${x.cat} ${x.ch} importação importações importado NCM ${x.ncm.map(n => n + ' ' + n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')).join(' ')}`,
+    r: `${usd(x.f)} importados em 12 meses${x.v != null ? ` (${pctBR(x.v)})` : ''}${x.pa[0] ? ` · principal origem: ${x.pa[0][0]} (${pctBR(x.pa[0][1] / x.f, false)})` : ''}` }));
+}
 function impBoxHTML(m) {
   const r = impResumo(m.id);
   if (!r) return '';

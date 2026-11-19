@@ -4,7 +4,7 @@ import { cpSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { BASE, SIZES, loadData, generate, sitemap, ultimasNoticiasHTML } from './pages.mjs';
+import { BASE, SIZES, loadData, generate, sitemap, ultimasNoticiasHTML, impResumoMateriais } from './pages.mjs';
 import { imageSizes, minify } from './optimize.mjs';
 import { acabamento } from './acabamento.mjs';
 import { llms } from './llms.mjs';
@@ -77,6 +77,7 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
     va: (V => V.itens.map(x => ({ ...x, fim: x.ate || new Date(Date.parse(x.publicada) + (V.validadePadrao || 30) * 864e5).toISOString().slice(0, 10) })))(JSON.parse(readFileSync(join(src, 'vagas.json'), 'utf8'))),
     rv: lista('MAGAZINES'), ar: lista('ARTICLES'), en: ents, fe: feiras, fb: [...fabs.values()].sort((a, b) => a.n.localeCompare(b.n, 'pt-BR')),
     bim: D.BIM_LIBS.map(({ nome, orig, cat, desc, fmts, acesso, links }) => ({ nome, orig, cat, desc, fmts, acesso, links })),
+    im: impResumoMateriais(D),   // Radar de Importações (resumo por material)
     wt: D.WEB_TOOLS, si: D.SYSTEMS.map(({ id, name, desc, componentes, cuidados, normas }) => ({ id, name, desc, componentes, cuidados, normas })),
     c: CHECKS,
     p: vm.runInNewContext(guias.slice(guias.indexOf('const PATS'), guias.indexOf('];', guias.indexOf('const PATS')) + 2) + ';PATS').map(({ tema, sev, t, sint, causa, sol }) => ({ tema, sev, t, sint, causa, sol })),
