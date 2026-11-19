@@ -1640,7 +1640,11 @@ ul.bimbox { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 6
 .gpvideo__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .9; }
 .gpvideo__thumb::after { content: ""; position: absolute; inset: 0; margin: auto; width: 58px; height: 40px; border-radius: 12px; background: rgba(217, 30, 24, .92) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 7l8 5-8 5z' fill='white'/%3E%3C/svg%3E") center / 26px no-repeat; }
 .gpvideo__thumb:hover img { opacity: 1; }
-.gpvideo iframe { width: 100%; aspect-ratio: 16 / 9; border: 0; display: block; }
+.gpvideo iframe, .gpvideo video { width: 100%; aspect-ratio: 16 / 9; border: 0; display: block; background: #000; }
+.sysvideo { margin: 34px auto 0; max-width: 960px; }
+.sysvideo h3 { margin: 0 0 4px; color: #fff; }
+.sysvideo p { margin: 0 0 12px; color: #b9c8da; }
+.sysvideo video { width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: 14px; background: #000; }
 .gpvideo__dur { position: absolute; right: 8px; bottom: 8px; background: rgba(0, 0, 0, .8); color: #fff; font-size: .72rem; padding: 1px 6px; border-radius: 4px; z-index: 1; }
 .gpvideo__info { padding: 12px 14px 14px; display: grid; gap: 6px; }
 .gpvideo__info h3 { font-size: .98rem; margin: 0; color: var(--navy); }

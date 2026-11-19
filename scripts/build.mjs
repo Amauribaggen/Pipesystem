@@ -70,7 +70,7 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
     g: D.GLOSSARIO.map(x => ({ id: x.id, t: x.t, en: x.en, tema: x.tema, def: x.def, exp: x.exp, f: x.f, norma: x.norma, x: GLOSSARIO_EXTRA[x.id] })),
     ntc: JSON.parse(readFileSync(join(src, 'noticias.json'), 'utf8')).itens.slice().sort((x, y) => y.data.localeCompare(x.data)).slice(0, 5).map(({ titulo, link, data, fonte }) => ({ titulo, link, data, fonte })),
     gu: vm.runInNewContext(guias.slice(guias.indexOf('const GUIAS'), guias.indexOf('\n];', guias.indexOf('const GUIAS')) + 3) + ';GUIAS').map(({ id, tema, titulo, resumo, tempo, nivel, norma, separar, passos, atencao, videos, mats }) => ({ id, tema, titulo, resumo, tempo, nivel, norma, separar, passos, atencao, videos, mats })),
-    v: Object.entries(vm.runInNewContext(guias.slice(guias.indexOf('const VIDEOS'), guias.indexOf('\n};', guias.indexOf('const VIDEOS')) + 3) + ';VIDEOS')).map(([k, x]) => ({ k, id: x.id, t: x.t, canal: x.canal, dur: x.dur, tema: x.tema, d: x.d })),
+    v: Object.entries(vm.runInNewContext(guias.slice(guias.indexOf('const VIDEOS'), guias.indexOf('\n};', guias.indexOf('const VIDEOS')) + 3) + ';VIDEOS')).filter(([, x]) => x.id).map(([k, x]) => ({ k, id: x.id, t: x.t, canal: x.canal, dur: x.dur, tema: x.tema, d: x.d })),
     cm: D.CMPS.map(({ id, tema, titulo, resumo, opcoes, linhas, pros, erros, apps }) => ({ id, tema, titulo, resumo, opcoes, linhas, pros, erros, apps })),
     nt: JSON.parse(readFileSync(join(src, 'noticias.json'), 'utf8')).itens.slice().sort((x, y) => y.data.localeCompare(x.data)),
     cu: JSON.parse(readFileSync(join(src, 'cursos.json'), 'utf8')).itens,

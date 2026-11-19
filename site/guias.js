@@ -4,6 +4,7 @@ const GP_TEMAS = ['Água fria e quente', 'Esgoto', 'Gás', 'Reservatórios', 'Me
 
 const VIDEOS = {
   apresentacao: { novo: true, id: 'RbApp0_Nf_Q', t: 'PipeSystem: um passeio pelo portal', canal: 'PipeSystem', dur: '2:27', tema: 'Apresentação', d: 'Apresentação narrada do portal: cotações, sistemas, catálogo de materiais, Dimensionamento Inteligente, BIM e CAD, guias, normas, notícias e vagas, PipeSystem Pro e guia de fornecedores.' },
+  sistemasObra: { novo: true, mp4: '/video/pipesystem-sistemas-na-obra.mp4', capa: '/video/pipesystem-sistemas-na-obra.webp', t: '29 sistemas hidráulicos numa obra, um a um', canal: 'PipeSystem', dur: '2:22', tema: 'Apresentação', d: 'Animação narrada que percorre uma obra residencial, hospitalar e industrial e mostra a instalação típica de cada um dos 29 sistemas: água quente e fria, gás, incêndio, vapor, ar comprimido, gases medicinais, saneamento e outros.' },
   pvc: { id: 'p_fwj2fG9_Y', t: 'Como instalar PVC soldável', canal: 'Tigre', dur: '2:10', tema: 'Água fria e quente', d: 'Corte, lixamento, limpeza e solda de tubos e conexões de PVC marrom.' },
   pvcAmanco: { id: 'UGn-qr7lF4M', t: 'Água fria soldável e roscável', canal: 'Amanco Wavin', dur: '4:21', tema: 'Água fria e quente', d: 'Execução de juntas soldáveis e roscáveis, com os cuidados de cada uma.' },
   cpvc: { id: 'Wj8G3noWT8U', t: 'Como instalar tubo CPVC', canal: 'Tigre', dur: '1:56', tema: 'Água fria e quente', d: 'Preparação e solda do CPVC para água quente.' },
@@ -686,7 +687,7 @@ const CHECKS = [
   const mat = ([n, s]) => `<a href="/materiais/${s}" data-sheet="mat-${s}">${n}</a>`;
   const videoCard = v => `
     <article class="gpvideo" data-tema="${v.tema}">
-      <button type="button" class="gpvideo__thumb" data-yt="${v.id}" aria-label="Assistir: ${v.t}"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span class="gpvideo__dur">${v.dur}</span></button>
+      <button type="button" class="gpvideo__thumb" ${v.mp4 ? `data-mp4="${v.mp4}"` : `data-yt="${v.id}"`} aria-label="Assistir: ${v.t}"><img src="${v.capa || `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}" alt="" loading="lazy" width="480" height="360"><span class="gpvideo__dur">${v.dur}</span></button>
       <div class="gpvideo__info"><h3${v.novo ? ' data-novo' : ''}>${v.t}</h3><p>${v.d}</p><span class="gpvideo__src">Canal oficial: <b class="notranslate" translate="no">${v.canal}</b></span></div>
     </article>`;
   // Seletor do guia de fossa e biodigestor Fortlev: dados dos manuais do fabricante
@@ -900,6 +901,8 @@ const CHECKS = [
 
   // vídeo só carrega no clique (youtube-nocookie, sem cookies até o play)
   $('gpVideos').addEventListener('click', e => {
+    const m = e.target.closest('[data-mp4]');
+    if (m) { m.outerHTML = `<video src="${m.dataset.mp4}" controls autoplay playsinline></video>`; return; }
     const b = e.target.closest('[data-yt]'); if (!b) return;
     b.outerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0" title="Vídeo" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
   });
