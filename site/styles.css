@@ -2432,3 +2432,24 @@ a.gl:hover { color: var(--teal-d); }
 .impcta__txt { flex: 1 1 320px; font-size: .92rem; color: var(--muted); }
 .impcta__txt b { color: var(--navy); }
 .impcta__btn { padding: .5em 1em; border-radius: 999px; background: var(--accent); color: #1b1203; font-weight: 700; font-size: .88rem; white-space: nowrap; }
+.imp__simcampos { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px 16px; margin: 10px 0 12px; }
+.imp__simcampos input, .imp__simcampos select { width: 100%; min-height: 44px; padding: 6px 12px; border: 1px solid var(--box-line); border-radius: 10px; font: inherit; background: #fff; color: var(--ink); }
+.imp__simcampos small { display: block; color: var(--muted); font-size: .74rem; margin-top: 3px; }
+.imp__simcampos .imp__check { grid-column: 1 / -1; }
+.imp__simcampos .imp__check label { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.imp__simcampos .imp__check input { width: 20px; min-height: 20px; height: 20px; accent-color: var(--teal-d); }
+.imp__aliq { margin: 0 0 14px; }
+.imp__aliq summary { cursor: pointer; font-weight: 600; font-size: .9rem; color: var(--teal-d); }
+.imp__simres { display: grid; grid-template-columns: minmax(220px, 1fr) 1.6fr; gap: 16px; align-items: start; margin-top: 8px; }
+.imp__simtot { background: var(--navy); color: #fff; border-radius: 12px; padding: 16px; }
+.imp__simtot small { display: block; color: #9fb4cc; font-size: .8rem; }
+.imp__simtot b { display: block; font: 700 1.9rem/1.2 var(--display); margin: 4px 0 6px; color: #7ee7f2; font-variant-numeric: tabular-nums; }
+.imp__simtot span { font-size: .84rem; color: #d6e2ee; }
+.imp__simt--det { margin-top: 0; background: #fff; }
+.imp__simt--det th { font-weight: 500; }
+.imp__simt th small { color: var(--muted); font-weight: 400; font-size: .76rem; }
+.imp__simt .imp__sub th, .imp__simt .imp__sub td { font-weight: 700; background: var(--bg); }
+.imp__simt .imp__tot th, .imp__simt .imp__tot td { font-weight: 700; color: var(--navy); border-top: 2px solid var(--navy); font-size: .95rem; }
+.imp__simt .imp__sel th, .imp__simt .imp__sel td { background: #fff6e8; }
+.imp__simh { margin: 18px 0 0; font-size: .95rem; }
+@media (max-width: 640px) { .imp__simres { grid-template-columns: 1fr; } }

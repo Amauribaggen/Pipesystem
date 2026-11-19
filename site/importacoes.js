@@ -15,7 +15,17 @@
   const mesTxt = ym => `${MESES[+ym.slice(5) - 1]}/${ym.slice(2, 4)}`;
   const mesLongo = ym => `${MESES[+ym.slice(5) - 1]}/${ym.slice(0, 4)}`;
 
-  let D, porId = {};
+  let D, T, porId = {};
+  const MERCOSUL = new Set(['Argentina', 'Paraguai', 'Uruguai']);
+  // Alíquotas da ficha: média dos NCMs ponderada pelo valor importado em 12 meses
+  function aliquotas(ncms) {
+    if (!T) return { ii: null, ipi: null, txt: 'Alíquotas oficiais indisponíveis agora: informe-as nos campos.' };
+    const ult = new Set(meses(D.ultimoMes, 12)), peso = n => (D.serie[n] || []).reduce((t, [ym, f]) => t + (ult.has(ym) ? f : 0), 0) || 1e-9;
+    const media = campo => { let s = 0, w = 0; for (const n of ncms) { const v = T.ncm[n]?.[campo]; if (v != null) { s += v * peso(n); w += peso(n); } } return w ? Math.round(s / w * 100) / 100 : null; };
+    const fmtN = n => n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3');
+    const det = ncms.filter(n => T.ncm[n]?.ii != null).map(n => `NCM ${fmtN(n)}: II ${nf(T.ncm[n].ii, 1)}% (${T.ncm[n].base}${T.ncm[n].tec !== T.ncm[n].ii ? `; TEC ${nf(T.ncm[n].tec, 1)}%` : ''}), IPI ${nf(T.ncm[n].ipi ?? 0, 2)}%`).join(' · ');
+    return { ii: media('ii'), ipi: media('ipi'), txt: `${esc(det)}${ncms.length > 1 ? '. Com mais de um NCM, vale a média ponderada pelo valor importado.' : '.'} Fontes: <a href="${T.urlII}" target="_blank" rel="noopener noreferrer">${esc(T.fonteII)}</a> e <a href="${T.urlIPI}" target="_blank" rel="noopener noreferrer">${esc(T.fonteIPI)}</a>. PIS 2,10% e COFINS 9,65% são as alíquotas gerais da Lei 10.865/2004.` };
+  }
 
   // ---------- agregação: soma os NCMs de uma ficha ----------
   const meses = (fim, n) => { const out = []; let [a, m] = fim.split('-').map(Number); for (let i = 0; i < n; i++) { out.unshift(`${a}-${String(m).padStart(2, '0')}`); if (--m === 0) { m = 12; a--; } } return out; };
@@ -128,6 +138,7 @@
     const preco = A.a12.kg ? A.a12.f / A.a12.kg : 0, frete = A.a12.f ? A.a12.cif / A.a12.f - 1 : 0;
     const top = A.pais.filter(p => p.kg > 0 && p.f / A.a12.f >= .01).slice(0, 10);
     const ufs = A.uf.slice(0, 10), urfs = A.urf.slice(0, 8);
+    const tx = aliquotas(c.ncm);
     box.innerHTML = `
       <p class="imp__voltar"><a href="/importacoes" data-m="">← Todos os materiais</a></p>
       <p class="eyebrow">${esc(m.cat)} · NCM ${c.ncm.map(n => n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')).join(', ')}</p>
@@ -152,8 +163,24 @@
         <section class="imp__bloco"><h3>Por onde entra</h3><p class="imp__mini">Porto, aeroporto ou fronteira de despacho</p>${barras(urfs, A.a12.f)}
           <p class="imp__vias">${A.via.slice(0, 4).map(v => `<span><b>${esc(v.nome)}</b> ${pct(v.f / A.a12.f, false)}</span>`).join('')}</p></section>
       </div>
-      <section class="imp__bloco imp__sim"><h3>Simule um lote</h3><p class="imp__mini">Estimativa pelo preço médio de cada origem nos últimos 12 meses. Não é cotação: o preço real depende de diâmetro, norma, marca e quantidade.</p>
-        <label for="impKg">Peso do lote (kg)</label><input id="impKg" type="number" min="1" step="1" inputmode="numeric" value="1000">
+      <section class="imp__bloco imp__sim"><h3>Simule um lote: quanto custa importar?</h3><p class="imp__mini">Preço FOB pela média de cada origem nos últimos 12 meses, frete e seguro pela média do material, e tributos pelas alíquotas oficiais do NCM. Não é cotação: o preço real depende de diâmetro, norma, marca, quantidade e do enquadramento fiscal da sua empresa.</p>
+        <div class="imp__simcampos">
+          <div><label for="impKg">Peso do lote (kg)</label><input id="impKg" type="number" min="1" step="1" inputmode="numeric" value="1000"></div>
+          <div><label for="impOrig">Origem</label><select id="impOrig">${top.slice(0, 10).map(p => `<option>${esc(p.nome)}</option>`).join('')}</select></div>
+          <div><label for="impDol">Dólar (R$)</label><input id="impDol" type="number" min="0" step="0.01" inputmode="decimal" value="${T ? T.ptax.valor.toFixed(4) : ''}"><small>${T ? `PTAX de venda de ${T.ptax.data.split('-').reverse().join('/')}` : 'Informe a cotação'}</small></div>
+          <div><label for="impIcms">ICMS do estado de destino (%)</label><input id="impIcms" type="number" min="0" max="35" step="0.5" inputmode="decimal" value="18"><small>Alíquota interna do seu estado</small></div>
+          <div><label for="impDesp">Despesas no Brasil (R$)</label><input id="impDesp" type="number" min="0" step="100" inputmode="numeric" value="0"><small>Despachante, armazenagem, frete até a obra</small></div>
+        </div>
+        <details class="imp__aliq"><summary>Alíquotas usadas (editáveis)</summary>
+          <div class="imp__simcampos">
+            <div><label for="impII">Imposto de Importação (%)</label><input id="impII" type="number" min="0" step="0.1" inputmode="decimal" value="${tx.ii ?? ''}"></div>
+            <div><label for="impIPI">IPI (%)</label><input id="impIPI" type="number" min="0" step="0.1" inputmode="decimal" value="${tx.ipi ?? ''}"></div>
+            <div><label for="impPis">PIS-Importação (%)</label><input id="impPis" type="number" min="0" step="0.01" inputmode="decimal" value="2.10"></div>
+            <div><label for="impCof">COFINS-Importação (%)</label><input id="impCof" type="number" min="0" step="0.01" inputmode="decimal" value="9.65"></div>
+            <div class="imp__check"><label><input id="impMar" type="checkbox"${(A.via[0] || {}).nome === 'Marítima' ? ' checked' : ''}> Transporte marítimo (AFRMM de 8% sobre o frete)</label></div>
+          </div>
+          <p class="imp__mini">${tx.txt}</p>
+        </details>
         <div id="impSimRes"></div></section>
       <details class="imp__ncms"><summary>NCMs incluídos e tabela de dados</summary>
         <ul>${c.ncm.map(n => `<li><b>${n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')}</b> ${esc(D.ncm[n] || 'sem importação no período')}</li>`).join('')}</ul>
@@ -177,10 +204,49 @@
     const saz = MESES.map((nome, i) => { const v = anos.length ? anos.reduce((t, a) => { const totA = A.todos.filter(ym => ym.startsWith(a)).reduce((s, ym) => s + A.s[ym][0], 0); const x = A.s[`${a}-${String(i + 1).padStart(2, '0')}`]; return t + (x && totA ? x[0] / totA : 0); }, 0) / anos.length : 0; return { x: nome, v, dica: nome }; });
     grafico($('impG3'), saz, { fmt: v => `${nf(v * 100, 1)}%`, titulo: `Sazonalidade das importações de ${m.name}`, marcaX: () => true, rotulo: p => p.x });
 
-    // simulador
-    const sim = () => { const kg = Math.max(0, +$('impKg').value || 0);
-      $('impSimRes').innerHTML = `<table class="imp__simt"><thead><tr><th scope="col">Origem</th><th scope="col">FOB estimado</th><th scope="col">Com frete e seguro</th></tr></thead><tbody>${top.slice(0, 6).map(p => { const v = kg * p.f / p.kg; return `<tr><th scope="row">${esc(p.nome)}</th><td>${usd(v)}</td><td>${usd(v * (1 + frete))}</td></tr>`; }).join('')}</tbody></table>`; };
-    $('impKg').addEventListener('input', sim); sim();
+    // simulador de custo nacionalizado
+    const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: v >= 1000 ? 0 : 2 });
+    const pctTxt = v => `${nf(v, v % 1 ? 2 : 0)}%`;
+    const custo = (p, kg, o) => {
+      const fob = kg * p.f / p.kg * o.dol, fs = fob * frete, va = fob + fs;               // valor aduaneiro (CIF) em reais
+      const aII = MERCOSUL.has(p.nome) ? 0 : o.ii;
+      const II = va * aII / 100, IPI = (va + II) * o.ipi / 100, PIS = va * o.pis / 100, COF = va * o.cof / 100;
+      const AFRMM = o.mar ? fs * .08 : 0, SISC = 154.23;                                    // frete aproximado por frete + seguro
+      const baseIcms = (va + II + IPI + PIS + COF + AFRMM + SISC) / (1 - o.icms / 100), ICMS = baseIcms * o.icms / 100;
+      const total = va + II + IPI + PIS + COF + AFRMM + SISC + ICMS + o.desp;
+      return { fob, fs, va, aII, II, IPI, PIS, COF, AFRMM, SISC, ICMS, total, trib: II + IPI + PIS + COF + AFRMM + SISC + ICMS };
+    };
+    const sim = () => {
+      const n = id => Math.max(0, parseFloat(String($(id).value).replace(',', '.')) || 0);
+      const kg = n('impKg'), o = { dol: n('impDol'), ii: n('impII'), ipi: n('impIPI'), pis: n('impPis'), cof: n('impCof'), icms: Math.min(n('impIcms'), 90), desp: n('impDesp'), mar: $('impMar').checked };
+      if (!kg || !o.dol) { $('impSimRes').innerHTML = '<p class="imp__mini">Informe o peso e a cotação do dólar.</p>'; return; }
+      const sel = top.find(p => p.nome === $('impOrig').value) || top[0], r = custo(sel, kg, o);
+      const linha = (nome, v, nota = '') => `<tr><th scope="row">${nome}${nota ? ` <small>${nota}</small>` : ''}</th><td>${brl(v)}</td></tr>`;
+      $('impSimRes').innerHTML = `
+        <div class="imp__simres">
+          <div class="imp__simtot"><small>Custo nacionalizado estimado · ${esc(sel.nome)}</small><b>${brl(r.total)}</b>
+            <span>${brl(r.total / kg)} por kg · ${nf(r.total / r.fob, 2).replace(/,?0+$/, '')} vezes o valor FOB · tributos ${pct(r.trib / r.total, false)} do custo</span></div>
+          <table class="imp__simt imp__simt--det"><tbody>
+            ${linha('Mercadoria (FOB)', r.fob, `US$ ${nf(r.fob / o.dol)}`)}
+            ${linha('Frete e seguro internacionais', r.fs, `${pct(frete, false)} do FOB, média do material`)}
+            <tr class="imp__sub"><th scope="row">Valor aduaneiro (CIF)</th><td>${brl(r.va)}</td></tr>
+            ${linha('Imposto de Importação', r.II, MERCOSUL.has(sel.nome) ? '0%: origem Mercosul, com certificado de origem' : pctTxt(r.aII))}
+            ${linha('IPI', r.IPI, pctTxt(o.ipi))}
+            ${linha('PIS-Importação', r.PIS, pctTxt(o.pis))}
+            ${linha('COFINS-Importação', r.COF, pctTxt(o.cof))}
+            ${o.mar ? linha('AFRMM', r.AFRMM, '8% sobre o frete marítimo') : ''}
+            ${linha('Taxa Siscomex', r.SISC, '1 declaração com 1 adição')}
+            ${linha('ICMS', r.ICMS, `${pctTxt(o.icms)}, calculado "por dentro"`)}
+            ${o.desp ? linha('Despesas no Brasil', o.desp) : ''}
+            <tr class="imp__tot"><th scope="row">Custo nacionalizado</th><td>${brl(r.total)}</td></tr>
+          </tbody></table>
+        </div>
+        <h4 class="imp__simh">Comparando as origens</h4>
+        <div class="ptable__wrap" tabindex="0" role="region" aria-label="Custo por origem"><table class="imp__simt"><thead><tr><th scope="col">Origem</th><th scope="col">FOB (US$)</th><th scope="col">CIF (US$)</th><th scope="col">Nacionalizado</th><th scope="col">Por kg</th></tr></thead>
+        <tbody>${top.slice(0, 8).map(p => { const x = custo(p, kg, o); return `<tr${p === sel ? ' class="imp__sel"' : ''}><th scope="row">${esc(p.nome)}${MERCOSUL.has(p.nome) ? ' <small>Mercosul</small>' : ''}</th><td>${usd(x.fob / o.dol)}</td><td>${usd(x.va / o.dol)}</td><td>${brl(x.total)}</td><td>${brl(x.total / kg)}</td></tr>`; }).join('')}</tbody></table></div>
+        <p class="imp__mini">Empresas do Lucro Real costumam recuperar IPI, PIS, COFINS e ICMS como crédito, e o custo efetivo fica menor. Ex-tarifários, regimes especiais (Drawback, Recof), acordos comerciais e benefícios estaduais também mudam a conta. Confirme com seu despachante.</p>`;
+    };
+    ['impKg', 'impOrig', 'impDol', 'impIcms', 'impDesp', 'impII', 'impIPI', 'impPis', 'impCof', 'impMar'].forEach(id => $(id).addEventListener('input', sim)); sim();
 
     $('impCsv').addEventListener('click', () => {
       const linhas = [['mes', 'ncm', 'fob_usd', 'peso_kg', 'cif_usd'].join(';')];
@@ -208,8 +274,8 @@
   });
   addEventListener('popstate', () => vai(new URLSearchParams(location.search).get('m') || ''));
 
-  fetch('/importacoes-dados.json').then(r => r.json()).then(j => {
-    D = j; porId = Object.fromEntries(MAT.map(m => [m.id, m]));
+  Promise.all([fetch('/importacoes-dados.json').then(r => r.json()), fetch('/importacoes-tarifas.json').then(r => r.ok ? r.json() : null).catch(() => null)]).then(([j, t]) => {
+    D = j; T = t; porId = Object.fromEntries(MAT.map(m => [m.id, m]));
     $('impData').textContent = `Dados até ${mesLongo(D.ultimoMes)} · atualizado pelo MDIC em ${D.atualizado.split('-').reverse().join('/')}`;
     destaques(); busca();
     vai(new URLSearchParams(location.search).get('m') || '');

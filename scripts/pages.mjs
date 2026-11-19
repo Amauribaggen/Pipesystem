@@ -541,6 +541,7 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
           <li><b>FOB:</b> valor da mercadoria no porto de embarque, em dólares. <b>CIF:</b> FOB mais frete e seguro internacional, sem impostos de importação.</li>
           <li><b>NCM:</b> cada ficha usa o NCM mais próximo do material. Quando o NCM é mais amplo que a ficha, um aviso explica o que mais entra no número.</li>
           <li><b>Preço por kg:</b> média de tudo o que foi importado, com diâmetros, ligas e acabamentos misturados. Serve para comparar origens e tendências, não como cotação.</li>
+          <li><b>Custo nacionalizado:</b> o simulador soma ao valor CIF o Imposto de Importação (alíquota aplicada no Brasil, pelos anexos da Resolução Gecex 272/2021), o IPI (TIPI), PIS e COFINS-Importação, AFRMM, taxa Siscomex e ICMS calculado "por dentro", com o dólar PTAX do Banco Central. É uma estimativa: créditos tributários, ex-tarifários, acordos comerciais e regimes especiais mudam a conta.</li>
           <li><b>Sigilo:</b> o Comex Stat não divulga o nome de importadores e exportadores. O estado é o da empresa importadora.</li>
         </ul>
         <p class="tags__note">Importa ou fabrica algum destes materiais e quer aparecer para quem compra? <a href="/anuncie">Anuncie no PipeSystem</a>.</p>
