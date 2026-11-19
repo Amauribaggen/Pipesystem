@@ -94,11 +94,12 @@ const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><pa
 
 // Menu principal das páginas próprias: os mesmos itens, na mesma ordem, do menu da página inicial (site/index.html)
 const MENU = [['/cotacoes', 'Cotações', 'pg-top__hot'], ['/sistemas', 'Sistemas'], ['/materiais', 'Materiais'], ['/importacoes', 'Importações', '', true], ['/dimensionamento', 'Dimensionamento'],
-  ['/bim-cad', 'BIM/CAD'], ['/guias-praticos', 'Guias práticos', '', true], ['/normas', 'Normas'], ['/artigos', 'Notícias'], ['/feiras', 'Feiras'],
-  ['/pro', 'Pro', '', true], ['/anuncie', 'Anuncie'], ['/quem-somos', 'Quem somos'], ['/#contato', 'Cadastre-se', 'btn btn--sm']];
+  ['/bim-cad', 'BIM/CAD'], ['/guias-praticos', 'Guias', '', true], ['/normas', 'Normas'], ['/artigos', 'Notícias']];
+// Faixa superior (institucional). No menu de três linhas esses itens entram no fim da lista principal.
+const MENU_TOPO = [['/pro', 'App Pro', '', true], ['/feiras', 'Feiras'], ['/anuncie', 'Anuncie'], ['/quem-somos', 'Quem somos'], ['/#contato', 'Cadastre-se', 'pg-barra__cta']];
 // Item do menu marcado como atual em cada página própria
 const secaoAtual = url => url.startsWith('/sistemas') ? '/sistemas' : url === '/importacoes' ? '/importacoes' : url.startsWith('/materiais') ? '/materiais'
-  : /^\/(comparativos|glossario)/.test(url) ? '/guias-praticos' : url === '/noticias' ? '/artigos' : '';
+  : /^\/(comparativos|glossario)/.test(url) ? '/guias-praticos' : url === '/noticias' ? '/artigos' : ['/pro', '/feiras', '/anuncie', '/quem-somos'].includes(url) ? url : '';
 
 function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords, reviewed, ld: extraLd = [], glossSkip }) {
   const canonical = BASE + url;
@@ -149,11 +150,13 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
 <body class="pg"${glossSkip ? ` data-gloss-skip="${glossSkip}"` : ''}>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 <header class="pg-top">
+  <div class="pg-barra"><nav class="pg-barra__in" aria-label="Institucional">${MENU_TOPO.map(([href, nome, cls, novo]) => `<a href="${href}"${cls ? ` class="${cls}"` : ''}${novo ? ' data-novo' : ''}${href === secaoAtual(url) ? ' aria-current="page"' : ''}>${nome}</a>`).join('')}</nav></div>
   <div class="container pg-top__inner">
     <a href="/" class="logo" aria-label="PIPESYSTEM — página inicial">${LOGO}</a>
     <button class="pg-top__toggle" id="pgToggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="pgNav"><span></span><span></span><span></span></button>
     <nav class="pg-top__nav" id="pgNav" aria-label="Seções do portal">
       ${MENU.map(([href, nome, cls, novo]) => `<a href="${href}"${cls ? ` class="${cls}"` : ''}${novo ? ' data-novo' : ''}${href === secaoAtual(url) ? ' aria-current="page"' : ''}>${nome}</a>`).join('')}
+      ${MENU_TOPO.map(([href, nome, cls, novo]) => `<a href="${href}" class="pg-sec${cls === 'pg-barra__cta' ? ' btn btn--sm' : ''}"${novo ? ' data-novo' : ''}>${nome}</a>`).join('')}
     </nav>
     ${IDIOMA}
   </div>

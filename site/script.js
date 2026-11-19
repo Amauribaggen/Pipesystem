@@ -1459,7 +1459,7 @@ if (document.querySelector('[data-num]')) {
     const id = a.getAttribute('href').slice(1);
     if (!MENUS[id]) return;
     const wrap = document.createElement('div');
-    wrap.className = 'dd';
+    wrap.className = 'dd' + (a.classList.contains('nav__sec') ? ' nav__sec' : '');
     a.replaceWith(wrap);
     a.classList.add('dd__btn', 'dd__btn--link');
     a.insertAdjacentHTML('beforeend', ' ' + caret);
@@ -1508,7 +1508,7 @@ if (document.querySelector('[data-num]')) {
     dd.addEventListener('mouseleave', () => dd.classList.remove('dd--hold'));
   });
   // Menu compacto (celular ou cabeçalho sem espaço): tocar em "Produtos" abre a lista; no computador, leva à seção
-  const compact = () => matchMedia('(max-width: 1180px)').matches || document.documentElement.classList.contains('nav-collapse');
+  const compact = () => matchMedia('(max-width: 980px)').matches || document.documentElement.classList.contains('nav-collapse');
   document.addEventListener('click', e => dds.forEach(dd => { if (!dd.contains(e.target)) setDd(dd, false); }));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') dds.forEach(dd => setDd(dd, false)); });
   links.addEventListener('click', e => {
@@ -1542,7 +1542,7 @@ if (document.querySelector('[data-num]')) {
   const inner = document.querySelector('.nav__inner');
   const fits = () => inner.scrollWidth <= inner.clientWidth + 1 && root.scrollWidth <= window.innerWidth + 1;
   function fitHeader() {
-    if (matchMedia('(max-width: 1180px)').matches) { root.classList.remove('nav-tight', 'nav-tighter', 'nav-collapse'); return; }
+    if (matchMedia('(max-width: 980px)').matches) { root.classList.remove('nav-tight', 'nav-tighter', 'nav-collapse'); return; }
     const wasOpen = links.classList.contains('open');
     root.classList.remove('nav-tight', 'nav-tighter', 'nav-collapse');
     if (fits()) return;

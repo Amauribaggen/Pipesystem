@@ -537,7 +537,7 @@ a[href="#lmatTool"] { color: var(--accent) !important; font-weight: 700; }
 }
 
 /* Responsive */
-@media (max-width: 1180px) {
+@media (max-width: 980px) {
   .nav__toggle { display: block; }
   .nav__links { position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; background: #fff; border-bottom: 1px solid var(--line); padding: 8px 16px 16px; display: none; max-height: calc(100vh - 68px); overflow-y: auto; }
   .nav__links.open { display: flex; }
@@ -616,7 +616,7 @@ body { background: #071a31; }
 .nav__links a:not(.btn):hover, .dd__btn:hover { color: #7ee7f2; }
 .nav__toggle span { background: #fff; }
 .dd__menu { color: var(--ink); }
-@media (max-width: 1180px) {
+@media (max-width: 980px) {
   .nav__links { background: var(--navy); border-bottom-color: rgba(255, 255, 255, .08); }
   .dd__menu { color: inherit; background: transparent; border-left-color: rgba(255, 255, 255, .15); }
   .dd__menu a:hover { background: rgba(255, 255, 255, .06); }
@@ -919,7 +919,7 @@ body { background: #071a31; }
 .lang__btn svg { width: 24px; height: 17px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .25); flex: none; }
 .lang__btn:hover { opacity: 1; color: #fff; }
 .lang__btn[aria-pressed="true"] { background: rgba(126, 231, 242, .16); color: #fff; opacity: 1; box-shadow: inset 0 0 0 1px rgba(126, 231, 242, .45); }
-@media (max-width: 1180px) { .lang { margin-left: auto; margin-right: 6px; } }
+@media (max-width: 980px) { .lang { margin-left: auto; margin-right: 6px; } }
 @media (max-width: 420px) { .lang__btn span { display: none; } .lang__btn { padding: 4px 6px; } }
 
 
@@ -976,13 +976,13 @@ font[style] { background: transparent !important; box-shadow: none !important; }
 /* ===== Logomarca PIPESYSTEM (gota e tubulação) ===== */
 .logo .logo__svg { width: auto; height: 42px; color: inherit; }
 .footer__logo .logo__svg { width: auto; height: 66px; }
-@media (max-width: 1180px) { .logo .logo__svg { height: 38px; } }
+@media (max-width: 980px) { .logo .logo__svg { height: 38px; } }
 @media (max-width: 420px) { .logo .logo__svg { height: 32px; } }
 /* Logomarca com slogan: um pouco mais alta */
 .logo .logo__svg { height: 52px; }
 .footer__logo .logo__svg { height: 84px; }
 .footer__about { margin-top: 14px !important; }
-@media (max-width: 1180px) { .logo .logo__svg { height: 48px; } }
+@media (max-width: 980px) { .logo .logo__svg { height: 48px; } }
 @media (max-width: 420px) { .logo .logo__svg { height: 42px; } }
 
 /* ===== Assinatura de cotações (Básico 12 h / Premium imediato) ===== */
@@ -1148,7 +1148,7 @@ font[style] { background: transparent !important; box-shadow: none !important; }
 @media (max-width: 560px) { .pfotos__item img { height: 110px; padding: 4px; } .pfotos__grid { gap: 6px; } }
 
 /* Submenus: no celular os itens com submenu continuam como links simples para as seções */
-@media (max-width: 1180px) {
+@media (max-width: 980px) {
   .dd__btn--link svg { display: none; }
   .dd:has(.dd__btn--link) .dd__menu { display: none !important; }
 }
@@ -1161,7 +1161,7 @@ font[style] { background: transparent !important; box-shadow: none !important; }
   0%, 100% { background: #f2a03d; box-shadow: 0 0 12px 1px rgba(242, 160, 61, .4); color: #1b1203; }
   50% { background: rgba(242, 160, 61, .08); box-shadow: 0 0 0 0 rgba(242, 160, 61, 0); color: #f2a03d; }
 }
-@media (max-width: 1180px) { #navLinks .nav__hot { align-self: flex-start; margin: 6px 0; } }
+@media (max-width: 980px) { #navLinks .nav__hot { align-self: flex-start; margin: 6px 0; } }
 /* Tabelas técnicas da ficha (comparativo de válvulas, materiais) */
 .ptable { margin: 4px 0 18px; }
 .ptable h4 { margin-bottom: 8px; }
@@ -2453,3 +2453,23 @@ a.gl:hover { color: var(--teal-d); }
 .imp__simt .imp__sel th, .imp__simt .imp__sel td { background: #fff6e8; }
 .imp__simh { margin: 18px 0 0; font-size: .95rem; }
 @media (max-width: 640px) { .imp__simres { grid-template-columns: 1fr; } }
+
+/* ===== Cabeçalho em duas faixas =====
+   Em cima, uma faixa fina com os links institucionais (App Pro, Feiras, Anuncie, Quem somos, Cadastre-se);
+   embaixo, as seções de conteúdo. Quando o menu vira o botão de três linhas, a faixa some e esses itens
+   aparecem no fim da lista (.nav__sec na página inicial, .pg-sec nas páginas próprias). */
+.nav__barra, .pg-barra { background: #04101f; border-bottom: 1px solid rgba(255, 255, 255, .07); }
+.nav__barra-in, .pg-barra__in { width: min(1360px, 100% - 32px); margin-inline: auto; display: flex; justify-content: flex-end; align-items: center; gap: 1.4rem; height: 30px; font-size: .8rem; font-weight: 500; color: #9fb4cc; white-space: nowrap; }
+.nav__barra-in a:hover, .pg-barra__in a:hover, .pg-barra__in a[aria-current="page"] { color: #7ee7f2; }
+.nav__barra-cta, .pg-barra__cta { color: #f2a03d; font-weight: 700; }
+.nav__barra-cta:hover, .pg-barra__cta:hover { color: #ffb95e !important; }
+@media (min-width: 981px) {
+  html:not(.nav-collapse) .nav__links > .nav__sec { display: none; }
+  html:not(.nav-collapse) { scroll-padding-top: 106px; }
+}
+@media (max-width: 980px) { .nav__barra { display: none; } }
+html.nav-collapse .nav__barra, html.pg-collapse .pg-barra { display: none; }
+html:not(.pg-collapse) .pg-top__nav > .pg-sec { display: none; }
+/* Selo "Novo" no menu: um ponto laranja, para não alargar os itens */
+.nav__links [data-novo]::after, .nav__barra [data-novo]::after, .pg-top__nav [data-novo]::after, .pg-barra [data-novo]::after {
+  content: ""; width: 7px; height: 7px; padding: 0; margin: 0 0 0 4px; vertical-align: top; }
