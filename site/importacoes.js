@@ -100,11 +100,12 @@
     const unicos = [...new Set(G.flatMap(x => x.ncm))], tot = agrega(unicos);
     const china = tot.pais.find(p => p.nome === 'China');
     $('impResumo').innerHTML = `<div class="imp__kpis">
-        <div><small>Importado em 12 meses</small><b>${usd(tot.a12.f)}</b><span>FOB, ${unicos.length} NCMs do catálogo</span></div>
+        <div><small>Soma dos ${unicos.length} NCMs acompanhados</small><b>${usd(tot.a12.f)}</b><span>FOB em 12 meses, todos os usos</span></div>
         <div><small>Contra os 12 meses anteriores</small><b>${pct(tot.var)}</b><span>${usd(tot.p12.f)} antes</span></div>
-        <div><small>Peso importado</small><b>${ton(tot.a12.kg)}</b><span>${pkg(tot.a12.f / tot.a12.kg)} em média</span></div>
+        <div><small>Peso importado nesses NCMs</small><b>${ton(tot.a12.kg)}</b><span>${pkg(tot.a12.f / tot.a12.kg)} em média</span></div>
         ${china ? `<div><small>Participação da China</small><b>${pct(china.f / tot.a12.f, false)}</b><span>maior origem: ${esc(tot.pais[0].nome)}</span></div>` : ''}
-      </div>`;
+      </div>
+      <p class="imp__nota">Esta soma <b>não é o tamanho do mercado brasileiro de hidráulica</b>. Muitos NCMs abrangem também produtos de outros setores, como juntas e flexíveis automotivos, tubos para petróleo e gás e equipamentos industriais. Use o total como tendência das importações ligadas ao catálogo; para cada material, veja o quadro próprio e o aviso sobre o NCM.</p>`;
     $('impDestaques').innerHTML = `<div class="imp__ranks">
         <section><h3>Mais importados</h3><ol class="imp__cards">${maiores.map(cartao).join('')}</ol></section>
         <section><h3>Em alta</h3><p class="imp__mini">Maior crescimento contra os 12 meses anteriores (acima de US$ 1 milhão)</p><ol class="imp__cards">${altos.map(cartao).join('')}</ol></section>
