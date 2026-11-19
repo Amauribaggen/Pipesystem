@@ -1645,6 +1645,7 @@ ul.bimbox { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 6
 .sysvideo h3 { margin: 0 0 4px; color: #fff; }
 .sysvideo p { margin: 0 0 12px; color: #b9c8da; }
 .sysvideo video { width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: 14px; background: #000; }
+.sysvideo__yt { display: inline-block; margin-top: 10px; color: #8fd3ff; }
 .gpvideo__dur { position: absolute; right: 8px; bottom: 8px; background: rgba(0, 0, 0, .8); color: #fff; font-size: .72rem; padding: 1px 6px; border-radius: 4px; z-index: 1; }
 .gpvideo__info { padding: 12px 14px 14px; display: grid; gap: 6px; }
 .gpvideo__info h3 { font-size: .98rem; margin: 0; color: var(--navy); }
