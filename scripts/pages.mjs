@@ -205,6 +205,44 @@ ${body}
 `;
 }
 
+// ---------- Radar de Importações (site/importacoes-dados.json, gerado por scripts/comex.mjs) ----------
+const IMP = existsSync('site/importacoes-dados.json') ? JSON.parse(readFileSync('site/importacoes-dados.json', 'utf8')) : null;
+const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const mesLongo = ym => `${MESES[+ym.slice(5) - 1]}/${ym.slice(0, 4)}`;
+const nfBR = (v, d = 0) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+const usd = v => v >= 1e9 ? `US$ ${nfBR(v / 1e9, 1)} bi` : v >= 1e6 ? `US$ ${nfBR(v / 1e6, 1)} mi` : v >= 1e3 ? `US$ ${nfBR(v / 1e3, 0)} mil` : `US$ ${nfBR(v, 0)}`;
+const ton = kg => kg >= 1e6 ? `${nfBR(kg / 1e6, 1)} mil t` : kg >= 1e3 ? `${nfBR(kg / 1e3, 0)} t` : `${nfBR(kg, 0)} kg`;
+const pctBR = (v, sinal = true) => `${sinal && v > 0 ? '+' : ''}${nfBR(v * 100, Math.abs(v) < .1 ? 1 : 0)}%`;
+function ultimosMeses(fim, n) { const out = []; let [a, m] = fim.split('-').map(Number); for (let i = 0; i < n; i++) { out.unshift(`${a}-${String(m).padStart(2, '0')}`); if (--m === 0) { m = 12; a--; } } return out; }
+// Resumo de 12 meses de uma ficha: soma dos seus NCMs
+function impResumo(id) {
+  const c = IMP && IMP.materiais[id];
+  if (!c) return null;
+  const ult = new Set(ultimosMeses(IMP.ultimoMes, 12)), ant = new Set(ultimosMeses(ultimosMeses(IMP.ultimoMes, 13)[0], 12));
+  let f = 0, kg = 0, fa = 0; const pais = {};
+  for (const n of c.ncm) {
+    for (const [ym, v, k] of IMP.serie[n] || []) { if (ult.has(ym)) { f += v; kg += k; } else if (ant.has(ym)) fa += v; }
+    for (const [p, v] of IMP.pais[n] || []) pais[p] = (pais[p] || 0) + v;
+  }
+  if (!f) return null;
+  const top = Object.entries(pais).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  return { f, kg, var: fa ? f / fa - 1 : null, top, c };
+}
+function impBoxHTML(m) {
+  const r = impResumo(m.id);
+  if (!r) return '';
+  const slug = m.id.replace(/^mat-/, '');
+  return `<aside class="impbox">
+        <p class="eyebrow">Radar de Importações</p>
+        <h2 class="page__h">Importações no Brasil</h2>
+        <div class="impbox__kpis"><div><b>${usd(r.f)}</b><small>FOB nos últimos 12 meses</small></div>
+          ${r.var != null ? `<div><b>${pctBR(r.var)}</b><small>contra os 12 meses anteriores</small></div>` : ''}
+          <div><b>${ton(r.kg)}</b><small>${r.kg ? `US$ ${nfBR(r.f / r.kg, 2)}/kg em média` : 'importadas'}</small></div></div>
+        <p class="impbox__txt">Principais origens: ${r.top.map(([p, v]) => `${esc(p)} (${pctBR(v / r.f, false)})`).join(', ')}. Dados do Comex Stat (MDIC) até ${mesLongo(IMP.ultimoMes)}, NCM ${r.c.ncm.map(n => n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')).join(', ')}.</p>
+        <a class="btn btn--sm" href="/importacoes?m=${slug}">Ver evolução, países, estados e preço por kg →</a>
+      </aside>`;
+}
+
 // ---------- geração ----------
 export function generate(D, outDir) {
   const pages = [];
@@ -289,6 +327,7 @@ export function generate(D, outDir) {
       <p class="tags tags--links">${normTags(normas)}</p>${normNote}
       ${vejas.map(veja => `<p class="relprod"><a href="${pathOf.material(veja.id)}">Veja também: ${esc(veja.name)} →</a></p>`).join('')}
       ${sist.length ? `<h2 class="page__h">Onde é usado</h2>${links(sist.map(x => [pathOf.sistema(x.id), x.name]))}` : ''}
+      ${impBoxHTML(m)}
       ${D.adFichaHTML(m.cat, true, m.name)}
       ${fabs.length ? `<h2 class="page__h">${importers ? 'Importadores' : misto ? 'Fabricantes e importadores' : 'Fabricantes'}</h2>
       <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">
@@ -471,6 +510,50 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
       crumbs: [{ name: 'Início', url: '/' }, { name: 'Notícias', url }],
       ld: [{ '@type': 'ItemList', '@id': BASE + url + '#lista', itemListOrder: 'https://schema.org/ItemListOrderDescending', numberOfItems: N.itens.length,
         itemListElement: N.itens.slice(0, 50).map((n, i) => ({ '@type': 'ListItem', position: i + 1, url: n.link, name: n.titulo })) }],
+    }) });
+  }
+
+  // Radar de Importações: importações brasileiras dos materiais do catálogo (Comex Stat)
+  if (IMP) {
+    const url = '/importacoes';
+    const mats = D.CATALOG.filter(m => IMP.materiais[m.id]).map(m => ({ id: m.id, slug: m.id.replace(/^mat-/, ''), name: m.name, cat: m.cat, chaves: (m.chaves || []).join(' ') }));
+    const com = mats.map(m => ({ m, r: impResumo(m.id) })).filter(x => x.r);
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Ferramenta gratuita · Novo</p><h1 id="sheetTitle" class="page__title">Radar de Importações</h1></div></div>
+      <p class="sheet__desc page__lead">Quanto o Brasil importa de cada tubo, conexão, válvula, bomba e ferramenta do catálogo PipeSystem: evolução mês a mês, países de origem, preço médio por kg, estados compradores e portos de entrada. Dados oficiais do Comex Stat (MDIC), atualizados todo mês.</p>
+      <div class="imp" id="imp">
+        <p class="imp__data" id="impData">Dados até ${mesLongo(IMP.ultimoMes)}</p>
+        <div id="impInicio">
+          <div id="impResumo"></div>
+          <div class="imp__busca">
+            <label for="impBusca">Procure um material ou NCM</label>
+            <input id="impBusca" type="search" placeholder="Ex.: válvula borboleta, PPR, 8481.80.97" autocomplete="off">
+            <div class="nt__chips" id="impCats" role="group" aria-label="Filtrar por categoria"></div>
+            <ol class="imp__lista" id="impLista">${com.map(({ m, r }) => `<li><a href="?m=${m.slug}" data-m="${m.id}">${esc(m.name)}<small>${usd(r.f)}</small></a></li>`).join('')}</ol>
+          </div>
+          <div id="impDestaques"></div>
+        </div>
+        <div id="impDetalhe" hidden></div>
+      </div>
+      <section class="imp__sobre">
+        <h2 class="page__h">Sobre os dados</h2>
+        <ul>
+          <li><b>Fonte:</b> <a href="https://comexstat.mdic.gov.br/" target="_blank" rel="noopener noreferrer">Comex Stat</a>, estatística oficial do comércio exterior brasileiro (Ministério do Desenvolvimento, Indústria, Comércio e Serviços), por NCM de 8 dígitos.</li>
+          <li><b>FOB:</b> valor da mercadoria no porto de embarque, em dólares. <b>CIF:</b> FOB mais frete e seguro internacional, sem impostos de importação.</li>
+          <li><b>NCM:</b> cada ficha usa o NCM mais próximo do material. Quando o NCM é mais amplo que a ficha, um aviso explica o que mais entra no número.</li>
+          <li><b>Preço por kg:</b> média de tudo o que foi importado, com diâmetros, ligas e acabamentos misturados. Serve para comparar origens e tendências, não como cotação.</li>
+          <li><b>Sigilo:</b> o Comex Stat não divulga o nome de importadores e exportadores. O estado é o da empresa importadora.</li>
+        </ul>
+        <p class="tags__note">Importa ou fabrica algum destes materiais e quer aparecer para quem compra? <a href="/anuncie">Anuncie no PipeSystem</a>.</p>
+      </section>
+      <script>window.IMP_MAT = ${JSON.stringify(mats).replace(/</g, '\\u003c')};</script>
+      <script src="/importacoes.js" defer></script>`;
+    pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
+      title: 'Radar de Importações: tubos, válvulas e bombas no Brasil | PipeSystem',
+      description: cut(`Quanto o Brasil importa de tubos, conexões, válvulas, bombas e ferramentas hidráulicas: evolução mensal, países de origem, preço por kg e estados. Dados Comex Stat até ${mesLongo(IMP.ultimoMes)}.`, 158),
+      keywords: ['importação', 'Comex Stat', 'NCM', 'valor FOB', 'preço por kg', 'importação de válvulas', 'importação de tubos', 'importação de bombas', 'China', 'inteligência de mercado'].join(', '),
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Catálogo de produtos e materiais', url: '/materiais' }, { name: 'Radar de Importações', url }],
+      ld: [{ '@type': 'Dataset', '@id': BASE + url + '#dados', name: 'Importações brasileiras de materiais hidráulicos por NCM', description: 'Importações mensais (FOB, peso e CIF), por país, estado, local de entrada e via, dos NCMs dos materiais do catálogo PipeSystem.',
+        creator: { '@id': BASE + '/#organizacao' }, isBasedOn: 'https://comexstat.mdic.gov.br/', temporalCoverage: `${Object.values(IMP.serie)[0][0][0]}/${IMP.ultimoMes}`, spatialCoverage: 'Brasil' }],
     }) });
   }
 
