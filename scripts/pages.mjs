@@ -211,6 +211,8 @@ ${body}
 // ---------- Radar de Importações (site/importacoes-dados.json, gerado por scripts/comex.mjs) ----------
 const IMP = existsSync('site/importacoes-dados.json') ? JSON.parse(readFileSync('site/importacoes-dados.json', 'utf8')) : null;
 // Radar de Compras Públicas (site/compras-dados.json, gerado por scripts/compras.py com as NF-e do Portal da Transparência)
+// "Como funciona" animado das válvulas (site/como-funciona.json, gerado por scripts/animacoes_valvulas.py)
+const COMO = existsSync('site/como-funciona.json') ? JSON.parse(readFileSync('site/como-funciona.json', 'utf8')) : {};
 const CP = existsSync('site/compras-dados.json') ? JSON.parse(readFileSync('site/compras-dados.json', 'utf8')) : null;
 const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const mesLongo = ym => `${MESES[+ym.slice(5) - 1]}/${ym.slice(0, 4)}`;
@@ -371,7 +373,7 @@ export function generate(D, outDir) {
       </figure>`;
     const body = `      <div class="sheet__head"><div><p class="eyebrow">Catálogo · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title"${m.novo ? ' data-novo' : ''}>${esc(m.name)}</h1></div><button type="button" class="sheet__print" data-imprimir>Imprimir ficha</button></div>
       ${D.revisaoHTML(m)}
-      ${fig}${(D.MATERIAL_EXTRA[m.id] || []).map(f => `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar imagem: ${esc(plain(f.legenda))}" data-legenda="${esc(plain(f.legenda))}">
+      ${fig}${COMO[m.id] ? `<figure class="matfig matfig--anim"><figcaption class="matfig__tit">${esc(COMO[m.id].t)}</figcaption>${COMO[m.id].svg}</figure>` : ''}${(D.MATERIAL_EXTRA[m.id] || []).map(f => `<figure class="matfig matfig--foto matfig--zoom" tabindex="0" role="button" aria-label="Ampliar imagem: ${esc(plain(f.legenda))}" data-legenda="${esc(plain(f.legenda))}">
         <img src="${esc(rel(f.src))}" alt="${esc(f.alt)}"${dims(f.src)} class="inteira" loading="lazy" decoding="async">
         <figcaption>${f.legenda} · ${f.autor ? `Foto: <a href="${esc(f.fonte)}" target="_blank" rel="noopener noreferrer" class="notranslate" translate="no">${esc(f.autor)}</a> (imagem de divulgação do fabricante)` : D.IA_CREDITO}</figcaption>
       </figure>`).join('')}

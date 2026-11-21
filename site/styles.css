@@ -2512,3 +2512,6 @@ html:not(.pg-collapse) .pg-top__nav > .pg-sec { display: none; }
 .imp__bn small { color: var(--muted); font-size: .78em; }
 .gppat__fig { margin: 0; padding: 8px; background: #f6f9fc; border: 1px solid var(--box-line); border-radius: 10px; }
 .gppat__fig svg { display: block; width: 100%; height: auto; }
+.matfig--anim { background: #f6f9fc; padding: 12px 12px 8px; }
+.matfig--anim svg { display: block; width: 100%; max-width: 520px; max-height: none; height: auto; margin: 0 auto; }
+.matfig__tit { font-weight: 700; color: var(--navy); font-size: .95rem; margin: 0 0 6px; }
