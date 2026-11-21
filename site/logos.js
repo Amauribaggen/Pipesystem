@@ -301,6 +301,25 @@ const LOGOS_FAB = {
   'dresserutility.com': 'dresser-utility-solutions.png',
   'wurth.com.br': 'wurth.png',
   'permabond.com': 'permabond.png',
+  // Revisão de 21/11/2026 (logo tirada do cabeçalho do site oficial de cada empresa)
+  'watsonmcdaniel.com': 'watson-mcdaniel.png',
+  'esab.com.br': 'esab.png',
+  'avkbr.com.br': 'avk.svg',
+  'shurjoint.com': 'shurjoint.svg',
+  'merax.com.br': 'merax.jpg',
+  'hy-lok.com': 'hy-lok.png',
+  'acospositano.com.br': 'acos-positano.png',
+  'imi-hydronic.com': 'imi.png',
+  'infibra.com.br': 'infibra.svg',
+  'suvinil.com.br': 'suvinil.svg',
+  'mannesmann.com': 'mannesmann-precision-tubes.svg',
+  'promecanica.com.br': 'promecanica.png',
+  'kelvion.com': 'kelvion.svg',
+  'condair.com': 'condair.svg',
+  'forbesmarshall.com': 'forbes-marshall.webp',
+  'lindsay.com': 'lindsay.svg',
+  'gates.com': 'gates.png',
+  'fermit.de': 'fermit.png',
 };
 // Logos brancas: precisam de fundo escuro
 const LOGOS_CLARAS = new Set(['ari-armaturen-logo.svg', 'musthane.webp', 'spartan-tool.png', 'amiantit-flowtite.png', 'bermad.svg', 'cadence.svg', 'coester.svg', 'e-h-wachs.png', 'esbe.png', 'fabrimar.png', 'fortlev.svg', 'gestra.png', 'grundfos.svg', 'heliotek.png', 'hidroreader.svg', 'kanaflex.svg', 'krona.png', 'ksb.svg', 'metalcasty.png', 'paranapanema-eluma.png', 'pietro-fiorentini.svg', 'polysoude.png', 'rain-bird.png', 'renova-medicao.png', 'romac.png', 'rotork.svg', 'spirax-sarco.png', 'sumig.png', 'swagelok.png', 't-d-williamson.png', 'tigre.svg', 'tupy.svg', 'victaulic.png', 'xylem.svg', 'interativa.png', 'val-matic.png', 'charlotte-pipe.svg', 'astral-pipes.png', 'halcor.svg', 'clesse.png', 'vacuo-industrial.png', 'solid-equipment.png', 'stafsjo.svg', 'aerodinamica.svg', 'jcm-industries.svg', 'tubacex.png', 'wurth.png']);
