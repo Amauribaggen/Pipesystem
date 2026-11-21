@@ -335,11 +335,12 @@ const logoFab = url => {
 const CERT_INMETRO = {
   'mat-galv': { prog: 'conexões de ferro fundido maleável', fab: { 'Tupy': 'https://www.legisweb.com.br/legislacao/?id=201054', 'IPC/GIPP': 'https://www.ipcbrasil.ind.br/qualidade/' },
     nota: 'as conexões de ferro fundido maleável têm certificação compulsória do Inmetro (Portaria 160/2007 e atualizações). A IPC/GIPP informa a certificação no próprio site, e a da Tupy foi informada à PipeSystem. Peça o certificado ao fabricante para confirmar a linha escolhida.' },
-  'mat-solar': { prog: 'coletores solares e reservatórios térmicos', fab: { 'Soletrol': '003660/2019', 'Heliotek': '004900/2016', 'Komeco': '007612/2016' } },
-  'mat-caldeiras': { prog: 'aquecedores de água a gás', fab: { 'Rinnai': '008495/2013', 'Komeco': '009950/2013' } },
-  'mat-compressores': { prog: 'vasos de pressão (reservatório do compressor)', fab: { 'Schulz': '001245/2018', 'Chiaperini': '002496/2018', 'Atlas Copco': '003377/2019', 'Kaeser': '002699/2020', 'Ingersoll Rand': '005716/2023' } },
-  'mat-reguladores': { prog: 'reguladores de baixa pressão para GLP', fab: { 'Aliança Metalúrgica': '004193/2015', 'Blukit': '000561/2020' } },
-  'mat-aco': { prog: 'tubos de aço-carbono', fab: { 'Tubos Apolo': '001697/2019', 'Vallourec': '002185/2018' } },
+  'mat-solar': { prog: 'coletores solares e reservatórios térmicos', fab: { 'Soletrol': '003660/2019', 'Heliotek': '004900/2016', 'Komeco': '007612/2016', 'Rinnai': '000321/2016' } },
+  'mat-caldeiras': { prog: 'aquecedores de água a gás', fab: { 'Rinnai': '008495/2013', 'Komeco': '009950/2013', 'Lorenzetti': '003037/2025' } },
+  'mat-compressores': { prog: 'vasos de pressão (reservatório do compressor)', fab: { 'Schulz': '001245/2018', 'Chiaperini': '002496/2018', 'Atlas Copco': '003377/2019', 'Kaeser': '002699/2020', 'Ingersoll Rand': '005716/2023', 'Pressure': '003018/2018' } },
+  'mat-reguladores': { prog: 'reguladores de baixa pressão para GLP', fab: { 'Aliança Metalúrgica': '004193/2015', 'Blukit': '000561/2020', 'Clesse': '001486/2023' } },
+  'mat-aco': { prog: 'tubos de aço-carbono', fab: { 'Tubos Apolo': '001697/2019', 'Vallourec': '002185/2018', 'Tuper': '003314/2019' } },
+  'mat-aco-sem-costura': { prog: 'tubos de aço-carbono', fab: { 'Vallourec': '002185/2018' } },
 };
 const certFab = (matId, nome) => {
   const c = CERT_INMETRO[matId], reg = c && c.fab[nome];
