@@ -2350,12 +2350,12 @@ a.gl:hover { color: var(--teal-d); }
 .imp__busca input { width: 100%; min-height: 46px; padding: 8px 14px; border: 1px solid var(--box-line); border-radius: 10px; font: inherit; background: var(--bg); color: var(--ink); }
 .imp__busca input:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
 .imp__busca .nt__chips { margin: 10px 0; }
-.imp__lista { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 4px 14px; max-height: 300px; overflow: auto; }
+.imp__lista { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 4px 14px; max-height: 300px; overflow: auto; }
 .imp__lista a { display: flex; justify-content: space-between; gap: 10px; padding: 6px 4px; border-bottom: 1px solid var(--line); font-size: .9rem; }
 .imp__lista a:hover { color: var(--teal-d); }
 .imp__lista small { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .imp__vazio { color: var(--muted); padding: 8px 4px; }
-.imp__ranks { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.imp__ranks { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 18px; }
 .imp__ranks h3 { font-size: 1.05rem; margin: 0 0 .2em; }
 .imp__mini { color: var(--muted); font-size: .8rem; margin: 0 0 .6em; }
 .imp__cards { list-style: none; padding: 0; margin: 0; }
@@ -2373,7 +2373,8 @@ a.gl:hover { color: var(--teal-d); }
 .imp__nota { background: #fff6e8; border-left: 3px solid var(--accent); padding: 8px 12px; border-radius: 6px; font-size: .86rem; color: #5a4a2e; }
 .imp__bloco { margin: 0 0 1.6em; }
 .imp__bloco h3 { font-size: 1.05rem; margin: 0 0 .2em; }
-.imp__duas { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 28px; }
+.imp__duas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 0 28px; }
+.imp__duas > *, .imp__bloco { min-width: 0; }
 .imp__graf svg { width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
 .imp__grade { stroke: var(--line); stroke-width: 1; }
 .imp__eixo { fill: var(--muted); font-size: 11px; font-family: var(--font); }
@@ -2421,8 +2422,10 @@ a.gl:hover { color: var(--teal-d); }
 .impbox__kpis small { color: var(--muted); font-size: .78rem; }
 .impbox__txt { font-size: .88rem; color: var(--muted); }
 @media (max-width: 560px) {
-  .imp__barras li { grid-template-columns: 1fr auto; }
-  .imp__bt { grid-column: 1 / -1; grid-row: 2; }
+  /* celular: nome em linha própria (não some), barra embaixo e valor + preço por último */
+  .imp__barras li { grid-template-columns: 1fr; gap: 3px; padding: 6px 0; }
+  .imp__bn { white-space: normal; font-weight: 600; }
+  .imp__bv { text-align: left; white-space: normal; }
   .imp__pk { min-width: 0; }
 }
 @media print { .imp__busca, .imp__sim, .imp__dica { display: none; } }
