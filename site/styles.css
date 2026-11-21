@@ -2510,3 +2510,5 @@ html:not(.pg-collapse) .pg-top__nav > .pg-sec { display: none; }
 .cpub__tab th { color: var(--muted); font-weight: 600; white-space: nowrap; }
 .cpub__tab td:nth-child(n+3) { font-variant-numeric: tabular-nums; }
 .imp__bn small { color: var(--muted); font-size: .78em; }
+.gppat__fig { margin: 0; padding: 8px; background: #f6f9fc; border: 1px solid var(--box-line); border-radius: 10px; }
+.gppat__fig svg { display: block; width: 100%; height: auto; }
