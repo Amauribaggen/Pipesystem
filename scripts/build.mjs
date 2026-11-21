@@ -42,6 +42,19 @@ cpSync(src, out, { recursive: true });
 
 // Páginas próprias de cada ficha (produtos, sistemas e materiais) + sitemap.xml com todas as URLs
 const D = loadData(src);
+// Totais do catálogo gravados no HTML (robôs de busca e quem abre sem JavaScript; o script.js recalcula no navegador)
+{
+  const f = join(out, 'index.html');
+  const fichas = D.CATALOG.length;
+  const fabricantes = new Set(Object.values(D.MANUFACTURERS).flat().map(x => x[0].replace(/ \(.*/, ''))).size;
+  const num = (h, k, n) => h.replace(new RegExp(`<strong data-count="\\d+" data-prefix="" data-num="${k}">\\d+<`), `<strong data-count="${n}" data-prefix="" data-num="${k}">${n}<`);
+  let h = readFileSync(f, 'utf8');
+  h = num(num(h, 'fichas', fichas), 'fabricantes', fabricantes)
+    .replace(/<b>\d+<\/b> materiais e \d+ fabricantes/, `<b>${fichas}</b> materiais e ${fabricantes} fabricantes`)
+    .replace(/entre as \d+ do catálogo/g, `entre as ${fichas} do catálogo`);
+  writeFileSync(f, h);
+  console.log(`Totais do catálogo: ${fichas} fichas, ${fabricantes} fabricantes`);
+}
 Object.assign(SIZES, imageSizes(src));
 writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SIZES) + ';\n');
 // PipeSystem de Bolso: glossário e normas num arquivo só, guardado no aparelho para uso sem internet
