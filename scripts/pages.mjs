@@ -811,6 +811,8 @@ export function sitemap(pages, homeImages, outDir, datas = {}) {
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
     urlEntry(BASE + '/', homeImages, '1.0', datas['/']),
     ...pages.map(p => urlEntry(BASE + p.url, p.images, '0.8', datas[p.url])),
+    // Monitor de Investimentos: servido pelo projeto do Monitor (vercel.json encaminha /investimentos), atualizado toda semana
+    urlEntry(BASE + '/investimentos', [], '0.8', today),
     '</urlset>', ''].join('\n');
   writeFileSync(join(outDir, 'sitemap.xml'), xml);
 }
