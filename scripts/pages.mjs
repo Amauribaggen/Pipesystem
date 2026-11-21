@@ -19,7 +19,7 @@ const IDIOMA = readFileSync(new URL('../site/index.html', import.meta.url), 'utf
 export function loadData(siteDir) {
   const files = ['webtools.js', 'normas.js', 'products.js', 'systems.js', 'revisoes.js', 'catalog.js', 'bim.js', 'glossario.js', 'sinapi-precos.js', 'comparativos.js', 'logos.js'];
   const code = files.map(f => readFileSync(join(siteDir, f), 'utf8')).join('\n;\n') +
-    '\n;({ adFichaHTML, logoFab, certFab, certNota, PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_EXTRA, IA_CREDITO, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML, NORM_GROUPS, BIM_LIBS, WEB_TOOLS });';
+    '\n;({ ANUNCIOS, adFichaHTML, logoFab, certFab, certNota, PRODUCT_GROUPS, PRODUCTS, SYSTEMS, SYSTEM_PHOTOS, CATALOG, MANUFACTURERS, MATERIAL_PHOTOS, MATERIAL_EXTRA, IA_CREDITO, MATERIAL_ART, MATERIAL_OF_PRODUCT, REVISAO, revisaoData, revisaoHTML, normTags, linkNorms, bimBoxHTML, GLOSSARIO, CMPS, comparativoHTML, cmpLinksHTML, cmpTiposHTML, NORM_GROUPS, BIM_LIBS, WEB_TOOLS });';
   return vm.runInNewContext(code, { URL, console }, { filename: 'dados-do-site.js' });
 }
 
@@ -256,6 +256,31 @@ export function impResumoMateriais(D) {
       s: ult.map(ym => Math.round(s[ym] || 0)), ii: media('ii'), ipi: media('ipi') });
   }
   return { ultimoMes: IMP.ultimoMes, inicio: ult[0], ptax: TARIFAS?.ptax || null, itens };
+}
+// Banner das páginas de Estatísticas (mesmo molde do patrocínio das fichas): anúncio contratado em ANUNCIOS[lugar] ou convite para anunciar
+function adEstatHTML(D, lugar) {
+  const ad = D.ANUNCIOS && D.ANUNCIOS[lugar];
+  if (ad) return `<div class="adslot adslot--sheet"><a class="ad ad--basico ad--sponsored" href="${ad.url}" target="_blank" rel="sponsored noopener">
+    <span class="ad__label">Patrocinado</span><img src="/${ad.img}" alt="Anúncio: ${esc(ad.anunciante)}" loading="lazy"></a></div>`;
+  const q = `Tenho interesse no espaço publicitário: ${lugar} (Banner Básico, 300 × 100 px). `;
+  return `<div class="adslot adslot--sheet"><a class="ad ad--basico" href="/anuncie?assunto=${encodeURIComponent('Banner Básico')}&amp;msg=${encodeURIComponent(q)}#contato" data-plan="Banner Básico" data-question="${esc(q)}">
+    <span class="ad__label">Espaço publicitário</span>
+    <span class="ad__main"><b>Anuncie para quem pesquisa o mercado</b><small>${esc(lugar)}</small></span>
+    <span class="ad__meta"><span class="ad__size">Banner Básico · 300 × 100 px</span><span class="ad__cta">Anuncie →</span></span></a></div>`;
+}
+// Radar de Compras Públicas no PipeSystem Pro: resumo por ficha (12 meses)
+export function cpResumoMateriais(D) {
+  if (!CP) return null;
+  const itens = [];
+  for (const m of D.CATALOG) {
+    const k = CP.materiais[m.id], A = k && CP.grupos[k];
+    if (!A) continue;
+    itens.push({ slug: m.id.replace(/^mat-/, ''), n: m.name, cat: m.cat, ch: (m.chaves || []).join(' '), ncm: CP.ncmPorMat[m.id] || [],
+      v: Math.round(A.v), nn: A.n, nc: A.nc, nf: A.nf, s: A.s.map(x => Math.round(x[1])),
+      c: A.comp.slice(0, 5).map(x => [x[0], x[2], Math.round(x[3])]), f: A.forn.slice(0, 5).map(x => [x[0], x[1], Math.round(x[3])]),
+      pr: A.pr[0] || null });
+  }
+  return { inicio: CP.meses[0], fim: CP.meses[CP.meses.length - 1], itens };
 }
 // Itens do Radar no índice de busca do site
 export function impItensBusca(D) {
@@ -557,6 +582,7 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
     const com = mats.map(m => ({ m, r: impResumo(m.id) })).filter(x => x.r);
     const body = `      <div class="sheet__head"><div><p class="eyebrow">Ferramenta gratuita · Novo</p><h1 id="sheetTitle" class="page__title">Radar de Importações</h1></div></div>
       <p class="sheet__desc page__lead">Quanto o Brasil importa de cada tubo, conexão, válvula, bomba e ferramenta do catálogo PipeSystem: evolução mês a mês, países de origem, preço médio por kg, estados compradores e portos de entrada. Dados oficiais do Comex Stat (MDIC), atualizados todo mês.</p>
+      ${adEstatHTML(D, 'Estatísticas — Radar de Importações')}
       <div class="imp" id="imp">
         <p class="imp__data" id="impData">Dados até ${mesLongo(IMP.ultimoMes)}</p>
         <div id="impInicio">
@@ -611,6 +637,7 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
           <li><b>Compare preços:</b> a faixa de preço pago por unidade ajuda a calibrar a sua proposta.</li>
         </ol>
       </div>
+      ${adEstatHTML(D, 'Estatísticas — Radar de Compras Públicas')}
       <div class="imp" id="cpub">
         <p class="imp__data">Notas de ${ini} a ${fim}</p>
         <div id="cpInicio">
@@ -658,6 +685,7 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
         ${card('/compras-publicas', 'Portal da Transparência · CGU', 'Radar de Compras Públicas', 'O que o governo federal compra de cada material: os órgãos que compram, as empresas que vendem, os estados e o preço pago por unidade.', ['Descobrir órgãos que compram o seu produto', 'Conhecer a concorrência nas vendas ao governo', 'Ter um preço de referência para propostas'], 'Abrir o Radar de Compras Públicas')}
         ${card('/investimentos', 'Boletim do Investimento · Bradesco', 'Monitor de Investimentos', 'Os investimentos anunciados por empresas no Brasil, por setor e estado, com a estimativa de quanto vai para cada elo da cadeia de fornecimento.', ['Antecipar obras e fábricas que vão comprar materiais', 'Ver os setores e estados que mais investem', 'Baixar a planilha completa'], 'Abrir o Monitor de Investimentos')}
       </div>
+      ${adEstatHTML(D, 'Estatísticas — página dos painéis de mercado')}
       <p class="tags__note">O Monitor de Investimentos é um painel independente feito a partir do <a href="https://www.economiaemdia.com.br/home/monitores/boletim-de-investimentos" target="_blank" rel="noopener noreferrer">Boletim do Investimento</a> da Pesquisa Econômica Bradesco, sem vínculo com o banco.</p>`;
     pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
       title: 'Estatísticas do mercado hidráulico: importações, compras públicas e investimentos | PipeSystem',
