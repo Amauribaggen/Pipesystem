@@ -128,6 +128,6 @@ TODOS = {
     'mat-vasos-expansao': ('Como funciona o vaso de expansão', vaso_expansao()),
     'mat-hidrometros': ('Como funciona o hidrômetro', hidrometro()),
 }
-# Publicadas no site. 21/11/2026: o usuário quis ver primeiro só a bomba no ar; as outras aguardam aprovação.
-PUBLICAR = ['mat-bombas']
+# Publicadas no site (21/11/2026: primeiro só a bomba; depois, com OK do usuário, as outras 5).
+PUBLICAR = list(TODOS)
 FIGS = {k: v for k, v in TODOS.items() if k in PUBLICAR}
