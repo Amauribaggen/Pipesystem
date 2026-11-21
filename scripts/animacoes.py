@@ -359,9 +359,83 @@ FIGS = {
     'Vazamento descoberto depois do revestimento': depois_revestimento(),
 }
 
+# ================= Desenhos animados dos guias passo a passo (bloco GUIAS_FIG em site/guias.js) =================
+
+# ---------- Teste de estanqueidade da água fria e quente ----------
+def teste_estanqueidade():
+    a = Anim(5, 30, h=300)
+    a.legenda([['1. Antes de fechar a parede', 'O teste é feito com a tubulação ainda', 'aparente: antes do reboco, forro e revestimento.'],
+               ['2. Bujão em cada ponto', 'Feche chuveiros, torneiras e registros com', 'bujões. Nas juntas soldadas, espere a cura.'],
+               ['3. Encha devagar e tire o ar', 'Encha pelo ponto mais baixo e abra o mais', 'alto até sair só água: ar engana o manômetro.'],
+               ['4. Pressurize com a bomba de teste', 'Leve a rede a pelo menos 1,5 vez a pressão', 'de serviço, sem passar do limite dos tubos.'],
+               ['5. Observe e registre', 'Sem vazamento e sem queda de pressão:', 'aprovado. Registre data, pressão e duração.']],
+              [AZUL, AZUL, AZUL, AZUL, VERDE])
+    # parede com a tubulação aparente
+    a.add('<rect x="8" y="92" width="226" height="168" rx="4" fill="#f2efe9" stroke="#d8d2c6"/>',
+          ''.join(f'<path d="M8 {y} H234" stroke="#e5dfd3" stroke-width="1"/>' for y in range(110, 260, 18)))
+    principal, ramal_b, ramal_c = 'M40 250 V130 H210 V104', 'M125 130 V192', 'M170 130 V216'
+    for d in (principal, ramal_b, ramal_c):
+        a.add(f'<path d="{d}" fill="none" stroke="#c9d3df" stroke-width="9" stroke-linejoin="round"/>')
+    a.add(t(198, 100, 'chuveiro (ponto mais alto)', 9, CINZA, '400', 'end'), t(131, 206, 'lavatório', 9, CINZA), t(176, 230, 'tanque', 9, CINZA),
+          t(46, 270, 'entrada (ponto mais baixo)', 9, CINZA))
+    pontos = [(210, 102), (125, 194), (170, 218)]
+    # 1: pontas abertas
+    a.add(a.g({0}, ''.join(f'<circle cx="{x}" cy="{y}" r="5" fill="#fff" stroke="{VERM}" stroke-width="2"/>' for x, y in pontos) + t(120, 284, 'pontas abertas', 11, VERM, '700', 'middle')))
+    # bujões (aparecem um a um na fase 2 e ficam nas seguintes)
+    buj = ''
+    for k, (x, y) in enumerate(pontos):
+        buj += (f'<circle cx="{x}" cy="{y}" r="7" fill="{VERM}" opacity="0"><animate attributeName="opacity" values="0;1" dur=".3s" begin="{a.fase(1, .6 + k * 1.2)}" fill="freeze"/></circle>')
+    a.add(a.g({1}, buj + t(120, 284, 'bujões colocados', 11, AZUL, '700', 'middle')))
+    buj_fixo = ''.join(f'<circle cx="{x}" cy="{y}" r="7" fill="{VERM}"/>' for x, y in pontos)
+    a.add(a.g({2, 3, 4}, buj_fixo))
+    # 3: enche pelo ponto mais baixo; o ar sai pelo ponto mais alto
+    enche = ''
+    for d, L, atraso in ((principal, 330, 0), (ramal_b, 62, 1.8), (ramal_c, 86, 2.4)):
+        enche += (f'<path d="{d}" fill="none" stroke="{AGUA}" stroke-width="6" stroke-linejoin="round" stroke-dasharray="{L}" stroke-dashoffset="{L}">'
+                  f'<animate attributeName="stroke-dashoffset" values="{L};0" dur="4s" begin="{a.fase(2, atraso)}" fill="freeze"/></path>')
+    ar = ''.join(f'<circle cx="214" cy="92" r="3.5" fill="#fff" stroke="#9aa5b1"><animate attributeName="cy" values="100;76" dur="1.2s" begin="{d}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.2s" begin="{d}s" repeatCount="indefinite"/></circle>' for d in (0, .4, .8))
+    a.add(a.g({2}, enche + ar + t(120, 284, 'enchendo e tirando o ar', 11, AZUL, '700', 'middle')))
+    cheio = ''.join(f'<path d="{d}" fill="none" stroke="{AGUA}" stroke-width="6" stroke-linejoin="round"/>' for d in (principal, ramal_b, ramal_c))
+    a.add(a.g({3, 4}, cheio))
+    # bomba de teste ligada na entrada
+    a.add('<path d="M40 250 V262 H262 V276" fill="none" stroke="#5b6b80" stroke-width="3"/>', '<rect x="244" y="274" width="38" height="18" rx="3" fill="#dfe5ec" stroke="#5b6b80"/>',
+          t(263, 300, 'bomba de teste', 9, CINZA, '400', 'middle'))
+    alav = '<path d="M282 280 L304 268" stroke="#5b6b80" stroke-width="4" stroke-linecap="round"/>'
+    a.add(a.g({0, 1, 2, 4}, alav), a.g({3}, f'<g>{alav}<animateTransform attributeName="transform" type="rotate" values="0 282 280;-28 282 280;0 282 280" dur=".8s" repeatCount="indefinite"/></g>'))
+    # manômetro: 0 a 1,5 vez a pressão de serviço
+    cx, cy, r = 278, 168, 34
+    a.add(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#fff" stroke="#5b6b80" stroke-width="3"/>', t(cx, 122, 'manômetro', 10, CINZA, '600', 'middle'),
+          f'<path d="M{cx - 24} {cy + 24} A34 34 0 0 1 {cx + 30} {cy - 16}" fill="none" stroke="#e3e8ef" stroke-width="5"/>',
+          f'<path d="M{cx + 22} {cy - 26} A34 34 0 0 1 {cx + 30} {cy - 16}" fill="none" stroke="{VERDE}" stroke-width="6"/>',
+          t(cx - 22, cy + 30, '0', 9, CINZA, '400', 'middle'), t(cx + 4, cy + 54, '1,5 × serviço', 9, VERDE, '700', 'middle'),
+          '<path d="M262 196 V262" stroke="#5b6b80" stroke-width="2"/>')
+    ag = lambda extra='', ang=-135: f'<path d="M{cx} {cy} V{cy - 26}" stroke="{TXT}" stroke-width="3" stroke-linecap="round" transform="rotate({ang} {cx} {cy})">{extra}</path><circle cx="{cx}" cy="{cy}" r="4" fill="{TXT}"/>'
+    a.add(a.g({0, 1, 2}, ag()), a.g({3}, ag(f'<animateTransform attributeName="transform" type="rotate" values="-135 {cx} {cy};45 {cx} {cy}" dur="4s" begin="{a.fase(3)}" fill="freeze"/>')),
+          a.g({4}, ag(ang=45) + t(120, 284, 'pressão estável: aprovado', 11, VERDE, '700', 'middle')
+                   + f'<circle cx="86" cy="222" r="12" fill="#fff" stroke="#5b6b80" stroke-width="2"/><path d="M86 222 V213" stroke="{TXT}" stroke-width="2"><animateTransform attributeName="transform" type="rotate" from="0 86 222" to="360 86 222" dur="3s" repeatCount="indefinite"/></path>' + t(86, 204, 'tempo', 9, CINZA, '400', 'middle')))
+    a.add(a.g({3}, t(120, 284, 'subindo a pressão', 11, AZUL, '700', 'middle')))
+    corpo = a.svg('Desenho animado do teste de estanqueidade da água fria e quente: com a tubulação ainda aparente, coloca-se bujão em cada ponto, enche-se a rede pelo ponto mais baixo tirando o ar pelo mais alto, pressuriza-se com a bomba de teste até 1,5 vez a pressão de serviço e observa-se o manômetro: sem queda de pressão, o teste é aprovado e registrado.')
+    return (f'<figure class="gpfig gpfig--golpe">{corpo}<figcaption>O teste em 5 etapas. Se a pressão cair, alivie, corrija a junta (cortando e refazendo, sem remendo) e repita o teste.</figcaption></figure>')
+
+
+GUIAS_FIG = {
+    'estanq-agua': teste_estanqueidade(),
+}
+
+
 if __name__ == '__main__':
     p = 'site/guias.js'
     s = open(p, encoding='utf-8').read()
+    # guias passo a passo: bloco GUIAS_FIG (o guia que já tem "fig" próprio continua com o dele)
+    for k in GUIAS_FIG:
+        assert f"id: '{k}'" in s, f'guia {k} não existe'
+    bloco_g = ('// <GUIAS_FIG> Desenhos animados dos guias, gerados por scripts/animacoes.py (não edite à mão)\n'
+               'const GUIAS_FIG = ' + json.dumps(GUIAS_FIG, ensure_ascii=False) + ';\n// </GUIAS_FIG>\n')
+    if '// <GUIAS_FIG>' in s:
+        s = re.sub(r'// <GUIAS_FIG>.*?// </GUIAS_FIG>\n', lambda m: bloco_g, s, flags=re.S)
+    else:
+        i = s.index('// <PATS_FIG>')
+        s = s[:i] + bloco_g + s[i:]
     nomes = [x or y for x, y in re.findall(r"t: (?:'([^']+)'|\"([^\"]+)\")", s[s.index('const PATS'):s.index('];', s.index('const PATS'))])]
     for k in FIGS:
         assert k in nomes, f'"{k}" não está em PATS'
