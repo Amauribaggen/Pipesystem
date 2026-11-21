@@ -168,6 +168,46 @@ def boia():
     return a.svg('Desenho animado da torneira de boia: a água entra no reservatório e a boia sobe junto com o nível; no nível ajustado, o braço fecha a entrada, e reabre quando o nível baixa.')
 
 
+# ---------- purgador de boia ----------
+def purgador():
+    a = Anim(2, 12)
+    a.legenda([['Só vapor', 'A boia fica baixa e a saída fechada:', 'o vapor não escapa.'],
+               ['Chegou condensado', 'O nível sobe, a boia abre a saída e o', 'condensado sai, sem perder vapor.']], [AZUL, VERDE])
+    a.add(f'<path d="M10 112 H120" stroke="{METAL_E}" stroke-width="16"/><path d="M10 112 H120" stroke="#fbeaea" stroke-width="10"/>', t(14, 100, 'vapor e condensado', 10, CINZA),
+          f'<rect x="120" y="96" width="120" height="120" rx="16" fill="#f4f7fa" stroke="{METAL_E}" stroke-width="3"/>',
+          f'<path d="M222 206 V236 H310" fill="none" stroke="{METAL_E}" stroke-width="10"/>', f'<circle cx="222" cy="200" r="5" fill="{METAL_E}"/>', t(306, 228, 'saída', 10, CINZA, '400', 'end'))
+    vapor = ''.join(f'<circle r="5" fill="#fff" stroke="#d9a0a0"><animateMotion path="M12 112 H130 Q170 112 180 130" dur="2.4s" begin="-{k * .6:.1f}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" keyTimes="0;.8;1" dur="2.4s" begin="-{k * .6:.1f}s" repeatCount="indefinite"/></circle>' for k in range(4))
+    a.add(vapor)
+    a.add(a.g({0}, f'<rect x="123" y="196" width="114" height="17" fill="{AGUA}"/><path d="M222 200 L170 186" stroke="{METAL_E}" stroke-width="3"/><circle cx="160" cy="188" r="14" fill="#f0b429"/>'
+                   + t(180, 92, 'saída fechada', 11, AZUL, '700', 'middle')))
+    f1 = a.fase(1)
+    a.add(a.g({1}, f'<rect x="123" y="150" width="114" height="63" fill="{AGUA}"><animate attributeName="y" values="196;150" dur="2.5s" begin="{f1}" fill="freeze"/><animate attributeName="height" values="17;63" dur="2.5s" begin="{f1}" fill="freeze"/></rect>'
+                   + f'<g><animateTransform attributeName="transform" type="rotate" values="0 222 200;22 222 200" dur="2.5s" begin="{f1}" fill="freeze"/><path d="M222 200 L170 186" stroke="{METAL_E}" stroke-width="3"/><circle cx="160" cy="188" r="14" fill="#f0b429"/></g>'
+                   + ''.join(f'<circle r="3.5" fill="{AZUL}"><animateMotion path="M222 206 V236 H310" dur="1.4s" begin="-{k * .35:.2f}s" repeatCount="indefinite"/></circle>' for k in range(4))
+                   + t(180, 92, 'condensado saindo', 11, VERDE, '700', 'middle')))
+    return a.svg('Desenho animado do purgador de boia: com só vapor, a boia fica baixa e a saída fechada; quando chega condensado, o nível sobe, a boia abre a saída e o condensado é descarregado sem perder vapor.')
+
+
+# ---------- válvula de segurança ----------
+def seguranca():
+    a = Anim(2, 12, dy=10)
+    a.legenda([['Pressão normal', 'A mola segura o disco contra a sede', 'e a válvula fica fechada.'],
+               ['Pressão acima do ajuste', 'A força da pressão vence a mola, o disco', 'sobe e alivia até a pressão baixar.']], [AZUL, VERM])
+    a.add(f'<rect x="20" y="170" width="280" height="64" rx="18" fill="#eef6fc" stroke="{METAL_E}" stroke-width="3"/>', t(80, 194, 'vaso ou rede', 11, CINZA, '400', 'middle'),
+          f'<rect x="140" y="140" width="40" height="32" fill="{CORPO}" stroke="{METAL_E}" stroke-width="2"/>', f'<path d="M180 146 H240" stroke="{METAL_E}" stroke-width="10"/>', t(244, 138, 'descarga', 10, CINZA),
+          f'<rect x="146" y="88" width="28" height="52" fill="none" stroke="{METAL_E}" stroke-width="2"/>', f'<path d="M148 140 H172" stroke="{METAL_E}" stroke-width="3"/>', t(182, 104, 'mola', 10, CINZA))
+    mola = lambda y0: f'<path d="M160 92 l10 {(y0 - 92) / 6:.1f} l-20 {(y0 - 92) / 6:.1f} l20 {(y0 - 92) / 6:.1f} l-20 {(y0 - 92) / 6:.1f} l20 {(y0 - 92) / 6:.1f} l-10 {(y0 - 92) / 6:.1f}" fill="none" stroke="{METAL_E}" stroke-width="2"/>'
+    disco = lambda y: f'<rect x="146" y="{y}" width="28" height="7" rx="2" fill="{METAL}" stroke="{METAL_E}"/>'
+    man = lambda ang: (f'<circle cx="250" cy="200" r="18" fill="#fff" stroke="{METAL_E}" stroke-width="2"/><path d="M236 190 A18 18 0 0 1 262 188" fill="none" stroke="{VERM}" stroke-width="3"/>'
+                       f'<path d="M250 200 V186" stroke="{TXT}" stroke-width="2.5" transform="rotate({ang} 250 200)"/>')
+    a.add(a.g({0}, mola(132) + disco(132) + man(-30) + t(110, 220, 'pressão normal', 11, AZUL, '700', 'middle')))
+    a.add(a.g({1}, mola(116) + disco(116) + man(38)
+                   + ''.join(f'<path d="M190 146 h40" stroke="#fff" stroke-width="3" stroke-dasharray="6 6"><animate attributeName="stroke-dashoffset" values="12;0" dur=".3s" repeatCount="indefinite"/></path>' for _ in range(1))
+                   + ''.join(f'<path d="M{x} 134 q6 -8 0 -16" fill="none" stroke="#9aa5b1" stroke-width="2.5" stroke-linecap="round"><animate attributeName="opacity" values="0;1;0" dur="1s" begin="{d}s" repeatCount="indefinite"/></path>' for x, d in [(250, 0), (262, .35), (274, .7)])
+                   + t(110, 220, 'acima do ajuste: alivia', 11, VERM, '700', 'middle')))
+    return a.svg('Desenho animado da válvula de segurança: com a pressão normal, a mola segura o disco contra a sede; quando a pressão passa do valor de ajuste, o disco sobe e a válvula descarrega até a pressão baixar.')
+
+
 FIGS = {
     'mat-gaveta': ('Como funciona a válvula de gaveta', gaveta()),
     'mat-globo': ('Como funciona a válvula globo', globo()),
@@ -177,6 +217,8 @@ FIGS = {
     'mat-redutora': ('Como funciona a válvula redutora de pressão', redutora()),
     'mat-ventosas': ('Como funciona a ventosa', ventosa()),
     'mat-boia': ('Como funciona a torneira de boia', boia()),
+    'mat-purgadores': ('Como funciona o purgador de boia', purgador()),
+    'mat-seguranca': ('Como funciona a válvula de segurança', seguranca()),
 }
 
 if __name__ == '__main__':

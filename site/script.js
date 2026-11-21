@@ -261,7 +261,7 @@ function renderMaterial(m) {
     </figure>` : `<figure class="matfig" style="--m:${m.tone}">
       <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${m.name}">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
       <figcaption>Ilustração representativa</figcaption>
-    </figure>`) : ''}${extraHTML(m)}
+    </figure>`) : ''}${extraHTML(m)}${m.cat === 'Válvulas' ? `<div data-como="${m.id}" hidden></div>` : ''}
     <p class="sheet__desc">${linkNorms(m.desc)}</p>
     ${p ? tabelasHTML(p.tabelas) : ''}
     <h4>Dados técnicos</h4>
@@ -289,6 +289,18 @@ function renderMaterial(m) {
       <a href="#contato" class="btn" data-subject="Cotação de materiais" data-question="Cotação de ${m.name}: (informe diâmetros, quantidades e local de entrega) ">Solicitar cotação</a>
       <a href="#contato" class="btn btn--ghost" data-subject="Consulta técnica" data-question="Consulta sobre ${m.name}: ">Consulta técnica</a>
     </div>`;
+  comoFunciona();
+}
+// "Como funciona" animado das válvulas (site/como-funciona.json, o mesmo das páginas das fichas): carregado só quando abre uma ficha de válvula
+let COMO_DADOS = null;
+async function comoFunciona() {
+  const el = sheetBody.querySelector('[data-como]');
+  if (!el) return;
+  try {
+    COMO_DADOS ||= await fetch('/como-funciona.json').then(r => r.json());
+    const c = COMO_DADOS[el.dataset.como];
+    if (c && el.isConnected) el.outerHTML = `<figure class="matfig matfig--anim"><figcaption class="matfig__tit">${c.t}</figcaption>${c.svg}</figure>`;
+  } catch { /* sem a animação, a ficha segue normal */ }
 }
 
 function openProduct(id) {
