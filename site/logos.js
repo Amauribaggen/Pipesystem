@@ -342,8 +342,36 @@ const CERT_INMETRO = {
   'mat-aco': { prog: 'tubos de aço-carbono', fab: { 'Tubos Apolo': '001697/2019', 'Vallourec': '002185/2018', 'Tuper': '003314/2019' } },
   'mat-aco-sem-costura': { prog: 'tubos de aço-carbono', fab: { 'Vallourec': '002185/2018' } },
 };
+// ===== Chamada "Qualificada PBQP-H" nas fichas: empresas "Qualificadas" no Programa Setorial da Qualidade (SiMaC) do produto da ficha =====
+// Fonte: relatório "Classificação das Empresas" de cada PSQ em pbqp-h.cidades.gov.br/sistemas/simac/programas-setoriais-da-qualidade-psq/.
+// Os relatórios valem cerca de 3 meses: revisar quando vencerem (o primeiro vence em 30/11/2026). Levantamento em estudos/pbqp-levantamento.csv.
+const PBQP_UP = 'https://pbqp-h.cidades.gov.br/wp-content/uploads/';
+const PBQP_PSQ = {
+  pvc: { prog: 'Tubos e Conexões de PVC para Sistemas Hidráulicos Prediais', rs: 'Relatório Setorial nº 149, válido de 16/10/2026 a 15/01/2027', url: PBQP_UP + '2021/09/Classificacao-Empresas_RS149.pdf' },
+  infra: { prog: 'Tubos de PVC para Infraestrutura', rs: 'Relatório Setorial nº 113, válido de 23/10/2026 a 22/01/2027', url: PBQP_UP + '2021/09/Classificacao-Empresas_RS113-1.pdf' },
+  pe: { prog: 'Tubulações de Polietileno para Redes e Ramais Prediais de Água e Esgoto Pressurizado', rs: 'Relatório Setorial nº 001, válido de 31/08/2026 a 30/11/2026', url: PBQP_UP + '2026/10/Classificacao-Empresas__RS01.pdf' },
+  metais: { prog: 'Metais Sanitários', rs: 'Relatório Setorial nº 108, válido de 02/09/2026 a 01/12/2026', url: PBQP_UP + '2021/09/Classificacao-Empresas_RS113.pdf' },
+};
+const PBQP_H = {
+  'mat-pvc': ['pvc', ['Tigre', 'Krona', 'Fortlev', 'Amanco Wavin', 'Plastubos', 'Pevesul', 'Corr Plastik', 'Multilit']],
+  'mat-pvc-esgoto': ['pvc', ['Tigre', 'Amanco Wavin', 'Krona', 'Fortlev']],
+  'mat-conexoes-pvc': ['pvc', ['Tigre', 'Amanco Wavin', 'Krona', 'Fortlev', 'Plastilit', 'Pevesul', 'Corr Plastik']],
+  'mat-pvc-agua': ['infra', ['Tigre', 'Amanco Wavin']],
+  'mat-pe': ['pe', ['Tigre', 'Kanaflex', 'Corr Plastik', 'GF Piping Systems']],
+  'mat-metais': ['metais', ['Docol', 'Deca', 'Fabrimar', 'Tigre', 'Krona']],
+  'mat-registros': ['metais', ['Deca', 'Docol', 'Fabrimar', 'Krona', 'Meber']],
+  'mat-flexiveis': ['metais', ['Tigre', 'Krona']],
+  'mat-sifoes': ['metais', ['Tigre', 'Astra', 'Docol', 'Deca', 'Krona']],
+};
+const pbqpFab = (matId, nome) => {
+  const p = PBQP_H[matId];
+  if (!p || !p[1].includes(nome)) return '';
+  const s = PBQP_PSQ[p[0]];
+  return `<a class="fabs__cert fabs__cert--pbqp" href="${s.url}" target="_blank" rel="noopener noreferrer" title="Ver a classificação das empresas no PBQP-H (${s.rs})">Qualificada PBQP-H</a>`;
+};
 const certFab = (matId, nome) => {
   const c = CERT_INMETRO[matId], reg = c && c.fab[nome];
-  return reg ? `<a class="fabs__cert" href="${/^http/.test(reg) ? reg : `https://registro.inmetro.gov.br/consulta/detalhe.aspx?pag=1&amp;NumeroRegistro=${reg}`}" target="_blank" rel="noopener noreferrer" title="${/^http/.test(reg) ? 'Ver a referência da certificação' : 'Ver o registro no Inmetro'}">Certificado INMETRO</a>` : '';
+  return (reg ? `<a class="fabs__cert" href="${/^http/.test(reg) ? reg : `https://registro.inmetro.gov.br/consulta/detalhe.aspx?pag=1&amp;NumeroRegistro=${reg}`}" target="_blank" rel="noopener noreferrer" title="${/^http/.test(reg) ? 'Ver a referência da certificação' : 'Ver o registro no Inmetro'}">Certificado INMETRO</a>` : '') + pbqpFab(matId, nome);
 };
-const certNota = matId => CERT_INMETRO[matId] ? `<p class="fabs__note"><b>Certificado INMETRO:</b> ${CERT_INMETRO[matId].nota || `a empresa tem modelos com certificado ativo em ${CERT_INMETRO[matId].prog}, conforme a consulta pública do Inmetro em novembro de 2026. Confirme o modelo escolhido no link da chamada.`}</p>` : '';
+const certNota = matId => (CERT_INMETRO[matId] ? `<p class="fabs__note"><b>Certificado INMETRO:</b> ${CERT_INMETRO[matId].nota || `a empresa tem modelos com certificado ativo em ${CERT_INMETRO[matId].prog}, conforme a consulta pública do Inmetro em novembro de 2026. Confirme o modelo escolhido no link da chamada.`}</p>` : '')
+  + (PBQP_H[matId] ? `<p class="fabs__note"><b>Qualificada PBQP-H:</b> a empresa consta como "Qualificada" no Programa Setorial da Qualidade de ${PBQP_PSQ[PBQP_H[matId][0]].prog} do PBQP-H (${PBQP_PSQ[PBQP_H[matId][0]].rs}). A classificação é revista a cada relatório; confira a versão em vigor no link da chamada.</p>` : '');
