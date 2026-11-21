@@ -261,7 +261,7 @@ function renderMaterial(m) {
     </figure>` : `<figure class="matfig" style="--m:${m.tone}">
       <svg viewBox="0 0 200 120" role="img" aria-label="Ilustração: ${m.name}">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>
       <figcaption>Ilustração representativa</figcaption>
-    </figure>`) : ''}${extraHTML(m)}${m.cat === 'Válvulas' ? `<div data-como="${m.id}" hidden></div>` : ''}
+    </figure>`) : ''}${extraHTML(m)}${['Válvulas', 'Equipamentos', 'Acessórios'].includes(m.cat) ? `<div data-como="${m.id}" hidden></div>` : ''}
     <p class="sheet__desc">${linkNorms(m.desc)}</p>
     ${p ? tabelasHTML(p.tabelas) : ''}
     <h4>Dados técnicos</h4>
@@ -291,7 +291,7 @@ function renderMaterial(m) {
     </div>`;
   comoFunciona();
 }
-// "Como funciona" animado das válvulas (site/como-funciona.json, o mesmo das páginas das fichas): carregado só quando abre uma ficha de válvula
+// "Como funciona" animado de válvulas e equipamentos (site/como-funciona.json, o mesmo das páginas das fichas): carregado só quando abre uma dessas fichas
 let COMO_DADOS = null;
 async function comoFunciona() {
   const el = sheetBody.querySelector('[data-como]');

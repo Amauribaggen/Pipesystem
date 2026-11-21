@@ -313,7 +313,7 @@ function glossarize(root, opts = {}) {
     }));
     glossarize.re = new RegExp(`(?<![\\p{L}\\d])(?:${all.sort((a, b) => b.length - a.length).map(esc).join('|')})(?![\\p{L}\\d])`, 'giu');
   }
-  const SKIP = 'a, h1, h2, h3, h4, h5, h6, button, summary, label, code, script, style, input, textarea, select, .gl, .formula, .crumbs, [data-nogloss]';
+  const SKIP = 'a, h1, h2, h3, h4, h5, h6, button, summary, label, code, script, style, input, textarea, select, svg, .gl, .formula, .crumbs, [data-nogloss]';   // svg: textos dos desenhos não viram link
   const seen = new Set(opts.skip ? [opts.skip] : []);
   const max = opts.max || 10;
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {

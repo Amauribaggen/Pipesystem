@@ -1,4 +1,4 @@
-# "Como funciona" animado das válvulas, nas páginas das fichas (/materiais/...).
+# "Como funciona" animado das válvulas e dos equipamentos (scripts/animacoes_equipamentos.py), nas páginas das fichas (/materiais/...).
 # Uso, na pasta do projeto:  python -I scripts/animacoes_valvulas.py
 # Grava site/como-funciona.json ({id da ficha: {t: título, svg}}), lido por scripts/pages.mjs.
 import json, os, sys
@@ -222,6 +222,7 @@ FIGS = {
 }
 
 if __name__ == '__main__':
-    saida = {k: {'t': tit, 'svg': svg} for k, (tit, svg) in FIGS.items()}
+    from animacoes_equipamentos import FIGS as EQUIP   # bombas, aquecedores, vaso de expansão, hidrômetro
+    saida = {k: {'t': tit, 'svg': svg} for k, (tit, svg) in {**FIGS, **EQUIP}.items()}
     json.dump(saida, open('site/como-funciona.json', 'w', encoding='utf-8'), ensure_ascii=False)
     print('site/como-funciona.json:', len(saida), 'animações,', os.path.getsize('site/como-funciona.json') // 1024, 'KB')
