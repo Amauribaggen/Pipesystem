@@ -1456,6 +1456,10 @@ if (document.querySelector('[data-num]')) {
       group('', [{ href: '#associacoes', label: 'Associações e entidades do setor' }]),
     anuncie: () => group('Planos de banner', tag('#anuncie .plan', 'plano', 'anuncie'), '#planos-banner') +
       group('', [{ href: '#adMap', label: 'Onde os banners aparecem' }]),
+    estatisticas: () => group('Estatísticas do mercado', [
+      { href: '/importacoes', label: 'Radar de Importações: o que o Brasil importa' },
+      { href: '/compras-publicas', label: 'Radar de Compras Públicas: o que o governo compra', attrs: ' data-novo' },
+      { href: '/investimentos', label: 'Monitor de Investimentos: obras e projetos anunciados', attrs: ' data-novo' }], '/estatisticas'),
     sobre: () => group('Diretoria', tag('#sobre .person__row', 'diretor', 'sobre'), '#diretoria') +
       group('', [{ href: '#contato', label: 'Pesquisa de Mercado & Consultoria', attrs: ' data-subject="Pesquisa de Mercado & Consultoria"' },
         { href: '#contato', label: 'Fale conosco' }]),
@@ -1463,8 +1467,8 @@ if (document.querySelector('[data-num]')) {
   const WIDE = { materiais: 'dd__menu--mega', normas: 'dd__menu--cols2', sistemas: 'dd__menu--cols2', ferramentas: 'dd__menu--cols2' };
 
   // Transforma cada link do menu em item com submenu (o clique no nome continua levando à seção)
-  links.querySelectorAll(':scope > a[href^="#"]:not(.btn)').forEach(a => {
-    const id = a.getAttribute('href').slice(1);
+  links.querySelectorAll(':scope > a[href^="#"]:not(.btn), :scope > a[data-dd]').forEach(a => {
+    const id = a.dataset.dd || a.getAttribute('href').slice(1);
     if (!MENUS[id]) return;
     const wrap = document.createElement('div');
     wrap.className = 'dd' + (a.classList.contains('nav__sec') ? ' nav__sec' : '');

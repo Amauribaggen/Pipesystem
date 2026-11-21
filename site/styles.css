@@ -2487,3 +2487,26 @@ html:not(.pg-collapse) .pg-top__nav > .pg-sec { display: none; }
 .sresults__radar { background: linear-gradient(135deg, #fff6e8, #f3fafc); border: 1px solid #f2c98f; border-radius: 12px; padding: 8px 10px; margin: 6px 0; }
 .sresults__radar .sresults__gtitle span { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); margin-left: 6px; }
 .sresults__radaritem em { display: block; font-style: normal; font-size: .78rem; font-weight: 700; color: #b46a2a; margin-top: 2px; }
+
+/* ===== Estatísticas (/estatisticas) e Radar de Compras Públicas (/compras-publicas) ===== */
+.est { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; margin: 1.4em 0; }
+.est__card { display: flex; flex-direction: column; gap: .5em; border: 1px solid var(--box-line); border-radius: var(--radius); padding: 18px; background: var(--bg); }
+.est__card h2 { font-size: 1.25rem; margin: 0; }
+.est__card h2 a { color: var(--navy); }
+.est__card p { margin: 0; }
+.est__card ul { margin: .2em 0 .6em; padding-left: 1.1em; font-size: .9rem; color: var(--muted); }
+.est__card .btn { align-self: flex-start; margin-top: auto; }
+.cpub__como { border: 1px solid var(--box-line); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 14px 18px; background: var(--bg-alt); margin: 1.2em 0; }
+.cpub__como h2 { margin-top: 0; }
+.cpub__como ol { margin: 0; padding-left: 1.2em; }
+.cpub__como li { margin: .35em 0; }
+.cpub__oport { background: #eef8f6; border-left: 4px solid var(--teal-d); border-radius: 8px; padding: 12px 16px; margin: 0 0 1.6em; }
+.cpub__oport h3 { margin: 0 0 .4em; font-size: 1.05rem; }
+.cpub__oport ul { margin: 0; padding-left: 1.1em; font-size: .92rem; }
+.cpub__oport li { margin: .3em 0; }
+.cpub__tab { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.cpub__tab table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+.cpub__tab th, .cpub__tab td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.cpub__tab th { color: var(--muted); font-weight: 600; white-space: nowrap; }
+.cpub__tab td:nth-child(n+3) { font-variant-numeric: tabular-nums; }
+.imp__bn small { color: var(--muted); font-size: .78em; }

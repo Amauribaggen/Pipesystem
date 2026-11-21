@@ -13,6 +13,14 @@
     {
       "source": "/monitor/:path*",
       "destination": "https://pipesystem-monitor.vercel.app/:path*"
+    },
+    {
+      "source": "/investimentos",
+      "destination": "https://pipesystem-monitor.vercel.app/mrb9wj0qwqp37wep8xgw2wf0"
+    },
+    {
+      "source": "/investimentos/:arquivo*",
+      "destination": "https://pipesystem-monitor.vercel.app/mrb9wj0qwqp37wep8xgw2wf0/:arquivo*"
     }
   ],
   "redirects": [

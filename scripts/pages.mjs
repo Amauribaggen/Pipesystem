@@ -93,12 +93,12 @@ const dims = src => SIZES[src] ? ` width="${SIZES[src][0]}" height="${SIZES[src]
 const LOGO = `<svg class="logo__svg" viewBox="0 0 300 86" aria-hidden="true"><path d="M26 6c9 12 16 21 16 30a16 16 0 0 1-32 0c0-9 7-18 16-30z" fill="#1fb6c9"/><path d="M16 38c4 3 8 3 10 0s6-3 10 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><text x="56" y="40" textLength="230" lengthAdjust="spacingAndGlyphs" font-family="Montserrat, 'Arial Black', sans-serif" font-weight="800" font-size="28" fill="#fff">PIPESYSTEM</text><rect x="56" y="50" width="236" height="6" rx="3" fill="#1fb6c9"/><rect x="128" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><rect x="212" y="47" width="6" height="12" rx="1.5" fill="#0a2240" stroke="#7ee7f2" stroke-width="1.5"/><path d="M286 46l8 7-8 7" fill="none" stroke="#f2a03d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="57" y="80" textLength="235" lengthAdjust="spacing" font-family="Montserrat, Arial, sans-serif" font-weight="500" font-size="14" fill="#f2a03d">conduzindo soluções</text></svg>`;
 
 // Menu principal das páginas próprias: os mesmos itens, na mesma ordem, do menu da página inicial (site/index.html)
-const MENU = [['/cotacoes', 'Cotações', 'pg-top__hot'], ['/sistemas', 'Sistemas'], ['/materiais', 'Materiais'], ['/importacoes', 'Importações', '', true], ['/dimensionamento', 'Dimensionamento'],
+const MENU = [['/cotacoes', 'Cotações', 'pg-top__hot'], ['/sistemas', 'Sistemas'], ['/materiais', 'Materiais'], ['/estatisticas', 'Estatísticas', '', true], ['/dimensionamento', 'Dimensionamento'],
   ['/bim-cad', 'BIM/CAD'], ['/guias-praticos', 'Guias', '', true], ['/normas', 'Normas'], ['/artigos', 'Notícias']];
 // Faixa superior (institucional). No menu de três linhas esses itens entram no fim da lista principal.
 const MENU_TOPO = [['/pro', 'App Pro', '', true], ['/feiras', 'Feiras'], ['/anuncie', 'Anuncie'], ['/quem-somos', 'Quem somos'], ['/#contato', 'Cadastre-se', 'pg-barra__cta']];
 // Item do menu marcado como atual em cada página própria
-const secaoAtual = url => url.startsWith('/sistemas') ? '/sistemas' : url === '/importacoes' ? '/importacoes' : url.startsWith('/materiais') ? '/materiais'
+const secaoAtual = url => url.startsWith('/sistemas') ? '/sistemas' : ['/estatisticas', '/importacoes', '/compras-publicas', '/investimentos'].includes(url) ? '/estatisticas' : url.startsWith('/materiais') ? '/materiais'
   : /^\/(comparativos|glossario)/.test(url) ? '/guias-praticos' : url === '/noticias' ? '/artigos' : ['/pro', '/feiras', '/anuncie', '/quem-somos'].includes(url) ? url : '';
 
 function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords, reviewed, ld: extraLd = [], glossSkip }) {
@@ -210,6 +210,8 @@ ${body}
 
 // ---------- Radar de Importações (site/importacoes-dados.json, gerado por scripts/comex.mjs) ----------
 const IMP = existsSync('site/importacoes-dados.json') ? JSON.parse(readFileSync('site/importacoes-dados.json', 'utf8')) : null;
+// Radar de Compras Públicas (site/compras-dados.json, gerado por scripts/compras.py com as NF-e do Portal da Transparência)
+const CP = existsSync('site/compras-dados.json') ? JSON.parse(readFileSync('site/compras-dados.json', 'utf8')) : null;
 const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const mesLongo = ym => `${MESES[+ym.slice(5) - 1]}/${ym.slice(0, 4)}`;
 const nfBR = (v, d = 0) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -591,6 +593,76 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
       ld: [{ '@type': 'Dataset', '@id': BASE + url + '#dados', name: 'Importações brasileiras de materiais hidráulicos por NCM', description: 'Importações mensais (FOB, peso e CIF), por país, estado, local de entrada e via, dos NCMs dos materiais do catálogo PipeSystem.',
         creator: { '@id': BASE + '/#organizacao' }, isBasedOn: 'https://comexstat.mdic.gov.br/', temporalCoverage: `${Object.values(IMP.serie)[0][0][0]}/${IMP.ultimoMes}`, spatialCoverage: 'Brasil' }],
     }) });
+  }
+
+  // Radar de Compras Públicas: o que o governo federal compra dos materiais do catálogo (NF-e do Portal da Transparência)
+  if (CP) {
+    const url = '/compras-publicas';
+    const mats = D.CATALOG.filter(m => CP.materiais[m.id]).map(m => ({ id: m.id, slug: m.id.replace(/^mat-/, ''), name: m.name, cat: m.cat, chaves: (m.chaves || []).join(' ') }));
+    const ini = mesLongo(CP.meses[0]), fim = mesLongo(CP.meses[CP.meses.length - 1]);
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Estatísticas · Ferramenta gratuita · Novo</p><h1 id="sheetTitle" class="page__title">Radar de Compras Públicas</h1></div></div>
+      <p class="sheet__desc page__lead">O que o governo federal compra de cada tubo, conexão, válvula, bomba e equipamento do catálogo PipeSystem: <b>quem compra</b>, <b>quem vende</b>, <b>onde</b> e <b>a que preço</b>. São as notas fiscais eletrônicas emitidas para ministérios, universidades, institutos, hospitais e Forças Armadas, de ${ini} a ${fim}.</p>
+      <div class="cpub__como">
+        <h2 class="page__h">Como usar este radar para vender ao governo</h2>
+        <ol>
+          <li><b>Escolha o seu material</b> na lista abaixo e veja quanto o governo comprou dele em 12 meses.</li>
+          <li><b>Veja quem compra:</b> os órgãos que mais compram são os clientes a acompanhar. Eles publicam licitações e dispensas no <a href="https://www.gov.br/compras/pt-br" target="_blank" rel="noopener noreferrer">Compras.gov.br</a>.</li>
+          <li><b>Veja quem vende:</b> as empresas que já fornecem mostram a concorrência e também possíveis parceiros e revendas na sua região.</li>
+          <li><b>Compare preços:</b> a faixa de preço pago por unidade ajuda a calibrar a sua proposta.</li>
+        </ol>
+      </div>
+      <div class="imp" id="cpub">
+        <p class="imp__data">Notas de ${ini} a ${fim}</p>
+        <div id="cpInicio">
+          <div id="cpResumo"></div>
+          <div class="imp__busca">
+            <label for="cpBuscaMat">Procure um material ou NCM</label>
+            <input id="cpBuscaMat" type="search" placeholder="Ex.: tubo de PVC, válvula de esfera, 7307" autocomplete="off">
+            <ol class="imp__lista" id="cpLista">${mats.map(m => `<li><a href="?m=${m.slug}" data-m="${m.id}">${esc(m.name)}</a></li>`).join('')}</ol>
+          </div>
+          <div id="cpTop"></div>
+        </div>
+        <div id="cpDetalhe" hidden></div>
+      </div>
+      <section class="imp__sobre">
+        <h2 class="page__h">Sobre os dados</h2>
+        <ul>
+          <li><b>Fonte:</b> <a href="https://portaldatransparencia.gov.br/download-de-dados/notas-fiscais" target="_blank" rel="noopener noreferrer">Portal da Transparência</a> (Controladoria-Geral da União), base de notas fiscais eletrônicas emitidas para órgãos do governo federal. Estados e municípios não entram.</li>
+          <li><b>Material:</b> cada ficha usa os mesmos NCMs do <a href="/importacoes">Radar de Importações</a>. Quando o NCM é mais amplo que a ficha, entram também produtos parecidos.</li>
+          <li><b>Valor:</b> soma do valor dos itens do NCM em cada nota, só em vendas (devoluções, remessas e faturamentos de entrega futura ficam de fora).</li>
+          <li><b>Preço por unidade:</b> mistura medidas e modelos diferentes. Serve como ordem de grandeza, não como cotação.</li>
+          <li><b>Privacidade:</b> quando quem vendeu é pessoa física, o nome não aparece.</li>
+        </ul>
+        <p class="tags__note">Vende algum destes materiais e quer aparecer para quem compra? <a href="/anuncie">Anuncie no PipeSystem</a> ou <a href="/assinaturas">receba pedidos de cotação</a>.</p>
+      </section>
+      <script>window.CP_MAT = ${JSON.stringify(mats).replace(/</g, '\\u003c')};</script>
+      <script src="/compras.js" defer></script>`;
+    pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
+      title: 'Radar de Compras Públicas: o que o governo compra de tubos e válvulas | PipeSystem',
+      description: cut(`Quem compra, quem vende e a que preço: compras do governo federal de tubos, conexões, válvulas e bombas, pelas notas fiscais do Portal da Transparência (${ini} a ${fim}).`, 158),
+      keywords: ['compras públicas', 'licitação', 'governo federal', 'nota fiscal', 'Portal da Transparência', 'vender para o governo', 'fornecedores do governo', 'NCM', 'inteligência de mercado'].join(', '),
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Estatísticas', url: '/estatisticas' }, { name: 'Radar de Compras Públicas', url }],
+      ld: [{ '@type': 'Dataset', '@id': BASE + url + '#dados', name: 'Compras do governo federal de materiais hidráulicos por NCM', description: 'Notas fiscais eletrônicas destinadas a órgãos federais, agregadas por material: valor, compradores, fornecedores, estados e preços.',
+        creator: { '@id': BASE + '/#organizacao' }, isBasedOn: 'https://portaldatransparencia.gov.br/download-de-dados/notas-fiscais', temporalCoverage: `${CP.meses[0]}/${CP.meses[CP.meses.length - 1]}`, spatialCoverage: 'Brasil' }],
+    }) });
+  }
+
+  // Estatísticas: página que reúne os painéis de dados do mercado
+  {
+    const url = '/estatisticas';
+    const card = (href, tag, h, txt, usos, btn) => `<article class="est__card"><p class="eyebrow">${tag}</p><h2><a href="${href}">${h}</a></h2><p>${txt}</p><ul>${usos.map(u => `<li>${u}</li>`).join('')}</ul><a class="btn btn--sm" href="${href}">${btn} →</a></article>`;
+    const body = `      <div class="sheet__head"><div><p class="eyebrow">Estatísticas do mercado · Gratuito</p><h1 class="page__title">Estatísticas</h1></div></div>
+      <p class="sheet__desc page__lead">Três painéis com dados oficiais e públicos para quem fabrica, importa, distribui ou instala materiais hidráulicos: o que entra no país, o que o governo compra e quais obras e investimentos foram anunciados.</p>
+      <div class="est">
+        ${card('/importacoes', 'Comex Stat · MDIC', 'Radar de Importações', 'Quanto o Brasil importa de cada material do catálogo, mês a mês, de quais países, a que preço por kg e quanto custa com impostos.', ['Ver se a importação cresce ou cai', 'Comparar o preço de cada país de origem', 'Simular o custo de um lote importado'], 'Abrir o Radar de Importações')}
+        ${card('/compras-publicas', 'Portal da Transparência · CGU', 'Radar de Compras Públicas', 'O que o governo federal compra de cada material: os órgãos que compram, as empresas que vendem, os estados e o preço pago por unidade.', ['Descobrir órgãos que compram o seu produto', 'Conhecer a concorrência nas vendas ao governo', 'Ter um preço de referência para propostas'], 'Abrir o Radar de Compras Públicas')}
+        ${card('/investimentos', 'Boletim do Investimento · Bradesco', 'Monitor de Investimentos', 'Os investimentos anunciados por empresas no Brasil, por setor e estado, com a estimativa de quanto vai para cada elo da cadeia de fornecimento.', ['Antecipar obras e fábricas que vão comprar materiais', 'Ver os setores e estados que mais investem', 'Baixar a planilha completa'], 'Abrir o Monitor de Investimentos')}
+      </div>
+      <p class="tags__note">O Monitor de Investimentos é um painel independente feito a partir do <a href="https://www.economiaemdia.com.br/home/monitores/boletim-de-investimentos" target="_blank" rel="noopener noreferrer">Boletim do Investimento</a> da Pesquisa Econômica Bradesco, sem vínculo com o banco.</p>`;
+    pages.push({ url, images: [], html: page({ url, body, wide: true, glossSkip: '-',
+      title: 'Estatísticas do mercado hidráulico: importações, compras públicas e investimentos | PipeSystem',
+      description: 'Painéis gratuitos com dados oficiais: importações de materiais hidráulicos, compras do governo federal e investimentos anunciados no Brasil.',
+      crumbs: [{ name: 'Início', url: '/' }, { name: 'Estatísticas', url }] }) });
   }
 
   // Política de Privacidade e Termos de Uso
