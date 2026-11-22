@@ -42,7 +42,7 @@
     const rank = MAT.map(m => ({ m, A: D.grupos[D.materiais[m.id]] })).filter(x => x.A).sort((a, b) => b.A.v - a.A.v);
     $('cpTop').innerHTML = `<div class="imp__ranks">
       <section><h3>Materiais que o governo mais compra</h3><p class="imp__mini">Valor em 12 meses. Clique para ver quem compra e quem vende.</p>
-        <ol class="imp__cards">${rank.slice(0, 10).map(({ m, A }) => `<li><a href="?m=${m.slug}" data-m="${m.id}"><span class="imp__cn">${esc(m.name)}</span><span class="imp__cv">${brl(A.v)}</span></a></li>`).join('')}</ol></section>
+        <ol class="imp__cards">${rank.slice(0, 10).map(({ m, A }) => `<li><a href="${'/compras-publicas/' + m.slug}" data-m="${m.id}"><span class="imp__cn">${esc(m.name)}</span><span class="imp__cv">${brl(A.v)}</span></a></li>`).join('')}</ol></section>
       <section><h3>Quem mais compra</h3><p class="imp__mini">Órgãos federais, somando todos os materiais do site.</p>${barras(comp(A).slice(0, 8), A.v)}</section>
       <section><h3>Quem mais vende</h3><p class="imp__mini">Empresas que emitiram as notas.</p>${barras(forn(A).slice(0, 8), A.v)}</section></div>`;
     lista();
@@ -50,7 +50,7 @@
   function lista() {
     const q = ($('cpBuscaMat').value || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
     const it = MAT.filter(m => D.materiais[m.id] && (!q || (m.name + ' ' + m.chaves + ' ' + (D.ncmPorMat[m.id] || []).join(' ')).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().includes(q)));
-    $('cpLista').innerHTML = it.length ? it.map(m => `<li><a href="?m=${m.slug}" data-m="${m.id}">${esc(m.name)}<small>${brl(D.grupos[D.materiais[m.id]].v)}</small></a></li>`).join('') : '<li class="imp__vazio">Nenhum material encontrado.</li>';
+    $('cpLista').innerHTML = it.length ? it.map(m => `<li><a href="${'/compras-publicas/' + m.slug}" data-m="${m.id}">${esc(m.name)}<small>${brl(D.grupos[D.materiais[m.id]].v)}</small></a></li>`).join('') : '<li class="imp__vazio">Nenhum material encontrado.</li>';
   }
 
   function detalhe(id) {
@@ -82,7 +82,7 @@
       <section class="imp__bloco"><h3>Últimas compras</h3><p class="imp__mini">As notas mais recentes, como aparecem no Portal da Transparência.</p>
         <div class="cpub__tab"><table><thead><tr><th>Data</th><th>Item</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th><th>Vendedor</th><th>Comprador</th></tr></thead>
         <tbody>${A.ult.map(([d, desc, q, u, vu, v, f, c, uf]) => `<tr><td>${dataBR(d)}</td><td>${esc(desc)}</td><td>${nf(q, q % 1 ? 2 : 0)} ${esc(un(u))}</td><td>${reais(vu)}</td><td>${brl(v)}</td><td>${esc(titulo(f))}</td><td>${esc(titulo(c))}${uf ? ` (${esc(uf)})` : ''}</td></tr>`).join('')}</tbody></table></div></section>
-      <p class="tags__note">Veja também <a href="${'/materiais/' + m.slug}">a ficha técnica</a> e <a href="/importacoes?m=${m.slug}">quanto o Brasil importa deste material</a>.</p>`;
+      <p class="tags__note">Veja também <a href="${'/materiais/' + m.slug}">a ficha técnica</a> e <a href="${'/importacoes/' + m.slug}">quanto o Brasil importa deste material</a>.</p>`;
     mostra(true);
   }
   function mostra(det) {
@@ -90,15 +90,15 @@
     if (det) raiz.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function rota() {
-    const slug = new URLSearchParams(location.search).get('m');
+    const slug = (location.pathname.match(/^\/compras-publicas\/([^/?#]+)/) || [])[1] || new URLSearchParams(location.search).get('m');
     const m = slug && MAT.find(x => x.slug === slug);
     m ? detalhe(m.id) : mostra(false);
   }
   raiz.addEventListener('click', e => {
     const a = e.target.closest('a[data-m], a[data-volta]');
-    if (!a || e.ctrlKey || e.metaKey) return;
+    if (!a || e.ctrlKey || e.metaKey || /^\/compras-publicas\/./.test(location.pathname)) return;   // página própria do material: link normal
     e.preventDefault();
-    history.pushState(null, '', a.dataset.m ? '?m=' + MAT.find(x => x.id === a.dataset.m).slug : location.pathname);
+    history.pushState(null, '', a.dataset.m ? '/compras-publicas/' + MAT.find(x => x.id === a.dataset.m).slug : '/compras-publicas');
     rota();
   });
   window.addEventListener('popstate', rota);

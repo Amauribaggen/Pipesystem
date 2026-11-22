@@ -91,7 +91,7 @@
   function destaques() {
     const G = grupos();
     const nomeG = x => x.fichas[0].name + (x.fichas.length > 1 ? ` <small>e mais ${x.fichas.length - 1}</small>` : '');
-    const cartao = x => `<li><a href="?m=${x.fichas[0].slug}" data-m="${x.fichas[0].id}"><span class="imp__cn">${nomeG(x)}</span><span class="imp__cv">${usd(x.a.a12.f)}</span>
+    const cartao = x => `<li><a href="${'/importacoes/' + x.fichas[0].slug}" data-m="${x.fichas[0].id}"><span class="imp__cn">${nomeG(x)}</span><span class="imp__cv">${usd(x.a.a12.f)}</span>
         ${x.a.var != null ? `<span class="imp__var imp__var--${x.a.var >= 0 ? 'sobe' : 'desce'}">${x.a.var >= 0 ? '▲' : '▼'} ${pct(x.a.var)}</span>` : ''}</a></li>`;
     const altos = G.filter(x => x.a.a12.f >= 1e6 && x.a.var != null).sort((a, b) => b.a.var - a.a.var).slice(0, 6);
     const quedas = G.filter(x => x.a.a12.f >= 1e6 && x.a.var != null).sort((a, b) => a.a.var - b.a.var).slice(0, 6);
@@ -123,7 +123,7 @@
     const lista = () => {
       const q = norm($('impBusca').value.trim());
       const it = MAT.filter(m => D.materiais[m.id] && (!cat || m.cat === cat) && (!q || norm(m.name + ' ' + D.materiais[m.id].ncm.join(' ') + ' ' + m.chaves).includes(q)));
-      $('impLista').innerHTML = it.length ? it.map(m => `<li><a href="?m=${m.slug}" data-m="${m.id}">${esc(m.name)}<small>${usd(valor(m.id))}</small></a></li>`).join('') : '<li class="imp__vazio">Nenhuma ficha encontrada. Tente outro nome ou o código NCM.</li>';
+      $('impLista').innerHTML = it.length ? it.map(m => `<li><a href="${'/importacoes/' + m.slug}" data-m="${m.id}">${esc(m.name)}<small>${usd(valor(m.id))}</small></a></li>`).join('') : '<li class="imp__vazio">Nenhuma ficha encontrada. Tente outro nome ou o código NCM.</li>';
     };
     $('impCats').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; cat = b.dataset.c; $('impCats').querySelectorAll('.nt__chip').forEach(x => x.setAttribute('aria-pressed', x === b)); lista(); });
     $('impBusca').addEventListener('input', lista);
@@ -256,30 +256,32 @@
       if (window.va) window.va('event', { name: 'imp_csv', data: { material: m.slug } });
     });
     $('impShare').addEventListener('click', async () => {
-      const url = location.origin + '/importacoes?m=' + m.slug, texto = `Importações de ${m.name} no Brasil: ${usd(A.a12.f)} em 12 meses (${A.var == null ? '' : pct(A.var)}). Radar de Importações PipeSystem`;
+      const url = location.origin + '/importacoes/' + m.slug, texto = `Importações de ${m.name} no Brasil: ${usd(A.a12.f)} em 12 meses (${A.var == null ? '' : pct(A.var)}). Radar de Importações PipeSystem`;
       try { if (navigator.share) await navigator.share({ title: document.title, text: texto, url }); else { await navigator.clipboard.writeText(`${texto} ${url}`); $('impShare').textContent = 'Link copiado'; } } catch (e) { /* compartilhamento cancelado */ }
     });
-    document.title = `Importações de ${m.name} no Brasil | PipeSystem`;
+    document.title = `Importação de ${/^[A-ZÀ-Ú][a-zà-ú]/.test(m.name) ? m.name[0].toLowerCase() + m.name.slice(1) : m.name} no Brasil | PipeSystem`;
     if (window.va) window.va('event', { name: 'imp_material', data: { material: m.slug } });
     if (rolar) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   const mesesEntre = (a, b) => (+b.slice(0, 4) - +a.slice(0, 4)) * 12 + (+b.slice(5) - +a.slice(5)) + 1;
 
-  // ---------- navegação (?m=slug), sem recarregar a página ----------
+  // ---------- navegação (/importacoes/<slug>; o antigo ?m=slug também vale), sem recarregar a página ----------
+  const slugUrl = () => (location.pathname.match(/^\/importacoes\/([^/?#]+)/) || [])[1] || new URLSearchParams(location.search).get('m') || '';
   const tituloOriginal = document.title;
   const vai = (slug, rolar) => { const m = MAT.find(x => x.slug === slug); if (m) detalhe(m.id, rolar); else { $('impDetalhe').hidden = true; $('impInicio').hidden = false; document.title = tituloOriginal; } };
   raiz.addEventListener('click', e => {
-    const a = e.target.closest('a[data-m]'); if (!a || e.ctrlKey || e.metaKey) return;
+    // na página própria de um material (/importacoes/<slug>), os links carregam a página nova (título e texto certos)
+    const a = e.target.closest('a[data-m]'); if (!a || e.ctrlKey || e.metaKey || /^\/importacoes\/./.test(location.pathname)) return;
     e.preventDefault(); const m = porId[a.dataset.m];
-    history.pushState(null, '', m ? '?m=' + m.slug : location.pathname); vai(m ? m.slug : '', true);
+    history.pushState(null, '', m ? '/importacoes/' + m.slug : '/importacoes'); vai(m ? m.slug : '', true);
   });
-  addEventListener('popstate', () => vai(new URLSearchParams(location.search).get('m') || ''));
+  addEventListener('popstate', () => vai(slugUrl()));
 
   Promise.all([fetch('/importacoes-dados.json').then(r => r.json()), fetch('/importacoes-tarifas.json').then(r => r.ok ? r.json() : null).catch(() => null)]).then(([j, t]) => {
     D = j; T = t; porId = Object.fromEntries(MAT.map(m => [m.id, m]));
     $('impData').textContent = `Dados até ${mesLongo(D.ultimoMes)} · atualizado pelo MDIC em ${D.atualizado.split('-').reverse().join('/')}`;
     destaques(); busca();
-    vai(new URLSearchParams(location.search).get('m') || '');
+    vai(slugUrl());
     raiz.classList.add('imp--pronto');
   }).catch(() => { $('impData').textContent = 'Não foi possível carregar os dados agora. Tente recarregar a página.'; });
 })();

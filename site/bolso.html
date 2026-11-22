@@ -1089,7 +1089,7 @@
         <h4>Mês a mês (24 meses, até ${mesI(d.im.ultimoMes)})</h4>${barrasI(x)}
         <h4>De onde vem</h4><ul>${x.pa.map(([p, f, kg]) => `<li><b>${esc(p)}</b> · ${usdI(f)} (${pctI(f / x.f, false)}) · US$ ${nfI(f / kg, 2)}/kg</li>`).join('')}</ul>
         ${x.pa.length ? `<h4>Quanto custa importar</h4><div class="duas">${campoI('Peso (kg)', '<input type="number" inputmode="numeric" min="1" value="1000" data-ik="kg">')}${campoI('Origem', `<select data-ik="or">${x.pa.map(p => `<option>${esc(p[0])}</option>`).join('')}</select>`)}${campoI('Dólar (R$)', `<input type="number" inputmode="decimal" step="0.01" value="${d.im.ptax ? d.im.ptax.valor.toFixed(2) : '5.50'}" data-ik="dol">`)}${campoI('ICMS (%)', '<input type="number" inputmode="decimal" step="0.5" value="18" data-ik="icms">')}</div><div class="impres" data-ires></div>` : ''}
-        <p><a href="/importacoes?m=${x.slug}">Análise completa no portal</a></p></details>`;
+        <p><a href="${'/importacoes/' + x.slug}">Análise completa no portal</a></p></details>`;
       const contaI = det => {
         const x = porSlug[det.dataset.imp], v = k => parseFloat(String(det.querySelector(`[data-ik="${k}"]`).value).replace(',', '.')) || 0;
         const p = x.pa.find(o => o[0] === det.querySelector('[data-ik="or"]').value) || x.pa[0], kg = v('kg'), dol = v('dol'), icms = Math.min(v('icms'), 90) / 100;
@@ -1117,7 +1117,7 @@
         <h4>Quem compra</h4><ul>${x.c.map(([n, uf, v]) => `<li><b>${esc(tit(n))}</b>${uf ? ' (' + esc(uf) + ')' : ''} · ${brlC(v)}</li>`).join('')}</ul>
         <h4>Quem vende</h4><ul>${x.f.map(([n, uf, v]) => `<li><b>${esc(tit(n))}</b>${uf ? ' (' + esc(uf) + ')' : ''} · ${brlC(v)}</li>`).join('')}</ul>
         ${x.pr ? `<p class="nota">Preço pago por ${esc(UNC[x.pr[0]] || x.pr[0].toLowerCase())}: metade das compras entre R$ ${nfC(x.pr[2], 2)} e R$ ${nfC(x.pr[4], 2)} (mediana R$ ${nfC(x.pr[3], 2)}). Medidas e modelos misturados: é ordem de grandeza, não cotação.</p>` : ''}
-        <p><a href="/compras-publicas?m=${x.slug}">Análise completa no portal</a></p></details>`;
+        <p><a href="${'/compras-publicas/' + x.slug}">Análise completa no portal</a></p></details>`;
       ligaSecao('compras', d.cp.itens, htmlCp, d.cp.itens.length + ' materiais. Compras do governo federal pelas notas fiscais do Portal da Transparência, de ' + mesC(d.cp.inicio) + ' a ' + mesC(d.cp.fim) + ', disponíveis também sem internet.', x => [x.n, x.cat, x.ch, ...x.ncm].join(' '));
     }
     // Monitor de Investimentos: anúncios de investimento no Brasil (Boletim do Investimento, Bradesco), lidos do painel no portal (exige internet)

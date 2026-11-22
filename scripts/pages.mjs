@@ -215,6 +215,7 @@ const IMP = existsSync('site/importacoes-dados.json') ? JSON.parse(readFileSync(
 const COMO = existsSync('site/como-funciona.json') ? JSON.parse(readFileSync('site/como-funciona.json', 'utf8')) : {};
 const CP = existsSync('site/compras-dados.json') ? JSON.parse(readFileSync('site/compras-dados.json', 'utf8')) : null;
 const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const lcPrimeira = s => /^[A-ZÀ-Ú][a-zà-ú]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s;
 const mesLongo = ym => `${MESES[+ym.slice(5) - 1]}/${ym.slice(0, 4)}`;
 const nfBR = (v, d = 0) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
 const usd = v => v >= 1e9 ? `US$ ${nfBR(v / 1e9, 1)} bi` : v >= 1e6 ? `US$ ${nfBR(v / 1e6, 1)} mi` : v >= 1e3 ? `US$ ${nfBR(v / 1e3, 0)} mil` : `US$ ${nfBR(v, 0)}`;
@@ -288,7 +289,7 @@ export function cpResumoMateriais(D) {
 export function impItensBusca(D) {
   const R = impResumoMateriais(D);
   if (!R) return [];
-  return R.itens.map(x => ({ p: `/importacoes?m=${x.slug}`, s: 'Radar de Importações', id: '', t: x.n,
+  return R.itens.map(x => ({ p: `/importacoes/${x.slug}`, s: 'Radar de Importações', id: '', t: x.n,
     x: `${x.n} ${x.cat} ${x.ch} importação importações importado NCM ${x.ncm.map(n => n + ' ' + n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')).join(' ')}`,
     r: `${usd(x.f)} importados em 12 meses${x.v != null ? ` (${pctBR(x.v)})` : ''}${x.pa[0] ? ` · principal origem: ${x.pa[0][0]} (${pctBR(x.pa[0][1] / x.f, false)})` : ''}` }));
 }
@@ -303,7 +304,7 @@ function impBoxHTML(m) {
           ${r.var != null ? `<div><b>${pctBR(r.var)}</b><small>contra os 12 meses anteriores</small></div>` : ''}
           <div><b>${ton(r.kg)}</b><small>${r.kg ? `US$ ${nfBR(r.f / r.kg, 2)}/kg em média` : 'importadas'}</small></div></div>
         <p class="impbox__txt">Principais origens: ${r.top.map(([p, v]) => `${esc(p)} (${pctBR(v / r.f, false)})`).join(', ')}. Dados do Comex Stat (MDIC) até ${mesLongo(IMP.ultimoMes)}, NCM ${r.c.ncm.map(n => n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')).join(', ')}.</p>
-        <a class="btn btn--sm" href="/importacoes?m=${slug}">Ver evolução, países, estados e preço por kg →</a>
+        <a class="btn btn--sm" href="/importacoes/${slug}">Ver evolução, países, estados e preço por kg →</a>
       </aside>`;
 }
 
@@ -621,6 +622,23 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
       ld: [{ '@type': 'Dataset', '@id': BASE + url + '#dados', name: 'Importações brasileiras de materiais hidráulicos por NCM', description: 'Importações mensais (FOB, peso e CIF), por país, estado, local de entrada e via, dos NCMs dos materiais do catálogo PipeSystem.',
         creator: { '@id': BASE + '/#organizacao' }, isBasedOn: 'https://comexstat.mdic.gov.br/', temporalCoverage: `${Object.values(IMP.serie)[0][0][0]}/${IMP.ultimoMes}`, spatialCoverage: 'Brasil' }],
     }) });
+
+    // Uma página por material (/importacoes/<slug>): o Google indexa cada uma; o mesmo app abre já no material
+    const resto = body.slice(body.indexOf('</p>', body.indexOf('page__lead')) + 4);   // depois do parágrafo de abertura do radar
+    for (const { m, r } of com) {
+      const u = `/importacoes/${m.slug}`, nome = lcPrimeira(m.name);
+      const ncm = r.c.ncm.map(n => n.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')).join(', ');
+      const lead = `Nos 12 meses até ${mesLongo(IMP.ultimoMes)}, o Brasil importou <b>${usd(r.f)}</b> em ${esc(nome)} (NCM ${ncm})`
+        + `${r.var != null ? `, ${pctBR(r.var)} em relação aos 12 meses anteriores` : ''}, cerca de ${ton(r.kg)}${r.kg ? `, a US$ ${nfBR(r.f / r.kg, 2)} por kg em média` : ''}.`
+        + `${r.top.length ? ` Principais origens: ${r.top.map(([p]) => esc(p)).join(', ')}.` : ''} Abaixo, a evolução mês a mês, os países, os estados compradores, os portos de entrada e o custo com impostos.`;
+      const cab = `      <div class="sheet__head"><div><p class="eyebrow">Radar de Importações · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">Importação de ${esc(nome)} no Brasil</h1></div></div>
+      <p class="sheet__desc page__lead">${lead}</p>`;
+      pages.push({ url: u, images: [], html: page({ url: u, body: cab + resto, wide: true, glossSkip: '-',
+        title: nome.length > 34 ? `Importação de ${nome} no Brasil | PipeSystem` : `Importação de ${nome} no Brasil: países e preço por kg | PipeSystem`,
+        description: cut(`${m.name}: o Brasil importou ${usd(r.f)} em 12 meses${r.var != null ? ` (${pctBR(r.var)})` : ''}${r.top[0] ? `, sobretudo de ${r.top.map(([p]) => p).slice(0, 2).join(' e ')}` : ''}. Países, preço por kg, estados e custo com impostos (Comex Stat).`, 158),
+        keywords: [`importação de ${nome}`, `${nome} importado`, `NCM ${ncm}`, 'Comex Stat', 'preço por kg', 'país de origem'].join(', '),
+        crumbs: [{ name: 'Início', url: '/' }, { name: 'Estatísticas', url: '/estatisticas' }, { name: 'Radar de Importações', url: '/importacoes' }, { name: m.name, url: u }] }) });
+    }
   }
 
   // Radar de Compras Públicas: o que o governo federal compra dos materiais do catálogo (NF-e do Portal da Transparência)
@@ -674,6 +692,26 @@ ${extraGlossario(GLOSSARIO_EXTRA[x.id])}
       ld: [{ '@type': 'Dataset', '@id': BASE + url + '#dados', name: 'Compras do governo federal de materiais hidráulicos por NCM', description: 'Notas fiscais eletrônicas destinadas a órgãos federais, agregadas por material: valor, compradores, fornecedores, estados e preços.',
         creator: { '@id': BASE + '/#organizacao' }, isBasedOn: 'https://portaldatransparencia.gov.br/download-de-dados/notas-fiscais', temporalCoverage: `${CP.meses[0]}/${CP.meses[CP.meses.length - 1]}`, spatialCoverage: 'Brasil' }],
     }) });
+
+    // Uma página por material (/compras-publicas/<slug>)
+    const resto = body.slice(body.indexOf('</p>', body.indexOf('page__lead')) + 4);   // depois do parágrafo de abertura do radar
+    const brlS = v => v >= 1e9 ? `R$ ${nfBR(v / 1e9, 2)} bi` : v >= 1e6 ? `R$ ${nfBR(v / 1e6, 2)} mi` : v >= 1e3 ? `R$ ${nfBR(v / 1e3, 1)} mil` : `R$ ${nfBR(v, 2)}`;
+    const tit = s => String(s).toLowerCase().replace(/(^|[\s(/-])([a-zà-ú])/g, (x, a, b) => a + b.toUpperCase()).replace(/\b(De|Da|Do|Das|Dos|E|Em|Para)\b/g, w => w.toLowerCase());
+    for (const m of mats) {
+      const A = CP.grupos[CP.materiais[m.id]];
+      if (!A) continue;
+      const u = `/compras-publicas/${m.slug}`, nome = lcPrimeira(m.name), c0 = A.comp[0], f0 = A.forn[0];
+      const lead = `Entre ${ini} e ${fim}, o governo federal comprou <b>${brlS(A.v)}</b> em ${esc(nome)}, em ${nfBR(A.n)} notas fiscais de ${nfBR(A.nf)} empresas para ${nfBR(A.nc)} órgãos.`
+        + `${c0 ? ` Quem mais comprou: ${esc(tit(c0[0]))}${c0[2] ? ` (${esc(c0[2])})` : ''}.` : ''}${f0 ? ` Quem mais vendeu: ${esc(tit(f0[0]))}.` : ''}`
+        + ' Abaixo, as compras mês a mês, os órgãos, os fornecedores, os estados e o preço pago por unidade.';
+      const cab = `      <div class="sheet__head"><div><p class="eyebrow">Radar de Compras Públicas · ${esc(m.cat)}</p><h1 id="sheetTitle" class="page__title">Compras públicas de ${esc(nome)}</h1></div></div>
+      <p class="sheet__desc page__lead">${lead}</p>`;
+      pages.push({ url: u, images: [], html: page({ url: u, body: cab + resto, wide: true, glossSkip: '-',
+        title: nome.length > 34 ? `Compras públicas de ${nome} | PipeSystem` : `Compras públicas de ${nome}: quem compra e quem vende | PipeSystem`,
+        description: cut(`O governo federal comprou ${brlS(A.v)} em ${nome} em 12 meses, de ${nfBR(A.nf)} fornecedores. Órgãos compradores, empresas que vendem, estados e preço pago (Portal da Transparência).`, 158),
+        keywords: [`compras públicas de ${nome}`, `${nome} licitação`, `vender ${nome} para o governo`, 'governo federal', 'nota fiscal', 'Portal da Transparência'].join(', '),
+        crumbs: [{ name: 'Início', url: '/' }, { name: 'Estatísticas', url: '/estatisticas' }, { name: 'Radar de Compras Públicas', url: '/compras-publicas' }, { name: m.name, url: u }] }) });
+    }
   }
 
   // Estatísticas: página que reúne os painéis de dados do mercado
