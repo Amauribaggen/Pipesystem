@@ -2522,3 +2522,5 @@ html:not(.pg-collapse) .pg-top__nav > .pg-sec { display: none; }
 .luto b { color: #fff; font-weight: 600; white-space: nowrap; }
 .luto__laco { flex: none; width: 18px; height: 24px; color: #fff; }
 @media (max-width: 600px) { .luto { font-size: .8rem; padding: .5rem .75rem; text-align: left; } }
+.avatar--memoria { background: #6b7280 !important; color: #fff !important; }
+.person__memoria { font-weight: 400; font-size: .85em; opacity: .8; }
