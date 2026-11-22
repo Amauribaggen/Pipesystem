@@ -2515,3 +2515,10 @@ html:not(.pg-collapse) .pg-top__nav > .pg-sec { display: none; }
 .matfig--anim { background: #f6f9fc; padding: 12px 12px 8px; }
 .matfig--anim svg { display: block; width: 100%; max-width: 520px; max-height: none; height: auto; margin: 0 auto; }
 .matfig__tit { font-weight: 700; color: var(--navy); font-size: .95rem; margin: 0 0 6px; }
+
+/* Luto: faixa discreta no topo da página inicial */
+.luto { display: flex; align-items: center; justify-content: center; gap: .7rem; padding: .55rem 1rem; background: #1c1c1e; color: #e8e8ea; font-size: .88rem; line-height: 1.45; text-align: center; border-bottom: 1px solid #000; }
+.luto p { margin: 0; max-width: 62rem; }
+.luto b { color: #fff; font-weight: 600; white-space: nowrap; }
+.luto__laco { flex: none; width: 18px; height: 24px; color: #fff; }
+@media (max-width: 600px) { .luto { font-size: .8rem; padding: .5rem .75rem; text-align: left; } }
