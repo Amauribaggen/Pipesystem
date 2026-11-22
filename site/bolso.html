@@ -832,7 +832,7 @@
   });
 
   // Materiais e preços
-  const htmlMat = m => `<details><summary>${m.n}<small>${m.c}</small></summary><p>${m.d}</p>${m.a ? `<p>Aplicações: ${m.a}</p>` : ''}${m.f.length ? `<p>Fabricantes: ${m.f.join(', ')}</p>` : ''}<p><a href="/materiais/${m.id}">Ver ficha completa no portal</a></p><button type="button" class="mini" data-mat="${esc(m.n)}">Adicionar à lista</button></details>`;
+  const htmlMat = m => `<details><summary>${m.n}<small>${m.c}</small></summary><p>${m.d}</p>${m.a ? `<p>Aplicações: ${m.a}</p>` : ''}${m.f.length ? `<p>Fabricantes: ${m.f.join(', ')}</p>` : ''}<p><a href="${'/materiais/' + m.id}">Ver ficha completa no portal</a></p><button type="button" class="mini" data-mat="${esc(m.n)}">Adicionar à lista</button></details>`;
   DADOS.then(d => {
     SIN = d.s;
     d.m.forEach(x => { x.b = sem(x.n + ' ' + x.c + ' ' + x.a + ' ' + x.d + ' ' + x.f.join(' ')); });
