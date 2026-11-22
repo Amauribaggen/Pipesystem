@@ -860,7 +860,7 @@ function comparativoHTML(c, o = {}) {
       <${h} class="cp-h">Lado a lado</${h}>${tabelas.map(t => `${t.titulo ? `
       <p class="cp-tabtit">${t.titulo}</p>` : ''}
       <div class="cp-tablewrap"><table class="cp-table">
-        <thead><tr><th scope="col">Critério</th>${t.cols.map(i => c.opcoes[i]).map(([n, m]) => `<th scope="col">${n}${m ? `<a href="/materiais/${m}" data-sheet="mat-${m}">ver ficha</a>` : ''}</th>`).join('')}</tr></thead>
+        <thead><tr><th scope="col">Critério</th>${t.cols.map(i => c.opcoes[i]).map(([n, m]) => `<th scope="col">${n}${m ? `<a href="${'/materiais/' + m}" data-sheet="mat-${m}">ver ficha</a>` : ''}</th>`).join('')}</tr></thead>
         <tbody>${t.linhas.map(([k, vals]) => `<tr><th scope="row">${k}${/^Custo de referência/.test(k) ? ` <span class="cp-uf">${uf}</span>` : ''}</th>${vals.map(v => `<td>${/^Custo de referência/.test(k) ? custo(v) : refs(v)}</td>`).join('')}</tr>`).join('')}</tbody>
       </table></div>`).join('')}
       ${temCusto ? `<p class="cp-note">Custo: só o material, SINAPI ${typeof SINAPI_PRECOS !== 'undefined' ? SINAPI_PRECOS.ref : ''}, ${uf}, sem desoneração. Não inclui conexões, mão de obra, BDI e frete.</p>` : ''}
@@ -877,7 +877,7 @@ function comparativoHTML(c, o = {}) {
       <${h} class="cp-h">Fontes deste comparativo</${h}>
       <ol class="cp-refs">${ids.map((id, k) => `<li value="${k + 1}" id="cp-${c.id}-ref-${id}"><a href="${CMP_FONTES[id][1]}" target="_blank" rel="noopener noreferrer">${CMP_FONTES[id][0]}</a> <span class="cp-kind cp-kind--${CMP_FONTES[id][2]}">${CMP_KIND[CMP_FONTES[id][2]]}</span></li>`).join('')}</ol>
       <div class="cp-actions">
-        ${fichas.map(([m, n]) => `<a class="btn btn--ghost btn--sm" href="/materiais/${m}" data-sheet="mat-${m}">Ficha: ${n}</a>`).join('')}
+        ${fichas.map(([m, n]) => `<a class="btn btn--ghost btn--sm" href="${'/materiais/' + m}" data-sheet="mat-${m}">Ficha: ${n}</a>`).join('')}
         <a class="btn btn--sm" href="${o.cotacao || '#contato'}" data-subject="Cotação de materiais" data-question="Cotação (comparativo: ${esc(c.titulo)}): informe material, diâmetros, quantidades e local de entrega ">Solicitar cotação</a>
       </div>`;
 }
@@ -1567,7 +1567,7 @@ function cmpLinksHTML(matId, h = 'h4') {
   const cs = CMPS.filter(c => c.opcoes.some(([, m]) => m === slug));
   if (!cs.length) return '';
   return `<${h}${h === 'h4' ? '' : ' class="page__h"'}>Compare com outras opções</${h}>
-    <p class="relprod">${cs.map(c => `<a href="/comparativos/${c.id}">${c.titulo}</a>`).join('')}</p>`;
+    <p class="relprod">${cs.map(c => `<a href="${'/comparativos/' + c.id}">${c.titulo}</a>`).join('')}</p>`;
 }
 
 // Bloco "Comparativos" no início de Guias práticos (página inicial). Os preços (sinapi-precos.js) chegam sob demanda,
@@ -1611,7 +1611,7 @@ typeof document !== 'undefined' && document.addEventListener('DOMContentLoaded',
     try { const s = localStorage.getItem('lmUf'); if (s && SINAPI_PRECOS.ufs.includes(s)) uf = s; } catch {}
     const c = byId[d.id.slice(4)];
     b.innerHTML = `${comparativoHTML(c, { uf, erros: '#gp-pats' })}
-        <p class="cp-note"><a href="/comparativos/${c.id}">Página própria deste comparativo →</a></p>`;
+        <p class="cp-note"><a href="${'/comparativos/' + c.id}">Página própria deste comparativo →</a></p>`;
     if (typeof glossarize === 'function') b.querySelectorAll('.cp-oneline, .cp-opts, .cp-apps, .cp-errs').forEach(el => glossarize(el, { max: 4 }));
   };
   box.addEventListener('toggle', e => { if (e.target.open) corpo(e.target); }, true);

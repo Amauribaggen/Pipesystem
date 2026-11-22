@@ -548,7 +548,7 @@ DETALHES.filter(d => d.revisao).forEach(d => { const [x0, y0] = detBox(d.g); d.g
         <h3>${d.titulo}</h3>
         ${d.revisao ? `<p class="gpdet__rev">${DET_REVISAO}</p>` : ''}
         <p>${d.desc}</p>
-        <p class="gpdet__norma">${d.normas} · <a href="/materiais/${d.mat}" data-sheet="mat-${d.mat}">ficha do material</a></p>
+        <p class="gpdet__norma">${d.normas} · <a href="${'/materiais/' + d.mat}" data-sheet="mat-${d.mat}">ficha do material</a></p>
         <div class="gpdet__acoes">
           <button type="button" class="btn btn--sm" data-det="${d.id}" data-fmt="dxf">Baixar DXF (CAD)</button>
           <button type="button" class="btn btn--ghost btn--sm" data-det="${d.id}" data-fmt="svg">Baixar SVG</button>

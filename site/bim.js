@@ -464,7 +464,7 @@ function bimBoxHTML(matId, h = 'h4') {
       <p>${b.desc}</p>
       ${bimFmts(b.fmts)}
       <p class="bimcard__meta">${b.acesso}${b.varia ? ' · formatos variam por produto' : ''}</p>
-      <p class="bimcard__mats">${b.mats.map(id => `<a href="/materiais/${id.slice(4)}" data-sheet="${id}">${nome(id)}</a>`).join('')}</p>
+      <p class="bimcard__mats">${b.mats.map(id => `<a href="${'/materiais/' + id.slice(4)}" data-sheet="${id}">${nome(id)}</a>`).join('')}</p>
       <div class="bimcard__links">${b.links.map((l, i) => `<a class="bimcard__btn${i ? ' bimcard__btn--ghost' : ''}" href="${l[1]}" target="_blank" rel="noopener noreferrer">${l[0]} <small>${l[2]} ↗</small></a>`).join('')}</div>
     </article>`;
 

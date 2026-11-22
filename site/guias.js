@@ -713,7 +713,7 @@ const CHECKS = [
   const $ = id => document.getElementById(id);
   if (!$('gpGuias')) return;
   const st = { tab: 'guias', tema: null };
-  const mat = ([n, s]) => `<a href="/materiais/${s}" data-sheet="mat-${s}">${n}</a>`;
+  const mat = ([n, s]) => `<a href="${'/materiais/' + s}" data-sheet="mat-${s}">${n}</a>`;
   const videoCard = v => `
     <article class="gpvideo" data-tema="${v.tema}">
       <button type="button" class="gpvideo__thumb" ${v.mp4 ? `data-mp4="${v.mp4}"` : `data-yt="${v.id}"`} aria-label="Assistir: ${v.t}"><img src="${v.capa || `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}" alt="" loading="lazy" width="480" height="360"><span class="gpvideo__dur">${v.dur}</span></button>

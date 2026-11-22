@@ -123,7 +123,7 @@ function renderCatalog() {
     matchText([m.cat, m.name, m.apps, m.desc, ...m.normas, ...m.specs.flat(), ...(m.chaves || []), ...(MANUFACTURERS[m.id] || []).map(f => f[0])].join(' '), terms));
   catEl.innerHTML = items.map(m => {
     const f = materialPhoto(m);
-    return `<a class="item" href="/materiais/${m.id.slice(4)}" data-sheet="${m.id}">
+    return `<a class="item" href="${'/materiais/' + m.id.slice(4)}" data-sheet="${m.id}">
       <figure class="item__art${f ? ' item__art--foto' : ''}" style="--m:${m.tone}">${f
         ? `<img src="${imgUrl(f.src)}" alt="${f.alt}"${imgDims(f.src)} loading="lazy"${f.inteira ? ' class="inteira"' : ''}>`
         : `<svg viewBox="0 0 200 120" aria-hidden="true">${MATERIAL_ART[m.art](m.tone, m.tone2)}</svg>`}</figure>
@@ -168,7 +168,7 @@ const list = items => items.map(i => `<li>${linkNorms(i)}</li>`).join('');
 const systemById = Object.fromEntries(SYSTEMS.map(s => [s.id, s]));
 const systemsEl = document.getElementById('systems');
 if (systemsEl) systemsEl.innerHTML = SYSTEMS.map(s =>
-  `<a class="sys" href="/sistemas/${s.id.slice(4)}" data-sheet="${s.id}"><span class="sys__dot" style="--c:${s.color}"></span><span${s.novo ? ' data-novo' : ''}>${s.name}</span><span class="sys__more" aria-hidden="true">→</span></a>`).join('');
+  `<a class="sys" href="${'/sistemas/' + s.id.slice(4)}" data-sheet="${s.id}"><span class="sys__dot" style="--c:${s.color}"></span><span${s.novo ? ' data-novo' : ''}>${s.name}</span><span class="sys__more" aria-hidden="true">→</span></a>`).join('');
 
 // Galeria de fotos reais com créditos (licenças livres exigem a atribuição)
 // zoom (padrão): clicar na foto abre a imagem ampliada (lightbox.js)
@@ -228,7 +228,7 @@ function renderSystem(s) {
     <p class="tags tags--links">${normTags(s.normas)}</p>
     <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
     <h4>Produtos e materiais usados</h4>
-    <p class="relprod">${s.produtos.map(id => materialById[materialOf(id)]).filter(Boolean).map(m => `<a href="/materiais/${m.id.slice(4)}" data-sheet="${m.id}">${m.name}</a>`).join('')}</p>
+    <p class="relprod">${s.produtos.map(id => materialById[materialOf(id)]).filter(Boolean).map(m => `<a href="${'/materiais/' + m.id.slice(4)}" data-sheet="${m.id}">${m.name}</a>`).join('')}</p>
     <div class="sheet__actions">
       <a href="#contato" class="btn" data-subject="Consulta técnica" data-question="Pergunta sobre ${s.name}: ">Fazer uma pergunta</a>
       <a href="#contato" class="btn btn--ghost" data-subject="Cotação de materiais" data-question="Cotação para ${s.name}: ">Solicitar cotação</a>
@@ -275,7 +275,7 @@ function renderMaterial(m) {
     <h4>Normas de referência</h4>
     <p class="tags tags--links">${normTags(normas)}</p>
     <p class="tags__note">Clique na norma para ver o resumo ou comprar no site oficial.</p>
-    ${vejas.map(veja => `<p class="relprod"><a href="/materiais/${veja.id.slice(4)}" data-sheet="${veja.id}">Veja também: ${veja.name} →</a></p>`).join('')}
+    ${vejas.map(veja => `<p class="relprod"><a href="${'/materiais/' + veja.id.slice(4)}" data-sheet="${veja.id}">Veja também: ${veja.name} →</a></p>`).join('')}
     ${fabs.length ? `<h4>${importers ? 'Importadores' : fabs.some(f => f[2] === 'M') ? 'Fabricantes e importadores' : 'Fabricantes'}</h4>
     <ul class="fabs">${fabs.map(([n, u, o]) => `<li>${u ? `<a href="${u}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${n}</span><span class="fabs__site notranslate" translate="no">${new URL(u).hostname.replace(/^www\./, '')} ↗</span>${logoFab(u)}</a>`

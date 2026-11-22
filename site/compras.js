@@ -82,7 +82,7 @@
       <section class="imp__bloco"><h3>Últimas compras</h3><p class="imp__mini">As notas mais recentes, como aparecem no Portal da Transparência.</p>
         <div class="cpub__tab"><table><thead><tr><th>Data</th><th>Item</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th><th>Vendedor</th><th>Comprador</th></tr></thead>
         <tbody>${A.ult.map(([d, desc, q, u, vu, v, f, c, uf]) => `<tr><td>${dataBR(d)}</td><td>${esc(desc)}</td><td>${nf(q, q % 1 ? 2 : 0)} ${esc(un(u))}</td><td>${reais(vu)}</td><td>${brl(v)}</td><td>${esc(titulo(f))}</td><td>${esc(titulo(c))}${uf ? ` (${esc(uf)})` : ''}</td></tr>`).join('')}</tbody></table></div></section>
-      <p class="tags__note">Veja também <a href="/materiais/${m.slug}">a ficha técnica</a> e <a href="/importacoes?m=${m.slug}">quanto o Brasil importa deste material</a>.</p>`;
+      <p class="tags__note">Veja também <a href="${'/materiais/' + m.slug}">a ficha técnica</a> e <a href="/importacoes?m=${m.slug}">quanto o Brasil importa deste material</a>.</p>`;
     mostra(true);
   }
   function mostra(det) {

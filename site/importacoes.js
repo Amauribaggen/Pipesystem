@@ -190,7 +190,7 @@
         <p><button type="button" class="btn btn--sm btn--ghost" id="impCsv">Baixar planilha (CSV)</button></p>
       </details>
       <div class="sheet__actions">
-        <a class="btn" href="/materiais/${m.slug}">Ficha técnica</a>
+        <a class="btn" href="${'/materiais/' + m.slug}">Ficha técnica</a>
         <a class="btn btn--ghost" href="/?assunto=${encodeURIComponent('Cotação de materiais')}&msg=${encodeURIComponent(`Cotação de ${m.name} (vi no Radar de Importações): `)}#contato">Solicitar cotação</a>
         <button type="button" class="btn btn--ghost" id="impShare">Compartilhar</button>
       </div>`;

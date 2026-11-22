@@ -377,7 +377,7 @@ function glossarize(root, opts = {}) {
         ${x.norma ? `<div class="glrel"><span>Norma</span>${normTags(x.norma.split(' · '))}</div>` : ''}
         ${x.links.length ? `<div class="glrel"><span>No portal</span>${x.links.map(([n, u]) => `<a href="${u}"${/^\/materiais\//.test(u) ? ` data-sheet="mat-${u.split('/')[2]}"` : /^\/sistemas\//.test(u) ? ` data-sheet="sis-${u.split('/')[2]}"` : ''}>${n}</a>`).join('')}</div>` : ''}
         ${x.ver.filter(v => byId[v]).length ? `<div class="glrel"><span>Veja também</span>${x.ver.filter(v => byId[v]).map(v => `<a class="glrel__see" href="#gl-${v}" data-gl="${v}">${byId[v].t}</a>`).join('')}</div>` : ''}
-        <a class="glterm__page" href="/glossario/${x.id}">Página do termo →</a>
+        <a class="glterm__page" href="${'/glossario/' + x.id}">Página do termo →</a>
       </div>
     </details>`;
   function render() {
