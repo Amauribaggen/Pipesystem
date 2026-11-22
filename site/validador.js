@@ -271,7 +271,7 @@
     $('lmValSum').innerHTML = uf ? `<table class="table lmat__sintab"><thead><tr><th>Grupo</th><th class="num">Valor (R$)</th></tr></thead><tbody>` +
       [...grupos].map(([g, x]) => `<tr><td>${esc(g)}${x.sem ? ` <small>(${x.sem} sem preço)</small>` : ''}</td><td class="num">${brl(x.v)}</td></tr>`).join('') +
       `</tbody><tfoot><tr><th>Total de material da lista — ${esc(uf)}</th><th class="num">${brl(total)}</th></tr></tfoot></table>` +
-      `<p class="hint">Preços SINAPI ${esc(window.lmatApi?.ref() || '')} (sem desoneração, capital do estado). Itens não reconhecidos ou sem referência ficam fora do total.</p>`
+      `<p class="hint">Preços SINAPI ${esc(window.lmatApi?.ref() || '')}: preço mediano à vista da revenda ou distribuidor na capital do estado, com IPI e ICMS, sem frete. Itens não reconhecidos ou sem referência ficam fora do total.</p>`
       : '<p class="hint">Escolha o estado para ver o orçamento SINAPI da lista.</p>';
     $('lmValXlsx').hidden = !uf;
     if (uf) $('lmValXlsx').textContent = `Baixar lista validada com preços SINAPI — ${uf}`;

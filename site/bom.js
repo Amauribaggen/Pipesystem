@@ -1507,7 +1507,7 @@
       : v && v.f ? `<c r="${ref}" s="${st}"><f>${xe(v.f)}</f></c>` : `<c r="${ref}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${xe(v ?? '')}</t></is></c>`;
     const row = (r, cells) => rows.push(`<row r="${r}">${cells.map(([c, v, st]) => cell(c + r, v, st)).join('')}</row>`);
     row(1, [['A', 'Dimensionamento Inteligente PipeSystem — ' + title + (sin ? ` — preços SINAPI ${SINAPI_PRECOS.ref}, ${sin.uf}` : ''), 1]]);
-    row(2, [['A', sin ? `Preços de referência de material do SINAPI (Caixa), ${SINAPI_PRECOS.ref}, sem desoneração, ${UF_NOMES[sin.uf]}. Mão de obra e total geral no fim da planilha, sem BDI e frete. Itens "sem referência" ficam em branco: preencha com cotação.`
+    row(2, [['A', sin ? `Preços de referência de material do SINAPI (Caixa/IBGE), ${SINAPI_PRECOS.ref}, ${UF_NOMES[sin.uf]}: preço mediano à vista da revenda ou distribuidor na capital do estado, com IPI e ICMS, sem frete. Mão de obra (sem desoneração) e total geral no fim da planilha, sem BDI e frete. Itens "sem referência" ficam em branco: preencha com cotação.`
       : 'Lista orientativa. Preencha a coluna "Preço unitário": os totais por item, por grupo e o total geral são calculados automaticamente.', 7]]);
     // colunas: base (A–H); com SINAPI, fonte, link, código do insumo e horas de mão de obra; sempre, fabricantes e código do fabricante para cotação
     const heads = ['Grupo', 'Material', 'Qtd.', 'Un.', 'Preço unitário (R$)', 'Total (R$)', 'Norma', 'Observação',
@@ -1676,10 +1676,10 @@
       `</tbody><tfoot><tr><th>Total de material — ${esc(UF_NOMES[uf])}</th><th class="num">${brl(total)}</th><th class="num">${mo.custo ? num(total / (total + mo.custo) * 100, 1) : '100'}%</th></tr>` +
       (mo.custo ? `<tr class="lmat__mosub"><th>Total de mão de obra (SINAPI)</th><th class="num">${brl(mo.custo)}</th><th class="num">${num(mo.custo / (total + mo.custo) * 100, 1)}%</th></tr><tr class="lmat__geral"><th>TOTAL GERAL</th><th class="num">${brl(total + mo.custo)}</th><th class="num">100%</th></tr>` : '') +
       `</tfoot></table>` +
-      `<p class="hint">${prices.size} de ${last.rows.length} itens com preço: SINAPI ${SINAPI_PRECOS.ref} (Caixa, sem desoneração, capital do estado)` +
+      `<p class="hint">${prices.size} de ${last.rows.length} itens com preço: SINAPI ${SINAPI_PRECOS.ref} (Caixa/IBGE, capital do estado)` +
       (web ? `, e ${web} com preço pesquisado na internet` : '') + '.' +
       (semRef ? ` <span class="sinref" tabindex="0"><b>${semRef} ${semRef > 1 ? 'itens ficam' : 'item fica'} sem referência</b>${dica(semLista)}</span> e fora do total: cote com fornecedores.` : '') +
-      ' Valores sem frete e sem BDI (Benefícios e Despesas Indiretas: administração, seguros, impostos, riscos e lucro da empresa).</p>' +
+      ' Material SINAPI: preço mediano à vista da revenda ou distribuidor na capital do estado, com IPI e ICMS, sem frete. Valores sem frete e sem BDI (Benefícios e Despesas Indiretas: administração, seguros, impostos, riscos e lucro da empresa).</p>' +
       (mo.n ? `<div class="lmat__mo"><h5>Mão de obra de instalação (produtividade SINAPI)</h5>` +
         `<p><b>${num(mo.prof, 0)} h</b> de encanador + <b>${num(mo.aux, 0)} h</b> de auxiliar = <b>${num(mo.prof + mo.aux, 0)} h</b> no total` +
         (mo.custo ? `, cerca de <b>${brl(mo.custo)}</b> com encargos (horista, ${esc(UF_NOMES[uf])})` : '') + '.</p>' +
@@ -1697,7 +1697,7 @@
     // data-base: mês de referência dos preços e data em que a Caixa publicou a edição
     const [mm, aa] = SINAPI_PRECOS.ref.split('/');
     const mesNome = new Date(+aa, +mm - 1, 15).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-    $('lmSinBase').innerHTML = `Data-base dos preços: <b>${mesNome}</b> (SINAPI ${SINAPI_PRECOS.ref}, publicado pela Caixa em ${SINAPI_PRECOS.emissao}). Preço mediano na capital do estado, sem desoneração.`;
+    $('lmSinBase').innerHTML = `Data-base dos preços: <b>${mesNome}</b> (SINAPI ${SINAPI_PRECOS.ref}, publicado pela Caixa em ${SINAPI_PRECOS.emissao}). Material: preço mediano à vista da revenda ou distribuidor na capital do estado, com IPI e ICMS, sem frete (pesquisa do IBGE nos locais onde as construtoras compram). Mão de obra sem desoneração.`;
     $('lmUf').addEventListener('change', () => { try { localStorage.setItem('lmUf', $('lmUf').value); } catch {} renderSinapi(); });
     $('lmSinXlsx').addEventListener('click', () => {
       const uf = $('lmUf').value; if (!uf || !last) return;
