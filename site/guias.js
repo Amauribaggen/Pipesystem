@@ -898,18 +898,22 @@ const CHECKS = [
   // abas e filtro de tema
   const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklists e ensaios', CHECKS.length], ...(typeof DETALHES !== 'undefined' ? [['detalhes', 'Detalhes típicos', DETALHES.length]] : []), ['precos', 'Preços', PRECOS.itens.length], ['glossario', 'Glossário', GLOSSARIO.length]];
   $('gpTabs').innerHTML = TABS.map(([k, n, c]) => `<button type="button" role="tab" class="gptab" data-tab="${k}"${k === 'detalhes' || k === 'precos' ? ' data-novo' : ''} aria-selected="${k === st.tab}">${n}${c ? ` <small>${c}</small>` : ''}</button>`).join('');
-  $('gpTemas').innerHTML = GP_TEMAS.map(t => `<button type="button" class="gptema" data-tema="${t}" aria-pressed="false">${t}</button>`).join('');
+  // "Todos" limpa o filtro; "Apresentação" (vídeos do PipeSystem) só aparece na aba Vídeos; rótulos mais claros para alguns temas
+  const TEMA_ROT = { 'Identificação': 'Cores e símbolos' };
+  $('gpTemas').innerHTML = [['', 'Todos'], ['Apresentação', 'Apresentação PipeSystem'], ...GP_TEMAS.map(t => [t, TEMA_ROT[t] || t])]
+    .map(([t, r]) => `<button type="button" class="gptema" data-tema="${t}" aria-pressed="${!t}"${t === 'Apresentação' ? ' data-so="videos"' : ''}${TEMA_ROT[t] ? ` title="${t}: identificação de tubulações por cores e símbolos gráficos"` : ''}>${r}</button>`).join('');
   const show = () => {
     TABS.forEach(([k]) => { $('gp-' + k).hidden = k !== st.tab; });
     $('gpTabs').querySelectorAll('.gptab').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === st.tab));
     $('gpTemas').hidden = ['check', 'glossario', 'precos', 'detalhes'].includes(st.tab);
+    $('gpTemas').querySelectorAll('[data-so]').forEach(b => { b.hidden = b.dataset.so !== st.tab; if (b.hidden && st.tema === b.dataset.tema) setTema(null); });
     const box = $('gp-' + st.tab);
     let n = 0;
     box.querySelectorAll('[data-tema]').forEach(el => { const on = !st.tema || el.dataset.tema.split('|').includes(st.tema); el.hidden = !on; n += on; });
     box.querySelector('.gpempty')?.remove();
     if (!n && !['check', 'glossario', 'precos', 'detalhes'].includes(st.tab)) box.insertAdjacentHTML('beforeend', '<p class="gpempty">Ainda não há conteúdo deste tema nesta aba.</p>');
   };
-  const setTema = t => { st.tema = t; $('gpTemas').querySelectorAll('.gptema').forEach(x => x.setAttribute('aria-pressed', x.dataset.tema === st.tema)); };
+  const setTema = t => { st.tema = t || null; $('gpTemas').querySelectorAll('.gptema').forEach(x => x.setAttribute('aria-pressed', x.dataset.tema === (st.tema || ''))); };
   $('gpTabs').addEventListener('click', e => { const b = e.target.closest('.gptab'); if (b) { st.tab = b.dataset.tab; show(); } });
   $('gpTemas').addEventListener('click', e => { const b = e.target.closest('.gptema'); if (b) { setTema(st.tema === b.dataset.tema ? null : b.dataset.tema); show(); } });
   show();
