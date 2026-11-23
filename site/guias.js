@@ -3,7 +3,7 @@
 const GP_TEMAS = ['Água fria e quente', 'Esgoto', 'Gás', 'Reservatórios', 'Metais sanitários', 'Testes e entrega', 'Identificação', 'Indústria'];
 
 const VIDEOS = {
-  portal: { novo: true, mp4: '/video/pipesystem-portal.mp4', capa: '/video/pipesystem-portal.webp', t: 'PipeSystem: o portal da hidráulica em 40 segundos', canal: 'PipeSystem', dur: '0:40', tema: 'Apresentação', d: 'Vídeo de apresentação do portal da hidráulica e condução de fluidos: cotações online, Dimensionamento Inteligente, bibliotecas BIM/CAD, normas técnicas, catálogo de materiais, Radar de Importações, guias práticos, oportunidades para universidades e estudantes e o app PipeSystem Pro, para projetistas, instaladores, construtoras, indústrias, fabricantes, lojistas e estudantes.' },
+  portal: { novo: true, chaves: ['PipeSystem Pro', 'apresentação', 'portal da hidráulica', 'Dimensionamento Inteligente', 'cotação', 'BIM', 'CAD'], mp4: '/video/pipesystem-portal.mp4', capa: '/video/pipesystem-portal.webp', t: 'PipeSystem: o portal da hidráulica em 40 segundos', canal: 'PipeSystem', dur: '0:40', tema: 'Apresentação', d: 'Vídeo de apresentação do portal da hidráulica e condução de fluidos: cotações online, Dimensionamento Inteligente, bibliotecas BIM/CAD, normas técnicas, catálogo de materiais, Radar de Importações, guias práticos, oportunidades para universidades e estudantes e o app PipeSystem Pro, para projetistas, instaladores, construtoras, indústrias, fabricantes, lojistas e estudantes.' },
   apresentacao: { novo: true, id: 'RbApp0_Nf_Q', t: 'PipeSystem: um passeio pelo portal', canal: 'PipeSystem', dur: '2:27', tema: 'Apresentação', d: 'Apresentação narrada do portal: cotações, sistemas, catálogo de materiais, Dimensionamento Inteligente, BIM e CAD, guias, normas, notícias e vagas, PipeSystem Pro e guia de fornecedores.' },
   sistemasObra: { novo: true, id: 'uvRwuhh1LEw', capa: '/video/pipesystem-sistemas-na-obra.webp', t: '29 sistemas hidráulicos numa obra, um a um', canal: 'PipeSystem', dur: '2:22', tema: 'Apresentação', d: 'Animação narrada que percorre uma obra residencial, hospitalar e industrial e mostra a instalação típica de cada um dos 29 sistemas: água quente e fria, gás, incêndio, vapor, ar comprimido, gases medicinais, saneamento e outros.' },
   pvc: { id: 'p_fwj2fG9_Y', t: 'Como instalar PVC soldável', canal: 'Tigre', dur: '2:10', tema: 'Água fria e quente', d: 'Corte, lixamento, limpeza e solda de tubos e conexões de PVC marrom.' },
@@ -29,6 +29,11 @@ const VIDEOS = {
   gas: { id: 'CkE6T1heuTk', t: 'Como é feita a instalação de gás natural em casa', canal: 'Comgás', dur: '3:56', tema: 'Gás', d: 'Etapas da ligação de gás natural canalizado, do ramal ao aparelho.' },
   vazamento: { id: 'rLwTcuL70eE', t: 'O que fazer em infiltração ou vazamento', canal: 'Tigre', dur: '7:08', tema: 'Testes e entrega', d: 'Como localizar e corrigir vazamentos e infiltrações.' },
   hidrostatico: { id: 'eiPWmEYkXDU', t: 'Teste hidrostático em ferro dúctil (inglês)', canal: 'McWane Ductile', dur: '3:31', tema: 'Testes e entrega', d: 'Enchimento, retirada do ar, pressurização e leitura em adutoras.' },
+  swagelok: { novo: true, chaves: ['conexão de compressão', 'anilha', 'compression fitting', 'instrumentação', 'tubo de inox', 'Tecflux'], id: 'DnfIiJSq4qQ', t: 'Conexões de dupla anilha: instalação', canal: 'Swagelok Brasil', dur: '1:54', tema: 'Indústria', d: 'Montagem da conexão de dupla anilha em tubo de aço inoxidável e outros materiais, usada em instrumentação, gases e linhas de processo.' },
+  tupyTubos: { novo: true, chaves: ['ferro maleável', 'tubo de aço', 'tubo galvanizado', 'rosca BSP', 'NBR 5580', 'schedule'], id: 'XcBqdW4EmnU', t: 'Quais tubos usar com conexões roscadas', canal: 'Conexões Tupy', dur: '4:45', tema: 'Indústria', d: 'Os tubos de aço indicados para as conexões roscadas de ferro maleável e o que observar na escolha.' },
+  tupyRosca: { novo: true, chaves: ['rosca BSP', 'rosca NPT', 'rosca cônica', 'rosca paralela', 'vedação de rosca', 'ferro maleável'], id: '5pGJbWZ5Yy8', t: 'Pode misturar rosca BSP e NPT?', canal: 'Conexões Tupy', dur: '1:24', tema: 'Indústria', d: 'Por que roscas BSP e NPT não devem ser misturadas, mesmo com o mesmo passo de rosca.' },
+  tupyGrooved: { novo: true, chaves: ['ranhurado', 'grooved', 'acoplamento', 'Victaulic', 'sprinkler', 'rede de incêndio', 'água gelada'], id: 'ilmlCM6PR74', t: 'Conexões ranhuradas: a linha TupyGrooved', canal: 'Conexões Tupy', dur: '3:55', tema: 'Indústria', d: 'Acoplamentos e conexões ranhuradas para redes de incêndio, água gelada e utilidades industriais.' },
+  purgador: { novo: true, chaves: ['purgador de vapor', 'steam trap', 'condensado', 'vapor', 'balde invertido', 'Armstrong'], id: 'ifLOQvQJAzA', t: 'Como funciona o purgador de balde invertido (inglês)', canal: 'Armstrong International', dur: '0:58', tema: 'Indústria', d: 'Animação do ciclo do purgador de balde invertido: descarga do condensado e retenção do vapor.' },
 };
 
 // ---------- guias passo a passo ----------
@@ -898,15 +903,17 @@ const CHECKS = [
   // abas e filtro de tema
   const TABS = [['guias', 'Passo a passo', GUIAS.length], ['videos', 'Vídeos', Object.keys(VIDEOS).length], ['pats', 'Erros e patologias', PATS.length], ['check', 'Checklists e ensaios', CHECKS.length], ...(typeof DETALHES !== 'undefined' ? [['detalhes', 'Detalhes típicos', DETALHES.length]] : []), ['precos', 'Preços', PRECOS.itens.length], ['glossario', 'Glossário', GLOSSARIO.length]];
   $('gpTabs').innerHTML = TABS.map(([k, n, c]) => `<button type="button" role="tab" class="gptab" data-tab="${k}"${k === 'detalhes' || k === 'precos' ? ' data-novo' : ''} aria-selected="${k === st.tab}">${n}${c ? ` <small>${c}</small>` : ''}</button>`).join('');
-  // "Todos" limpa o filtro; "Apresentação" (vídeos do PipeSystem) só aparece na aba Vídeos; rótulos mais claros para alguns temas
+  // "Todos" limpa o filtro; temas sem conteúdo na aba aberta ficam escondidos (ex.: "Apresentação" só nos Vídeos); rótulos mais claros para alguns temas
   const TEMA_ROT = { 'Identificação': 'Cores e símbolos' };
   $('gpTemas').innerHTML = [['', 'Todos'], ['Apresentação', 'Apresentação PipeSystem'], ...GP_TEMAS.map(t => [t, TEMA_ROT[t] || t])]
-    .map(([t, r]) => `<button type="button" class="gptema" data-tema="${t}" aria-pressed="${!t}"${t === 'Apresentação' ? ' data-so="videos"' : ''}${TEMA_ROT[t] ? ` title="${t}: identificação de tubulações por cores e símbolos gráficos"` : ''}>${r}</button>`).join('');
+    .map(([t, r]) => `<button type="button" class="gptema" data-tema="${t}" aria-pressed="${!t}"${TEMA_ROT[t] ? ` title="${t}: identificação de tubulações por cores e símbolos gráficos"` : ''}>${r}</button>`).join('');
   const show = () => {
     TABS.forEach(([k]) => { $('gp-' + k).hidden = k !== st.tab; });
     $('gpTabs').querySelectorAll('.gptab').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === st.tab));
     $('gpTemas').hidden = ['check', 'glossario', 'precos', 'detalhes'].includes(st.tab);
-    $('gpTemas').querySelectorAll('[data-so]').forEach(b => { b.hidden = b.dataset.so !== st.tab; if (b.hidden && st.tema === b.dataset.tema) setTema(null); });
+    // cada aba mostra só os filtros de tema que têm conteúdo nela
+    const boxT = $('gp-' + st.tab);
+    $('gpTemas').querySelectorAll('.gptema').forEach(b => { const t = b.dataset.tema; b.hidden = !!t && ![...boxT.querySelectorAll('[data-tema]')].some(el => el.dataset.tema.split('|').includes(t)); if (b.hidden && st.tema === t) setTema(null); });
     const box = $('gp-' + st.tab);
     let n = 0;
     box.querySelectorAll('[data-tema]').forEach(el => { const on = !st.tema || el.dataset.tema.split('|').includes(st.tema); el.hidden = !on; n += on; });

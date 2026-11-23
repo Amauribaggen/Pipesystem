@@ -49,7 +49,8 @@ const D = loadData(src);
   const fabricantes = new Set(Object.values(D.MANUFACTURERS).flat().map(x => x[0].replace(/ \(.*/, ''))).size;
   const num = (h, k, n) => h.replace(new RegExp(`<strong data-count="\\d+" data-prefix="" data-num="${k}">\\d+<`), `<strong data-count="${n}" data-prefix="" data-num="${k}">${n}<`);
   let h = readFileSync(f, 'utf8');
-  h = num(num(h, 'fichas', fichas), 'fabricantes', fabricantes)
+  const gs = readFileSync(join(src, 'guias.js'), 'utf8'), nVideos = Object.keys(vm.runInNewContext(gs.slice(gs.indexOf('const VIDEOS'), gs.indexOf('\n};', gs.indexOf('const VIDEOS')) + 3) + ';VIDEOS')).length;
+  h = num(num(num(h, 'fichas', fichas), 'fabricantes', fabricantes), 'videos', nVideos)
     .replace(/<b>\d+<\/b> materiais e \d+ fabricantes/, `<b>${fichas}</b> materiais e ${fabricantes} fabricantes`)
     .replace(/entre as \d+ do catálogo/g, `entre as ${fichas} do catálogo`);
   writeFileSync(f, h);
@@ -83,7 +84,7 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
     g: D.GLOSSARIO.map(x => ({ id: x.id, t: x.t, en: x.en, tema: x.tema, def: x.def, exp: x.exp, f: x.f, norma: x.norma, x: GLOSSARIO_EXTRA[x.id] })),
     ntc: JSON.parse(readFileSync(join(src, 'noticias.json'), 'utf8')).itens.slice().sort((x, y) => y.data.localeCompare(x.data)).slice(0, 5).map(({ titulo, link, data, fonte }) => ({ titulo, link, data, fonte })),
     gu: vm.runInNewContext(guias.slice(guias.indexOf('const GUIAS'), guias.indexOf('\n];', guias.indexOf('const GUIAS')) + 3) + ';GUIAS').map(({ id, tema, titulo, resumo, tempo, nivel, norma, separar, passos, atencao, videos, mats }) => ({ id, tema, titulo, resumo, tempo, nivel, norma, separar, passos, atencao, videos, mats })),
-    v: Object.entries(vm.runInNewContext(guias.slice(guias.indexOf('const VIDEOS'), guias.indexOf('\n};', guias.indexOf('const VIDEOS')) + 3) + ';VIDEOS')).filter(([, x]) => x.id).map(([k, x]) => ({ k, id: x.id, t: x.t, canal: x.canal, dur: x.dur, tema: x.tema, d: x.d })),
+    v: Object.entries(vm.runInNewContext(guias.slice(guias.indexOf('const VIDEOS'), guias.indexOf('\n};', guias.indexOf('const VIDEOS')) + 3) + ';VIDEOS')).filter(([, x]) => x.id).map(([k, x]) => ({ k, id: x.id, t: x.t, canal: x.canal, dur: x.dur, tema: x.tema, d: x.d, ch: x.chaves })),
     cm: D.CMPS.map(({ id, tema, titulo, resumo, opcoes, linhas, pros, erros, apps }) => ({ id, tema, titulo, resumo, opcoes, linhas, pros, erros, apps })),
     nt: JSON.parse(readFileSync(join(src, 'noticias.json'), 'utf8')).itens.slice().sort((x, y) => y.data.localeCompare(x.data)),
     cu: JSON.parse(readFileSync(join(src, 'cursos.json'), 'utf8')).itens,

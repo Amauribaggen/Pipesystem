@@ -1248,7 +1248,7 @@ if (document.querySelector('[data-num]')) {
       const guiaText = g => [g.titulo, g.tema, ...(g.tema2 || []), g.resumo, g.norma, ...(g.chaves || []), ...g.passos, ...g.atencao, ...(g.tabelas || []).flatMap(t => [t.titulo, ...t.linhas.flatMap(l => l.slice(1))]), ...(g.quadros || []).flatMap(q => [q.titulo, ...q.linhas.flat()])].join(' ');
       add('Guias práticos', pick(GUIAS, guiaText, g => ({ href: '/guias-praticos#' + g.id, title: g.titulo, sub: snippet(guiaText(g), terms, g.resumo) })));
       add('Erros comuns e patologias', pick(PATS, p => [p.t, p.tema, p.sint, p.causa, p.sol].join(' '), p => ({ href: '/guias-praticos#gp-pats', title: p.t, sub: p.sint })));
-      add('Vídeos dos fabricantes', pick(Object.values(VIDEOS), v => [v.t, v.tema, v.canal, v.d].join(' '), v => ({ href: '/guias-praticos#gp-videos', title: v.t, sub: `${v.canal} · ${v.dur}` })));
+      add('Vídeos dos fabricantes', pick(Object.values(VIDEOS), v => [v.t, v.tema, v.canal, v.d, ...(v.chaves || [])].join(' '), v => ({ href: '/guias-praticos#gp-videos', title: v.t, sub: `${v.canal} · ${v.dur}` })));
     }
 
     if (typeof DETALHES !== 'undefined') add('Detalhes típicos para baixar', pick(DETALHES, d => [d.titulo, d.desc, d.normas, ...d.chaves].join(' '),

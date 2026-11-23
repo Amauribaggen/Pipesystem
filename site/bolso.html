@@ -991,7 +991,7 @@
       ...Object.entries(d.s.ins).map(([c, x]) => ({ g: 'Preços', t: x[0], ir: () => irPara('precos', 'bPreco', x[0]) })),
       ...DETALHES.map(x => ({ g: 'Detalhes típicos', t: x.titulo, b: x.desc, ir: () => irPara('detalhes', 'b_detalhes', x.titulo) })),
       ...d.gu.map(x => ({ g: 'Guias', t: x.titulo, b: x.tema, ir: () => irPara('guias', 'b_guias', x.titulo) })),
-      ...d.v.map(x => ({ g: 'Vídeos', t: x.t, b: x.canal, ir: () => irPara('videos', 'b_videos', x.t) })),
+      ...d.v.map(x => ({ g: 'Vídeos', t: x.t, b: [x.canal, x.tema, ...(x.ch || [])].join(' '), ir: () => irPara('videos', 'b_videos', x.t) })),
       ...d.cm.map(x => ({ g: 'Comparativos', t: x.titulo, b: x.tema, ir: () => irPara('comparativos', 'b_comparativos', x.titulo) })),
       ...d.nt.map(x => ({ g: 'Notícias', t: x.titulo, b: x.fonte, ir: () => irPara('noticias', 'b_noticias', x.titulo) })),
       ...d.si.map(x => ({ g: 'Sistemas', t: x.name, ir: () => irPara('sistemas', 'b_sistemas', x.name) })),
