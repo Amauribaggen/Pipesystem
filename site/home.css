@@ -1,0 +1,239 @@
+/* =====================================================================
+   Página inicial: visual "Editorial Claro" (versão B+ do redesenho, aprovada em 24/11/2026).
+   Só CSS, carregado depois do styles.css e só na página inicial (site/index.html).
+   O escopo body:not([data-pagina]) garante que nenhuma outra página seja afetada.
+   Protótipos e proposta: estudos/redesign/ (fora do repositório).
+   Para voltar ao visual anterior: remover o <link> do home.css em site/index.html.
+   ===================================================================== */
+
+/* ---- Base editorial (versão B) ---- */
+body:not([data-pagina]) {
+  --ink: #0b1220;              /* grafite quase preto: títulos e blocos escuros */
+  --ink-2: #131c2e;
+  --graphite: #3a4556;         /* texto corrido sobre claro (9,9:1) */
+  --muted: #5f6b7a;            /* legendas sobre claro (5,4:1) */
+  --line: #e4e7ec;
+  --paper: #ffffff;
+  --bg-light: #f6f7f9;
+  --teal: #1fb6c9;
+  --teal-d: #0e7f8f;           /* turquesa para texto sobre claro (4,9:1) */
+  --teal-l: #8ff0f8;           /* turquesa para texto sobre escuro */
+  --accent: #f2a03d;           /* laranja só no Pro, em "Novo" e no botão flutuante */
+  --navy: #0b1220;
+  --radius: 12px;
+  --display: "Inter", "Inter Fallback", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --shadow: 0 1px 2px rgba(11, 18, 32, .06), 0 8px 24px -12px rgba(11, 18, 32, .18);
+  /* Escala de espaçamento: 8 · 16 · 24 · 40 · 64 · 96 · 128 */
+  --s1: 8px; --s2: 16px; --s3: 24px; --s4: 40px; --s5: 64px; --s6: 96px; --s7: 128px;
+}
+body:not([data-pagina]) { background: var(--bg-light); }
+
+/* ---------- Tipografia: títulos em Inter 800, apertados ---------- */
+body:not([data-pagina]) h1, body:not([data-pagina]) h2, body:not([data-pagina]) h3 { font-family: var(--display); font-weight: 800; letter-spacing: -.035em; }
+body:not([data-pagina]) h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.05; }
+body:not([data-pagina]) h3 { letter-spacing: -.02em; }
+body:not([data-pagina]) .eyebrow { font-size: .74rem; letter-spacing: .18em; font-weight: 700; }
+
+/* ---------- Botões: grafite sobre claro, branco sobre escuro, 44 px ---------- */
+body:not([data-pagina]) .btn { min-height: 44px; border-radius: 10px; background: var(--ink); color: #fff; font-weight: 700; }
+body:not([data-pagina]) .btn:hover { background: #24324a; box-shadow: none; transform: none; }
+body:not([data-pagina]) .hero .btn, body:not([data-pagina]) .section--dark .btn, body:not([data-pagina]) .nav .btn { background: #fff; color: var(--ink); }
+body:not([data-pagina]) .hero .btn:hover, body:not([data-pagina]) .section--dark .btn:hover, body:not([data-pagina]) .nav .btn:hover { background: #dfe6ee; }
+body:not([data-pagina]) .btn:focus-visible, body:not([data-pagina]) a:focus-visible, body:not([data-pagina]) button:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+/* ---------- Menu: grafite sólido, sem brilho ---------- */
+body:not([data-pagina]) .nav { background: rgba(11, 18, 32, .97); border-bottom: 1px solid rgba(255, 255, 255, .06); backdrop-filter: none; }
+body:not([data-pagina]) .nav__barra { background: #070c16; border-bottom-color: rgba(255, 255, 255, .05); }
+body:not([data-pagina]) .nav__barra-cta { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+body:not([data-pagina]) #navLinks .nav__hot { background: #fff; border-color: #fff; color: var(--ink); box-shadow: none; animation: none; border-radius: 8px; }
+body:not([data-pagina]) .nav__toggle { min-width: 44px; min-height: 44px; }
+
+/* ---------- Abertura: grafite profundo, tubulação ao fundo bem discreta ---------- */
+body:not([data-pagina]) .hero { background: radial-gradient(900px 420px at 85% 0%, #1a2a44 0%, transparent 65%), var(--ink); padding: var(--s5) 0 var(--s4); }
+body:not([data-pagina]) .hero__pipes { opacity: .28; }
+body:not([data-pagina]) .hero__content::before { display: none; }
+body:not([data-pagina]) .hero h1 { font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1.02; text-shadow: none; }
+body:not([data-pagina]) .grad { background: linear-gradient(90deg, #8ff0f8 0%, #d9fbff 100%); -webkit-background-clip: text; background-clip: text; }
+body:not([data-pagina]) .lead { color: #b9c3d1; font-size: 1.15rem; line-height: 1.65; max-width: 600px; }
+body:not([data-pagina]) .search { min-height: 60px; border-radius: 12px; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .8); }
+body:not([data-pagina]) .search .btn { background: var(--ink); color: #fff; min-height: 48px; border-radius: 8px; }
+body:not([data-pagina]) .search .btn:hover { background: #24324a; }
+body:not([data-pagina]) .heroradar { background: transparent; border: 0; border-top: 1px solid rgba(255, 255, 255, .14); border-bottom: 1px solid rgba(255, 255, 255, .14); border-radius: 0; padding: 14px 0; max-width: 680px; }
+body:not([data-pagina]) .heroradar:hover { background: transparent; }
+body:not([data-pagina]) .heroradar__tag { color: var(--teal-l); }
+body:not([data-pagina]) .heroradar__txt { color: #c9d2de; }
+body:not([data-pagina]) .heroradar__btn { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+
+/* ---------- PipeSystem Pro: cartão grafite com a única cor quente da dobra ---------- */
+body:not([data-pagina]) .proapp { background: var(--ink-2); border: 1px solid rgba(255, 255, 255, .08); border-radius: 20px; box-shadow: none; padding: 32px 36px; }
+body:not([data-pagina]) .proapp__btn { background: var(--accent); color: var(--ink); }
+body:not([data-pagina]) .proapp__env { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); background: transparent; color: #fff; border-radius: 10px; }
+
+/* ---------- Indicadores: estilo editorial, números grandes sem caixas ---------- */
+body:not([data-pagina]) .stats { margin-top: var(--s5); gap: 0; background: none; border-radius: 0; border-top: 1px solid rgba(255, 255, 255, .14); }
+body:not([data-pagina]) .stats div { background: transparent; backdrop-filter: none; padding: 24px 24px 20px 0; border-right: 1px solid rgba(255, 255, 255, .08); }
+body:not([data-pagina]) .stats div:last-child { border-right: 0; }
+body:not([data-pagina]) .stats strong { font-size: 2.6rem; font-weight: 800; letter-spacing: -.04em; }
+body:not([data-pagina]) .stats span { color: #93a0b3; }
+body:not([data-pagina]) .stats__note { color: #8592a6; }
+body:not([data-pagina]) .sitenums__title { margin-top: var(--s4); color: #93a0b3; letter-spacing: .18em; }
+body:not([data-pagina]) .sitenums__list { gap: 0; background: none; border-radius: 0; border-top: 1px solid rgba(255, 255, 255, .1); }
+body:not([data-pagina]) .sitenums__list a { background: transparent; backdrop-filter: none; border-bottom: 1px solid rgba(255, 255, 255, .08); border-radius: 0; padding: 14px 16px 14px 0; }
+body:not([data-pagina]) .sitenums__list a:hover, body:not([data-pagina]) .sitenums__list a:focus-visible { background: rgba(255, 255, 255, .04); }
+body:not([data-pagina]) .sitenums strong { font-weight: 800; letter-spacing: -.03em; }
+body:not([data-pagina]) .sitenums span { color: #a3afc0; }
+body:not([data-pagina]) .sitenums__laranja strong { color: var(--accent); }
+
+/* ---------- Seções escuras (vídeo e contato) em grafite ---------- */
+body:not([data-pagina]) .section--dark { background: var(--ink); }
+body:not([data-pagina]) .apres { padding: var(--s6) 0; }
+body:not([data-pagina]) .apres__play { border-radius: 16px; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .9); }
+body:not([data-pagina]) .apres__btn { background: #fff; }
+
+/* ---------- Seções claras: cartões das áreas e "Para quem é" ---------- */
+body:not([data-pagina]) .vitrine, body:not([data-pagina]) #publico { background: var(--bg-light); color: var(--ink); padding: var(--s6) 0; }
+body:not([data-pagina]) #publico { background: var(--paper); }
+body:not([data-pagina]) .vitrine .eyebrow, body:not([data-pagina]) #publico .eyebrow { color: var(--teal-d); }
+body:not([data-pagina]) .vitrine h2, body:not([data-pagina]) #publico h2 { color: var(--ink); }
+body:not([data-pagina]) .vitrine .section__head p:last-child, body:not([data-pagina]) #publico .split > div > p { color: var(--graphite); }
+body:not([data-pagina]) .vitrine .section__head { margin-bottom: var(--s4); }
+body:not([data-pagina]) .vitrine__grid { gap: var(--s3); }
+body:not([data-pagina]) .vcard { border: 1px solid var(--line); border-radius: 16px; box-shadow: none; }
+body:not([data-pagina]) .vcard:hover { border-color: #c9d0da; box-shadow: var(--shadow); transform: translateY(-2px); }
+body:not([data-pagina]) .vcard__main { padding: 26px 26px 18px; gap: 10px; }
+body:not([data-pagina]) .vcard__tag { color: var(--teal-d); letter-spacing: .14em; }
+body:not([data-pagina]) .vcard h3 { color: var(--ink); font-size: 1.3rem; }
+body:not([data-pagina]) .vcard__main p { color: var(--graphite); }
+body:not([data-pagina]) .vcard__num { color: var(--muted); }
+body:not([data-pagina]) .vcard__num b { color: var(--ink); font-weight: 800; font-size: 1.6rem; letter-spacing: -.03em; }
+body:not([data-pagina]) .vcard__go { color: var(--ink); }
+body:not([data-pagina]) .vcard__links { background: var(--paper); border-top: 1px solid var(--line); padding: 14px 26px 20px; }
+body:not([data-pagina]) .vcard__links a { display: inline-flex; align-items: center; min-height: 32px; border-color: var(--line); color: var(--graphite); border-radius: 8px; }
+body:not([data-pagina]) .vcard__links a:hover { border-color: var(--ink); color: var(--ink); }
+body:not([data-pagina]) .audience { gap: 0; border-top: 1px solid var(--line); }
+body:not([data-pagina]) .audience div { background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 28px 0; }
+body:not([data-pagina]) .audience h3 { color: var(--ink); font-size: 1.25rem; }
+body:not([data-pagina]) .audience p { color: var(--graphite); }
+body:not([data-pagina]) .qcall { background: var(--bg-light); border: 1px solid var(--line); color: var(--ink); }
+
+/* ---------- Contato ---------- */
+body:not([data-pagina]) .form--contact { background: var(--ink-2); border: 1px solid rgba(255, 255, 255, .08); border-radius: 20px; padding: 36px; }
+body:not([data-pagina]) .form input, body:not([data-pagina]) .form select, body:not([data-pagina]) .form textarea { min-height: 48px; border-radius: 10px; }
+body:not([data-pagina]) .form--contact .btn.full { min-height: 52px; }
+
+/* ---------- Rodapé ---------- */
+body:not([data-pagina]) .footer { background: #070c16; border-top: 0; }
+body:not([data-pagina]) .footer__bar { background: transparent; border: 0; border-top: 1px solid rgba(255, 255, 255, .08); border-radius: 0; padding-inline: 0; }
+body:not([data-pagina]) .footer__bar a { min-height: 44px; display: flex; align-items: center; color: #c9d2de; font-weight: 500; }
+
+@media (pointer: coarse) {
+  body:not([data-pagina]) .vcard__links a, body:not([data-pagina]) .lang__btn { min-height: 44px; }
+}
+/* ---------- Celular primeiro ---------- */
+@media (max-width: 760px) {
+  body:not([data-pagina]) .hero { padding: var(--s4) 0 var(--s3); }
+  body:not([data-pagina]) .vitrine, body:not([data-pagina]) #publico, body:not([data-pagina]) .apres { padding: var(--s5) 0; }
+  body:not([data-pagina]) .stats div { padding: 18px 12px 16px 0; }
+  body:not([data-pagina]) .stats div:nth-child(2n) { border-right: 0; padding-left: 12px; }
+  body:not([data-pagina]) .stats strong { font-size: 2rem; }
+  body:not([data-pagina]) .proapp { padding: 22px 18px; }
+  body:not([data-pagina]) .vcard__main { padding: 20px 20px 14px; }
+  body:not([data-pagina]) .vcard__links { padding: 12px 20px 16px; }
+  body:not([data-pagina]) .form--contact { padding: 20px; }
+}
+
+/* ---- Editorial Claro (versão B+) ---- */
+body:not([data-pagina]) {
+  --soft: #eef3f7;             /* fundo de destaque suave */
+  --teal-tint: #e6f7f9;        /* turquesa bem claro para etiquetas */
+  --orange-d: #a34b00;         /* laranja para texto sobre claro (5,9:1) */
+}
+body:not([data-pagina]) { background: #ffffff; }
+
+/* ---------- Botões em pílula: mais amigáveis ---------- */
+body:not([data-pagina]) .btn { border-radius: 999px; padding-inline: 1.5em; }
+body:not([data-pagina]) .hero .btn { background: var(--ink); color: #fff; }
+body:not([data-pagina]) .hero .btn:hover { background: #24324a; }
+body:not([data-pagina]) .hero .proapp .proapp__btn { background: var(--accent); color: var(--ink); }
+body:not([data-pagina]) .hero .proapp .proapp__btn:hover { background: #ffb45c; }
+body:not([data-pagina]) .hero .proapp .proapp__env { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .45); }
+
+/* ---------- Abertura clara ---------- */
+body:not([data-pagina]) .hero { background: radial-gradient(1000px 460px at 90% -10%, #dff4f7 0%, rgba(223, 244, 247, 0) 60%), linear-gradient(180deg, #ffffff 0%, #f6f7f9 100%); color: var(--ink); }
+body:not([data-pagina]) .hero__pipes { opacity: .12; }
+body:not([data-pagina]) .hero h1 { color: var(--ink); }
+body:not([data-pagina]) .hero h1 .grad { background: linear-gradient(90deg, #0e7f8f 0%, #13a3b6 100%); -webkit-background-clip: text; background-clip: text; }   /* 4,9:1 a 3,4:1: título grande */
+body:not([data-pagina]) .lead { color: var(--graphite); }
+body:not([data-pagina]) .search { border: 1px solid #d5dbe3; border-radius: 999px; padding-left: 22px; box-shadow: 0 1px 2px rgba(11, 18, 32, .05), 0 18px 40px -22px rgba(11, 18, 32, .35); }
+body:not([data-pagina]) .search:focus-within { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(31, 182, 201, .18), 0 18px 40px -22px rgba(11, 18, 32, .35); }
+body:not([data-pagina]) .search .btn { border-radius: 999px; }
+body:not([data-pagina]) .heroradar { border-color: var(--line); }
+body:not([data-pagina]) .heroradar__tag { color: var(--teal-d); }
+body:not([data-pagina]) .heroradar__txt { color: var(--graphite); }
+body:not([data-pagina]) .heroradar__btn { color: var(--ink); }
+
+/* ---------- PipeSystem Pro: o único bloco escuro do alto ---------- */
+body:not([data-pagina]) .proapp { border-radius: 28px; box-shadow: 0 30px 60px -30px rgba(11, 18, 32, .55); }
+
+/* ---------- Faixa de anúncio sobre fundo claro ---------- */
+body:not([data-pagina]) .adband { color: var(--ink); }
+
+/* ---------- Indicadores: cartões claros, números grafite ---------- */
+body:not([data-pagina]) .stats { border-top: 0; gap: 12px; }
+body:not([data-pagina]) .stats div { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px 22px 18px; }
+body:not([data-pagina]) .stats div:last-child { border-right: 1px solid var(--line); }
+body:not([data-pagina]) .stats strong { color: var(--ink); }
+body:not([data-pagina]) .stats span { color: var(--muted); }
+body:not([data-pagina]) .stats .stats__market { background: #fff6ea; border-color: #f6d3a3; }
+body:not([data-pagina]) .stats .stats__market strong { color: var(--orange-d); }
+body:not([data-pagina]) .stats sup, body:not([data-pagina]) .stats__note sup { color: var(--teal-d); }
+body:not([data-pagina]) .stats__note { color: var(--muted); }
+body:not([data-pagina]) .stats__note a { color: var(--teal-d); }
+
+/* ---------- "O que você encontra": blocos claros clicáveis ---------- */
+body:not([data-pagina]) .sitenums__title { color: var(--muted); }
+body:not([data-pagina]) .sitenums__list { border-top: 0; gap: 8px; }
+body:not([data-pagina]) .sitenums__list a { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+body:not([data-pagina]) .sitenums__list a:hover, body:not([data-pagina]) .sitenums__list a:focus-visible { background: var(--soft); border-color: #c9d0da; }
+body:not([data-pagina]) .sitenums strong { color: var(--ink); }
+body:not([data-pagina]) .sitenums span { color: var(--graphite); }
+body:not([data-pagina]) .sitenums__laranja a { background: #fff6ea; border-color: #f6d3a3; }
+body:not([data-pagina]) .sitenums__laranja strong { color: var(--orange-d); }
+
+/* ---------- Cartões das áreas: mais suaves, etiqueta em "pílula" turquesa ---------- */
+body:not([data-pagina]) .vitrine { background: #f6f7f9; }
+body:not([data-pagina]) .vcard { border-radius: 22px; }
+body:not([data-pagina]) .vcard__tag { align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: var(--teal-tint); letter-spacing: .08em; }
+body:not([data-pagina]) .vcard__go { color: var(--teal-d); }
+body:not([data-pagina]) .vcard:hover .vcard__go { text-decoration: underline; text-underline-offset: 3px; }
+body:not([data-pagina]) .vcard__links a { border-radius: 999px; }
+
+/* ---------- Para quem é: cartões claros em vez de lista ---------- */
+body:not([data-pagina]) .audience { gap: 14px; border-top: 0; }
+body:not([data-pagina]) .audience div { background: #f6f7f9; border: 1px solid var(--line); border-radius: 20px; padding: 24px; }
+body:not([data-pagina]) .audience div:nth-child(1) { border-top: 4px solid var(--teal); }
+body:not([data-pagina]) .audience div:nth-child(2) { border-top: 4px solid var(--accent); }
+body:not([data-pagina]) .audience div:nth-child(3) { border-top: 4px solid var(--ink); }
+body:not([data-pagina]) .qcall { background: #fff; border-radius: 16px; }
+
+/* ---------- Contato ---------- */
+body:not([data-pagina]) .form--contact { border-radius: 24px; }
+body:not([data-pagina]) .form input, body:not([data-pagina]) .form select, body:not([data-pagina]) .form textarea { border-radius: 12px; }
+
+/* ---------- Celular ---------- */
+@media (max-width: 760px) {
+  body:not([data-pagina]) .stats { gap: 8px; }
+  body:not([data-pagina]) .stats div, body:not([data-pagina]) .stats div:nth-child(2n) { padding: 16px; border-right: 1px solid var(--line); }
+  body:not([data-pagina]) .search { border-radius: 18px; }
+  body:not([data-pagina]) .search .btn { border-radius: 14px; }
+  body:not([data-pagina]) .audience div { padding: 20px; }
+}
+
+/* ---------- Espaço publicitário sobre fundo claro ---------- */
+body:not([data-pagina]) .adband .ad { background: #fffaf2; border: 2px dashed #f2b465; border-radius: 20px; }
+body:not([data-pagina]) .adband .ad__main b { color: var(--orange-d); }
+body:not([data-pagina]) .adband .ad__main small, body:not([data-pagina]) .adband .ad__size { color: var(--muted); }
+body:not([data-pagina]) .adband .ad__cta { display: inline-flex; align-items: center; min-height: 36px; }
+
+/* Contraste AA da etiqueta sobre o fundo turquesa claro */
+body:not([data-pagina]) .vcard__tag { color: #0a6573; }   /* 6,2:1 sobre #e6f7f9 */

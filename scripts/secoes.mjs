@@ -273,6 +273,7 @@ export function separar(out, D, src) {
       .replace(/(<meta name="twitter:title" content=")[^"]*"/, `$1${attr(p.titulo)}"`)
       .replace(/(<meta property="og:description" content=")[^"]*"/, `$1${attr(d)}"`)
       .replace(/(<meta name="twitter:description" content=")[^"]*"/, `$1${attr(d)}"`)
+      .replace(/<link rel="stylesheet" href="home[.]css">[^<]*<!--[^>]*-->/, '')   // visual da página inicial (home.css) fica só nela
       .replace('<body>', `<body data-pagina="${p.id}">`);
     const comVideo = ['sobre', 'anuncie'].includes(p.id) ? '\n  ' + video : '';   // o vídeo de apresentação também em Quem somos e Anuncie
     const extras = (p.extras || []).map(id => '\n  ' + porId[id].html).join('');   // seções extras da página (ex.: guia de fornecedores em Anuncie)
