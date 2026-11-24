@@ -34,7 +34,7 @@
 
 /* ---------- Tipografia: títulos em Inter 800, apertados ---------- */
 :root body h1, :root body h2, :root body h3 { font-family: var(--display); font-weight: 800; letter-spacing: -.035em; }
-:root body h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.05; }
+:root body :is(.section__head, .split > div, .apres__txt) > h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.05; }   /* manchete só nos cabeçalhos de seção; os demais h2 mantêm o tamanho do componente */
 :root body h3 { letter-spacing: -.02em; }
 :root body .eyebrow { font-size: .74rem; letter-spacing: .18em; font-weight: 700; }
 
