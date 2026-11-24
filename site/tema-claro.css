@@ -482,3 +482,52 @@
 :root body #ferramentas #lmatTool .esq-tabs button { border-color: var(--line); background: #fff; color: var(--ink); }
 :root body #ferramentas #lmatTool .esq-tabs button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
 :root body #ferramentas #lmatTool .hint.warn { color: #a34b00 !important; }
+
+/* =====================================================================
+   Janela das calculadoras (.calcdlg) BRANCA (pedido de 24/11/2026).
+   As 24 calculadoras são as mesmas; só as cores mudam.
+   ===================================================================== */
+:root body #ferramentas .calcdlg { background: #fff; border: 1px solid var(--line); color: var(--ink); box-shadow: 0 40px 80px -30px rgba(11, 18, 32, .45); }
+:root body #ferramentas .calcdlg::backdrop { background: rgba(11, 18, 32, .45); }
+:root body #ferramentas .calcdlg__top { background: #fff; border-bottom: 1px solid var(--line); }
+:root body #ferramentas .calcdlg__cat { color: var(--teal-d); }
+:root body #ferramentas .calcdlg__x { background: #fff; border-color: var(--line); color: var(--ink); }
+:root body #ferramentas .calcdlg__x:hover, :root body #ferramentas .calcdlg__x:focus-visible { background: var(--ink); border-color: var(--ink); color: #fff; }
+:root body #ferramentas .calcdlg__btn { background: #fff; border-color: var(--line); color: var(--ink); }
+:root body #ferramentas .calcdlg__btn:hover, :root body #ferramentas .calcdlg__btn:focus-visible { background: var(--ink); border-color: var(--ink); color: #fff; }
+:root body #ferramentas .calcdlg__erro a { color: #a34b00; }
+:root body #ferramentas .calcdlg .tool { background: transparent; color: var(--ink); box-shadow: none; }
+:root body #ferramentas .calcdlg :is(h3, h4, h5, .tool h3) { color: var(--ink); }
+:root body #ferramentas .calcdlg :is(p, label) { color: var(--graphite); }
+:root body #ferramentas .calcdlg .form :is(input, select, textarea) { background: #fff; border: 1.5px solid var(--box-line); color: var(--ink); }
+:root body #ferramentas .calcdlg .form :is(input, select, textarea):focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(31, 182, 201, .2); }
+:root body #ferramentas .calcdlg .btn--ghost { color: var(--ink); background: #fff; box-shadow: inset 0 0 0 1.5px #c9d0da; }
+:root body #ferramentas .calcdlg .results div { background: #e6f7f9; border-color: rgba(10, 111, 125, .25); }
+:root body #ferramentas .calcdlg .results span { color: var(--muted); }
+:root body #ferramentas .calcdlg .results strong { color: var(--ink); }
+:root body #ferramentas .calcdlg .seg { background: var(--soft, #eef3f7); }
+:root body #ferramentas .calcdlg .seg button { color: var(--graphite); }
+:root body #ferramentas .calcdlg .seg button.is-on { background: var(--ink); color: #fff; }
+:root body #ferramentas .calcdlg .convList li { border-bottom-color: var(--line); }
+:root body #ferramentas .calcdlg .convList b { color: var(--ink); }
+:root body #ferramentas .calcdlg .dim__table tr.is-on td { color: var(--teal-d); background: #e6f7f9; }
+:root body #ferramentas .calcdlg .table th { color: var(--teal-d); border-bottom-color: #c9d0da; }
+:root body #ferramentas .calcdlg .table td { color: var(--ink); border-bottom-color: var(--line); }
+:root body #ferramentas .calcdlg .calc__sub, :root body #ferramentas .calcdlg .hint { color: var(--muted); }
+:root body #ferramentas .calcdlg .calc__row { color: var(--ink); }
+:root body #ferramentas .calcdlg .trtab { border-color: var(--line); }
+:root body #ferramentas .calcdlg .trtab__t th { color: var(--teal-d); border-bottom-color: var(--line); }
+:root body #ferramentas .calcdlg .trtab__t td { border-bottom-color: var(--line); }
+:root body #ferramentas .calcdlg .trtab__t :is(input, select) { background: #fff; border-color: var(--box-line); color: var(--ink); }
+:root body #ferramentas .calcdlg .trtab__t td.warn { color: #b42318; }
+:root body #ferramentas .calcdlg .trtab__acoes .btn--ghost { color: var(--ink); box-shadow: inset 0 0 0 1.5px #c9d0da; }
+:root body #ferramentas .calcdlg .pt__svg { background: var(--bg-light); }
+:root body #ferramentas .calcdlg .pt__eixo { stroke: rgba(11, 18, 32, .35); }
+:root body #ferramentas .calcdlg .pt__txt { fill: #5f6b7a; }
+:root body #ferramentas .calcdlg .pt__leg { color: var(--graphite); }
+:root body #ferramentas .calcdlg .pt__sist { stroke: var(--teal-d); }
+:root body #ferramentas .calcdlg .pt__l--s { background: var(--teal-d); }
+:root body #ferramentas .calcdlg .pt__op { fill: #fff; stroke: var(--ink); }
+:root body #ferramentas .calcdlg a[href="#lmatTool"] { color: #a34b00 !important; }
+:root body #ferramentas .calcdlg .link, :root body #ferramentas .calcdlg a:not(.btn) { color: var(--teal-d); }
+:root body #ferramentas .calcdlg .hint.warn { color: #a34b00 !important; }
