@@ -453,7 +453,7 @@ function calcDim() {
   }
   const set = (d, v, h) => { document.getElementById('dimD').textContent = d; document.getElementById('dimVel').textContent = v; document.getElementById('dimHf').textContent = h; };
   hint.classList.remove('warn');
-  if (!(Q > 0)) { set('—', '—', '—'); hint.textContent = dimMode === 'pesos' ? 'Informe a quantidade de aparelhos.' : 'Informe a vazão.'; rows.innerHTML = ''; return; }
+  if (!(Q > 0)) { set('—', '—', '—'); hint.textContent = dimMode === 'pesos' ? 'Informe a quantidade de aparelhos.' : 'Informe a vazão.'; rows.innerHTML = ''; desenhaDim(null); return; }
   const list = dimPipes[mat].map(([name, D]) => {
     const v = 4 * Q / 1000 / (Math.PI * Math.pow(D / 1000, 2));
     return { name, D, v, J: dimJ(mat, Q, D) / 9.80665 }; // kPa/m -> m/m
@@ -468,6 +468,60 @@ function calcDim() {
   else hint.textContent = `${qTxt} Perda unitária: ${num(p.J * 100)} m/100m.`;
   rows.innerHTML = list.slice(Math.max(0, k - 1), k + 3).map(r =>
     `<tr${r === p ? ' class="is-on"' : ''}><td>${r.name}</td><td>${num(r.D, 1)}</td><td>${num(r.v)}</td><td>${num(r.J * 100)}</td></tr>`).join('');
+  desenhaDim({ Q, D: p.D, nome: p.name, v: p.v, vmax, L, hf: p.J * L, fits });
+}
+// Desenho em movimento do trecho (figura #dimAnim): espessura do tubo pelo diâmetro interno, velocidade do fluxo
+// pela velocidade calculada, queda da linha de pressão pela perda de carga e cor pela folga até a velocidade máxima.
+// O movimento continua mesmo com "reduzir movimento" no aparelho (pedido do cliente).
+function desenhaDim(r) {
+  const fig = document.getElementById('dimAnim'); if (!fig) return;
+  const $d = id => document.getElementById(id);
+  fig.classList.remove('dimanim--ok', 'dimanim--perto', 'dimanim--acima', 'dimanim--parado');
+  if (!r) { fig.classList.add('dimanim--parado'); $d('dimGauge').style.visibility = 'hidden'; $d('dimAnimLeg').textContent = 'Informe a vazão para ver o desenho do trecho.'; return; }
+  $d('dimGauge').style.visibility = '';
+  const t = 8 + Math.max(0, Math.min(1, (r.D - 13) / (105 - 13))) * 30;          // espessura da água no desenho (px)
+  $d('dimParede').setAttribute('stroke-width', (t + 6).toFixed(1));
+  $d('dimTubo').setAttribute('stroke-width', t.toFixed(1));
+  $d('dimFluxo').setAttribute('stroke-width', (t * 0.4).toFixed(1));
+  const dur = Math.max(0.15, Math.min(4, 0.9 / Math.max(r.v, 0.05)));           // mais rápido quanto maior a velocidade
+  $d('dimFluxo').style.animationDuration = dur.toFixed(2) + 's';
+  $d('dimGotas').style.setProperty('--gota', Math.max(0.35, Math.min(3, 1.1 / Math.max(r.v, 0.05))).toFixed(2) + 's');
+  const queda = 4 + 70 * r.hf / (r.hf + 8);                                       // linha de pressão: cai com a perda de carga
+  $d('dimLinha').setAttribute('y2', (58 + queda).toFixed(1));
+  $d('dimLinhaFim').setAttribute('cy', (58 + queda).toFixed(1));
+  $d('dimPerdaTxt').setAttribute('y', (50 + queda).toFixed(1));
+  $d('dimPerdaTxt').textContent = `−${num(r.hf)} mca`;
+  // velocímetro de ponteiro: 0 a 3,5 m/s em meia-volta; faixas turquesa (folga), laranja (perto do limite) e vermelha (acima)
+  const ESC = 3.5, CX = 508, CY = 116, RA = 36;
+  const ponto = (f, rr = RA) => { const a = Math.PI * (1 - Math.max(0, Math.min(1, f))); return [CX + rr * Math.cos(a), CY - rr * Math.sin(a)]; };
+  const arco = (f0, f1) => { if (f1 <= f0) return ''; const [x0, y0] = ponto(f0), [x1, y1] = ponto(f1); return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${RA} ${RA} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`; };
+  const pos = (id, x, y) => { $d(id).setAttribute('x', x.toFixed(1)); $d(id).setAttribute('y', y.toFixed(1)); };
+  const fPerto = Math.min(1, 0.85 * r.vmax / ESC), fMax = Math.min(1, r.vmax / ESC);
+  $d('dimGOk').setAttribute('d', arco(0, fPerto));
+  $d('dimGPerto').setAttribute('d', arco(fPerto, fMax));
+  $d('dimGAcima').setAttribute('d', arco(fMax, 1));
+  $d('dimGTicks').innerHTML = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5].map(v => { const [a, b] = ponto(v / ESC, RA - 9), [c, d] = ponto(v / ESC, RA - (v % 1 ? 6 : 13)); return `<line x1="${a.toFixed(1)}" y1="${b.toFixed(1)}" x2="${c.toFixed(1)}" y2="${d.toFixed(1)}" class="dimanim__tick"/>`; }).join('');
+  const [ix, iy] = ponto(fMax, RA - 12), [ox, oy] = ponto(fMax, RA + 7);
+  $d('dimVMax').setAttribute('x1', ix.toFixed(1)); $d('dimVMax').setAttribute('y1', iy.toFixed(1));
+  $d('dimVMax').setAttribute('x2', ox.toFixed(1)); $d('dimVMax').setAttribute('y2', oy.toFixed(1));
+  const pl = $d('dimPontLin'); pl.setAttribute('x1', CX); pl.setAttribute('y1', CY); pl.setAttribute('x2', CX - RA + 8); pl.setAttribute('y2', CY);
+  $d('dimGEixo').setAttribute('cx', CX); $d('dimGEixo').setAttribute('cy', CY);
+  $d('dimPonteiro').style.transformOrigin = `${CX}px ${CY}px`;
+  $d('dimPonteiro').style.transform = `rotate(${(Math.min(1, r.v / ESC) * 180).toFixed(1)}deg)`;
+  pos('dimGTit', CX, CY - RA - 14); pos('dimGZero', CX - RA, CY + 15); pos('dimGFim', CX + RA, CY + 15); pos('dimVTxt', CX, CY + 32);
+  $d('dimVTxt').textContent = `${num(r.v)} m/s`;
+  $d('dimQTxt').textContent = `Q = ${num(r.Q)} L/s`;
+  $d('dimQTxt').setAttribute('y', (150 - (t + 6) / 2 - 6).toFixed(1));            // o rótulo sobe quando o tubo engrossa
+  $d('dimQTxt').setAttribute('x', '130');   // longe da curva de saída do reservatório
+  $d('dimDTxt').textContent = `${r.nome} · Ø int. ${num(r.D, 1)} mm`;
+  $d('dimLTxt').textContent = `L = ${num(r.L, 0)} m`;
+  const folga = r.v / r.vmax, estado = !r.fits || folga > 1 ? 'acima' : folga > 0.85 ? 'perto' : 'ok';
+  fig.classList.add('dimanim--' + estado);
+  $d('dimAnimLeg').textContent = estado === 'acima'
+    ? `Velocidade acima de ${num(r.vmax, 1)} m/s mesmo no maior diâmetro da lista: divida a vazão em mais ramais.`
+    : estado === 'perto'
+      ? `Velocidade perto do limite de ${num(r.vmax, 1)} m/s: pode haver ruído; o diâmetro seguinte dá mais folga.`
+      : `Velocidade dentro do limite de ${num(r.vmax, 1)} m/s. Perda de ${num(r.hf)} mca em ${num(r.L, 0)} m de tubo.`;
 }
 document.getElementById('dimTabs').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;

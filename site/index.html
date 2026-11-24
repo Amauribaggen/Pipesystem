@@ -972,6 +972,56 @@
                 <div><span>Velocidade</span><strong id="dimVel">—</strong></div>
                 <div><span>Perda de carga</span><strong id="dimHf">—</strong></div>
               </div>
+              <!-- Desenho em movimento: o tubo, a velocidade da água e a linha de pressão acompanham o resultado (script.js, desenhaDim) -->
+              <figure class="dimanim" id="dimAnim" aria-label="Desenho do trecho calculado">
+                <svg viewBox="0 0 560 238" role="img" aria-labelledby="dimAnimT">
+                  <title id="dimAnimT">Trecho de água fria: reservatório, tubulação e ponto de utilização</title>
+                  <defs>
+                    <linearGradient id="dimAgua" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fe1ec"/><stop offset="1" stop-color="#1fb6c9"/></linearGradient>
+                  </defs>
+                  <!-- reservatório -->
+                  <rect x="14" y="34" width="74" height="92" rx="6" fill="#fff" stroke="#3a4556" stroke-width="2"/>
+                  <rect id="dimNivel" x="16" y="52" width="70" height="72" rx="4" fill="url(#dimAgua)" opacity=".85"/>
+                  <path class="dimanim__onda" d="M16 52 q9 -5 17.5 0 t17.5 0 t17.5 0 t17.5 0" fill="none" stroke="#fff" stroke-width="2" opacity=".8"/>
+                  <text x="51" y="26" text-anchor="middle" class="dimanim__rot">Origem</text>
+                  <!-- linha de pressão (cai com a perda de carga) -->
+                  <line id="dimLinha" x1="100" y1="58" x2="440" y2="80" class="dimanim__piez"/>
+                  <circle cx="100" cy="58" r="3.5" class="dimanim__ponto"/>
+                  <circle id="dimLinhaFim" cx="440" cy="80" r="3.5" class="dimanim__ponto"/>
+                  <text x="104" y="50" class="dimanim__rot">Linha de pressão</text>
+                  <text id="dimPerdaTxt" x="432" y="72" text-anchor="end" class="dimanim__perda">−0,00 mca</text>
+                  <!-- tubulação: parede, água e fluxo -->
+                  <path id="dimParede" d="M51 122 V150 H440 V176" class="dimanim__parede" stroke-width="24"/>
+                  <path id="dimTubo" d="M51 122 V150 H440 V176" class="dimanim__agua" stroke-width="18"/>
+                  <path id="dimFluxo" d="M51 122 V150 H440 V176" class="dimanim__fluxo" stroke-width="7"/>
+                  <!-- torneira e gotas -->
+                  <rect x="428" y="174" width="24" height="10" rx="3" fill="#3a4556"/>
+                  <g id="dimGotas" class="dimanim__gotas">
+                    <circle cx="440" cy="194" r="3.2"/><circle cx="440" cy="194" r="3.2"/><circle cx="440" cy="194" r="3.2"/>
+                  </g>
+                  <!-- cotas e rótulos -->
+                  <text id="dimQTxt" x="96" y="132" class="dimanim__rot dimanim__rot--forte">Q = 0,80 L/s</text>
+                  <text id="dimDTxt" x="263" y="196" text-anchor="middle" class="dimanim__rot dimanim__rot--forte">—</text>
+                  <line x1="86" y1="212" x2="440" y2="212" class="dimanim__cota"/>
+                  <line x1="86" y1="206" x2="86" y2="218" class="dimanim__cota"/><line x1="440" y1="206" x2="440" y2="218" class="dimanim__cota"/>
+                  <text id="dimLTxt" x="263" y="226" text-anchor="middle" class="dimanim__rot">L = 30 m</text>
+                  <!-- velocímetro de ponteiro (0 a 3,5 m/s): faixas, marcas, ponteiro e textos posicionados pelo script -->
+                  <g class="dimanim__gauge" id="dimGauge">
+                    <text id="dimGTit" x="0" y="0" text-anchor="middle" class="dimanim__rot">Velocidade</text>
+                    <path id="dimGOk" class="dimanim__faixa dimanim__faixa--ok" d=""/>
+                    <path id="dimGPerto" class="dimanim__faixa dimanim__faixa--perto" d=""/>
+                    <path id="dimGAcima" class="dimanim__faixa dimanim__faixa--acima" d=""/>
+                    <g id="dimGTicks"></g>
+                    <line id="dimVMax" x1="0" y1="0" x2="0" y2="0" class="dimanim__vmax"/>
+                    <g id="dimPonteiro" class="dimanim__ponteiro"><line id="dimPontLin" x1="0" y1="0" x2="0" y2="0"/></g>
+                    <circle id="dimGEixo" cx="0" cy="0" r="5" class="dimanim__eixo"/>
+                    <text id="dimGZero" x="0" y="0" text-anchor="middle" class="dimanim__esc">0</text>
+                    <text id="dimGFim" x="0" y="0" text-anchor="middle" class="dimanim__esc">3,5</text>
+                    <text id="dimVTxt" x="0" y="0" text-anchor="middle" class="dimanim__vel">—</text>
+                  </g>
+                </svg>
+                <figcaption id="dimAnimLeg">A espessura do tubo, a velocidade da água e a queda da linha de pressão acompanham o resultado.</figcaption>
+              </figure>
               <p class="hint" id="dimHint"></p>
               <table class="table dim__table">
                 <thead><tr><th>Diâmetro</th><th>Ø int. (mm)</th><th>v (m/s)</th><th>J (m/100m)</th></tr></thead>

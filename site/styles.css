@@ -352,6 +352,46 @@ a.normref:hover { color: var(--teal, #1fb6c9); }
 .dim__apps input { width: 72px; flex: none; padding: .45em .6em; }
 .dim__table { margin-top: 16px; }
 .dim__table tr.is-on td { color: #7ee7f2; font-weight: 700; background: rgba(31, 182, 201, .08); }
+/* Desenho em movimento do dimensionamento de água fria (#dimAnim): o script ajusta espessura, velocidade e queda da linha de pressão.
+   A animação continua com "reduzir movimento" (pedido do cliente). */
+.dimanim { margin: 14px 0 4px; padding: 10px 12px 8px; border: 1px solid #e4e7ec; border-radius: 16px; background: #f6f7f9; }
+.dimanim svg { display: block; width: 100%; height: auto; }
+.dimanim figcaption { margin-top: 4px; font-size: .82rem; line-height: 1.45; color: #3a4556; }
+.dimanim__rot { font: 600 11px var(--font); fill: #3a4556; }
+.dimanim__rot--forte { font-weight: 700; fill: #0b1220; }
+.dimanim__perda { font: 700 11px var(--font); fill: #a34b00; }
+.dimanim__piez { stroke: #a34b00; stroke-width: 2; stroke-dasharray: 6 5; transition: all .4s ease; }
+.dimanim__ponto { fill: #a34b00; transition: all .4s ease; }
+.dimanim__parede { fill: none; stroke: #9aa4b2; stroke-linecap: butt; stroke-linejoin: round; transition: stroke-width .4s ease; }
+.dimanim__agua { fill: none; stroke: #bfeaf0; stroke-linejoin: round; transition: stroke-width .4s ease; }
+.dimanim__fluxo { fill: none; stroke: #0a6f7d; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 10 14; animation: dimFluxo 1s linear infinite; transition: stroke-width .4s ease, stroke .3s; }
+@keyframes dimFluxo { to { stroke-dashoffset: -24; } }
+.dimanim__onda { animation: dimOnda 3s ease-in-out infinite alternate; }
+@keyframes dimOnda { to { transform: translateX(-6px); } }
+.dimanim__gotas circle { fill: #1fb6c9; animation: dimGota var(--gota, 1s) linear infinite; }
+.dimanim__gotas circle:nth-child(2) { animation-delay: calc(var(--gota, 1s) / -3); }
+.dimanim__gotas circle:nth-child(3) { animation-delay: calc(var(--gota, 1s) / -1.5); }
+@keyframes dimGota { from { transform: translateY(0); opacity: 1; } to { transform: translateY(24px); opacity: 0; } }
+.dimanim__cota { stroke: #9aa4b2; stroke-width: 1.2; }
+.dimanim--acima .dimanim__fluxo { stroke: #c62828; }
+.dimanim--perto .dimanim__fluxo { stroke: #c2611d; }
+.dimanim__faixa { fill: none; stroke-width: 9; stroke-linecap: butt; transition: d .4s ease; }
+.dimanim__faixa--ok { stroke: #0a6f7d; }
+.dimanim__faixa--perto { stroke: #e8922f; }
+.dimanim__faixa--acima { stroke: #d64545; }
+.dimanim__tick { stroke: #9aa4b2; stroke-width: 1.5; }
+.dimanim__vmax { stroke: #0b1220; stroke-width: 2.5; }
+.dimanim__ponteiro { transform-box: view-box; transition: transform .6s cubic-bezier(.3, 1.4, .5, 1); }
+.dimanim__ponteiro line { stroke: #0b1220; stroke-width: 3; stroke-linecap: round; }
+.dimanim__eixo { fill: #0b1220; }
+.dimanim__esc { font: 600 10px var(--font); fill: #5f6b7a; }
+.dimanim__vel { font: 800 14px var(--font); fill: #0b1220; }
+.dimanim--perto .dimanim__vel { fill: #a34b00; }
+.dimanim--acima .dimanim__vel { fill: #b42318; }
+.dimanim--acima figcaption { color: #b42318; font-weight: 600; }
+.dimanim--parado .dimanim__fluxo, .dimanim--parado .dimanim__gotas { animation-play-state: paused; opacity: .25; }
+.dimanim--perto .dimanim__fluxo { fill: none; }
+@media (max-width: 600px) { .dimanim__rot, .dimanim__perda { font-size: 17px; } .dimanim__gauge .dimanim__rot { font-size: 13px; } .dimanim__vel { font-size: 15px; transform: translateY(9px); } .dimanim__esc { font-size: 12px; } .dimanim { padding: 8px 6px 8px; } #dimLTxt { transform: translateY(8px); } #dimQTxt { transform: translateX(10px); } }   /* letras legíveis no celular */
 .lmat { margin: 0 0 28px; }   /* primeiro bloco da seção Dimensionamento */
 .lmat__title { color: var(--accent) !important; font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin-bottom: .6em !important; }
 .lmat__checks--top { margin: 16px 0 0; }
