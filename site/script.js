@@ -744,7 +744,7 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
   let mode = 'aplicacao';
   let active = NORM_GROUPS.find(g => g.tipo === mode).id;
   const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  const badge = { ABNT: 'ABNT NBR', NR: 'NR · grátis', NFPA: 'NFPA', ASME: 'ASME', ASTM: 'ASTM', ISO: 'ISO', API: 'API', ASHRAE: 'ASHRAE' };
+  const badge = { ABNT: 'ABNT NBR', NR: 'NR · grátis', NFPA: 'NFPA', ASME: 'ASME', ASTM: 'ASTM', ISO: 'ISO', API: 'API', ASHRAE: 'ASHRAE', AWWA: 'AWWA', DIN: 'DIN', EN: 'EN' };   // órgão novo sem etiqueta aqui aparece com a própria sigla
 
   // edição e situação das NBR (normas.js); as normas estrangeiras e as NR não levam a marca
   const edicao = code => {
@@ -754,7 +754,7 @@ const CONTACT_EMAIL = 'info@pipesystem.com.br';
   };
   const row = n => `
     <article class="nrm__item">
-      <div class="nrm__code"><b class="notranslate" translate="no">${n.code}</b><span class="nrm__org nrm__org--${n.org}">${badge[n.org]}</span>${edicao(n.code)}</div>
+      <div class="nrm__code"><b class="notranslate" translate="no">${n.code}</b><span class="nrm__org nrm__org--${n.org}">${badge[n.org] || n.org}</span>${edicao(n.code)}</div>
       <div class="nrm__text"><p class="nrm__title">${n.title}</p>${n.note ? `<p class="nrm__note">${n.note}</p>` : ''}</div>
       <div class="nrm__acao"><a class="nrm__btn" href="${normUrl(n)}" target="_blank" rel="noopener noreferrer">${NORM_SOURCES[n.org].action} ↗</a>${/abntcatalogo\.com\.br/.test(normUrl(n)) ? '<small class="nrm__aviso">O ABNT Catálogo pode mostrar "link expirado": clique em Continuar e faça a verificação.</small>' : ''}</div>
     </article>`;
