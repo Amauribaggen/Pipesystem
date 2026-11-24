@@ -335,3 +335,92 @@
 :root body figcaption a { color: var(--teal-d); }
 :root body .tags--links a span[aria-hidden] { color: var(--teal-d); }
 :root body .pg-top__toggle { min-width: 44px; min-height: 44px; }
+
+/* =====================================================================
+   Etapa 3: Guias práticos
+   ===================================================================== */
+:root body .gptab { border-color: var(--line); color: var(--ink); background: #fff; }
+:root body .gptab[aria-selected=true] { background: var(--ink); border-color: var(--ink); color: #fff; }
+:root body .gptab small { color: inherit; opacity: .75; }
+:root body .gptema { border-color: var(--line); color: var(--graphite); background: #fff; }
+:root body .gptema:hover { border-color: var(--ink); color: var(--ink); }
+:root body .gptema[aria-pressed=true] { background: var(--ink); color: #fff; border-color: var(--ink); }
+:root body :is(.gplead, .gpempty, .cp-method span, .cp-search__n, .cp-empty, .preco__nota, #guias .hint) { color: var(--graphite); }
+:root body .gplead a { color: var(--teal-d); }
+:root body .gpempty { border-color: var(--line); }
+:root body :is(.gpguide, .gpvideo, .gppat, .gpcheck, .cp-cmp, .cp-index a, .preco) { border: 1px solid var(--line); }
+:root body .gpcta { background: var(--bg-light); border-color: var(--line); }
+:root body .gpcta h3, :root body .preco__titulo { color: var(--ink); }
+:root body .gpcta p { color: var(--graphite); }
+:root body .gpcta .btn--ghost, :root body .gpdet .btn--ghost { color: var(--ink); border-color: #c9d0da; box-shadow: inset 0 0 0 1px #c9d0da; background: #fff; }
+:root body .gpcheck__chip { border-color: var(--line); color: var(--ink); background: #fff; }
+:root body .gpcheck__chip[aria-pressed=true] { background: var(--ink); border-color: var(--ink); color: #fff; }
+:root body .glletter { color: var(--teal-d); border-bottom-color: var(--line); }
+:root body .glaz button:disabled { color: #8792a2; }
+:root body .cp { border-bottom-color: var(--line); }
+:root body .cp-method b, :root body .preco__nota b { color: var(--ink); }
+:root body .cp-search input { border-color: var(--line); }
+:root body .preco__foto small { color: #5f6b7a; }
+:root body .gpdet { border-color: var(--line); background: #fff; }
+
+/* =====================================================================
+   Etapa 3: Dimensionamento (#ferramentas). No HTML a seção é "section--dark"; no tema claro
+   a página fica clara e cada painel de ferramenta (.tool: Dimensionamento Inteligente e
+   calculadoras) vira um cartão grafite, mantendo por dentro o desenho original.
+   A janela das calculadoras (.calcdlg) continua escura.
+   ===================================================================== */
+:root body #ferramentas { background: var(--bg-light); color: var(--ink); }
+:root body #ferramentas > .container > .section__head .eyebrow { color: var(--teal-d); }
+:root body #ferramentas > .container > .section__head h2 { color: var(--ink); }
+:root body #ferramentas > .container > .section__head p:not(.eyebrow) { color: var(--graphite); }
+:root body #ferramentas .tool { background: var(--ink-2); border: 0; border-radius: 22px; box-shadow: 0 24px 50px -30px rgba(11, 18, 32, .55); color: #e6eef8; }
+:root body #ferramentas .tool .btn { background: var(--accent); color: #1b1203; }
+:root body #ferramentas .tool .btn:hover { background: #ffb45c; }
+/* Catálogo de calculadoras */
+:root body .calcs__head h3 { color: var(--ink); }
+:root body .calcs__head p { color: var(--graphite); }
+:root body .calcs__chip { border-color: var(--line); color: var(--ink); background: #fff; }
+:root body .calcs__chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+:root body .calcs__item { background: #fff; border-color: var(--line); }
+:root body .calcs__item:hover { border-color: #c9d0da; box-shadow: var(--shadow); }
+:root body .calcs__item b { color: var(--ink); }
+:root body .calcs__cat { color: var(--teal-d); }
+:root body .calcs__res { color: var(--graphite); }
+:root body .calcs__norma { color: #a34b00; }
+:root body .calcs__abrir { color: var(--teal-d); }
+/* Ferramentas on-line */
+:root body .webtools { border-top-color: var(--line); }
+:root body .webtools__head h3 { color: var(--ink); }
+:root body .webtools__head p { color: var(--graphite); }
+:root body .webtools__chips button { border-color: var(--line); background: #fff; color: var(--ink); }
+:root body .webtools__chips button:hover { border-color: var(--ink); color: var(--ink); }
+:root body .webtools__chips button[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+:root body .webtools .hint, :root body #ferramentas > .container > .hint { color: var(--muted); }
+:root body .webtools .hint .link { color: var(--teal-d); }
+:root body #ferramentas > .container > .adslot .ad { background: #fffaf2; border: 2px dashed #f2b465; }
+:root body #ferramentas > .container > .adslot .ad__main b { color: #a34b00; }
+:root body #ferramentas > .container > .adslot :is(.ad__main small, .ad__size) { color: var(--muted); }
+:root body #ferramentas .tool .btn--ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .3); }
+:root body #ferramentas .tool .btn--ghost:hover { background: rgba(255, 255, 255, .08); }
+
+/* =====================================================================
+   Etapa 3: Normas
+   ===================================================================== */
+:root body .nrm__mode { background: #fff; border-color: var(--line); }
+:root body .nrm__mode button { color: var(--graphite); }
+:root body .nrm__mode button[aria-selected="true"] { background: var(--ink); color: #fff; }
+:root body .nrm__search input { border-color: var(--line); }
+:root body .nrm__groups button { color: var(--ink); background: #fff; border-color: var(--line); }
+:root body .nrm__groups button span { color: var(--graphite); background: var(--bg-light); }
+:root body .nrm__groups button:hover { background: var(--bg-light); color: var(--ink); border-color: #c9d0da; }
+:root body .nrm__groups button[aria-current="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+:root body .nrm__groups button[aria-current="true"] span { color: var(--ink); background: #fff; }
+:root body .nrm__heading { color: var(--ink); }
+:root body .nrm__item { border: 1px solid var(--line); }
+:root body .nrm__empty { color: var(--graphite); }
+:root body .nrm__where { border-top-color: var(--line); }
+:root body .nrm__where h3 { color: var(--ink); }
+:root body .nrm__where-grid a { background: #fff; border-color: var(--line); color: var(--graphite); }
+:root body .nrm__where-grid a:hover { border-color: #c9d0da; box-shadow: var(--shadow); }
+:root body .nrm__where-grid a b { color: var(--teal-d); }
+:root body .nrm__where .hint .link { color: var(--teal-d); }

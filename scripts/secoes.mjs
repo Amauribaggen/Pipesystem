@@ -7,8 +7,8 @@ import { join } from 'node:path';
 import { BASE, impItensBusca } from './pages.mjs';
 
 // Páginas de área que já usam o tema claro (site/tema-claro.css), liberadas por etapa.
-// Etapa 1 (24/11/2026). Guias práticos, Dimensionamento e Normas ficam para a etapa 3.
-const TEMA_CLARO = ['servicos', 'sistemas', 'materiais', 'bim', 'artigos', 'feiras', 'anuncie', 'assinaturas', 'sobre'];
+// Etapa 1 (24/11/2026): áreas simples. Etapa 3 (24/11/2026): Guias práticos, Dimensionamento e Normas.
+const TEMA_CLARO = ['servicos', 'sistemas', 'materiais', 'bim', 'artigos', 'feiras', 'anuncie', 'assinaturas', 'sobre', 'guias', 'ferramentas', 'normas'];
 
 // Ordem = ordem dos cartões na vitrine. n(D, x) = número de destaque do cartão; links = atalhos para os subtemas.
 export const PAGINAS = [
