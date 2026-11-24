@@ -424,3 +424,61 @@
 :root body .nrm__where-grid a:hover { border-color: #c9d0da; box-shadow: var(--shadow); }
 :root body .nrm__where-grid a b { color: var(--teal-d); }
 :root body .nrm__where .hint .link { color: var(--teal-d); }
+
+/* =====================================================================
+   Dimensionamento Inteligente (#lmatTool) em cartão BRANCO (pedido de 24/11/2026:
+   "mais clean, menos azul no fundo"). Formulário, resultado, SINAPI, esquema e
+   validação recoloridos para fundo claro. A janela das calculadoras continua escura.
+   ===================================================================== */
+:root body #ferramentas #lmatTool { background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); color: var(--ink); }
+:root body #ferramentas #lmatTool p, :root body #ferramentas #lmatTool label { color: var(--graphite); }
+:root body #ferramentas #lmatTool :is(h3, h4, h5) { color: var(--ink); }
+:root body #ferramentas #lmatTool .lmat__title { color: var(--ink) !important; }
+:root body #ferramentas #lmatTool .eyebrow, :root body #ferramentas #lmatTool .lmat__sinhead .eyebrow { color: #a34b00 !important; }
+:root body #ferramentas #lmatTool .lmat__intro { color: var(--graphite); }
+/* formulário */
+:root body #ferramentas #lmatTool .lmat__box { border-color: var(--line); background: var(--bg-light); }
+:root body #ferramentas #lmatTool .lmat__box legend { color: var(--teal-d); }
+:root body #ferramentas #lmatTool .lmat__type { border-bottom-color: var(--line); }
+:root body #ferramentas #lmatTool .lmat__del { color: var(--muted); }
+:root body #ferramentas #lmatTool :is(.lmat__checks label, .form .lmat__check, .lmat__uf) { color: var(--ink); }
+:root body #ferramentas #lmatTool .form :is(input, select, textarea), :root body #ferramentas #lmatTool .lmat__uf select { background: #fff; border: 1.5px solid var(--box-line); color: var(--ink); }
+:root body #ferramentas #lmatTool .form :is(input, select, textarea):focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(31, 182, 201, .2); }
+:root body #ferramentas #lmatTool .btn--ghost { color: var(--ink); background: #fff; box-shadow: inset 0 0 0 1.5px #c9d0da; }
+:root body #ferramentas #lmatTool .btn--ghost:hover { box-shadow: inset 0 0 0 1.5px var(--ink); background: #fff; }
+:root body #ferramentas #lmatTool .lmat__drop { background: #f2fbfc; border-color: rgba(10, 111, 125, .4); }
+:root body #ferramentas #lmatTool .lmat__dropmain { color: var(--ink); }
+:root body #ferramentas #lmatTool .lmat__dropmain b { color: var(--teal-d); }
+:root body #ferramentas #lmatTool .lmat__dropsub { color: var(--muted); }
+:root body #ferramentas #lmatTool .lmat__how { color: var(--graphite); }
+:root body #ferramentas #lmatTool .lmat__how summary { color: var(--teal-d); }
+/* resultado */
+:root body #ferramentas #lmatTool :is(.lmat__out, .lmat__val) { border-top-color: var(--line); }
+:root body #ferramentas #lmatTool .lmat__stats div { background: #e6f7f9; border-color: rgba(10, 111, 125, .25); }
+:root body #ferramentas #lmatTool .lmat__stats span { color: var(--muted); }
+:root body #ferramentas #lmatTool .lmat__stats strong { color: var(--ink); }
+:root body #ferramentas #lmatTool .lmat__sin { background: #fff8ee; border-color: #f6d3a3; }
+:root body #ferramentas #lmatTool .lmat__sintab small { color: var(--muted); }
+:root body #ferramentas #lmatTool .lmat__sintab tfoot th { color: #a34b00; border-top-color: #f2c48a; }
+:root body #ferramentas #lmatTool .lmat__pres { background: var(--bg-light); border-color: var(--line); }
+:root body #ferramentas #lmatTool .lmat__presobs { background: #e6f7f9; color: var(--graphite); }
+:root body #ferramentas #lmatTool .lmat__prest { color: var(--graphite); }
+:root body #ferramentas #lmatTool .lmat__prest :is(th, td) { border-color: var(--line); }
+:root body #ferramentas #lmatTool .lmat__prest th { color: var(--muted); }
+:root body #ferramentas #lmatTool .lmat__prest td small { color: #a34b00; }
+:root body #ferramentas #lmatTool .lmat__prest tfoot td { color: var(--ink); }
+:root body #ferramentas #lmatTool .lmat__esq { background: #f2fbfc; border-color: rgba(10, 111, 125, .3); }
+:root body #ferramentas #lmatTool .lmat__val h4 { color: #a34b00; }
+:root body #ferramentas #lmatTool .lmat__val > p { color: var(--graphite); }
+:root body #ferramentas #lmatTool .lmat__valtab tr.is-erro td:first-child { color: #b42318; }
+:root body #ferramentas #lmatTool .lmat__valtab tr.is-aviso td:first-child { color: #a34b00; }
+:root body #ferramentas #lmatTool .lmat__valtab tr.is-info td:first-child { color: var(--teal-d); }
+:root body #ferramentas #lmatTool .lmat__valtab td.num, :root body #ferramentas #lmatTool .lmat__table td:last-child { color: var(--muted); }
+:root body #ferramentas #lmatTool .lmat__table td.lmat__norma { color: var(--teal-d); }
+:root body #ferramentas #lmatTool .lmat__table tr.lmat__group th { color: var(--ink); border-bottom-color: rgba(10, 111, 125, .35); }
+:root body #ferramentas #lmatTool .table th { color: var(--teal-d); border-bottom-color: #c9d0da; }
+:root body #ferramentas #lmatTool .table td { color: var(--ink); border-bottom-color: var(--line); }
+:root body #ferramentas #lmatTool .lmat__mo { background: #f2fbfc; border-color: rgba(10, 111, 125, .3); }
+:root body #ferramentas #lmatTool .esq-tabs button { border-color: var(--line); background: #fff; color: var(--ink); }
+:root body #ferramentas #lmatTool .esq-tabs button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+:root body #ferramentas #lmatTool .hint.warn { color: #a34b00 !important; }
