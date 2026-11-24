@@ -102,8 +102,9 @@ const secaoAtual = url => url.startsWith('/sistemas') ? '/sistemas' : ['/estatis
   : /^\/(comparativos|glossario)/.test(url) ? '/guias-praticos' : url === '/noticias' ? '/artigos' : ['/pro', '/feiras', '/anuncie', '/quem-somos'].includes(url) ? url : '';
 
 // Tema claro (site/tema-claro.css), liberado por etapa. Etapa 2 (24/11/2026): fichas de materiais, sistemas,
-// glossário e comparativos. As demais páginas deste modelo continuam no tema escuro.
-const TEMA_CLARO_PG = /^\/(materiais|sistemas|glossario|comparativos)(\/|$)/;
+// glossário e comparativos. Etapa 4 (24/11/2026): Radar de Importações e Radar de Compras Públicas.
+// As demais páginas deste modelo continuam no tema escuro.
+const TEMA_CLARO_PG = /^\/(materiais|sistemas|glossario|comparativos|importacoes|compras-publicas)(\/|$)/;
 const temaClaro = url => TEMA_CLARO_PG.test(url);
 function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords, reviewed, ld: extraLd = [], glossSkip }) {
   const canonical = BASE + url;
