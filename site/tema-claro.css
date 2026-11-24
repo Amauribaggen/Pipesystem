@@ -1,0 +1,326 @@
+/* =====================================================================
+   TEMA CLARO "Editorial Claro" (aprovado em 24/11/2026)
+   Carregado DEPOIS do styles.css, só nas páginas já liberadas:
+   - a página inicial (site/index.html);
+   - as páginas de área listadas em TEMA_CLARO (scripts/secoes.mjs).
+   Nas demais páginas o build não inclui este arquivo, e elas seguem no tema escuro.
+   Os seletores começam por ":root body" para ter a mesma força dos do styles.css.
+   Para desligar numa página: tirá-la da lista TEMA_CLARO. Para desligar tudo:
+   remover o <link> deste arquivo em site/index.html.
+   Antes de publicar cada etapa: python -I scripts/compara_html.py (prova de estrutura).
+   ===================================================================== */
+
+/* ---- Base editorial (versão B) ---- */
+:root body {
+  --ink: #0b1220;              /* grafite quase preto: títulos e blocos escuros */
+  --ink-2: #131c2e;
+  --graphite: #3a4556;         /* texto corrido sobre claro (9,9:1) */
+  --muted: #5f6b7a;            /* legendas sobre claro (5,4:1) */
+  --line: #e4e7ec;
+  --paper: #ffffff;
+  --bg-light: #f6f7f9;
+  --teal: #1fb6c9;
+  --teal-d: #0e7f8f;           /* turquesa para texto sobre claro (4,9:1) */
+  --teal-l: #8ff0f8;           /* turquesa para texto sobre escuro */
+  --accent: #f2a03d;           /* laranja só no Pro, em "Novo" e no botão flutuante */
+  --navy: #0b1220;
+  --radius: 12px;
+  --display: "Inter", "Inter Fallback", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --shadow: 0 1px 2px rgba(11, 18, 32, .06), 0 8px 24px -12px rgba(11, 18, 32, .18);
+  /* Escala de espaçamento: 8 · 16 · 24 · 40 · 64 · 96 · 128 */
+  --s1: 8px; --s2: 16px; --s3: 24px; --s4: 40px; --s5: 64px; --s6: 96px; --s7: 128px;
+}
+:root body { background: var(--bg-light); }
+
+/* ---------- Tipografia: títulos em Inter 800, apertados ---------- */
+:root body h1, :root body h2, :root body h3 { font-family: var(--display); font-weight: 800; letter-spacing: -.035em; }
+:root body h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.05; }
+:root body h3 { letter-spacing: -.02em; }
+:root body .eyebrow { font-size: .74rem; letter-spacing: .18em; font-weight: 700; }
+
+/* ---------- Botões: grafite sobre claro, branco sobre escuro, 44 px ---------- */
+:root body .btn { min-height: 44px; border-radius: 10px; background: var(--ink); color: #fff; font-weight: 700; }
+:root body .btn:hover { background: #24324a; box-shadow: none; transform: none; }
+:root body .hero .btn, :root body .section--dark .btn, :root body .nav .btn { background: #fff; color: var(--ink); }
+:root body .hero .btn:hover, :root body .section--dark .btn:hover, :root body .nav .btn:hover { background: #dfe6ee; }
+:root body .btn:focus-visible, :root body a:focus-visible, :root body button:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+/* ---------- Menu: grafite sólido, sem brilho ---------- */
+:root body .nav { background: rgba(11, 18, 32, .97); border-bottom: 1px solid rgba(255, 255, 255, .06); backdrop-filter: none; }
+:root body .nav__barra { background: #070c16; border-bottom-color: rgba(255, 255, 255, .05); }
+:root body .nav__barra-cta { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+:root body #navLinks .nav__hot { background: #fff; border-color: #fff; color: var(--ink); box-shadow: none; animation: none; border-radius: 8px; }
+:root body .nav__toggle { min-width: 44px; min-height: 44px; }
+
+/* ---------- Abertura: grafite profundo, tubulação ao fundo bem discreta ---------- */
+:root body .hero { background: radial-gradient(900px 420px at 85% 0%, #1a2a44 0%, transparent 65%), var(--ink); padding: var(--s5) 0 var(--s4); }
+:root body .hero__pipes { opacity: .28; }
+:root body .hero__content::before { display: none; }
+:root body .hero h1 { font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1.02; text-shadow: none; }
+:root body .grad { background: linear-gradient(90deg, #8ff0f8 0%, #d9fbff 100%); -webkit-background-clip: text; background-clip: text; }
+:root body .lead { color: #b9c3d1; font-size: 1.15rem; line-height: 1.65; max-width: 600px; }
+:root body .search { min-height: 60px; border-radius: 12px; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .8); }
+:root body .search .btn { background: var(--ink); color: #fff; min-height: 48px; border-radius: 8px; }
+:root body .search .btn:hover { background: #24324a; }
+:root body .heroradar { background: transparent; border: 0; border-top: 1px solid rgba(255, 255, 255, .14); border-bottom: 1px solid rgba(255, 255, 255, .14); border-radius: 0; padding: 14px 0; max-width: 680px; }
+:root body .heroradar:hover { background: transparent; }
+:root body .heroradar__tag { color: var(--teal-l); }
+:root body .heroradar__txt { color: #c9d2de; }
+:root body .heroradar__btn { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+
+/* ---------- PipeSystem Pro: cartão grafite com a única cor quente da dobra ---------- */
+:root body .proapp { background: var(--ink-2); border: 1px solid rgba(255, 255, 255, .08); border-radius: 20px; box-shadow: none; padding: 32px 36px; }
+:root body .proapp__btn { background: var(--accent); color: var(--ink); }
+:root body .proapp__env { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); background: transparent; color: #fff; border-radius: 10px; }
+
+/* ---------- Indicadores: estilo editorial, números grandes sem caixas ---------- */
+:root body .stats { margin-top: var(--s5); gap: 0; background: none; border-radius: 0; border-top: 1px solid rgba(255, 255, 255, .14); }
+:root body .stats div { background: transparent; backdrop-filter: none; padding: 24px 24px 20px 0; border-right: 1px solid rgba(255, 255, 255, .08); }
+:root body .stats div:last-child { border-right: 0; }
+:root body .stats strong { font-size: 2.6rem; font-weight: 800; letter-spacing: -.04em; }
+:root body .stats span { color: #93a0b3; }
+:root body .stats__note { color: #8592a6; }
+:root body .sitenums__title { margin-top: var(--s4); color: #93a0b3; letter-spacing: .18em; }
+:root body .sitenums__list { gap: 0; background: none; border-radius: 0; border-top: 1px solid rgba(255, 255, 255, .1); }
+:root body .sitenums__list a { background: transparent; backdrop-filter: none; border-bottom: 1px solid rgba(255, 255, 255, .08); border-radius: 0; padding: 14px 16px 14px 0; }
+:root body .sitenums__list a:hover, :root body .sitenums__list a:focus-visible { background: rgba(255, 255, 255, .04); }
+:root body .sitenums strong { font-weight: 800; letter-spacing: -.03em; }
+:root body .sitenums span { color: #a3afc0; }
+:root body .sitenums__laranja strong { color: var(--accent); }
+
+/* ---------- Seções escuras (vídeo e contato) em grafite ---------- */
+:root body .section--dark { background: var(--ink); }
+:root body .apres { padding: var(--s6) 0; }
+:root body .apres__play { border-radius: 16px; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .9); }
+:root body .apres__btn { background: #fff; }
+
+/* ---------- Seções claras: cartões das áreas e "Para quem é" ---------- */
+:root body .vitrine, :root body #publico { background: var(--bg-light); color: var(--ink); padding: var(--s6) 0; }
+:root body #publico { background: var(--paper); }
+:root body .vitrine .eyebrow, :root body #publico .eyebrow { color: var(--teal-d); }
+:root body .vitrine h2, :root body #publico h2 { color: var(--ink); }
+:root body .vitrine .section__head p:last-child, :root body #publico .split > div > p { color: var(--graphite); }
+:root body .vitrine .section__head { margin-bottom: var(--s4); }
+:root body .vitrine__grid { gap: var(--s3); }
+:root body .vcard { border: 1px solid var(--line); border-radius: 16px; box-shadow: none; }
+:root body .vcard:hover { border-color: #c9d0da; box-shadow: var(--shadow); transform: translateY(-2px); }
+:root body .vcard__main { padding: 26px 26px 18px; gap: 10px; }
+:root body .vcard__tag { color: var(--teal-d); letter-spacing: .14em; }
+:root body .vcard h3 { color: var(--ink); font-size: 1.3rem; }
+:root body .vcard__main p { color: var(--graphite); }
+:root body .vcard__num { color: var(--muted); }
+:root body .vcard__num b { color: var(--ink); font-weight: 800; font-size: 1.6rem; letter-spacing: -.03em; }
+:root body .vcard__go { color: var(--ink); }
+:root body .vcard__links { background: var(--paper); border-top: 1px solid var(--line); padding: 14px 26px 20px; }
+:root body .vcard__links a { display: inline-flex; align-items: center; min-height: 32px; border-color: var(--line); color: var(--graphite); border-radius: 8px; }
+:root body .vcard__links a:hover { border-color: var(--ink); color: var(--ink); }
+:root body .audience { gap: 0; border-top: 1px solid var(--line); }
+:root body .audience div { background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 28px 0; }
+:root body .audience h3 { color: var(--ink); font-size: 1.25rem; }
+:root body .audience p { color: var(--graphite); }
+:root body .qcall { background: var(--bg-light); border: 1px solid var(--line); color: var(--ink); }
+
+/* ---------- Contato ---------- */
+:root body .form--contact { background: var(--ink-2); border: 1px solid rgba(255, 255, 255, .08); border-radius: 20px; padding: 36px; }
+:root body .form input, :root body .form select, :root body .form textarea { min-height: 48px; border-radius: 10px; }
+:root body .form--contact .btn.full { min-height: 52px; }
+
+/* ---------- Rodapé ---------- */
+:root body .footer { background: #070c16; border-top: 0; }
+:root body .footer__bar { background: transparent; border: 0; border-top: 1px solid rgba(255, 255, 255, .08); border-radius: 0; padding-inline: 0; }
+:root body .footer__bar a { min-height: 44px; display: flex; align-items: center; color: #c9d2de; font-weight: 500; }
+
+@media (pointer: coarse) {
+  :root body .vcard__links a, :root body .lang__btn { min-height: 44px; }
+}
+/* ---------- Celular primeiro ---------- */
+@media (max-width: 760px) {
+  :root body .hero { padding: var(--s4) 0 var(--s3); }
+  :root body .vitrine, :root body #publico, :root body .apres { padding: var(--s5) 0; }
+  :root body .stats div { padding: 18px 12px 16px 0; }
+  :root body .stats div:nth-child(2n) { border-right: 0; padding-left: 12px; }
+  :root body .stats strong { font-size: 2rem; }
+  :root body .proapp { padding: 22px 18px; }
+  :root body .vcard__main { padding: 20px 20px 14px; }
+  :root body .vcard__links { padding: 12px 20px 16px; }
+  :root body .form--contact { padding: 20px; }
+}
+
+/* ---- Editorial Claro (versão B+) ---- */
+:root body {
+  --soft: #eef3f7;             /* fundo de destaque suave */
+  --teal-tint: #e6f7f9;        /* turquesa bem claro para etiquetas */
+  --orange-d: #a34b00;         /* laranja para texto sobre claro (5,9:1) */
+}
+:root body { background: #ffffff; }
+
+/* ---------- Botões em pílula: mais amigáveis ---------- */
+:root body .btn { border-radius: 999px; padding-inline: 1.5em; }
+:root body .hero .btn { background: var(--ink); color: #fff; }
+:root body .hero .btn:hover { background: #24324a; }
+:root body .hero .proapp .proapp__btn { background: var(--accent); color: var(--ink); }
+:root body .hero .proapp .proapp__btn:hover { background: #ffb45c; }
+:root body .hero .proapp .proapp__env { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .45); }
+
+/* ---------- Abertura clara ---------- */
+:root body .hero { background: radial-gradient(1000px 460px at 90% -10%, #dff4f7 0%, rgba(223, 244, 247, 0) 60%), linear-gradient(180deg, #ffffff 0%, #f6f7f9 100%); color: var(--ink); }
+:root body .hero__pipes { opacity: .12; }
+:root body .hero h1 { color: var(--ink); }
+:root body .hero h1 .grad { background: linear-gradient(90deg, #0e7f8f 0%, #13a3b6 100%); -webkit-background-clip: text; background-clip: text; }   /* 4,9:1 a 3,4:1: título grande */
+:root body .lead { color: var(--graphite); }
+:root body .search { border: 1px solid #d5dbe3; border-radius: 999px; padding-left: 22px; box-shadow: 0 1px 2px rgba(11, 18, 32, .05), 0 18px 40px -22px rgba(11, 18, 32, .35); }
+:root body .search:focus-within { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(31, 182, 201, .18), 0 18px 40px -22px rgba(11, 18, 32, .35); }
+:root body .search .btn { border-radius: 999px; }
+:root body .heroradar { border-color: var(--line); }
+:root body .heroradar__tag { color: var(--teal-d); }
+:root body .heroradar__txt { color: var(--graphite); }
+:root body .heroradar__btn { color: var(--ink); }
+
+/* ---------- PipeSystem Pro: o único bloco escuro do alto ---------- */
+:root body .proapp { border-radius: 28px; box-shadow: 0 30px 60px -30px rgba(11, 18, 32, .55); }
+
+/* ---------- Faixa de anúncio sobre fundo claro ---------- */
+:root body .adband { color: var(--ink); }
+
+/* ---------- Indicadores: cartões claros, números grafite ---------- */
+:root body .stats { border-top: 0; gap: 12px; }
+:root body .stats div { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px 22px 18px; }
+:root body .stats div:last-child { border-right: 1px solid var(--line); }
+:root body .stats strong { color: var(--ink); }
+:root body .stats span { color: var(--muted); }
+:root body .stats .stats__market { background: #fff6ea; border-color: #f6d3a3; }
+:root body .stats .stats__market strong { color: var(--orange-d); }
+:root body .stats sup, :root body .stats__note sup { color: var(--teal-d); }
+:root body .stats__note { color: var(--muted); }
+:root body .stats__note a { color: var(--teal-d); }
+
+/* ---------- "O que você encontra": blocos claros clicáveis ---------- */
+:root body .sitenums__title { color: var(--muted); }
+:root body .sitenums__list { border-top: 0; gap: 8px; }
+:root body .sitenums__list a { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+:root body .sitenums__list a:hover, :root body .sitenums__list a:focus-visible { background: var(--soft); border-color: #c9d0da; }
+:root body .sitenums strong { color: var(--ink); }
+:root body .sitenums span { color: var(--graphite); }
+:root body .sitenums__laranja a { background: #fff6ea; border-color: #f6d3a3; }
+:root body .sitenums__laranja strong { color: var(--orange-d); }
+
+/* ---------- Cartões das áreas: mais suaves, etiqueta em "pílula" turquesa ---------- */
+:root body .vitrine { background: #f6f7f9; }
+:root body .vcard { border-radius: 22px; }
+:root body .vcard__tag { align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: var(--teal-tint); letter-spacing: .08em; }
+:root body .vcard__go { color: var(--teal-d); }
+:root body .vcard:hover .vcard__go { text-decoration: underline; text-underline-offset: 3px; }
+:root body .vcard__links a { border-radius: 999px; }
+
+/* ---------- Para quem é: cartões claros em vez de lista ---------- */
+:root body .audience { gap: 14px; border-top: 0; }
+:root body .audience div { background: #f6f7f9; border: 1px solid var(--line); border-radius: 20px; padding: 24px; }
+:root body .audience div:nth-child(1) { border-top: 4px solid var(--teal); }
+:root body .audience div:nth-child(2) { border-top: 4px solid var(--accent); }
+:root body .audience div:nth-child(3) { border-top: 4px solid var(--ink); }
+:root body .qcall { background: #fff; border-radius: 16px; }
+
+/* ---------- Contato ---------- */
+:root body .form--contact { border-radius: 24px; }
+:root body .form input, :root body .form select, :root body .form textarea { border-radius: 12px; }
+
+/* ---------- Celular ---------- */
+@media (max-width: 760px) {
+  :root body .stats { gap: 8px; }
+  :root body .stats div, :root body .stats div:nth-child(2n) { padding: 16px; border-right: 1px solid var(--line); }
+  :root body .search { border-radius: 18px; }
+  :root body .search .btn { border-radius: 14px; }
+  :root body .audience div { padding: 20px; }
+}
+
+/* ---------- Espaço publicitário sobre fundo claro ---------- */
+:root body .adband .ad { background: #fffaf2; border: 2px dashed #f2b465; border-radius: 20px; }
+:root body .adband .ad__main b { color: var(--orange-d); }
+:root body .adband .ad__main small, :root body .adband .ad__size { color: var(--muted); }
+:root body .adband .ad__cta { display: inline-flex; align-items: center; min-height: 36px; }
+
+/* Contraste AA da etiqueta sobre o fundo turquesa claro */
+:root body .vcard__tag { color: #0a6573; }   /* 6,2:1 sobre #e6f7f9 */
+
+/* =====================================================================
+   Páginas de área (etapa 1): seções claras genéricas
+   ===================================================================== */
+:root body .section:not(.section--dark) { background: #ffffff; color: var(--ink); }
+:root body .section--alt:not(.section--dark) { background: var(--bg-light); }
+:root body .section:not(.section--dark) .eyebrow { color: var(--teal-d); }
+:root body .section:not(.section--dark) :is(h2, h3, h4) { color: var(--ink); }
+:root body .section:not(.section--dark) :is(.section__head p:last-child, .split > div > p, .values li, .note, .empty) { color: var(--graphite); }
+:root body .section:not(.section--dark) :is(.note .link, .empty a) { color: var(--teal-d); }
+:root body .section:not(.section--dark) :is(.card, .sys, .item, .plan, .fair, .pcard, .person) { border-color: var(--line); }
+:root body .section:not(.section--dark) :is(.sys, .pcard):hover { border-color: #c9d0da; box-shadow: var(--shadow); }
+:root body .guidebar { background: var(--bg-light); }
+/* Turquesa escuro mais forte: AA (≥ 4,5:1) também sobre o fundo cinza-claro e as etiquetas turquesa */
+:root body { --teal-d: #0a6f7d; }
+:root body .section--dark .link, :root body .apres .link { color: var(--teal-l); }
+
+/* Espaço publicitário nas seções claras (mesmo estilo da faixa da página inicial) */
+:root body .section:not(.section--dark) .ad { background: #fffaf2; border: 2px dashed #f2b465; }
+:root body .section:not(.section--dark) .ad__main b { color: var(--orange-d, #a34b00); }
+:root body .section:not(.section--dark) :is(.ad__main small, .ad__size) { color: var(--muted); }
+
+/* Anuncie: mapa dos espaços */
+:root body .section:not(.section--dark) .admap { background: var(--bg-light); border-color: var(--line); }
+:root body .section:not(.section--dark) .admap h3 { color: var(--ink); }
+:root body .section:not(.section--dark) .admap > p, :root body .section:not(.section--dark) .admap p { color: var(--graphite); }
+:root body .section:not(.section--dark) .admap__item { border: 1px solid var(--line); }
+
+/* Receba cotações: linha do tempo e exemplo de lista */
+:root body .section:not(.section--dark) :is(.qtime, .qexemplo) { background: var(--bg-light); border-color: var(--line); }
+:root body .section:not(.section--dark) .qtime__step b { color: var(--ink); }
+:root body .section:not(.section--dark) .qtime__step--premium b { color: var(--teal-d); }
+:root body .section:not(.section--dark) .qtime__step--basico b { color: #a34b00; }
+:root body .section:not(.section--dark) .qtime__step small { color: var(--muted); }
+:root body .section:not(.section--dark) .qtime__dot { border-color: #fff; }
+:root body .section:not(.section--dark) .qtime__step--start .qtime__dot { background: var(--ink); }
+:root body .section:not(.section--dark) .qtime__axis { color: var(--muted); border-top-color: var(--line); }
+:root body .section:not(.section--dark) .qexemplo__txt h3 { color: var(--ink); }
+:root body .section:not(.section--dark) .qexemplo__txt p:not(.qplan__tag) { color: var(--graphite); }
+:root body .section:not(.section--dark) .qexemplo__preco { color: #6b7785; }
+:root body #assinaturas .note .link { color: var(--teal-d); }
+
+/* Artigos: chamada "Publique com a gente" */
+:root body .section:not(.section--dark) .artadd { background: #fff; border-color: var(--line); }
+:root body .section:not(.section--dark) .artadd__intro h3 { color: var(--ink); }
+:root body .section:not(.section--dark) .artadd__intro > p { color: var(--graphite); }
+:root body .section:not(.section--dark) .artadd__list li { color: var(--graphite); }
+:root body .section:not(.section--dark) .artadd__list li::before { color: var(--teal-d); }
+:root body .section:not(.section--dark) .artadd__list b { color: var(--ink); }
+:root body .section:not(.section--dark) .art--add { background: #fffaf2; border-color: #f2b465; color: var(--ink); }
+:root body .section:not(.section--dark) .art--add .art__title { color: #a34b00; }
+:root body .section:not(.section--dark) .art--add .art__resumo { color: var(--graphite); }
+:root body .section:not(.section--dark) .nt__abas a { border-color: var(--line); color: var(--ink); }
+
+/* Feiras: associações e entidades */
+:root body .section:not(.section--dark) .ulinks__list a { background: #fff; border-color: var(--line); }
+:root body .section:not(.section--dark) .ulinks__list a:hover { border-color: #c9d0da; box-shadow: var(--shadow); }
+:root body .section:not(.section--dark) .ulinks__list b { color: var(--ink); }
+:root body .section:not(.section--dark) .ulinks__list span:not(.ulinks__logo--sigla) { color: var(--graphite); }
+:root body .section:not(.section--dark) .ulinks__list em { color: var(--teal-d); }
+:root body .section:not(.section--dark) .ulinks__lead { color: var(--graphite); }
+:root body .section:not(.section--dark) .ulinks__grupo { color: var(--teal-d); }
+:root body .section:not(.section--dark) .ulinks__nota { color: var(--muted); }
+:root body .section:not(.section--dark) .ulinks__menu a { border-color: rgba(10, 111, 125, .35); color: var(--teal-d); }
+
+/* BIM/CAD */
+:root body .section:not(.section--dark) :is(.bim__count, .bim__lead, .bim__empty, .bim__cta p) { color: var(--graphite); }
+:root body .section:not(.section--dark) :is(.bim__sub, .bim__cta h3) { color: var(--ink); }
+:root body .section:not(.section--dark) .bim__empty { border-color: var(--line); }
+
+/* Sistemas: vídeo de cada sistema */
+:root body .section:not(.section--dark) .sysvideo h3 { color: var(--ink); }
+:root body .section:not(.section--dark) .sysvideo p { color: var(--graphite); }
+:root body .section:not(.section--dark) .sysvideo__yt { color: var(--teal-d); }
+
+/* Textos de apoio */
+:root body .section:not(.section--dark) .hint { color: var(--muted); }
+:root body #bim .hint { color: var(--muted); }
+:root body .svc__tag { color: var(--teal-d); }
+:root body .nt__tag--op { color: #12663f; }                                   /* 5,9:1 sobre #e3f5ec */
+:root body .section:not(.section--dark) .qexemplo__preco { color: #5f6b7a; }
+/* Links laranja para o Dimensionamento Inteligente: laranja escuro sobre claro (AA) */
+:root body .section:not(.section--dark) a[href="#lmatTool"] { color: #a34b00 !important; }

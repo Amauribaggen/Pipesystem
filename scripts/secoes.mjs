@@ -6,6 +6,10 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BASE, impItensBusca } from './pages.mjs';
 
+// Páginas de área que já usam o tema claro (site/tema-claro.css), liberadas por etapa.
+// Etapa 1 (24/11/2026). Guias práticos, Dimensionamento e Normas ficam para a etapa 3.
+const TEMA_CLARO = ['servicos', 'sistemas', 'materiais', 'bim', 'artigos', 'feiras', 'anuncie', 'assinaturas', 'sobre'];
+
 // Ordem = ordem dos cartões na vitrine. n(D, x) = número de destaque do cartão; links = atalhos para os subtemas.
 export const PAGINAS = [
   { id: 'servicos', path: '/cotacoes', nome: 'Cotações e negócios', tag: 'Serviços', titulo: 'Cotações, consultoria e negócios em hidráulica | PipeSystem',
@@ -273,7 +277,7 @@ export function separar(out, D, src) {
       .replace(/(<meta name="twitter:title" content=")[^"]*"/, `$1${attr(p.titulo)}"`)
       .replace(/(<meta property="og:description" content=")[^"]*"/, `$1${attr(d)}"`)
       .replace(/(<meta name="twitter:description" content=")[^"]*"/, `$1${attr(d)}"`)
-      .replace(/<link rel="stylesheet" href="home[.]css">[^<]*<!--[^>]*-->/, '')   // visual da página inicial (home.css) fica só nela
+      .replace(/<link rel="stylesheet" href="tema-claro[.]css">[^<]*<!--[^>]*-->/, TEMA_CLARO.includes(p.id) ? '$&' : '')   // tema claro só nas páginas já liberadas
       .replace('<body>', `<body data-pagina="${p.id}">`);
     const comVideo = ['sobre', 'anuncie'].includes(p.id) ? '\n  ' + video : '';   // o vídeo de apresentação também em Quem somos e Anuncie
     const extras = (p.extras || []).map(id => '\n  ' + porId[id].html).join('');   // seções extras da página (ex.: guia de fornecedores em Anuncie)
