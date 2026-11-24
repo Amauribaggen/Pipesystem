@@ -101,6 +101,10 @@ const MENU_TOPO = [['/pro', 'App Pro', '', true], ['/feiras', 'Feiras'], ['/anun
 const secaoAtual = url => url.startsWith('/sistemas') ? '/sistemas' : ['/estatisticas', '/importacoes', '/compras-publicas', '/investimentos'].includes(url) ? '/estatisticas' : url.startsWith('/materiais') ? '/materiais'
   : /^\/(comparativos|glossario)/.test(url) ? '/guias-praticos' : url === '/noticias' ? '/artigos' : ['/pro', '/feiras', '/anuncie', '/quem-somos'].includes(url) ? url : '';
 
+// Tema claro (site/tema-claro.css), liberado por etapa. Etapa 2 (24/11/2026): fichas de materiais, sistemas,
+// glossário e comparativos. As demais páginas deste modelo continuam no tema escuro.
+const TEMA_CLARO_PG = /^\/(materiais|sistemas|glossario|comparativos)(\/|$)/;
+const temaClaro = url => TEMA_CLARO_PG.test(url);
 function page({ url, title, description, image, imageAlt, crumbs, body, wide, keywords, reviewed, ld: extraLd = [], glossSkip }) {
   const canonical = BASE + url;
   const ld = {
@@ -144,7 +148,7 @@ function page({ url, title, description, image, imageAlt, crumbs, body, wide, ke
   <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   ${FONT_LINKS}
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles.css">${temaClaro(url) ? '\n  <link rel="stylesheet" href="/tema-claro.css">' : ''}
   <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>
 </head>
 <body class="pg"${glossSkip ? ` data-gloss-skip="${glossSkip}"` : ''}>

@@ -324,3 +324,14 @@
 :root body .section:not(.section--dark) .qexemplo__preco { color: #5f6b7a; }
 /* Links laranja para o Dimensionamento Inteligente: laranja escuro sobre claro (AA) */
 :root body .section:not(.section--dark) a[href="#lmatTool"] { color: #a34b00 !important; }
+
+/* =====================================================================
+   Etapa 2: páginas do modelo "pg" (fichas de materiais, sistemas, glossário, comparativos)
+   ===================================================================== */
+:root body.pg { background: var(--bg-light); }
+:root body .crumbs ol { color: var(--muted); }
+:root body .crumbs li + li::before { color: #9aa4b2; }
+:root body .crumbs a { color: var(--teal-d); }
+:root body figcaption a { color: var(--teal-d); }
+:root body .tags--links a span[aria-hidden] { color: var(--teal-d); }
+:root body .pg-top__toggle { min-width: 44px; min-height: 44px; }
