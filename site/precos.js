@@ -1,12 +1,12 @@
-// ===== Comparativo de Preços: preços coletados à mão em lojas on-line (coletas em 01/11/2026 e 08/11/2026) =====
+// ===== Comparativo de Preços: preços coletados à mão em lojas on-line (coletas em 01/11/2026, 08/11/2026 e 26/11/2026) =====
 // sinapi = insumo do SINAPI equivalente (site/sinapi-precos.js); fator = quantas unidades do insumo formam o item (ex.: 6 m de tubo).
 // preco = o menor valor mostrado na página da loja na coleta, sem frete; obs = condição desse valor.
-const LOJAS_PRECOS = { leroy: 'Leroy Merlin', telha: 'Telhanorte', amazon: 'Amazon', magalu: 'Magazine Luiza', mecanico: 'Loja do Mecânico' };
-const PRECOS_LOJA_URL = { leroy: 'https://www.leroymerlin.com.br', telha: 'https://www.telhanorte.com.br', amazon: 'https://www.amazon.com.br', magalu: 'https://www.magazineluiza.com.br', mecanico: 'https://www.lojadomecanico.com.br' };
+const LOJAS_PRECOS = { leroy: 'Leroy Merlin', telha: 'Telhanorte', amazon: 'Amazon', magalu: 'Magazine Luiza', mecanico: 'Loja do Mecânico', fadef: 'Distribuidora Fadef' };
+const PRECOS_LOJA_URL = { leroy: 'https://www.leroymerlin.com.br', telha: 'https://www.telhanorte.com.br', amazon: 'https://www.amazon.com.br', magalu: 'https://www.magazineluiza.com.br', mecanico: 'https://www.lojadomecanico.com.br', fadef: 'https://distribuidorafadef.com.br' };
 // Imagem de cada produto: [arquivo, autor, página de origem, licença (vazio = divulgação do fabricante)]
-const PRECOS_FOTOS = { "tubo-pvc-25": [ "img/materiais/mat-pvc-1.webp", "Tigre", "https://www.tigre.com.br", "" ], "tubo-pvc-32-3m": [ "img/materiais/mat-pvc-1.webp", "Tigre", "https://www.tigre.com.br", "" ], "tubo-pvc-50-3m": [ "img/materiais/mat-pvc-1.webp", "Tigre", "https://www.tigre.com.br", "" ], "joelho-25": [ "img/materiais/preco-joelho-soldavel-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/joelho-90o-soldavel", "" ], "te-25": [ "img/materiais/preco-te-soldavel-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/te-soldavel", "" ], "luva-25": [ "img/materiais/preco-luva-soldavel-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/luva-soldavel", "" ], "tubo-esgoto-100": [ "img/materiais/preco-tubo-esgoto-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/tubo-serie-normal-6m", "" ], "tubo-esgoto-50-3m": [ "img/materiais/preco-tubo-esgoto-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/tubo-serie-normal-6m", "" ], "joelho-esgoto-100": [ "img/materiais/preco-joelho-esgoto-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produtos/obras-e-reformas/esgoto/tubos-e-conexoes-para-esgoto", "" ], "caixa-sifonada-150": [ "img/materiais/preco-caixa-sifonada-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/en/product/node-84", "" ], "ralo-sifonado-100": [ "img/materiais/preco-ralo-cilindrico-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produtos/obras-e-reformas/esgoto/tubos-e-conexoes-para-esgoto/caixas-sifonadas-e-ralos", "" ], "adesivo-175": [ "img/materiais/preco-adesivo-pvc-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/en/product/node-884", "" ], "chuveiro-5500": [ "img/materiais/preco-chuveiro-loren-bello-fab.webp", "Lorenzetti", "https://www.lorenzetti.com.br/produto/loren-bello", "" ], "torneira-jardim": [ "img/materiais/preco-torneira-jardim-docol-fab.webp", "Docol", "https://www.docol.com.br/br/90009037006-torneira-para-jardim-com-canopla-1130-nova-pertutti/p", "" ], "caixa-1000": [ "img/materiais/mat-reservatorios-1.webp", "Fortlev", "https://www.fortlev.com.br", "" ], "tubo-ppr-25": [ "img/materiais/mat-ppr-1-fab.webp", "Tigre", "https://www.tigre.com.br", "" ], "engate-inox-30": [ "img/materiais/mat-flexiveis-1-fab.webp", "Tigre", "https://www.tigre.com.br", "" ], "torneira-boia-34": [ "img/materiais/mat-boia-tigre-fab.webp", "Tigre", "https://www.tigre.com.br", "" ], "joelho-bucha-latao-25-12": [ "img/materiais/mat-pvc-bucha-joelho-fab.webp", "Tigre", "https://www.tigre.com.br/produto/joelho-90o-soldavel-com-bucha-de-latao", "" ], "registro-gaveta-34": [ "img/produtos/registros-latao-1.webp", "Veronidae", "https://commons.wikimedia.org/wiki/File:Stopcock_2013_002.JPG", "CC BY-SA 3.0" ], "fita-veda-18-25": [ "img/produtos/vedantes-3.webp", "Tomwsulcer", "https://commons.wikimedia.org/wiki/File:Teflon_tape_used_for_sealing_plumbing_connections.jpg", "CC0" ], "tubo-cpvc-22": [ "img/produtos/tubos-cpvc-3.webp", "Next365", "https://commons.wikimedia.org/wiki/File:Erector1357661.jpg", "CC BY-SA 4.0" ] };
+const PRECOS_FOTOS = { "tubo-pvc-25": [ "img/materiais/mat-pvc-1.webp", "Tigre", "https://www.tigre.com.br", "" ], "tubo-pvc-32-3m": [ "img/materiais/mat-pvc-1.webp", "Tigre", "https://www.tigre.com.br", "" ], "tubo-pvc-50-3m": [ "img/materiais/mat-pvc-1.webp", "Tigre", "https://www.tigre.com.br", "" ], "joelho-25": [ "img/materiais/preco-joelho-soldavel-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/joelho-90o-soldavel", "" ], "te-25": [ "img/materiais/preco-te-soldavel-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/te-soldavel", "" ], "luva-25": [ "img/materiais/preco-luva-soldavel-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/luva-soldavel", "" ], "tubo-esgoto-100": [ "img/materiais/preco-tubo-esgoto-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/tubo-serie-normal-6m", "" ], "tubo-esgoto-50-3m": [ "img/materiais/preco-tubo-esgoto-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produto/tubo-serie-normal-6m", "" ], "joelho-esgoto-100": [ "img/materiais/preco-joelho-esgoto-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produtos/obras-e-reformas/esgoto/tubos-e-conexoes-para-esgoto", "" ], "caixa-sifonada-150": [ "img/materiais/preco-caixa-sifonada-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/en/product/node-84", "" ], "ralo-sifonado-100": [ "img/materiais/preco-ralo-cilindrico-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/produtos/obras-e-reformas/esgoto/tubos-e-conexoes-para-esgoto/caixas-sifonadas-e-ralos", "" ], "adesivo-175": [ "img/materiais/preco-adesivo-pvc-tigre-fab.webp", "Tigre", "https://www.tigre.com.br/en/product/node-884", "" ], "chuveiro-5500": [ "img/materiais/preco-chuveiro-loren-bello-fab.webp", "Lorenzetti", "https://www.lorenzetti.com.br/produto/loren-bello", "" ], "torneira-jardim": [ "img/materiais/preco-torneira-jardim-docol-fab.webp", "Docol", "https://www.docol.com.br/br/90009037006-torneira-para-jardim-com-canopla-1130-nova-pertutti/p", "" ], "caixa-1000": [ "img/materiais/mat-reservatorios-1.webp", "Fortlev", "https://www.fortlev.com.br", "" ], "tubo-ppr-25": [ "img/materiais/mat-ppr-1-fab.webp", "Tigre", "https://www.tigre.com.br", "" ], "engate-inox-30": [ "img/materiais/mat-flexiveis-1-fab.webp", "Tigre", "https://www.tigre.com.br", "" ], "torneira-boia-34": [ "img/materiais/mat-boia-tigre-fab.webp", "Tigre", "https://www.tigre.com.br", "" ], "joelho-bucha-latao-25-12": [ "img/materiais/mat-pvc-bucha-joelho-fab.webp", "Tigre", "https://www.tigre.com.br/produto/joelho-90o-soldavel-com-bucha-de-latao", "" ], "registro-gaveta-34": [ "img/produtos/registros-latao-1.webp", "Veronidae", "https://commons.wikimedia.org/wiki/File:Stopcock_2013_002.JPG", "CC BY-SA 3.0" ], "fita-veda-18-25": [ "img/produtos/vedantes-3.webp", "Tomwsulcer", "https://commons.wikimedia.org/wiki/File:Teflon_tape_used_for_sealing_plumbing_connections.jpg", "CC0" ], "tubo-cpvc-22": [ "img/produtos/tubos-cpvc-3.webp", "Next365", "https://commons.wikimedia.org/wiki/File:Erector1357661.jpg", "CC BY-SA 4.0" ], "storz-chave-dupla": ["img/materiais/mat-hidrantes-storz-metalcasty-fab.webp", "Metalcasty", "https://www.metalcasty.com.br/produto/adaptador-storz-para-mangueira-de-incendio/", ""], "storz-reducao": ["img/materiais/mat-hidrantes-storz-metalcasty-fab.webp", "Metalcasty", "https://www.metalcasty.com.br/produto/adaptador-storz-para-mangueira-de-incendio/", ""], "storz-uniao-112": ["img/materiais/mat-hidrantes-storz-metalcasty-fab.webp", "Metalcasty", "https://www.metalcasty.com.br/produto/adaptador-storz-para-mangueira-de-incendio/", ""], "storz-uniao-212": ["img/materiais/mat-hidrantes-storz-metalcasty-fab.webp", "Metalcasty", "https://www.metalcasty.com.br/produto/adaptador-storz-para-mangueira-de-incendio/", ""], "esguicho-solido-112-16": ["img/materiais/mat-hidrantes-esguicho-bucka-fab.webp", "Bucka", "https://www.bucka.com.br/esguichos/esguichos-manuais/esguicho-regulavel-para-mangueira-bucka-200/", ""], "esguicho-solido-112-19": ["img/materiais/mat-hidrantes-esguicho-bucka-fab.webp", "Bucka", "https://www.bucka.com.br/esguichos/esguichos-manuais/esguicho-regulavel-para-mangueira-bucka-200/", ""], "esguicho-regulavel-112": ["img/materiais/mat-hidrantes-esguicho-bucka-fab.webp", "Bucka", "https://www.bucka.com.br/esguichos/esguichos-manuais/esguicho-regulavel-para-mangueira-bucka-200/", ""], "esguicho-regulavel-212": ["img/materiais/mat-hidrantes-esguicho-bucka-fab.webp", "Bucka", "https://www.bucka.com.br/esguichos/esguichos-manuais/esguicho-regulavel-para-mangueira-bucka-200/", ""], "storz-adaptador-212": ["img/materiais/mat-hidrantes-storz-metalcasty-fab.webp", "Metalcasty", "https://www.metalcasty.com.br/produto/adaptador-storz-para-mangueira-de-incendio/", ""], "storz-adaptador-112": ["img/materiais/mat-hidrantes-storz-metalcasty-fab.webp", "Metalcasty", "https://www.metalcasty.com.br/produto/adaptador-storz-para-mangueira-de-incendio/", ""], "anel-expansao-112": ["img/materiais/mat-hidrantes-storz-metalcasty-fab.webp", "Metalcasty", "https://www.metalcasty.com.br/produto/adaptador-storz-para-mangueira-de-incendio/", ""], "anel-expansao-212": ["img/materiais/mat-hidrantes-storz-metalcasty-fab.webp", "Metalcasty", "https://www.metalcasty.com.br/produto/adaptador-storz-para-mangueira-de-incendio/", ""], "valvula-hidrante-45": ["img/materiais/mat-valvula-hidrante-bucka-fab.webp", "Bucka", "https://www.bucka.com.br/hidrantes/valvula-para-hidrantes/valvula-para-hidrante-industrial-pn20-300-psi/", ""], "sprinkler-pendente-68": ["img/produtos/sprinklers-reliable-pendente.webp", "Reliable", "https://www.reliablesprinkler.com/products/sprinklers/", ""], "canopla-sprinkler": ["img/materiais/mat-acessorios-sprinkler-viking-fab.webp", "Viking", "https://www.vikinggroupinc.com/products/fire-sprinklers/accessories/escutcheons", ""], "gaveta-bruto-1": ["img/produtos/registros-latao-1.webp", "Veronidae", "https://commons.wikimedia.org/wiki/File:Stopcock_2013_002.JPG", "CC BY-SA 3.0"], "gaveta-bruto-2": ["img/produtos/registros-latao-1.webp", "Veronidae", "https://commons.wikimedia.org/wiki/File:Stopcock_2013_002.JPG", "CC BY-SA 3.0"], "gaveta-bruto-212": ["img/produtos/registros-latao-1.webp", "Veronidae", "https://commons.wikimedia.org/wiki/File:Stopcock_2013_002.JPG", "CC BY-SA 3.0"], "gaveta-bruto-4": ["img/produtos/registros-latao-1.webp", "Veronidae", "https://commons.wikimedia.org/wiki/File:Stopcock_2013_002.JPG", "CC BY-SA 3.0"], "galv-cotovelo-212": ["img/materiais/mat-galv-1.webp", "Tupy", "https://www.tupy.com.br/conexoes/tupy-npt/", ""], "galv-te-212": ["img/materiais/mat-galv-1.webp", "Tupy", "https://www.tupy.com.br/conexoes/tupy-npt/", ""], "galv-luva-212": ["img/materiais/mat-galv-1.webp", "Tupy", "https://www.tupy.com.br/conexoes/tupy-npt/", ""], "galv-uniao-212": ["img/materiais/mat-galv-1.webp", "Tupy", "https://www.tupy.com.br/conexoes/tupy-npt/", ""], "galv-tampao-212": ["img/materiais/mat-galv-1.webp", "Tupy", "https://www.tupy.com.br/conexoes/tupy-npt/", ""] };
 const PRECOS = {
-  coleta: '01/11/2026 e 08/11/2026 (itens com o selo Novo)',
+  coleta: '01/11/2026, 08/11/2026 e 26/11/2026 (incêndio, com o selo Novo)',
   itens: [
     { id: 'tubo-pvc-25', nome: 'Tubo de PVC soldável 25 mm, barra de 6 m', cat: 'Tubos', sinapi: { cod: 9868, fator: 6 },
       chaves: ['cano', 'água fria', 'marrom', '3/4'],
@@ -100,77 +100,198 @@ const PRECOS = {
         ['amazon', 'Torneira de Boia 3/4" com Haste de Metal Tigre', 28.84, '', '/dp/B076PMJ3DV'],
         ['amazon', 'Torneira de Boia 1/2" e 3/4" Censi', 72.96, '', '/dp/B0C5MWLD96'],
       ] },
-    // Coleta de 08/11/2026 (novo: true mostra o selo "Novo")
-    { id: 'tubo-pvc-32-3m', novo: true, nome: 'Tubo de PVC soldável 32 mm, barra de 3 m', cat: 'Tubos', sinapi: { cod: 9869, fator: 3 },
+    // Coleta de 08/11/2026
+    { id: 'tubo-pvc-32-3m', nome: 'Tubo de PVC soldável 32 mm, barra de 3 m', cat: 'Tubos', sinapi: { cod: 9869, fator: 3 },
       chaves: ['cano', 'água fria', 'marrom', '1 polegada'],
       ofertas: [
         ['telha', 'Tubo PVC Soldável 3 Metros 32 mm Krona', 42.21, 'no Pix', '/tubo-pvc-soldavel-3-metros-32mm-krona-2386682/p'],
         ['telha', 'Tubo Soldável Tigre 32 mm 3 m para Água Fria', 46.90, '', '/tubo-soldavel-3-00m-32mm-tigre-170216/p'],
       ] },
-    { id: 'tubo-pvc-50-3m', novo: true, nome: 'Tubo de PVC soldável 50 mm, barra de 3 m', cat: 'Tubos', sinapi: { cod: 9875, fator: 3 },
+    { id: 'tubo-pvc-50-3m', nome: 'Tubo de PVC soldável 50 mm, barra de 3 m', cat: 'Tubos', sinapi: { cod: 9875, fator: 3 },
       chaves: ['cano', 'água fria', 'marrom', '1 1/2'],
       ofertas: [
         ['telha', 'Tubo PVC Soldável 50 mm com 3 Metros Krona', 64.90, '', '/tubo-pvc-soldavel-3-metros-50mm-krona-2386704/p'],
         ['telha', 'Tubo Soldável de PVC para Água Fria 50 mm 3 m Tigre', 69.90, '', '/tubo-soldavel-nbr-3-00m-50mm-tigre-170232/p'],
       ] },
-    { id: 'tubo-esgoto-50-3m', novo: true, nome: 'Tubo de PVC para esgoto 50 mm, barra de 3 m', cat: 'Tubos', sinapi: { cod: 9838, fator: 3 },
+    { id: 'tubo-esgoto-50-3m', nome: 'Tubo de PVC para esgoto 50 mm, barra de 3 m', cat: 'Tubos', sinapi: { cod: 9838, fator: 3 },
       chaves: ['cano', 'esgoto primário', 'branco', 'série normal'],
       ofertas: [
         ['telha', 'Tubo de Esgoto Primário Tigre 50 mm x 3 m em PVC', 38.90, '', '/tubo-de-esgoto-primario-3m-50mm-tigre-170259/p'],
         ['telha', 'Tubo de Esgoto PVC 50 mm 3 Metros Krona', 44.90, '', '/tubo-esgoto-3-metros-50mm-krona-2386780/p'],
       ] },
-    { id: 'joelho-esgoto-100', novo: true, nome: 'Joelho 90° de PVC para esgoto 100 mm', cat: 'Conexões', sinapi: { cod: 3520, fator: 1 },
+    { id: 'joelho-esgoto-100', nome: 'Joelho 90° de PVC para esgoto 100 mm', cat: 'Conexões', sinapi: { cod: 3520, fator: 1 },
       chaves: ['cotovelo', 'conexão', 'esgoto', 'série normal'],
       ofertas: [
         ['telha', 'Joelho 90° para Esgoto Primário DN 100 mm Krona', 7.56, 'no Pix', '/joelho-90-esgoto-prim-dn-100-krona-2385384/p'],
         ['telha', 'Joelho 90° para Esgoto Série Normal 100 mm Tigre', 9.90, '', '/joelho-90-de-esgoto-100mm-tigre-22594/p'],
       ] },
-    { id: 'te-25', novo: true, nome: 'Tê 90° de PVC soldável 25 mm', cat: 'Conexões', sinapi: { cod: 7139, fator: 1 },
+    { id: 'te-25', nome: 'Tê 90° de PVC soldável 25 mm', cat: 'Conexões', sinapi: { cod: 7139, fator: 1 },
       chaves: ['te', 'tee', 'conexão', 'água fria', 'marrom'],
       ofertas: [
         ['telha', 'Tê Soldável PVC 25 mm Krona', 1.18, 'no Pix', '/te-soldavel-pvc-25mm-2393581/p'],
         ['amazon', 'Tê Soldável LLL 25 mm Amanco', 1.58, '', '/dp/B07ZWCJ51R'],
         ['telha', 'Tê Soldável 90° 25 mm Tigre', 1.99, '', '/te-de-90o-soldavel-25mm-tigre-23213/p'],
       ] },
-    { id: 'luva-25', novo: true, nome: 'Luva de PVC soldável 25 mm', cat: 'Conexões', sinapi: { cod: 3904, fator: 1 },
+    { id: 'luva-25', nome: 'Luva de PVC soldável 25 mm', cat: 'Conexões', sinapi: { cod: 3904, fator: 1 },
       chaves: ['união', 'emenda', 'conexão', 'água fria', 'marrom'],
       ofertas: [
         ['telha', 'Luva Soldável 25 mm em PVC Marrom Krona', 0.98, 'no Pix', '/luva-soldavel-25mm-pvc-marrom-af-krona-2393816/p'],
         ['telha', 'Luva Soldável Tigre 25 mm', 1.27, 'no Pix', '/luva-soldavel-25mm-tigre-22136/p'],
       ] },
-    { id: 'joelho-bucha-latao-25-12', novo: true, nome: 'Joelho 90° de PVC soldável com bucha de latão 25 mm x 1/2"', cat: 'Conexões', sinapi: { cod: 20147, fator: 1 },
+    { id: 'joelho-bucha-latao-25-12', nome: 'Joelho 90° de PVC soldável com bucha de latão 25 mm x 1/2"', cat: 'Conexões', sinapi: { cod: 20147, fator: 1 },
       chaves: ['cotovelo', 'conexão', 'azul', 'ponto terminal', 'bucha de latão', 'água fria', 'porcelanato'],
       ofertas: [
         ['telha', 'Joelho de Redução 90° Soldável com Bucha de Latão 25 mm x 1/2" Tigre', 7.92, 'no Pix', '/joelho-de-reducao-90-soldavel-com-bucha-lt25mmx12-tigre-24821/p'],
         ['amazon', 'Joelho Bucha Latão 90° Liso e Rosca 25 mm x 1/2" Amanco', 12.88, '', '/dp/B07R2NNMX1'],
         ['amazon', 'Joelho para Porcelanato com Bucha de Latão 25 mm x 1/2" Durín', 16.59, '', '/dp/B0C74R1JC2'],
       ] },
-    { id: 'ralo-sifonado-100', novo: true, nome: 'Ralo sifonado de PVC 100 x 40 mm, redondo', cat: 'Conexões', sinapi: { cod: 11741, fator: 1 },
+    { id: 'ralo-sifonado-100', nome: 'Ralo sifonado de PVC 100 x 40 mm, redondo', cat: 'Conexões', sinapi: { cod: 11741, fator: 1 },
       chaves: ['ralo', 'sifão', 'grelha', 'box', 'esgoto'],
       ofertas: [
         ['amazon', 'Ralo Sifonado Redondo 100 x 37 x 40 mm PVC Plastipan', 21.40, '', '/dp/B0H9P9YBL5'],
         ['amazon', 'Ralo Sifonado Redondo 100 x 38 x 40 Vortice Amanco', 25.40, '', '/dp/B0G4SYQV9X'],
       ] },
-    { id: 'engate-inox-30', novo: true, nome: 'Engate flexível de inox 1/2" x 30 cm', cat: 'Acessórios', sinapi: { cod: 11683, fator: 1 },
+    { id: 'engate-inox-30', nome: 'Engate flexível de inox 1/2" x 30 cm', cat: 'Acessórios', sinapi: { cod: 11683, fator: 1 },
       chaves: ['rabicho', 'flexível', 'mangueira', 'ligação'],
       ofertas: [
         ['amazon', 'Mangueira Engate Flexível Aço Inox 30 cm 1/2" Kokay', 16.13, '', '/dp/B0CY6YRG3D'],
         ['amazon', 'Engate Flexível 30 cm 1/2" Inox F/F com Niple', 26.00, '', '/dp/B0GTBVKD4Q'],
         ['amazon', 'Mangueira Engate Flexível Aço Inox 1/2" Fosco 30 cm Esteves', 28.61, '', '/dp/B0HJH8NPW4'],
       ] },
-    { id: 'chuveiro-5500', novo: true, nome: 'Chuveiro elétrico 5.500 W', cat: 'Metais e louças', sinapi: { cod: 1368, fator: 1 },
+    { id: 'chuveiro-5500', nome: 'Chuveiro elétrico 5.500 W', cat: 'Metais e louças', sinapi: { cod: 1368, fator: 1 },
       chaves: ['ducha', 'elétrico', 'banho', 'Lorenzetti', 'Zagonel'],
       ofertas: [
         ['telha', 'Chuveiro Bella Ducha 4 Temperaturas 5500 W 127 V Lorenzetti', 95.90, '', '/chuveiro-eletrico-multitemperatura-bella-ducha-4t-branco-5500w-127v-lorenzetti-1121685/p'],
         ['telha', 'Chuveiro Lorenbello 3 Temperaturas 5500 W 220 V Lorenzetti', 99.90, '', '/chuveiro-eletrico-bello-banho-ultra-com-cano-5500w-220v-branco-lorenzetti-1417690/p'],
         ['telha', 'Ducha Moment 4 Temperaturas 5500 W 127 V Zagonel', 114.90, '', '/ducha-moment-4-temperaturas-5500w-127v-branco-cxpr-zagonel-2581213/p'],
       ] },
-    { id: 'torneira-jardim', novo: true, nome: 'Torneira de jardim ou tanque, de parede', cat: 'Metais e louças', sinapi: { cod: 7603, fator: 1 },
+    { id: 'torneira-jardim', nome: 'Torneira de jardim ou tanque, de parede', cat: 'Metais e louças', sinapi: { cod: 7603, fator: 1 },
       chaves: ['torneira', 'jardim', 'tanque', 'metal', 'lavagem'],
       ofertas: [
         ['telha', 'Torneira de Jardim Parede 1153 C23 Cromada Esteves', 55.92, 'no Pix', '/torneira-de-jardim-1153-c23-vtj023-cromada-esteves-939463/p'],
         ['telha', 'Torneira Esfera para Jardim 1/2" com Alavanca Wog 132', 63.92, 'no Pix', '/torneira-esfera-para-jardim-com-alavanca-132-wog-801208/p'],
         ['telha', 'Torneira de Parede para Jardim Pertutti Cromada Docol', 111.06, 'no Pix', '/torneira-docol-de-parede-para-jardim-pertutti-cromada-1621530/p'],
+      ] },
+    // Coleta de 26/11/2026 na Distribuidora Fadef: incêndio (hidrantes, sprinklers, registros e galvanizados)
+    { id: 'storz-chave-dupla', novo: true, nome: 'Chave Storz dupla 2.1/2" x 1.1/2" em latão', cat: 'Incêndio', sinapi: { cod: 20971, fator: 1 },
+      chaves: ['chave de mangueira', 'engate rápido', 'hidrante', 'mangueira de incêndio', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Chave Storz Dupla Predial 2.1/2 x 1.1/2 em Latão', 11.00, '', '/produtos/chave-storz-dupla-predial-2-1-2-x-1-1-2-em-latao/'],
+      ] },
+    { id: 'storz-reducao', novo: true, nome: 'Redução Storz fixa 2.1/2" x 1.1/2" em latão', cat: 'Incêndio', sinapi: { cod: 20972, fator: 1 },
+      chaves: ['engate rápido', 'hidrante', 'mangueira de incêndio', 'adaptador', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Redução Storz Fixa Engate Rápido 2.1/2" para 1.1/2" Latão Escovado', 139.00, '', '/produtos/reducao-storz-fixa-engate-rapido-2-1-2-para-1-1-2-latao-escovado/'],
+      ] },
+    { id: 'storz-uniao-112', novo: true, nome: 'União Storz 1.1/2" para mangueira de incêndio, par', cat: 'Incêndio', sinapi: { cod: 20973, fator: 2 },
+      chaves: ['engate rápido', 'empatação', 'mangueira de incêndio', '40 mm', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Par de União Storz para Mangueira de Incêndio 40A 1.1/2" Latão', 199.00, 'par (2 peças)', '/produtos/par-de-uniao-storz-para-mangueira-de-incendio-40a-latao/'],
+      ] },
+    { id: 'storz-uniao-212', novo: true, nome: 'União Storz 2.1/2" para mangueira de incêndio, par', cat: 'Incêndio', sinapi: { cod: 20974, fator: 2 },
+      chaves: ['engate rápido', 'empatação', 'mangueira de incêndio', '65 mm', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Par de União Storz para Mangueira de Incêndio 65B Latão', 248.00, 'par (2 peças)', '/produtos/uniao-storz-para-mangueira-de-incendio-65b-latao/'],
+      ] },
+    { id: 'esguicho-solido-112-16', novo: true, nome: 'Esguicho de jato sólido 1.1/2" com requinte de 16 mm, latão', cat: 'Incêndio', sinapi: { cod: 20965, fator: 1 },
+      chaves: ['agulheta', 'jato pleno', 'hidrante', 'mangueira de incêndio', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Esguicho Agulheta Jato Sólido 1.1/2" Requinte 16 mm em Latão', 89.00, '', '/produtos/esguicho-agulheta-jato-solido-1-1-2-requinte-16mm-em-latao/'],
+      ] },
+    { id: 'esguicho-solido-112-19', novo: true, nome: 'Esguicho de jato sólido 1.1/2" com requinte de 19 mm, latão', cat: 'Incêndio', sinapi: { cod: 20966, fator: 1 },
+      chaves: ['agulheta', 'jato pleno', 'hidrante', 'mangueira de incêndio', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Esguicho Agulheta Jato Sólido 1.1/2" Requinte 19 mm em Latão', 89.00, '', '/produtos/esguicho-agulheta-jato-solido-1-1-2-requinte-19mm-em-latao/'],
+      ] },
+    { id: 'esguicho-regulavel-112', novo: true, nome: 'Esguicho regulável Storz 1.1/2" em latão', cat: 'Incêndio', sinapi: { cod: 37554, fator: 1 },
+      chaves: ['neblina', 'jato regulável', 'elkhart', 'hidrante', 'mangueira de incêndio', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Esguicho Manual Regulável Recartilhado Storz Industrial em Latão Escovado', 159.00, 'opção 1.1/2"', '/produtos/esguicho-manual-regulavel-recartilhado-1-1-2-e-2-1-2-industrial-em-latao-escovado/'],
+      ] },
+    { id: 'esguicho-regulavel-212', novo: true, nome: 'Esguicho regulável Storz 2.1/2" em latão', cat: 'Incêndio', sinapi: { cod: 37555, fator: 1 },
+      chaves: ['neblina', 'jato regulável', 'elkhart', 'hidrante', 'mangueira de incêndio', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Esguicho Regulável Recartilhado PN16 2.1/2" Storz em Latão', 179.00, '', '/produtos/esguicho-regulavel-recartilhado-pn16-2-1-2-storz-em-latao/'],
+      ] },
+    { id: 'storz-adaptador-212', novo: true, nome: 'Adaptador Storz 2.1/2" x rosca interna 5 fios 2.1/2", latão', cat: 'Incêndio', sinapi: { cod: 10899, fator: 1 },
+      chaves: ['engate rápido', 'hidrante', 'válvula de hidrante', '5 fios', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Adaptador Storz 2.1/2" ER x 2.1/2" Rosca Interna 5FPP em Latão', 108.00, '', '/produtos/adaptador-storz-2-1-2-er-x-2-1-2-rosca-interna-5fpp-em-latao/'],
+      ] },
+    { id: 'storz-adaptador-112', novo: true, nome: 'Adaptador Storz 1.1/2" x rosca interna 5 fios 2.1/2", latão', cat: 'Incêndio', sinapi: { cod: 10900, fator: 1 },
+      chaves: ['engate rápido', 'hidrante', 'válvula de hidrante', '5 fios', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Adaptador Storz 1.1/2" ER x 2.1/2" Rosca Interna 5 FPP Latão Escovado', 69.00, '', '/produtos/adaptador-storz-1-1-2-er-x-2-1-2-rosca-interna-5-fpp-latao-escovado/'],
+      ] },
+    { id: 'anel-expansao-112', novo: true, nome: 'Anel de expansão de cobre para empatação de mangueira 1.1/2"', cat: 'Incêndio', sinapi: { cod: 20975, fator: 1 },
+      chaves: ['empatação', 'mangueira de incêndio', 'união storz', '40 mm', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Anel de Expansão em Cobre Recozido para Empatação Tipo 40-A', 20.00, '', '/produtos/anel-de-expansao-em-cobre-recozido-para-empatacao-tipo-40-a-38-1mm-x-28mm/'],
+      ] },
+    { id: 'anel-expansao-212', novo: true, nome: 'Anel de expansão de cobre para empatação de mangueira 2.1/2"', cat: 'Incêndio', sinapi: { cod: 20976, fator: 1 },
+      chaves: ['empatação', 'mangueira de incêndio', 'união storz', '65 mm', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Anel de Expansão em Cobre Recozido Tipo 65-B', 34.00, '', '/produtos/anel-de-expansao-em-cobre-recozido-tipo-65-b-63-5mm-x-38mm/'],
+      ] },
+    { id: 'valvula-hidrante-45', novo: true, nome: 'Válvula globo angular 45° 2.1/2" para hidrante', cat: 'Incêndio', sinapi: { cod: 10904, fator: 1 },
+      chaves: ['registro de hidrante', 'válvula angular', 'registro globo', 'hidrante', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Válvula Globo 2.1/2 - 45º PN 16 para Hidrante 210 Libras', 228.00, '', '/produtos/valvula-globo-2-1-2-45-pn-16-para-hidrante-210-libras/'],
+      ] },
+    { id: 'sprinkler-pendente-68', novo: true, nome: 'Sprinkler pendente 68 °C, 1/2", cromado', cat: 'Incêndio', sinapi: { cod: 21044, fator: 1 },
+      chaves: ['chuveiro automático', 'bico de sprinkler', 'ampola vermelha', 'k80', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Sprinkler Pendente 68°C Resposta Padrão K-80 1/2" NPT Cromado UL', 42.00, 'resposta padrão; o insumo SINAPI é de resposta rápida', '/produtos/sprinkler-pendente-68c-resposta-padrao-k-80-k-5-6-1-2-npt-cromado-certificado-ul/'],
+      ] },
+    { id: 'canopla-sprinkler', novo: true, nome: 'Canopla cromada para sprinkler 1/2"', cat: 'Incêndio', sinapi: { cod: 40607, fator: 1 },
+      chaves: ['espelho', 'acabamento', 'chuveiro automático', 'forro', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Canopla Cromada para Sprinkler 1/2', 4.00, '', '/produtos/canopla-cromada-para-sprinkler-1-2/'],
+      ] },
+    { id: 'gaveta-bruto-1', novo: true, nome: 'Registro de gaveta bruto 1"', cat: 'Incêndio', sinapi: { cod: 6019, fator: 1 },
+      chaves: ['válvula de gaveta', 'registro bruto', 'dn 25', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Válvula Gaveta 1" PN16 Registro Bruto', 51.00, '', '/produtos/valvula-gaveta-1-pn16-registro-bruto-segurimax/'],
+      ] },
+    { id: 'gaveta-bruto-2', novo: true, nome: 'Registro de gaveta bruto 2"', cat: 'Incêndio', sinapi: { cod: 6028, fator: 1 },
+      chaves: ['válvula de gaveta', 'registro bruto', 'dn 50', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Válvula Gaveta 2" PN16 Registro Bruto', 165.00, '', '/produtos/valvula-gaveta-2-pn16-registro-bruto-segurimax/'],
+      ] },
+    { id: 'gaveta-bruto-212', novo: true, nome: 'Registro de gaveta bruto 2.1/2"', cat: 'Incêndio', sinapi: { cod: 6011, fator: 1 },
+      chaves: ['válvula de gaveta', 'registro bruto', 'dn 65', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Válvula Gaveta 2.1/2" Registro Bruto', 299.00, '', '/produtos/valvula-gaveta-2-1-2-registro-bruto-segurimax/'],
+      ] },
+    { id: 'gaveta-bruto-4', novo: true, nome: 'Registro de gaveta bruto 4"', cat: 'Incêndio', sinapi: { cod: 6027, fator: 1 },
+      chaves: ['válvula de gaveta', 'registro bruto', 'dn 100', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Válvula Gaveta 4" PN16 Registro Bruto', 798.00, '', '/produtos/valvula-gaveta-4-pn16-registro-bruto-segurimax/'],
+      ] },
+    { id: 'galv-cotovelo-212', novo: true, nome: 'Cotovelo 90° galvanizado 2.1/2", rosca BSP', cat: 'Incêndio', sinapi: { cod: 3470, fator: 1 },
+      chaves: ['joelho', 'ferro maleável', 'conexão galvanizada', 'hidrante', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Cotovelo - Joelho 90 Galvanizado Rosca 11 BSP Mech', 62.00, 'opção 2.1/2"', '/produtos/cotovelo-joelho-90-galvanizado-rosca-11-bsp-mech/'],
+      ] },
+    { id: 'galv-te-212', novo: true, nome: 'Tê galvanizado 2.1/2", rosca BSP', cat: 'Incêndio', sinapi: { cod: 6299, fator: 1 },
+      chaves: ['ferro maleável', 'conexão galvanizada', 'derivação', 'hidrante', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Tee Galvanizado 90º com Rosca BSP 11 Fios Fêmea', 94.00, 'opção 2.1/2"', '/produtos/tee-galvanizado-90-com-rosca-bsp-11-fios-femea-1n5ty/'],
+      ] },
+    { id: 'galv-luva-212', novo: true, nome: 'Luva galvanizada 2.1/2", rosca BSP', cat: 'Incêndio', sinapi: { cod: 3913, fator: 1 },
+      chaves: ['ferro maleável', 'conexão galvanizada', 'emenda', 'hidrante', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Luva Galvanizada com Rosca BSP', 44.00, 'opção 2.1/2"', '/produtos/luva-galvanizada-com-rosca-bsp-z80ht/'],
+      ] },
+    { id: 'galv-uniao-212', novo: true, nome: 'União galvanizada 2.1/2" com assento plano, rosca BSP', cat: 'Incêndio', sinapi: { cod: 9889, fator: 1 },
+      chaves: ['ferro maleável', 'conexão galvanizada', 'desmontagem', 'hidrante', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'União Galvanizada com Assento Plano Galvanizado', 121.00, 'opção 2.1/2"', '/produtos/uniao-galvanizada-com-assento-plano-galvanizado1/'],
+      ] },
+    { id: 'galv-tampao-212', novo: true, nome: 'Tampão (cap) galvanizado 2.1/2", rosca BSP', cat: 'Incêndio', sinapi: { cod: 1169, fator: 1 },
+      chaves: ['cap', 'bujão', 'ferro maleável', 'conexão galvanizada', 'incêndio', 'fadef'],
+      ofertas: [
+        ['fadef', 'Tampão Galvanizado', 41.00, 'opção 2.1/2"', '/produtos/tampao-galvanizado/'],
       ] },
   ],
 };

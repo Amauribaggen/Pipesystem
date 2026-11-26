@@ -78,6 +78,8 @@ const walk = s => {
   if (s.by) Object.values(s.by).forEach(walk);
 };
 regras.forEach(([, spec]) => walk(spec));
+// insumos do Comparativo de Preços (site/precos.js: sinapi: { cod: 1234, ... })
+for (const m of readFileSync(join(root, 'site', 'precos.js'), 'utf8').matchAll(/sinapi:\s*\{\s*cod:\s*(\d+)/g)) codes.add(m[1]);
 
 const ins = {};
 for (const r of rows.slice(head + 1)) {
