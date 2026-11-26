@@ -105,6 +105,22 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
 const pages = generate(D, out);
 // Seções grandes da página inicial em páginas próprias (/materiais, /dimensionamento, /bim-cad, /guias-praticos)
 for (const url of separar(out, D, src)) pages.push({ url, images: [] });
+// Comparativo de Preços com endereço próprio para compartilhar: a página de Guias práticos aberta na aba Preços
+{
+  const T = 'Comparativo de Preços: e-commerce nacional x SINAPI | PipeSystem';
+  const d = 'Conexões, tubos, registros e itens de incêndio: preços de lojas on-line do Brasil lado a lado com o insumo SINAPI equivalente, do menor para o maior.';
+  const url = BASE + '/comparativo-de-precos';
+  const h = readFileSync(join(out, 'guias-praticos.html'), 'utf8')
+    .replace(/<title>[^<]*<\/title>/, `<title>${T}</title>`)
+    .replace(/(<meta name="description" content=")[^"]*"/, `$1${d}"`)
+    .replace(/(<link rel="canonical" href=")[^"]*"/, `$1${url}"`)
+    .replace(/(<meta property="og:url" content=")[^"]*"/, `$1${url}"`)
+    .replace(/(<meta (?:property="og|name="twitter):title" content=")[^"]*"/g, `$1${T}"`)
+    .replace(/(<meta (?:property="og|name="twitter):description" content=")[^"]*"/g, `$1${d}"`)
+    .replace('<body data-pagina="guias">', '<body data-pagina="guias" data-aba="precos">');
+  writeFileSync(join(out, 'comparativo-de-precos.html'), h);
+  pages.push({ url: '/comparativo-de-precos', images: [] });
+}
 const fotos = [...new Set([
   ...D.PRODUCTS.flatMap(p => (p.fotos || []).map(f => f.src)),
   ...Object.values(D.SYSTEM_PHOTOS).flatMap(a => a.map(f => f.src)),

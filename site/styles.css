@@ -2156,6 +2156,10 @@ a.gl:hover { color: var(--teal-d); }
 
 /* Comparativo de Preços */
 .preco__titulo { color: #fff; font-size: 1.3rem; margin: 0 0 6px; }
+.preco__topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 14px; margin-bottom: 6px; }
+.preco__topo .preco__titulo { margin: 0; }
+.preco__share { font: inherit; font-size: .85rem; font-weight: 600; padding: 7px 14px; border-radius: 999px; cursor: pointer; color: #fff; background: transparent; border: 1px solid rgba(255,255,255,.4); }
+.preco__share::before { content: '🔗 '; }
 .preco__filtros { grid-template-columns: 1fr auto; align-items: center; }
 .preco__uf { display: flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 600; color: var(--navy); white-space: nowrap; }
 .preco__uf select { font: inherit; padding: 9px 10px; border: 1.5px solid var(--box-line); border-radius: 10px; background: #fff; }

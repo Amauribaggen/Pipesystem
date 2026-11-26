@@ -939,6 +939,19 @@ const CHECKS = [
   };
   document.addEventListener('click', e => { const a = e.target.closest('a[href^="#"]'); if (a) reveal(a.getAttribute('href').slice(1)); }, true);
   if (location.hash) reveal(location.hash.slice(1));
+  else if (document.body.dataset.aba) {   // endereço próprio de uma aba (ex.: /comparativo-de-precos): abre a aba e rola até ela
+    const id = 'gp-' + document.body.dataset.aba;
+    reveal(id);
+    const rola = () => document.getElementById(id)?.scrollIntoView({ block: 'start' });
+    if (document.readyState === 'complete') rola(); else addEventListener('load', rola, { once: true });
+  }
+  // "Compartilhar link": menu de compartilhar do aparelho ou, no computador, copia o endereço
+  document.querySelectorAll('[data-share-url]').forEach(b => b.addEventListener('click', async () => {
+    const url = b.dataset.shareUrl, rot = b.textContent;
+    if (navigator.share) { try { await navigator.share({ title: b.dataset.shareTitle, url }); } catch {} return; }
+    try { await navigator.clipboard.writeText(url); b.textContent = 'Link copiado ✓'; } catch { prompt('Copie o link:', url); }
+    setTimeout(() => { b.textContent = rot; }, 2500);
+  }));
   window.addEventListener('hashchange', () => { const id = location.hash.slice(1); reveal(id); if (/^detalhe-/.test(id)) document.getElementById(id)?.scrollIntoView(); });
 
   // vídeo só carrega no clique (youtube-nocookie, sem cookies até o play)
