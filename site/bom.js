@@ -1529,7 +1529,9 @@
     const lastR = r - 1;
     r++;
     row(r++, [['A', 'Subtotais por grupo', 5], ['B', '', 5], ['C', '', 5], ['D', '', 5], ['E', '', 5], ['F', '', 5], ['G', '', 5]]);
-    for (const g of [...new Set(data.rows.map(x => x.group))])
+    // Subtotais do maior para o menor valor (pedido do usuário: custos por obra sempre em ordem decrescente de percentual)
+    const valGrupo = g => sin ? data.rows.filter(x => x.group === g).reduce((s, x) => { const p = sin.prices.get(x); return s + (p ? p.p * x.qty : 0); }, 0) : 0;
+    for (const g of [...new Set(data.rows.map(x => x.group))].sort((a, b) => valGrupo(b) - valGrupo(a)))
       row(r++, [['B', g], ['F', { f: `SUMIF($A$${first}:$A$${lastR},"${g.replace(/"/g, '""')}",$F$${first}:$F$${lastR})` }, 4]]);
     r++;
     const rMat = r;
@@ -1672,7 +1674,7 @@
       g.n++; groups.set(it.group, g);
     }
     out.innerHTML = `<table class="table lmat__sintab"><thead><tr><th>Grupo</th><th class="num">Valor (R$)</th><th class="num">%</th></tr></thead><tbody>` +
-      [...groups].map(([g, x]) => `<tr><td>${esc(g)}${x.sem ? ` <small class="sinref" tabindex="0">(${x.sem} sem referência)${dica(x.lista)}</small>` : ''}</td><td class="num">${brl(x.v)}</td><td class="num">${total ? num(x.v / total * 100, 1) : '0'}%</td></tr>`).join('') +
+      [...groups].sort((a, b) => b[1].v - a[1].v).map(([g, x]) => `<tr><td>${esc(g)}${x.sem ? ` <small class="sinref" tabindex="0">(${x.sem} sem referência)${dica(x.lista)}</small>` : ''}</td><td class="num">${brl(x.v)}</td><td class="num">${total ? num(x.v / total * 100, 1) : '0'}%</td></tr>`).join('') +
       `</tbody><tfoot><tr><th>Total de material — ${esc(UF_NOMES[uf])}</th><th class="num">${brl(total)}</th><th class="num">${mo.custo ? num(total / (total + mo.custo) * 100, 1) : '100'}%</th></tr>` +
       (mo.custo ? `<tr class="lmat__mosub"><th>Total de mão de obra (SINAPI)</th><th class="num">${brl(mo.custo)}</th><th class="num">${num(mo.custo / (total + mo.custo) * 100, 1)}%</th></tr><tr class="lmat__geral"><th>TOTAL GERAL</th><th class="num">${brl(total + mo.custo)}</th><th class="num">100%</th></tr>` : '') +
       `</tfoot></table>` +

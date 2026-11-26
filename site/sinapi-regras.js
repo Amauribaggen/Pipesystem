@@ -86,6 +86,7 @@ const SINAPI_REGRAS = (() => {
     [/^Conexão PEX de crimpar: joelhos/, { c: ['39300', '39302', '39308', '39310'], nota: 'média de joelhos e luvas de 16 e 25 mm' }],
     [/^Conexão PEX de crimpar: terminal/, '39304'],
     [/^Tubo PEX 25 mm/, '38826'], [/^Tubo PEX 16 mm/, '38787'],
+    [/^Tubo PE-RT 20 mm/, { c: '38825', nota: 'aproximação: tubo PEX monocamada 20 mm (o SINAPI não tem PE-RT)' }],
     [/^Cuba de copa/, '1744'], [/^Lavatório ou bancada/, { c: '20269', nota: 'só a cuba; bancada à parte' }],
     [/^Tanque de limpeza/, '20271'],
     [/^Mictório com válvula/, { s: ['10432', '21112'], nota: 'mictório de louça e válvula de fechamento automático' }],
@@ -100,6 +101,7 @@ const SINAPI_REGRAS = (() => {
     [/^Tubo de aço SCH 10 ranhurado 6"/, { c: '7695', nota: 'referência aproximada: tubo galvanizado 6" classe média; o SINAPI não tem insumo de tubo SCH 10' }],
     [/^Tubo de aço galvanizado leve ranhurado 6"/, { c: '7695', nota: 'tubo galvanizado 6" classe média; sem classe leve nesta bitola' }],
     // Reservação e recalque
+    [/^Pressurizador com 2 bombas/, web(10778, '2 bombas pressurizadoras com inversor Komeco Smartpress 5/7 (3 cv), R$ 5.389,00 cada (Extra)', 'https://www.extra.com.br/bomba-inversora-pressurizadora-de-agua-smartpress-57-3cv-komeco/p/1576679499')],
     [/^Reservatório (inferior|superior)|^Cisterna de água de chuva/, { c: '43982', f: 1 / 20, nota: 'reservatório em fibra de vidro 20.000 L ÷ 20 m³' }],
     [/^Caixa d'água de polietileno ([\d.]+) L/, { ...map(caixaPE, k => k), g: 1 }],
     [/^Tubo de aço galvanizado ([\d /]+)"/, { ...map(galv), g: 1 }],
@@ -160,6 +162,14 @@ const SINAPI_REGRAS = (() => {
     [/^Abrigo de medidores de gás/, web(427.5, 'Mercado Livre: abrigo para medidor de gás 50 × 50 × 30', 'https://lista.mercadolivre.com.br/abrigo-de-gas-com-portao')],
     [/^Abrigo de entrada e regulador geral/, { zero: 'fornecido pela concessionária' }],
     [/^Central de GLP/, { zero: 'dimensionada e fornecida pela distribuidora de GLP' }],
+    // Águas pluviais de pátio e docas (insumos SINAPI combinados; conferir a classe de carga das grelhas e tampões no projeto)
+    [/^Reservatório de detenção/, { c: '43982', f: 1 / 20, nota: 'reservatório em fibra de vidro 20.000 L ÷ 20 m³ (em concreto, cotar)' }],
+    [/^Canaleta de drenagem com grelha/, { s: ['10541', '11245'], nota: 'meia-cana de concreto Ø 30 cm + grelha de ferro fundido 300 × 1000 mm, 12,5 t, por metro; para caminhões, grelha classe D400' }],
+    [/^Boca de lobo/, { s: ['43436', '11245'], nota: 'caixa de concreto pré-moldada 60 × 60 × 50 cm + grelha de ferro fundido 12,5 t' }],
+    [/^Caixa de passagem pluvial 80/, { s: ['43437', '11301'], nota: 'caixa de concreto pré-moldada 80 × 80 × 50 cm + tampão de ferro fundido 600 mm classe B125' }],
+    [/^Poço de visita/, { s: ['43438', '43438', '43438', '21090'], nota: '3 módulos de caixa de concreto pré-moldada 1,00 × 1,00 × 0,50 m (1,5 m de altura) + tampão de ferro fundido 600 mm classe D400' }],
+    [/^Ralo com grelha no poço da doca/, { s: ['43435', '11236'], nota: 'caixa de concreto pré-moldada 40 × 40 × 40 cm + grelha de ferro fundido 200 × 1000 mm' }],
+    [/^Bocal de calha/, { c: '12614', nota: 'aproximação: bocal de PVC com saída de 75 a 120 mm (o SINAPI não tem o de 150 mm)' }],
     // Esgoto e pluviais
     [/^Tubo PVC para águas pluviais (\d+) mm/, { ...map(pluvial, k => String(k)), g: 1 }],
     [/^Tubo PVC esgoto (?:série normal )?(\d+) mm/, { ...map(esgoto, k => String(k)), g: 1 }],
@@ -175,6 +185,11 @@ const SINAPI_REGRAS = (() => {
     [/^Caixa de (inspeção|areia) 60 x 60/, { c: '41629', fb: web(488.26, 'SINAPI 05/2026, média nacional', orc + '41629/') }],
     [/^Ralo hemisférico/, web(52.12, 'média de Casa do Ralo (R$ 44,90) e Zoom (R$ 59,33)', 'https://www.mercadolivre.com.br/loja/casa-do-ralo')],
     [/^Calha/, '1118'],
+    // Incêndio e sprinklers: equipamentos de maior valor (preço de mercado pesquisado em 26/11/2026)
+    [/^Casa de bombas de incêndio/, web(294046.67, 'Ebara (loja oficial): conjunto de incêndio a diesel GS-150/500 257 cv, NBR 16704, R$ 210.000,00 + bomba normalizada GSD-65/250 75 cv motor WEG, R$ 80.657,60; bomba jóquei 1/2 cv, ORSE 13777, R$ 3.389,07. Sem painéis, tanque de diesel, acessórios e start-up: confirme a potência com o cálculo', 'https://loja.ebara.com.br/products/conj-bomba-gs-150-500-mancal-4p-rt-447-selo-acopl-mt-perkins')],
+    [/^Válvula de alívio e medidor de vazão/, web(18210, 'Distribuidora Fadef: válvula de alívio de pressão ranhurada 3" (UL/FM), R$ 4.980,00 + medidor de vazão venturi ranhurado 6" FM 250 a 1.000 gpm, R$ 13.230,00', 'https://distribuidorafadef.com.br/produtos/valvula-de-alivio-de-pressao/')],
+    [/^Bomba principal e bomba jóquei de sprinklers/, web(84046.67, 'Ebara (loja oficial): bomba normalizada GSD-65/250 75 cv motor WEG, R$ 80.657,60 + bomba jóquei 1/2 cv, ORSE 13777, R$ 3.389,07; sem painel: confirme a potência com o cálculo', 'https://loja.ebara.com.br/products/bomba-centrifuga-normalizada-gsd-65-250-75-0-cv-orotor-218mm-motor-trifasico-weg-ip55-ir3-2p-4v-60hz-selo-mec-1-1-2-t01-nbr-carbono-inox-304')],
+    [/^Reserva técnica de incêndio/, { c: '43982', f: 1 / 20, nota: 'reservatório em fibra de vidro 20.000 L ÷ 20 m³ (em aço ou concreto, cotar)' }],
     // Incêndio e sprinklers
     [/^Válvula angular 2 1\/2"/, '10904'], [/^Abrigo para mangueira/, '10521'], [/^Mangueira de incêndio/, '21029'],
     [/^Esguicho regulável/, '37554'], [/^Chave de mangueira storz/, '20971'],
