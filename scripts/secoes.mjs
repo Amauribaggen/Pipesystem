@@ -20,7 +20,7 @@ export const PAGINAS = [
     resumo: 'Como funcionam água fria e quente, esgoto, incêndio, gás, vapor, ar-condicionado e outras áreas: esquema, componentes, cuidados e normas.',
     n: D => [D.SYSTEMS.length, 'sistemas explicados'],
     links: D => ['sis-incendio', 'sis-agua-quente', 'sis-split-vrf'].map(id => D.SYSTEMS.find(s => s.id === id)).filter(Boolean).map(s => [s.name, '/sistemas/' + s.id.slice(4), s.id]) },
-  { id: 'materiais', path: '/materiais', nome: 'Catálogo de materiais', tag: 'Materiais', titulo: 'Catálogo de produtos e materiais hidráulicos | PipeSystem',
+  { id: 'materiais', path: '/materiais', nome: 'Catálogo de produtos', tag: 'Produtos', titulo: 'Catálogo de produtos e materiais hidráulicos | PipeSystem',
     resumo: 'Tubos, conexões, válvulas, bombas, acessórios e ferramentas com fotos, dados técnicos, como escolher, normas e fabricantes.',
     n: D => [D.CATALOG.length, 'fichas técnicas'],
     links: [['Tubos', '/materiais?busca=tubos'], ['Conexões', '/materiais?busca=conexoes'], ['Válvulas', '/materiais?busca=valvulas'], ['Ferramentas', '/materiais?cat=Ferramentas']] },
