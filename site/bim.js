@@ -427,6 +427,8 @@ const BIM_AJUDA = [
     chaves: 'formato formatos arquivo rfa rvt revit ifc dwg dxf autocad step stp iges igs parasolid x_t x_b sketchup skp plugin dynamo pdf visualizador gratuito bim cad' },
   { id: 'bimGuia', t: 'Como abrir e usar os arquivos BIM/CAD no Revit e no AutoCAD',
     chaves: 'como abrir importar carregar família rfa revit autocad inserir bloco xref anexar ifc vincular qibuilder step parasolid edrawings autodesk viewer dwg trueview bimvision freecad plugin instalar preferências de roteamento bim cad' },
+  { id: 'bimPedido', t: 'Pedir modelo BIM/CAD ao fabricante pela PipeSystem',
+    chaves: 'pedir modelo pedido de modelo bim solicitar família revit arquivo dwg ifc step não encontrei modelo fabricante sem custo bim cad' },
 ];
 // Fichas sem modelo 3D útil (ferramentas e consumíveis): sem quadro BIM
 const BIM_SEM_MODELO = /^mat-(ferr-|tintas|vedantes|selante|soldas|rosqueadeiras|teste|bloqueadores)/;
@@ -457,18 +459,27 @@ function bimBoxHTML(matId, h = 'h4') {
   const libs = BIM_LIBS.filter(b => bimMats(b).includes(matId));
   const cls = h === 'h4' ? '' : ' class="page__h"';
   const guia = '<a href="/bim-cad#bimFormatos">Qual formato usar</a> · <a href="/bim-cad#bimGuia">Como abrir no Revit ou AutoCAD</a>';
+  // pedido do modelo ao fabricante (formulário de contato, assunto próprio): na ficha da página inicial abre o formulário
+  // ali mesmo; nas páginas /materiais/... leva à página inicial já com assunto e mensagem preenchidos
+  const nomeMat = (typeof CATALOG !== 'undefined' && CATALOG.find(m => m.id === matId) || {}).name || 'produto';
+  const pedMsg = `Pedido de modelo BIM/CAD de ${nomeMat}: (informe modelo ou linha, diâmetros, formato — Revit, IFC, DWG ou STEP — e fabricante, se tiver preferência) `;
+  const pedido = h === 'h4'
+    ? `<a href="#contato" class="btn btn--ghost bimbox__pedir" data-subject="Pedido de modelo BIM/CAD" data-question="${pedMsg}">Pedir modelo ao fabricante</a>`
+    : `<a href="/?assunto=${encodeURIComponent('Pedido de modelo BIM/CAD')}&msg=${encodeURIComponent(pedMsg)}#contato" class="btn btn--ghost bimbox__pedir">Pedir modelo ao fabricante</a>`;
   if (!libs.length) {
     if (BIM_SEM_MODELO.test(matId)) return '';
     // sem biblioteca de fabricante cadastrada: plataformas com objetos de vários fabricantes
     return `<${h}${cls}>Modelos BIM/CAD</${h}>
     <ul class="bimbox">${BIM_PLATFORMS.map(p => `<li><a href="${p.url}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${p.nome}</span><span class="fabs__site">${p.tag}</span><span class="bimbox__dl">Procurar ↗</span></a></li>`).join('')}</ul>
-    <p class="fabs__note">Ainda não há biblioteca de fabricante cadastrada para este produto. Procure o modelo nessas plataformas ou peça o arquivo ao fabricante. ${guia}.</p>`;
+    <p class="fabs__note">Ainda não há biblioteca de fabricante cadastrada para este produto. Procure o modelo nessas plataformas ou peça pela PipeSystem: repassamos o pedido aos fabricantes, sem custo. ${guia}.</p>
+    ${pedido}`;
   }
   return `<${h}${cls}>Arquivos BIM/CAD</${h}>
     <ul class="bimbox">${libs.map(b => `<li><a href="${b.links[0][1]}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${b.nome}</span>${BIM_LOGOS[b.nome] ? `<img class="fabs__logo${BIM_LOGOS_CLARAS.has(b.nome) ? ' fabs__logo--clara' : ''}" src="/img/logos/${BIM_LOGOS[b.nome]}" alt="" loading="lazy">` : ''}${bimFmts(b.fmts)}<span class="bimbox__dl">${b.semArquivos ? 'Sem arquivos hoje: peça ao fabricante ↗' : 'Baixar ↗'}</span></a></li>`).join('')}</ul>
-    <p class="fabs__note">Arquivos oficiais do fabricante (Revit, IFC, DWG ou plugin). Veja todas as bibliotecas na seção <a href="/bim-cad">BIM/CAD</a>. ${guia}.</p>`;
+    <p class="fabs__note">Arquivos oficiais do fabricante (Revit, IFC, DWG ou plugin). Veja todas as bibliotecas na seção <a href="/bim-cad">BIM/CAD</a>. ${guia}. Não achou o modelo? Peça pela PipeSystem, sem custo.</p>
+    ${pedido}`;
 }
 
 // Seção BIM/CAD da página inicial: filtros por formato, aplicação, origem e busca

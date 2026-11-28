@@ -78,11 +78,16 @@ ${attachments.length ? `<p style="font-family:Arial,sans-serif;font-size:14px">�
 
   // Pedido de cotação: confirmação automática ao comprador (texto fixo, sem repetir o que foi digitado,
   // para o formulário não servir de meio para mandar mensagens a terceiros). Se falhar, o pedido já chegou.
-  if (tipo === 'contato' && /^cota[cç][aã]o/i.test(limpa(dados.get('assunto'), 60))) {
+  // Pedido de modelo BIM/CAD: mesma ideia, com o texto próprio do repasse aos fabricantes.
+  const asn = limpa(dados.get('assunto'), 60);
+  const conf = tipo !== 'contato' ? null
+    : /^cota[cç][aã]o/i.test(asn) ? ['Recebemos seu pedido de cotação | PipeSystem', CONFIRMA_TXT, CONFIRMA_HTML]
+    : /^pedido de modelo bim/i.test(asn) ? ['Recebemos seu pedido de modelo BIM/CAD | PipeSystem', CONFIRMA_BIM_TXT, CONFIRMA_BIM_HTML] : null;
+  if (conf) {
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${chave}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: 'PIPESYSTEM <site@pipesystem.com.br>', to: [email], reply_to: DESTINO, subject: 'Recebemos seu pedido de cotação | PipeSystem', text: CONFIRMA_TXT, html: CONFIRMA_HTML }),
+      body: JSON.stringify({ from: 'PIPESYSTEM <site@pipesystem.com.br>', to: [email], reply_to: DESTINO, subject: conf[0], text: conf[1], html: conf[2] }),
     }).then(x => { if (!x.ok) console.error('Confirmação', x.status); }).catch(e => console.error('Confirmação', e));
   }
   return json(200, { ok: true });
@@ -109,3 +114,25 @@ const CONFIRMA_HTML = `<div style="max-width:600px;font-family:Arial,Helvetica,s
 <p>Se precisar completar a lista (diâmetros, quantidades, normas ou local de entrega), basta responder este e-mail.</p>
 <p>O serviço é gratuito para quem pede a cotação.</p>
 <p>Atenciosamente,<br>PIPESYSTEM – Portal de hidráulica e condução de fluidos<br><a href="https://www.pipesystem.com.br">www.pipesystem.com.br</a></p></div>`;
+
+const CONFIRMA_BIM_TXT = `Olá,
+
+Recebemos seu pedido de modelo BIM/CAD pelo site da PipeSystem.
+
+Em até 1 dia útil ele será repassado aos fabricantes do produto, e a resposta chega diretamente para você, por e-mail.
+
+Se precisar completar o pedido (modelo, diâmetros, formato ou fabricante preferido), basta responder este e-mail.
+
+O serviço é gratuito.
+
+Atenciosamente,
+PIPESYSTEM – Portal de hidráulica e condução de fluidos
+www.pipesystem.com.br`;
+
+const CONFIRMA_BIM_HTML = `<div style="max-width:600px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#1f2933">
+<p>Olá,</p>
+<p>Recebemos seu <strong>pedido de modelo BIM/CAD</strong> pelo site da PipeSystem.</p>
+<p>Em até <strong>1 dia útil</strong> ele será repassado aos fabricantes do produto, e a resposta chega diretamente para você, por e-mail.</p>
+<p>Se precisar completar o pedido (modelo, diâmetros, formato ou fabricante preferido), basta responder este e-mail.</p>
+<p>O serviço é gratuito.</p>
+<p>Atenciosamente,<br>PIPESYSTEM – Portal de hidráulica e condução de fluidos<br><a href="https://www.pipesystem.com.br/bim-cad">www.pipesystem.com.br</a></p></div>`;
