@@ -164,9 +164,9 @@ const BIM_LIBS = [
     fmts: ['Revit', 'IFC', 'DWG'], acesso: 'Gratuito, com cadastro', varia: true,
     mats: ['mat-suportes', 'mat-corta-fogo'], links: [['Hilti', 'https://www.bimobject.com/pt-br/hilti', 'BIMobject']] },
   { nome: 'Genebre', orig: 'I', cat: ['Água fria e quente', 'Industrial'],
-    desc: 'Válvulas de esfera, borboleta e retenção, e válvulas com atuador.',
-    fmts: ['Revit', 'IFC', 'DWG'], acesso: 'Gratuito, com cadastro', varia: true,
-    mats: ['mat-esfera-monobloco', 'mat-esfera-tripartida', 'mat-borboleta', 'mat-retencao'], links: [['Genebre', 'https://www.bimobject.com/pt-br/genebre', 'BIMobject']] },
+    desc: 'Válvulas de esfera, borboleta e retenção, e válvulas com atuador. Aviso: em 28/11/2026 a página da marca no BIMobject não tinha objetos para baixar, e os sites da Genebre não têm biblioteca BIM. Peça os arquivos ao fabricante, pelo site genebre.com.br.',
+    fmts: ['Revit', 'IFC', 'DWG'], acesso: 'Sem objetos para baixar em 28/11/2026: peça ao fabricante', varia: true, semArquivos: '28/11/2026',
+    mats: ['mat-esfera-monobloco', 'mat-esfera-tripartida', 'mat-borboleta', 'mat-retencao'], links: [['Genebre', 'https://www.bimobject.com/pt-br/genebre', 'BIMobject'], ['Pedir arquivos à Genebre', 'https://www.genebre.com.br', 'site oficial']] },
   { nome: 'Plasson', orig: 'I', cat: ['Adução e saneamento', 'Gás'],
     desc: 'Conexões de polietileno de eletrofusão e de compressão para água e gás.',
     fmts: ['Revit', 'IFC', 'DWG'], acesso: 'Gratuito, com cadastro', varia: true,
@@ -444,7 +444,7 @@ function bimBoxHTML(matId, h = 'h4') {
   }
   return `<${h}${cls}>Arquivos BIM/CAD</${h}>
     <ul class="bimbox">${libs.map(b => `<li><a href="${b.links[0][1]}" target="_blank" rel="noopener noreferrer">
-      <span class="fabs__name notranslate" translate="no">${b.nome}</span>${BIM_LOGOS[b.nome] ? `<img class="fabs__logo${BIM_LOGOS_CLARAS.has(b.nome) ? ' fabs__logo--clara' : ''}" src="/img/logos/${BIM_LOGOS[b.nome]}" alt="" loading="lazy">` : ''}${bimFmts(b.fmts)}<span class="bimbox__dl">Baixar ↗</span></a></li>`).join('')}</ul>
+      <span class="fabs__name notranslate" translate="no">${b.nome}</span>${BIM_LOGOS[b.nome] ? `<img class="fabs__logo${BIM_LOGOS_CLARAS.has(b.nome) ? ' fabs__logo--clara' : ''}" src="/img/logos/${BIM_LOGOS[b.nome]}" alt="" loading="lazy">` : ''}${bimFmts(b.fmts)}<span class="bimbox__dl">${b.semArquivos ? 'Sem arquivos hoje: peça ao fabricante ↗' : 'Baixar ↗'}</span></a></li>`).join('')}</ul>
     <p class="fabs__note">Arquivos oficiais do fabricante (Revit, IFC, DWG ou plugin). Veja todas as bibliotecas na seção <a href="/bim-cad">BIM/CAD</a>. ${guia}.</p>`;
 }
 
