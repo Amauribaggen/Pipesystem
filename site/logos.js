@@ -495,6 +495,17 @@ const CATALOGOS_EMPRESA = {
   Multilit: ['Catálogo completo', 'http://multilit.com.br/wp-content/uploads/2025/10/Cat%C3%A1logo-completo-2025_web.pdf', 'PDF'],
   Tuper: ['Downloads', 'https://www.tuper.com.br/downloads/', 'site oficial'],
   'Tubos Apolo': ['Catálogo', 'https://tubosapolo.com.br/catalogo-apolo/', 'site oficial'],
+  // 4ª rodada (28/11/2026)
+  Geberit: ['Downloads', 'https://www.geberit.com/de/downloads', 'em alemão'],
+  Viking: ['Catálogo de produtos', 'https://www.vikinggroupinc.com/products', 'em inglês'],
+  Tyco: ['Catálogos regionais', 'https://www.tyco-fire.com/regional-product-catalogs', 'em inglês'],
+  Reliable: ['Literatura técnica', 'https://www.reliablesprinkler.com/resources/marketing-literature/', 'em inglês'],
+  Rioned: ['Folheto de produtos', 'https://static.rioned.com/assets/documentation/Brochure_Rioned_EN_2026%20Jan26.pdf', 'PDF · em inglês'],
+  Metalplan: ['Manuais', 'https://metalplan.com.br/manuais-e-prontuarios/', 'site oficial'],
+  Schulz: ['Manuais', 'https://www.schulz.com.br/pt_BR/pos-venda#manuais', 'site oficial'],
+  Distak: ['Catálogo', 'https://www.distak.ind.br/files/catalogos.pdf', 'PDF'],
+  Conaut: ['Downloads', 'https://www.conaut.com.br/download', 'site oficial'],
+  Raccortubi: ['Área de downloads', 'https://www.raccortubi.com/area-download/', 'em italiano'],
 };
 CATALOGOS_FAB['mat-pe'] = { 'Corr Plastik': [['Catálogo PEAD liso', 'https://corrplastik.com.br/wp-content/uploads/2026/09/DOC-7.021-REV.-00-Catalogo-Tecnico-PEAD-Liso-Setembro-2026.pdf', 'PDF', 'Catálogo Técnico PEAD Liso da Corr Plastik']] };
 const catFab = (matId, nome) => {
