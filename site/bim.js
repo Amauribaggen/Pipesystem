@@ -429,6 +429,10 @@ const BIM_AJUDA = [
     chaves: 'como abrir importar carregar família rfa revit autocad inserir bloco xref anexar ifc vincular qibuilder step parasolid edrawings autodesk viewer dwg trueview bimvision freecad plugin instalar preferências de roteamento bim cad' },
   { id: 'bimPedido', t: 'Pedir modelo BIM/CAD ao fabricante pela PipeSystem',
     chaves: 'pedir modelo pedido de modelo bim solicitar família revit arquivo dwg ifc step não encontrei modelo fabricante sem custo bim cad' },
+  { id: 'bimParametros', t: 'Parâmetros BIM recomendados por produto: DN, PN, material, norma, fabricante e código SINAPI',
+    chaves: 'parâmetros parametros compartilhados shared parameters dn pn classe pressão material ligação norma fabricante código sinapi orçamento quantitativo família revit tubo conexão válvula bomba bim cad' },
+  { id: 'bimChecklist', t: 'Checklist de entrega do modelo BIM hidráulico',
+    chaves: 'checklist entrega modelo bim revit ifc conferir antes de enviar compatibilização interferências navisworks coordenadas bep plano de execução bim isolamento suportes caimento desconexões bim cad' },
 ];
 // Fichas sem modelo 3D útil (ferramentas e consumíveis): sem quadro BIM
 const BIM_SEM_MODELO = /^mat-(ferr-|tintas|vedantes|selante|soldas|rosqueadeiras|teste|bloqueadores)/;
@@ -458,7 +462,7 @@ function bimMats(b) {
 function bimBoxHTML(matId, h = 'h4') {
   const libs = BIM_LIBS.filter(b => bimMats(b).includes(matId));
   const cls = h === 'h4' ? '' : ' class="page__h"';
-  const guia = '<a href="/bim-cad#bimFormatos">Qual formato usar</a> · <a href="/bim-cad#bimGuia">Como abrir no Revit ou AutoCAD</a>';
+  const guia = '<a href="/bim-cad#bimFormatos">Qual formato usar</a> · <a href="/bim-cad#bimGuia">Como abrir no Revit ou AutoCAD</a> · <a href="/bim-cad#bimParametros">Parâmetros BIM recomendados</a>';
   // pedido do modelo ao fabricante (formulário de contato, assunto próprio): na ficha da página inicial abre o formulário
   // ali mesmo; nas páginas /materiais/... leva à página inicial já com assunto e mensagem preenchidos
   const nomeMat = (typeof CATALOG !== 'undefined' && CATALOG.find(m => m.id === matId) || {}).name || 'produto';

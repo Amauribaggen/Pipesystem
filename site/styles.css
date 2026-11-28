@@ -1631,6 +1631,10 @@ html.pg-collapse .pg-top__nav .btn { margin-top: 8px; text-align: center; }
 .bimguia summary { cursor: pointer; color: var(--navy); font-weight: 700; }
 .bimguia ol { margin: 10px 0 0; padding-left: 1.2em; display: grid; gap: 6px; }
 .bimguia b { color: var(--navy); }
+.bimpar td.bimpar__s { color: var(--teal-d); font-size: 1.05rem; }
+.bimpar td.bimpar__n { color: #9aa8b8; }
+.bimpar__nota { margin-top: 8px; font-size: .85rem; }
+.bimpar__nota a { color: var(--teal-d); }
 /* quadro "Arquivos BIM/CAD" na ficha do material */
 ul.bimbox { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 6px; }
 .bimbox li { border: 1.5px solid var(--box-line); border-radius: 10px; }

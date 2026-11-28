@@ -92,7 +92,7 @@ writeFileSync(join(out, 'img-sizes.js'), 'window.IMG_SIZES=' + JSON.stringify(SI
     rv: lista('MAGAZINES'), ar: lista('ARTICLES'), en: ents, fe: feiras, fb: [...fabs.values()].sort((a, b) => a.n.localeCompare(b.n, 'pt-BR')),
     bim: D.BIM_LIBS.map(({ nome, orig, cat, desc, fmts, acesso, links }) => ({ nome, orig, cat, desc, fmts, acesso, links })),
     // tabela "Qual formato serve para quê" e guia "Como usar os arquivos" da seção BIM/CAD (mesmo HTML do site)
-    bimx: (h => ({ fmt: (h.match(/<table class="bimfmt">[\s\S]*?<\/table>/) || [''])[0],
+    bimx: (h => ({ fmt: (h.match(/<table class="bimfmt">[\s\S]*?<\/table>/) || [''])[0], par: (h.match(/<table class="bimfmt bimpar">[\s\S]*?<\/table>/) || [''])[0],
       guia: [...((h.match(/<div class="bimguia">([\s\S]*?)\n      <\/div>/) ||['', ''])[1].matchAll(/<details[^>]*>[\s\S]*?<\/details>/g))].map(m => m[0]) }))(readFileSync(join(src, 'index.html'), 'utf8')),
     im: impResumoMateriais(D),   // Radar de Importações (resumo por material)
     cp: cpResumoMateriais(D),   // Radar de Compras Públicas (resumo por material)

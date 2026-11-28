@@ -713,6 +713,14 @@ const CHECKS = [
     ['Documentos', ['Projeto como construído (as built) da rede de incêndio', 'Vistoria do Corpo de Bombeiros (AVCB ou CLCB)', 'Plano de inspeção e manutenção (NBR 12779 para mangueiras)']],
   ]],
   ['entrega', 'Entrega da obra', 'Para fechar a obra com tudo testado e documentado, como pedem a NBR 15575-6 (desempenho) e a NBR 14037 (manual de uso e manutenção).', CHECK_ENTREGA],
+  ['entrega-bim', 'Entrega do modelo BIM hidráulico', 'Antes de enviar o modelo (Revit ou IFC) para a obra, o cliente ou a compatibilização: confira arquivo, sistemas, componentes, parâmetros e documentos.', [
+    ['Arquivo e coordenação', ['Versão do Revit (ou do programa usado) combinada com o cliente e anotada', 'Coordenadas compartilhadas e ponto base iguais aos da arquitetura e da estrutura', 'Níveis e eixos vindos dos modelos de arquitetura e estrutura, sem cópias soltas', 'Modelos vinculados (arquitetura, estrutura, elétrica, climatização) na revisão atual', 'Nomes de arquivos, vistas e pranchas no padrão do cliente ou do Plano de Execução BIM (BEP)', 'Arquivo limpo: famílias e elementos não usados removidos e avisos do programa revisados']],
+    ['Sistemas e tubulações', ['Cada tubo num sistema (água fria, água quente, esgoto, pluvial, incêndio, gás) com cor e abreviação próprias', 'Tipos de tubo com o material e a norma do projeto (ex.: PVC soldável NBR 5648, cobre NBR 13206)', 'Classe de pressão (PN, classe ou SCH) compatível com a pressão de serviço e de ensaio', 'Diâmetros conferidos com o cálculo de vazão, velocidade e perda de carga', 'Caimentos de esgoto e pluvial modelados conforme NBR 8160 e NBR 10844', 'Conexões do fabricante especificado nas preferências de roteamento, sem peças genéricas soltas', 'Nenhum trecho desconectado nem conector aberto (no Revit: Mostrar desconexões)']],
+    ['Válvulas, equipamentos e acessórios', ['Válvulas, registros, bombas e equipamentos com modelo do fabricante ou genérico identificado', 'Espaço de operação e manutenção modelado em registros, bombas e equipamentos', 'Bujões e tampões dos pontos de espera previstos para o ensaio de estanqueidade', 'Isolamento térmico modelado na água quente, no vapor e na água gelada, com a espessura do projeto', 'Suportes e fixações modelados ou com o espaçamento indicado nas pranchas']],
+    ['Compatibilização', ['Detecção de interferências feita (Navisworks, Revit ou visualizador IFC) contra estrutura, arquitetura, elétrica e climatização', 'Furos e passagens em vigas e lajes modelados e aprovados pelo projetista estrutural', 'Shafts, forros e rebaixos com espaço para tubos, isolamento e caimentos', 'Interferências pendentes listadas com responsável e prazo']],
+    ['Parâmetros e quantitativos', ['Parâmetros mínimos preenchidos em tubos, conexões, válvulas e equipamentos: DN, PN, material, ligação, norma, fabricante e código SINAPI', 'Quantitativo de tubos, conexões e válvulas extraído do modelo e conferido por sistema', 'Lista de materiais comparada com o Dimensionamento Inteligente e com os preços de referência']],
+    ['Exportação e documentos', ['IFC exportado na versão do contrato (IFC 2x3 ou IFC 4) e aberto num visualizador para conferir', 'Pranchas, cortes, isométricos e detalhes gerados do modelo, na mesma revisão', 'Memorial descritivo e de cálculo com as normas usadas', 'Registro da revisão: o que mudou desde a última entrega']],
+  ]],
 ];
 
 (() => {
@@ -856,7 +864,9 @@ const CHECKS = [
   $('gpVideos').innerHTML = Object.values(VIDEOS).map(videoCard).join('');
   $('gpPats').innerHTML = PATS.map(patHTML).join('');
   // checklists: um seletor no alto e a lista escolhida (as marcações de cada uma ficam guardadas ao trocar)
-  let ckAtual = CHECKS[0][0];
+  // a checklist pode vir escolhida no endereço (?ck=entrega-bim), como no link da seção BIM/CAD
+  const ckUrl = new URLSearchParams(location.search).get('ck');
+  let ckAtual = CHECKS.some(c => c[0] === ckUrl) ? ckUrl : CHECKS[0][0];
   const ckMarcas = {};
   const desenhaCheck = () => {
     const [id, nome, lead, grupos] = CHECKS.find(c => c[0] === ckAtual), marc = ckMarcas[id] || [];

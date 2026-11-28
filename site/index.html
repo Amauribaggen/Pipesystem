@@ -273,7 +273,7 @@
         <li><a href="/guias-praticos#gp-detalhes"><strong data-count="15" data-prefix="" data-num="detalhes">15</strong><span data-novo>detalhes típicos para baixar</span></a></li>
         <li><a href="/guias-praticos#gp-videos"><strong data-count="25" data-prefix="" data-num="videos">25</strong><span data-novo>vídeos dos fabricantes</span></a></li>
         <li><a href="/guias-praticos#gp-pats"><strong data-count="15" data-prefix="" data-num="patologias">15</strong><span>erros e patologias com solução</span></a></li>
-        <li><a href="/guias-praticos#gp-check"><strong data-count="6" data-prefix="" data-num="checklists">6</strong><span data-novo>checklists de obra e ensaios</span></a></li>
+        <li><a href="/guias-praticos#gp-check"><strong data-count="8" data-prefix="" data-num="checklists">8</strong><span data-novo>checklists de obra e ensaios</span></a></li>
         <li><a href="/comparativo-de-precos"><strong data-count="22" data-prefix="" data-num="precos">22</strong><span data-novo>produtos com preços comparados</span></a></li>
         <li class="sitenums__laranja"><a href="/dimensionamento#lmatTool"><strong data-count="27" data-prefix="">27</strong><span>Estados - Dimensionamento Inteligente</span></a></li>
         <li><a href="/dimensionamento#webtools"><strong data-count="21" data-prefix="" data-num="ferramentas">21</strong><span>ferramentas on-line grátis</span></a></li>
@@ -1682,6 +1682,41 @@
             <li><b>BIMvision</b> e <b>FreeCAD</b>: gratuitos para abrir IFC; o FreeCAD também abre STEP e DXF.</li>
           </ol>
         </details>
+      </div>
+
+      <h3 class="bim__sub" id="bimParametros">Parâmetros BIM recomendados por produto</h3>
+      <p class="bim__lead">Os campos que um bom modelo de tubo, conexão, válvula ou equipamento deve trazer. Preenchidos, eles ligam o modelo à especificação, ao orçamento e à compra. No Revit, crie-os como parâmetros compartilhados, para que apareçam iguais em todas as famílias e nas tabelas de quantitativo.</p>
+      <div class="bimfmt__wrap">
+        <table class="bimfmt bimpar">
+          <thead><tr><th>Parâmetro</th><th>Exemplo</th><th>Tubos</th><th>Conexões</th><th>Válvulas</th><th>Bombas e equipamentos</th><th>Para que serve</th></tr></thead>
+          <tbody>
+            <tr><th>Diâmetro nominal (DN e polegada)</th><td>DN 50 (2")</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Dimensionamento, roteamento e quantitativo</td></tr>
+            <tr><th>Diâmetro externo e espessura (ou SDR, classe, SCH)</th><td>60,3 × 3,91 mm (SCH 40)</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__n">—</td><td class="bimpar__n">—</td><td>Perda de carga, suportes e compatibilização</td></tr>
+            <tr><th>Classe de pressão (PN, classe ANSI)</th><td>PN 16 ou classe 150</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Conferir a pressão de serviço e a de ensaio</td></tr>
+            <tr><th>Material</th><td>PVC, CPVC, PPR, aço-carbono, inox 316</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Especificação, compra e recebimento</td></tr>
+            <tr><th>Tipo de ligação</th><td>Soldável, rosca BSP, ranhurada, flange, termofusão</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Escolher conexões compatíveis</td></tr>
+            <tr><th>Norma do produto</th><td>NBR 5648, ASTM A106, EN 331</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Especificação técnica e recebimento na obra</td></tr>
+            <tr><th>Temperatura máxima de trabalho</th><td>80 °C</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Água quente, vapor e fluidos de processo</td></tr>
+            <tr><th>Sistema</th><td>Água fria, quente, esgoto, pluvial, incêndio, gás</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Cores, filtros e quantitativo por sistema</td></tr>
+            <tr><th>Fabricante e código do catálogo</th><td>Código do produto no catálogo</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Compra, substituição e garantia</td></tr>
+            <tr><th>Código SINAPI</th><td>Insumo ou composição da tabela SINAPI</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Ligar o modelo ao orçamento e aos preços de referência</td></tr>
+            <tr><th>Acionamento</th><td>Alavanca, volante, redutor, atuador elétrico</td><td class="bimpar__n">—</td><td class="bimpar__n">—</td><td class="bimpar__s">●</td><td class="bimpar__n">—</td><td>Espaço de operação e automação</td></tr>
+            <tr><th>Vazão e altura manométrica</th><td>10 m³/h a 40 mca</td><td class="bimpar__n">—</td><td class="bimpar__n">—</td><td class="bimpar__n">—</td><td class="bimpar__s">●</td><td>Conferir o ponto de trabalho da bomba</td></tr>
+            <tr><th>Potência e tensão</th><td>3 cv, 380 V trifásico</td><td class="bimpar__n">—</td><td class="bimpar__n">—</td><td class="bimpar__n">—</td><td class="bimpar__s">●</td><td>Projeto elétrico e quadro de cargas</td></tr>
+            <tr><th>Peso</th><td>kg por peça ou por metro</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Suportes, içamento e transporte</td></tr>
+            <tr><th>Espaço de manutenção</th><td>Volume livre na frente e nas laterais</td><td class="bimpar__n">—</td><td class="bimpar__n">—</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Acesso para operar e trocar peças</td></tr>
+            <tr><th>Link da ficha técnica</th><td>Página do fabricante ou ficha da PipeSystem</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td class="bimpar__s">●</td><td>Consulta rápida na obra e na manutenção</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="bim__lead bimpar__nota">● recomendado · — não se aplica. O código SINAPI liga cada item à <a href="/comparativo-de-precos">referência de preços</a> e ao <a href="/dimensionamento#lmatTool">Dimensionamento Inteligente</a>; a norma e o material de cada produto estão na ficha do <a href="/materiais">catálogo de produtos</a>.</p>
+
+      <div class="bim__cta" id="bimChecklist">
+        <div>
+          <h3>Checklist de entrega do modelo BIM</h3>
+          <p>29 itens para conferir antes de enviar o modelo: arquivo e coordenação, sistemas, válvulas e equipamentos, compatibilização, parâmetros e documentos. Marque, acompanhe e imprima.</p>
+        </div>
+        <a href="/guias-praticos?ck=entrega-bim#gp-check" class="btn">Abrir o checklist</a>
       </div>
 
       <h3 class="bim__sub">Dicas para usar objetos BIM de fabricantes</h3>
