@@ -2568,3 +2568,6 @@ html:not(.pg-collapse) .pg-top__nav > .pg-sec { display: none; }
 @media (max-width: 600px) { .luto { font-size: .8rem; padding: .5rem .75rem; text-align: left; } }
 .avatar--memoria { background: #6b7280 !important; color: #fff !important; }
 .person__memoria { font-weight: 400; font-size: .85em; opacity: .8; }
+
+/* Todas as tabelas do site com números e palavras centralizados nas colunas (pedido de 28/11/2026). Fica no fim e com !important para valer sobre as regras de cada tabela. */
+table th, table td { text-align: center !important; }
