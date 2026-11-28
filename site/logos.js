@@ -1,6 +1,8 @@
 // ===== Logomarcas das empresas citadas nas fichas (arquivos em img/logos): site da empresa -> arquivo =====
 // Gerado a partir da revisão de 01/11/2026. A aba de logos em estudos/avisos-fotos-fabricantes.xlsx lista a origem de cada uma.
 const LOGOS_FAB = {
+  'fluidfeeder.com.br': 'fluid-feeder.png',
+  'denora.com': 'de-nora.svg',
   'ari-armaturen.com': 'ari-armaturen-logo.svg',
   'permution.com.br': 'permution.png',
   'cherneind.com': 'cherne.svg',
