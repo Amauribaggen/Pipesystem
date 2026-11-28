@@ -835,7 +835,7 @@
   const htmlMat = m => `<details><summary>${m.n}<small>${m.c}</small></summary><p>${m.d}</p>${m.a ? `<p>Aplicações: ${m.a}</p>` : ''}${m.f.length ? `<p>Fabricantes: ${m.f.join(', ')}</p>` : ''}<p><a href="${'/materiais/' + m.id}">Ver ficha completa no portal</a></p><button type="button" class="mini" data-mat="${esc(m.n)}">Adicionar à lista</button></details>`;
   DADOS.then(d => {
     SIN = d.s;
-    d.m.forEach(x => { x.b = sem(x.n + ' ' + x.c + ' ' + x.a + ' ' + x.d + ' ' + x.f.join(' ')); });
+    d.m.forEach(x => { x.b = sem(x.n + ' ' + x.c + ' ' + x.a + ' ' + x.d + ' ' + x.f.join(' ') + ' ' + (x.k || '')); });   // palavras-chave da ficha (chaves) também contam na busca
     const ins = Object.entries(SIN.ins).map(([c, x]) => ({ c, n: x[0], u: x[1], b: sem(x[0] + ' ' + c) }));
     $('uf').innerHTML = SIN.ufs.map(u => `<option>${u}</option>`).join('');
     $('uf').value = ler_('uf', 'SC');
@@ -986,7 +986,7 @@
       ...d.c.map(c => ({ g: 'Checklists', t: c[1], ir: () => { $('ck').value = c[0]; ckDesenha(); abrir('obra'); } })),
       ...d.g.map(x => ({ g: 'Glossário', t: x.t, b: x.en + ' ' + x.def, ir: () => irPara('termos', 'bTermo', x.t) })),
       ...d.n.map(x => ({ g: 'Normas', t: `${x.code}: ${x.title}`, ir: () => irPara('normas', 'bNorma', x.code) })),
-      ...d.m.map(x => ({ g: 'Produtos', t: x.n, b: x.c, ir: () => irPara('materiais', 'bMat', x.n) })),
+      ...d.m.map(x => ({ g: 'Produtos', t: x.n, b: [x.c, ...x.f, x.k || ''].join(' '), ir: () => irPara('materiais', 'bMat', x.n) })),
       ...d.p.map(x => ({ g: 'Erros e soluções', t: x.t, ir: () => irPara('erros', 'bErro', x.t) })),
       ...Object.entries(d.s.ins).map(([c, x]) => ({ g: 'Preços', t: x[0], ir: () => irPara('precos', 'bPreco', x[0]) })),
       ...DETALHES.map(x => ({ g: 'Detalhes típicos', t: x.titulo, b: x.desc, ir: () => irPara('detalhes', 'b_detalhes', x.titulo) })),

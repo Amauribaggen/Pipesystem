@@ -145,7 +145,7 @@ const SYSTEMS = [
     componentes: ['Adutoras em ferro fundido dúctil, PEAD, PVC DEFoFo ou aço', 'Estações elevatórias de água e de esgoto', 'Válvulas de gaveta, borboleta, retenção e ventosas', 'Reservatórios de distribuição', 'Poços de visita e redes coletoras', 'Macro e micromedição'],
     cuidados: ['Proteção contra transientes hidráulicos (golpe de aríete)', 'Controle de perdas e estanqueidade das redes', 'Declividade e profundidade mínimas nas redes de esgoto', 'Materiais aprovados para contato com água potável'],
     normas: ['NBR 12218', 'NBR 12215', 'NBR 9649'],
-    produtos: ['tubos-pvc', 'conexoes-pvc', 'valvulas', 'bombas', 'flanges', 'juntas-vedacao', 'mat-ventosas'],
+    produtos: ['tubos-pvc', 'conexoes-pvc', 'valvulas', 'bombas', 'flanges', 'juntas-vedacao', 'mat-ventosas', 'mat-cloradores'],
     svg: `<path class="p2" d="M8 124q10-6 20 0t20 0t20 0"/><text x="38" y="112">Rio</text>
       <path class="p" d="M30 120V58H60M116 58H130V48H148M206 48H240V100H306"/>
       <rect class="b" x="60" y="40" width="56" height="36" rx="4"/><text x="88" y="62">ETA</text>
@@ -187,7 +187,7 @@ const SYSTEMS = [
     componentes: ['Conjuntos motobomba titular e reserva', 'Sucção afogada ou com válvula de pé', 'Recalque com válvula de retenção e registro', 'Tratamento: filtros e abrandadores', 'Manômetros e medidores de vazão', 'Reservatório elevado'],
     cuidados: ['NPSH disponível suficiente; sucção curta e sem bolsas de ar', 'Velocidade econômica na linha de recalque', 'Proteção contra golpe de aríete na parada da bomba', 'Alternância periódica entre as bombas titular e reserva'],
     normas: ['NBR 12214', 'NBR 5626', 'ISO 9906'],
-    produtos: ['bombas', 'valvulas', 'manometros', 'filtros', 'tubos-aco', 'flanges', 'mat-ventosas', 'mat-reservatorios'],
+    produtos: ['bombas', 'valvulas', 'manometros', 'filtros', 'tubos-aco', 'flanges', 'mat-ventosas', 'mat-reservatorios', 'mat-tanques-quimicos', 'mat-dosadoras'],
     svg: `<rect class="b" x="14" y="110" width="70" height="40" rx="4"/><text x="49" y="134">Inferior</text>
       <circle class="b" cx="120" cy="130" r="14"/><text x="120" y="162">Bomba</text>
       <path class="p" d="M84 130H106M134 130H170V40H230"/>
@@ -324,7 +324,7 @@ const SYSTEMS = [
     componentes: ['Perfuração com revestimento de aço ou PVC geomecânico', 'Filtros e pré-filtro de cascalho', 'Laje e cimentação de proteção sanitária', 'Bomba submersa e tubo edutor', 'Painel de comando com proteção contra falta de água', 'Hidrômetro, válvula de retenção e torneira de amostra', 'Clorador'],
     cuidados: ['Outorga e cadastro no órgão estadual antes de usar a água', 'Teste de vazão para dimensionar a bomba', 'Proteção sanitária contra contaminação pela superfície', 'Análise de potabilidade antes do consumo e periodicamente', 'Medição do nível e da vazão retirada'],
     normas: ['NBR 12212', 'NBR 12244', 'Portaria GM/MS 888/2021'],
-    produtos: ['mat-bombas', 'mat-retencao', 'mat-hidrometros', 'mat-medidores', 'mat-aco', 'mat-pvc', 'mat-reservatorios'],
+    produtos: ['mat-bombas', 'mat-retencao', 'mat-hidrometros', 'mat-medidores', 'mat-aco', 'mat-pvc', 'mat-reservatorios', 'mat-cloradores'],
     svg: `<path class="b dash" d="M8 44H312"/><text class="s" x="232" y="38">Superfície</text>
       <rect class="b" x="60" y="44" width="24" height="118"/><path class="b dash" d="M8 120H312"/><text class="s" x="100" y="138">Aquífero</text>
       <rect class="b" x="64" y="122" width="16" height="30" rx="3"/><text class="s" x="90" y="154">Bomba submersa</text>
@@ -348,7 +348,7 @@ const SYSTEMS = [
     componentes: ['Gradeamento e caixa de areia', 'Separador de água e óleo', 'Tanque de equalização', 'Reator anaeróbio, lodo ativado ou filtro biológico', 'Decantador e tratamento do lodo', 'Dosagem química (pH, coagulante, desinfetante)', 'Medição de vazão e ponto de amostragem'],
     cuidados: ['Atender aos padrões de lançamento da licença ambiental', 'Materiais resistentes aos produtos químicos: PP, PVC, PEAD ou inox', 'Destino licenciado para o lodo', 'Monitoramento periódico com laudo', 'Operação por equipe treinada'],
     normas: ['Resolução CONAMA 430', 'NBR 12209', 'NBR 17076'],
-    produtos: ['mat-fossa', 'mat-separador', 'mat-bombas', 'mat-pe', 'mat-pvc', 'mat-medidores', 'mat-valvulas'],
+    produtos: ['mat-fossa', 'mat-separador', 'mat-bombas', 'mat-pe', 'mat-pvc', 'mat-medidores', 'mat-valvulas', 'mat-cloradores', 'mat-tanques-quimicos', 'mat-dosadoras'],
     svg: `<path class="pe" d="M8 90H30"/><rect class="b" x="30" y="72" width="44" height="36" rx="3"/><text x="52" y="64">Grade</text>
       <path class="pe" d="M74 90H92"/><rect class="b" x="92" y="72" width="50" height="36" rx="3"/><text x="117" y="64">Equalização</text>
       <path class="pe" d="M142 90H160"/><rect class="b" x="160" y="60" width="60" height="60" rx="3"/><text x="190" y="52">Reator</text>
