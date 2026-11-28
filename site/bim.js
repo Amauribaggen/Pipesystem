@@ -430,8 +430,31 @@ const BIM_AJUDA = [
 ];
 // Fichas sem modelo 3D útil (ferramentas e consumíveis): sem quadro BIM
 const BIM_SEM_MODELO = /^mat-(ferr-|tintas|vedantes|selante|soldas|rosqueadeiras|teste|bloqueadores)/;
+// Fichas de cada biblioteca: as listadas em mats + toda ficha em que a empresa aparece como fabricante
+// (MANUFACTURERS em catalog.js), para que a ficha nunca cite um fabricante com biblioteca sem mostrar o link.
+// Nomes parecidos de empresas diferentes ficam de fora (BIM_OUTRA_EMPRESA), e também pares conferidos
+// em que a biblioteca não cobre aquele produto (BIM_NAO_COBRE).
+const BIM_OUTRA_EMPRESA = /industries|smith-blair|evoqua|wallace|viking johnson/i;
+const BIM_NAO_COBRE = { Lorenzetti: ['mat-pressurizadores', 'mat-caldeiras'], ArcelorMittal: ['mat-aco'] };
+const bimNorm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const bimEhFab = (fab, lib) => {
+  if (BIM_OUTRA_EMPRESA.test(fab)) return false;
+  const tok = bimNorm(fab).split(/[\s()\/,-]+/).filter(Boolean);
+  return bimNorm(lib).split(/\s+/).every(w => tok.includes(w));
+};
+const bimMatsCache = new Map();
+function bimMats(b) {
+  if (bimMatsCache.has(b.nome)) return bimMatsCache.get(b.nome);
+  const extra = typeof MANUFACTURERS === 'undefined' ? [] : Object.entries(MANUFACTURERS)
+    .filter(([id, fabs]) => !b.mats.includes(id) && !BIM_SEM_MODELO.test(id) && !(BIM_NAO_COBRE[b.nome] || []).includes(id)
+      && (typeof CATALOG === 'undefined' || CATALOG.some(m => m.id === id)) && fabs.some(f => bimEhFab(f[0], b.nome)))
+    .map(([id]) => id);
+  const r = [...b.mats, ...extra];
+  if (typeof MANUFACTURERS !== 'undefined') bimMatsCache.set(b.nome, r);
+  return r;
+}
 function bimBoxHTML(matId, h = 'h4') {
-  const libs = BIM_LIBS.filter(b => b.mats.includes(matId));
+  const libs = BIM_LIBS.filter(b => bimMats(b).includes(matId));
   const cls = h === 'h4' ? '' : ' class="page__h"';
   const guia = '<a href="/bim-cad#bimFormatos">Qual formato usar</a> · <a href="/bim-cad#bimGuia">Como abrir no Revit ou AutoCAD</a>';
   if (!libs.length) {
@@ -481,14 +504,14 @@ function bimBoxHTML(matId, h = 'h4') {
       <p>${b.desc}</p>
       ${bimFmts(b.fmts)}
       <p class="bimcard__meta">${b.acesso}${b.varia ? ' · formatos variam por produto' : ''}</p>
-      <p class="bimcard__mats">${b.mats.map(id => `<a href="${'/materiais/' + id.slice(4)}" data-sheet="${id}">${nome(id)}</a>`).join('')}</p>
+      <p class="bimcard__mats">${bimMats(b).map(id => `<a href="${'/materiais/' + id.slice(4)}" data-sheet="${id}">${nome(id)}</a>`).join('')}</p>
       <div class="bimcard__links">${b.links.map((l, i) => `<a class="bimcard__btn${i ? ' bimcard__btn--ghost' : ''}" href="${l[1]}" target="_blank" rel="noopener noreferrer">${l[0]} <small>${l[2]} ↗</small></a>`).join('')}</div>
     </article>`;
 
   function render() {
     const list = BIM_LIBS.filter(b =>
       (!st.fmt || b.fmts.includes(st.fmt)) && (!st.cat || b.cat.includes(st.cat)) && (!st.orig || b.orig === st.orig) &&
-      (!st.q || matchText([b.nome, b.desc, ...b.cat, ...b.fmts, ...b.mats.map(nome)].join(' '), queryTerms(st.q))));
+      (!st.q || matchText([b.nome, b.desc, ...b.cat, ...b.fmts, ...bimMats(b).map(nome)].join(' '), queryTerms(st.q))));
     document.getElementById('bimCount').textContent = `${list.length} de ${BIM_LIBS.length} bibliotecas`;
     grid.innerHTML = list.length ? list.map(card).join('') : '<p class="bim__empty">Nenhuma biblioteca com esses filtros.</p>';
   }
