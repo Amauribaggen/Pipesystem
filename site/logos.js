@@ -365,6 +365,20 @@ const PBQP_H = {
   'mat-flexiveis': ['metais', ['Tigre', 'Krona']],
   'mat-sifoes': ['metais', ['Tigre', 'Astra', 'Docol', 'Deca', 'Krona']],
 };
+// Catálogos técnicos dos fabricantes, por ficha: { 'mat-x': { 'Fabricante': [[rótulo, endereço, 'PDF · tamanho', 'título completo']] } }.
+// O link vai à página oficial do arquivo (o fabricante não publica o endereço do PDF; ali o download é um clique),
+// que muda menos que o arquivo. Conferidos na Biblioteca Técnica de cada empresa em 28/11/2026.
+const CATALOGOS_FAB = {
+  'mat-galv': { Tupy: [['Catálogo técnico', 'https://conexoes.tupy.com.br/pt/resources/catalogo-tecnico-completo-0a6bcd6b', 'PDF · 10 MB', 'Catálogo Técnico Completo das conexões Tupy']] },
+  'mat-grooved': { Tupy: [['Catálogo Verde', 'https://conexoes.tupy.com.br/pt/resources/tupygrooved-verde-bd0d1e2c', 'PDF · 6,4 MB', 'Catálogo TupyGrooved Verde'], ['Catálogo Azul', 'https://conexoes.tupy.com.br/pt/resources/tupygrooved-azul-a35e21f1', 'PDF · 5 MB', 'Catálogo TupyGrooved Azul']] },
+  'mat-ranhurado': { Tupy: [['Catálogo Verde', 'https://conexoes.tupy.com.br/pt/resources/tupygrooved-verde-bd0d1e2c', 'PDF · 6,4 MB', 'Catálogo TupyGrooved Verde'], ['Catálogo Azul', 'https://conexoes.tupy.com.br/pt/resources/tupygrooved-azul-a35e21f1', 'PDF · 5 MB', 'Catálogo TupyGrooved Azul']] },
+  'mat-esfera-monobloco': { Tupy: [['Catálogo técnico', 'https://conexoes.tupy.com.br/pt/resources/catalogo-valvulas-tvpp02-tvpph03-tvps01-17978d76', 'PDF · 2,1 MB', 'Catálogo das válvulas Tupy TVPP02, TVPPH03 e TVPS01']] },
+};
+const catFab = (matId, nome) => {
+  const c = CATALOGOS_FAB[matId]; if (!c) return '';
+  const k = Object.keys(c).find(x => nome === x || nome.startsWith(x + ' '));
+  return k ? c[k].map(([rot, url, tam, tit]) => `<a class="fabs__cert fabs__cert--cat" href="${url}" target="_blank" rel="noopener noreferrer" title="${tit} (${tam}): abre a página oficial do fabricante, com o botão de download">${rot} <small>${tam}</small> ↓</a>`).join('') : '';
+};
 const pbqpFab = (matId, nome) => {
   const p = PBQP_H[matId];
   if (!p || !p[1].includes(nome)) return '';
@@ -373,7 +387,7 @@ const pbqpFab = (matId, nome) => {
 };
 const certFab = (matId, nome) => {
   const c = CERT_INMETRO[matId], reg = c && c.fab[nome];
-  return (reg ? `<a class="fabs__cert" href="${/^http/.test(reg) ? reg : `https://registro.inmetro.gov.br/consulta/detalhe.aspx?pag=1&amp;NumeroRegistro=${reg}`}" target="_blank" rel="noopener noreferrer" title="${/^http/.test(reg) ? 'Ver a referência da certificação' : 'Ver o registro no Inmetro'}">Certificado INMETRO</a>` : '') + pbqpFab(matId, nome);
+  return catFab(matId, nome) + (reg ? `<a class="fabs__cert" href="${/^http/.test(reg) ? reg : `https://registro.inmetro.gov.br/consulta/detalhe.aspx?pag=1&amp;NumeroRegistro=${reg}`}" target="_blank" rel="noopener noreferrer" title="${/^http/.test(reg) ? 'Ver a referência da certificação' : 'Ver o registro no Inmetro'}">Certificado INMETRO</a>` : '') + pbqpFab(matId, nome);
 };
 const certNota = matId => (CERT_INMETRO[matId] ? `<p class="fabs__note"><b>Certificado INMETRO:</b> ${CERT_INMETRO[matId].nota || `a empresa tem modelos com certificado ativo em ${CERT_INMETRO[matId].prog}, conforme a consulta pública do Inmetro em novembro de 2026. Confirme o modelo escolhido no link da chamada.`}</p>` : '')
   + (PBQP_H[matId] ? `<p class="fabs__note"><b>Qualificada PBQP-H:</b> a empresa consta como "Qualificada" no Programa Setorial da Qualidade de ${PBQP_PSQ[PBQP_H[matId][0]].prog} do PBQP-H (${PBQP_PSQ[PBQP_H[matId][0]].rs}). A classificação é revista a cada relatório; confira a versão em vigor no link da chamada.</p>` : '');

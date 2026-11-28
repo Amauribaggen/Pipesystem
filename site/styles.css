@@ -711,6 +711,9 @@ body { background: #071a31; }
 .fabs a.fabs__cert:hover { background: #0e8fa1; }
 .fabs a.fabs__cert--pbqp { background: #1d6b3a; }
 .fabs a.fabs__cert--pbqp:hover { background: #0e8fa1; }
+.fabs a.fabs__cert--cat { background: #fff; color: var(--navy); border: 1.5px solid var(--teal); }
+.fabs a.fabs__cert--cat small { font-weight: 500; opacity: .75; }
+.fabs a.fabs__cert--cat:hover { background: var(--teal); color: #fff; }
 @media (max-width: 560px) { .fabs li { flex-wrap: wrap; } .fabs li > a:first-child, .fabs li > .fabs__nolink { flex-basis: 100%; } }
 .fabs__note { font-size: .8rem; color: var(--muted); margin: 0 0 18px; }
 .fabs__note a { color: var(--teal-d); font-weight: 600; }
