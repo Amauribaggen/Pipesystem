@@ -474,6 +474,27 @@ const CATALOGOS_EMPRESA = {
   Dancor: ['Biblioteca técnica', 'https://www.dancor.com.br/biblioteca/', 'site oficial'],
   Imbil: ['Catálogo eletrônico', 'https://ce.imbil.com.br/open.do?sys=IMB&action=openform&formID=464570603', 'site oficial'],
   Skop: ['Biblioteca técnica', 'https://www.skop.com.br/biblioteca/', 'site oficial'],
+  // 3ª rodada (28/11/2026)
+  'ASC Engineered Solutions': ['Catálogos e folhetos', 'https://www.asc-es.com/resources-and-downloads?literature=Brochures+%26+Catalogs', 'em inglês'],
+  'Bray International': ['Folhetos técnicos', 'https://www.bray.com/documents?Document%20Type=product-brochure&page=1', 'em inglês'],
+  Bray: ['Folhetos técnicos', 'https://www.bray.com/documents?Document%20Type=product-brochure&page=1', 'em inglês'],
+  Romac: ['Catálogo e folhetos', 'https://www.romac.com/documents-2#catalog', 'em inglês'],
+  'JCM Industries': ['Catálogo e folhetos', 'https://www.jcmindustries.com/resources/', 'em inglês'],
+  AVK: ['Downloads', 'https://www.avkbr.com.br/pt-br/downloads', 'site oficial'],
+  Weldbend: ['Catálogo', 'https://www.weldbend.com/catalog.php', 'em inglês'],
+  Velan: ['Literatura técnica', 'https://velan.com/literature/', 'em inglês'],
+  Klinger: ['Downloads', 'https://www.klinger-international.com/en/downloads/', 'em inglês'],
+  Krausz: ['Materiais técnicos', 'https://krausz.com/download-2/', 'em inglês'],
+  Interativa: ['Downloads', 'https://www.interativa.ind.br/pt/downloads/', 'site oficial'],
+  Bakof: ['Catálogos e manuais', 'https://www.bakof.com.br/downloads', 'site oficial'],
+  'Bakof Tec': ['Catálogos e manuais', 'https://www.bakof.com.br/downloads', 'site oficial'],
+  Zeppini: ['Manuais', 'https://zeppini.com.br/manuais/', 'site oficial'],
+  Soletrol: ['Catálogos e manuais', 'https://www.soletrol.com.br/extras/catalogos-e-manuais/', 'site oficial'],
+  Heliotek: ['Biblioteca técnica', 'https://heliotek.com.br/biblioteca-tecnica/', 'site oficial'],
+  Infibra: ['Catálogos', 'https://www.infibra.com.br/catalogos', 'site oficial'],
+  Multilit: ['Catálogo completo', 'http://multilit.com.br/wp-content/uploads/2025/10/Cat%C3%A1logo-completo-2025_web.pdf', 'PDF'],
+  Tuper: ['Downloads', 'https://www.tuper.com.br/downloads/', 'site oficial'],
+  'Tubos Apolo': ['Catálogo', 'https://tubosapolo.com.br/catalogo-apolo/', 'site oficial'],
 };
 CATALOGOS_FAB['mat-pe'] = { 'Corr Plastik': [['Catálogo PEAD liso', 'https://corrplastik.com.br/wp-content/uploads/2026/09/DOC-7.021-REV.-00-Catalogo-Tecnico-PEAD-Liso-Setembro-2026.pdf', 'PDF', 'Catálogo Técnico PEAD Liso da Corr Plastik']] };
 const catFab = (matId, nome) => {
