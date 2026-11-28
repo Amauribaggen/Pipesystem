@@ -707,13 +707,16 @@ body { background: #071a31; }
 .fabs a, .fabs__nolink { align-items: center; }
 .fabs__logo { height: 22px; width: auto; max-width: 96px; object-fit: contain; flex: none; }
 .fabs__logo--clara { background: var(--navy); padding: 3px 6px; border-radius: 5px; box-sizing: content-box; height: 16px; }
-.fabs a.fabs__cert { flex: none; display: inline-block; font-size: .7rem; font-weight: 700; padding: .2em .7em; border-radius: 999px; background: #0a2240; color: #fff; text-decoration: none; white-space: nowrap; }
-.fabs a.fabs__cert:hover { background: #0e8fa1; }
-.fabs a.fabs__cert--pbqp { background: #1d6b3a; }
-.fabs a.fabs__cert--pbqp:hover { background: #0e8fa1; }
-.fabs a.fabs__cert--cat { background: #fff; color: var(--navy); border: 1.5px solid var(--teal); }
+.fabs a.fabs__cert { flex: none; display: inline-block; font-size: .7rem; font-weight: 700; padding: .2em .7em; border-radius: 999px; background: #fff; color: var(--navy); border: 1.5px solid var(--teal); text-decoration: none; white-space: nowrap; }
+.fabs a.fabs__cert:hover { background: var(--teal); color: #fff; }
+.fabs a.fabs__cert--pbqp { border-color: #1d7a45; color: #1d6b3a; }
+.fabs a.fabs__cert--pbqp:hover { background: #1d7a45; color: #fff; }
 .fabs a.fabs__cert--cat small { font-weight: 500; opacity: .75; }
-.fabs a.fabs__cert--cat:hover { background: var(--teal); color: #fff; }
+/* origem Nacional: bandeira do Brasil no lugar da palavra (28/11/2026) */
+.fabs__tag.fabs__flag { padding: 0; background: none; line-height: 0; }
+.fabs__flag svg { width: 26px; height: 18px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(10, 34, 64, .15); }
+/* no celular a bandeira fica no canto de cima do cartão, em vez de ocupar uma linha sozinha */
+@media (max-width: 560px) { .fabs li:has(> .fabs__flag) { position: relative; padding-right: 46px; } .fabs li > .fabs__flag { position: absolute; top: 10px; right: 12px; } }
 @media (max-width: 560px) { .fabs li { flex-wrap: wrap; } .fabs li > a:first-child, .fabs li > .fabs__nolink { flex-basis: 100%; } }
 .fabs__note { font-size: .8rem; color: var(--muted); margin: 0 0 18px; }
 .fabs__note a { color: var(--teal-d); font-weight: 600; }
