@@ -31,7 +31,7 @@ export const PAGINAS = [
   { id: 'bim', path: '/bim-cad', nome: 'Bibliotecas BIM/CAD', tag: 'Para projetistas', titulo: 'Bibliotecas BIM/CAD de fabricantes de hidráulica | PipeSystem',
     resumo: 'Onde baixar famílias Revit, objetos IFC, blocos DWG e plugins oficiais dos fabricantes de tubos, conexões e equipamentos.',
     n: D => [D.BIM_LIBS.length, 'bibliotecas de fabricantes'],
-    links: [['Fabricantes', '/bim-cad#bimGrid'], ['Plataformas BIM', '/bim-cad#bimPlats']] },
+    links: [['Fabricantes', '/bim-cad#bimGrid'], ['Plataformas BIM', '/bim-cad#bimPlats'], ['Formatos', '/bim-cad#bimFormatos'], ['Como abrir', '/bim-cad#bimGuia']] },
   { id: 'guias', path: '/guias-praticos', nome: 'Guias práticos', tag: 'Como fazer', titulo: 'Guias práticos de instalações hidráulicas | PipeSystem',
     resumo: 'Comparativos entre materiais, passo a passo de instalação e teste, vídeos, erros comuns, checklist de entrega e glossário.',
     n: D => [D.CMPS.length, 'comparativos com fontes'],

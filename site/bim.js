@@ -421,14 +421,31 @@ const BIM_LOGOS_CLARAS = new Set(['Tigre', 'Grundfos', 'Bermad', 'Krona', 'Tupy'
 const bimFmts = fmts => `<span class="bim__fmts">${fmts.map(f => `<span class="bim__fmt bim__fmt--${f}">${f}</span>`).join('')}</span>`;
 
 // Quadro "Arquivos BIM/CAD" da ficha de um material (usado no site e nas páginas /materiais/...)
+// Ajuda da seção BIM/CAD (tabela de formatos e guia de uso, no HTML da seção): entra na busca do site e no menu
+const BIM_AJUDA = [
+  { id: 'bimFormatos', t: 'Qual formato serve para quê: Revit, IFC, DWG, STEP, Parasolid e SketchUp',
+    chaves: 'formato formatos arquivo rfa rvt revit ifc dwg dxf autocad step stp iges igs parasolid x_t x_b sketchup skp plugin dynamo pdf visualizador gratuito bim cad' },
+  { id: 'bimGuia', t: 'Como abrir e usar os arquivos BIM/CAD no Revit e no AutoCAD',
+    chaves: 'como abrir importar carregar família rfa revit autocad inserir bloco xref anexar ifc vincular qibuilder step parasolid edrawings autodesk viewer dwg trueview bimvision freecad plugin instalar preferências de roteamento bim cad' },
+];
+// Fichas sem modelo 3D útil (ferramentas e consumíveis): sem quadro BIM
+const BIM_SEM_MODELO = /^mat-(ferr-|tintas|vedantes|selante|soldas|rosqueadeiras|teste|bloqueadores)/;
 function bimBoxHTML(matId, h = 'h4') {
   const libs = BIM_LIBS.filter(b => b.mats.includes(matId));
-  if (!libs.length) return '';
   const cls = h === 'h4' ? '' : ' class="page__h"';
+  const guia = '<a href="/bim-cad#bimFormatos">Qual formato usar</a> · <a href="/bim-cad#bimGuia">Como abrir no Revit ou AutoCAD</a>';
+  if (!libs.length) {
+    if (BIM_SEM_MODELO.test(matId)) return '';
+    // sem biblioteca de fabricante cadastrada: plataformas com objetos de vários fabricantes
+    return `<${h}${cls}>Modelos BIM/CAD</${h}>
+    <ul class="bimbox">${BIM_PLATFORMS.map(p => `<li><a href="${p.url}" target="_blank" rel="noopener noreferrer">
+      <span class="fabs__name notranslate" translate="no">${p.nome}</span><span class="fabs__site">${p.tag}</span><span class="bimbox__dl">Procurar ↗</span></a></li>`).join('')}</ul>
+    <p class="fabs__note">Ainda não há biblioteca de fabricante cadastrada para este produto. Procure o modelo nessas plataformas ou peça o arquivo ao fabricante. ${guia}.</p>`;
+  }
   return `<${h}${cls}>Arquivos BIM/CAD</${h}>
     <ul class="bimbox">${libs.map(b => `<li><a href="${b.links[0][1]}" target="_blank" rel="noopener noreferrer">
       <span class="fabs__name notranslate" translate="no">${b.nome}</span>${BIM_LOGOS[b.nome] ? `<img class="fabs__logo${BIM_LOGOS_CLARAS.has(b.nome) ? ' fabs__logo--clara' : ''}" src="/img/logos/${BIM_LOGOS[b.nome]}" alt="" loading="lazy">` : ''}${bimFmts(b.fmts)}<span class="bimbox__dl">Baixar ↗</span></a></li>`).join('')}</ul>
-    <p class="fabs__note">Arquivos oficiais do fabricante (Revit, IFC, DWG ou plugin). Veja todas as bibliotecas na seção <a href="/bim-cad">BIM/CAD</a>.</p>`;
+    <p class="fabs__note">Arquivos oficiais do fabricante (Revit, IFC, DWG ou plugin). Veja todas as bibliotecas na seção <a href="/bim-cad">BIM/CAD</a>. ${guia}.</p>`;
 }
 
 // Seção BIM/CAD da página inicial: filtros por formato, aplicação, origem e busca

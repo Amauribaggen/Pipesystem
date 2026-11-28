@@ -196,6 +196,7 @@
   #boas .acao { margin: 8px 0 0; background: var(--ciano); border-color: var(--ciano); color: var(--fundo); }
   /* Tabelas com números e palavras centralizados nas colunas (como no site) */
   table th, table td { text-align: center !important; }
+  .bimx table { font-size: .8rem; } .bimx th, .bimx td { white-space: normal; min-width: 110px; } .bimx ol { padding-left: 1.2em; } .bimx b { color: var(--ciano); }
 </style>
 </head>
 <body>
@@ -998,6 +999,8 @@
       ...d.nt.map(x => ({ g: 'Notícias', t: x.titulo, b: x.fonte, ir: () => irPara('noticias', 'b_noticias', x.titulo) })),
       ...d.si.map(x => ({ g: 'Sistemas', t: x.name, ir: () => irPara('sistemas', 'b_sistemas', x.name) })),
       ...d.bim.map(x => ({ g: 'BIM e CAD', t: x.nome, b: x.desc, ir: () => irPara('bim', 'b_bim', x.nome) })),
+      ...(d.bimx ? [{ g: 'BIM e CAD', t: 'Qual formato serve para quê', b: 'formatos revit rfa rvt ifc dwg dxf step iges parasolid x_t sketchup skp plugin dynamo visualizador gratuito', ir: () => irPara('bim', 'b_bim', '') },
+        ...d.bimx.guia.map(g => ({ g: 'BIM e CAD', t: 'Como abrir: ' + g.replace(/[\s\S]*?<summary>([\s\S]*?)<\/summary>[\s\S]*/, '$1'), b: g.replace(/<[^>]+>/g, ' '), ir: () => irPara('bim', 'b_bim', '') }))] : []),
       ...d.wt.map(x => ({ g: 'Ferramentas on-line', t: x.name, b: x.cat, ir: () => irPara('ferramentas', 'b_ferramentas', x.name) })),
       ...d.en.map(x => ({ g: 'Entidades', t: x.n, b: x.d, ir: () => irPara('entidades', 'b_entidades', x.n) })),
       ...d.rv.map(x => ({ g: 'Revistas', t: x.nome, b: x.resumo, ir: () => irPara('revistas', 'b_revistas', x.nome) })),
@@ -1074,6 +1077,7 @@
     ligaSecao('sistemas', d.si, s => `<details><summary>${s.name}</summary><p>${s.desc}</p>${ul('Componentes', lst(s.componentes).map(itemTxt))}${ul('Cuidados', lst(s.cuidados).map(itemTxt))}${ul('Normas', lst(s.normas).map(itemTxt))}<p><a href="${'/sistemas/' + s.id.replace(/^sis-/, '')}">Ver no portal</a></p></details>`, d.si.length + ' sistemas, disponíveis também sem internet.', x => x.name + ' ' + x.desc);
     const linkBim = l => Array.isArray(l) ? [l[0], l[1]] : [l.t || l.nome || l.label || 'Abrir', l.u || l.url || l.href];
     ligaSecao('bim', d.bim, b => `<details><summary>${esc(b.nome)}<small>${esc(lst(b.fmts).join(', '))} · ${esc(b.acesso || '')}</small></summary><p>${esc(b.desc)}</p>${ul('Áreas', lst(b.cat).map(esc))}${ul('Baixar', lst(b.links).map(linkBim).filter(l => l[1]).map(([t, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`))}</details>`, d.bim.length + ' bibliotecas. Baixar exige internet.', x => [x.nome, x.desc, lst(x.fmts).join(' '), lst(x.cat).join(' ')].join(' '));
+    if (d.bimx && d.bimx.fmt) $('l_bim').insertAdjacentHTML('beforebegin', `<div class="cartao bimx"><details><summary>Qual formato serve para quê<small>Revit, IFC, DWG, STEP, Parasolid, SketchUp</small></summary><div class="rolagem">${d.bimx.fmt}</div></details>${d.bimx.guia.join('')}</div>`);
     // Radar de Importações: quanto o Brasil importa de cada material do catálogo (Comex Stat), com conta rápida de custo com impostos
     if (d.im) {
       const nfI = (v, c = 0) => v.toLocaleString('pt-BR', { minimumFractionDigits: c, maximumFractionDigits: c });

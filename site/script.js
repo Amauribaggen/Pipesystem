@@ -1326,6 +1326,7 @@ if (document.querySelector('[data-num]')) {
       n => ({ run: () => showNorm(n.code), title: n.code, sub: n.title })),
       { label: 'Ver na seção Normas Técnicas', run: () => showNorm(q) });
 
+    if (typeof BIM_AJUDA !== 'undefined') add('Bibliotecas BIM/CAD', pick(BIM_AJUDA, a => a.t + ' ' + a.chaves, a => ({ href: '/bim-cad#' + a.id, title: a.t, sub: 'Seção BIM/CAD: guia para projetistas' })));
     add('Ferramentas on-line grátis', pick(WEB_TOOLS, t => [t.name, t.cat, t.tipo, t.desc || ''].join(' '),
       t => ({ href: t.url, ext: true, title: t.name, sub: `${t.cat} · ${new URL(t.url).hostname.replace(/^www\./, '')}` })));
 
@@ -1506,7 +1507,7 @@ if (document.querySelector('[data-num]')) {
     ferramentas: () => group('', [{ href: '#lmatTool', label: 'Dimensionamento Inteligente' }]) +
       group(`Calculadoras online (${CALCS.length})`, CALCS.map(([id, nome]) => ({ href: '#' + id, label: nome })), '#calculadoras') +
       group('Na internet', [{ href: '#webtools', label: `Ferramentas on-line grátis (${WEB_TOOLS.length})` }], '#webtools'),
-    bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS), '#bimGrid') + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS), '#bimPlats'),
+    bim: () => group('Fabricantes', bimItens('#bim .bimcard', BIM_LIBS), '#bimGrid') + group('Plataformas', bimItens('#bim .bimplat', BIM_PLATFORMS), '#bimPlats') + group('Como usar', [{ href: '#bimFormatos', label: 'Qual formato serve para quê', attrs: ' data-novo' }, { href: '#bimGuia', label: 'Como abrir no Revit e no AutoCAD', attrs: ' data-novo' }]),
     guias: () => group('Comparativos', CMPS.map(c => ({ href: '#cmp-' + c.id, label: c.titulo })), '#comparativos') +
       group('Passo a passo', GUIAS.map(g => ({ href: '#' + g.id, label: g.titulo, attrs: g.novo ? ' data-novo' : '' })), '#gp-guias') +
       group('', [{ href: '#gp-videos', label: `Vídeos dos fabricantes (${Object.keys(VIDEOS).length})` }, { href: '#gp-pats', label: 'Erros comuns e patologias' }, { href: '#gp-precos', label: 'Comparativo de preços: e-commerce x SINAPI', attrs: ' data-novo' }, { href: '#gp-check', label: 'Checklist de entrega' }, ...(typeof DETALHES !== 'undefined' ? [{ href: '#gp-detalhes', label: `Detalhes típicos para baixar (${DETALHES.length})`, attrs: ' data-novo' }] : []), { href: '#gp-glossario', label: `Glossário técnico (${GLOSSARIO.length} termos)` }]),

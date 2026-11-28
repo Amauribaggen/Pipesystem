@@ -1596,6 +1596,85 @@
       <p class="bim__lead">Úteis quando o fabricante não tem biblioteca própria ou quando você precisa de um objeto genérico.</p>
       <div class="bim__plats" id="bimPlats"></div>
 
+      <h3 class="bim__sub" id="bimFormatos">Qual formato serve para quê</h3>
+      <p class="bim__lead">Escolha o arquivo pelo programa que você usa e pela etapa do trabalho. Todos os visualizadores citados são gratuitos.</p>
+      <div class="bimfmt__wrap">
+        <table class="bimfmt">
+          <thead><tr><th>Formato</th><th>O que é</th><th>Abre em</th><th>Melhor uso</th><th>Para só visualizar</th></tr></thead>
+          <tbody>
+            <tr><th>Revit (.rfa, .rvt)</th><td>Família (.rfa) ou projeto (.rvt) com geometria e parâmetros</td><td>Autodesk Revit</td><td>Projeto BIM, quantitativo e roteamento de tubulações</td><td>Autodesk Viewer (no navegador)</td></tr>
+            <tr><th>IFC (.ifc)</th><td>Formato aberto e neutro de BIM (ISO 16739)</td><td>Revit, QiBuilder, Archicad, Navisworks, FreeCAD</td><td>Troca entre disciplinas, compatibilização e obras públicas</td><td>BIMvision, FreeCAD, Autodesk Viewer</td></tr>
+            <tr><th>DWG / DXF</th><td>Desenho CAD em 2D ou 3D (DXF é a versão de intercâmbio)</td><td>AutoCAD, BricsCAD, ZWCAD, Revit (importação)</td><td>Detalhes, plantas, isométricos e blocos de equipamentos</td><td>DWG TrueView, Autodesk Viewer</td></tr>
+            <tr><th>STEP / IGES (.stp, .igs)</th><td>Sólido 3D neutro de engenharia mecânica</td><td>AutoCAD (comando IMPORTAR), Inventor, SolidWorks, Fusion, FreeCAD</td><td>Conferir dimensões de válvulas, bombas e equipamentos</td><td>FreeCAD, eDrawings, Autodesk Viewer</td></tr>
+            <tr><th>Parasolid (.x_t, .x_b)</th><td>Sólido 3D no núcleo usado por SolidWorks, NX e Solid Edge</td><td>SolidWorks, Solid Edge, Fusion, AutoCAD (comando IMPORTAR)</td><td>Modelos de válvulas por diâmetro (caso da MGA)</td><td>eDrawings, Autodesk Viewer</td></tr>
+            <tr><th>SketchUp (.skp)</th><td>Modelo 3D leve, sem parâmetros técnicos</td><td>SketchUp, Revit (importação)</td><td>Estudos, apresentações e maquetes</td><td>SketchUp Viewer, SketchUp Free</td></tr>
+            <tr><th>Plugin</th><td>Programa do fabricante instalado dentro do Revit ou do AutoCAD</td><td>Revit e AutoCAD nas versões que o fabricante indica</td><td>Inserir produtos já com código e gerar a lista de materiais</td><td>Não se aplica</td></tr>
+            <tr><th>Dynamo (.dyn)</th><td>Rotina de automação visual do Revit</td><td>Dynamo e Dynamo Player (vêm com o Revit)</td><td>Tarefas repetitivas: numerar peças, ajustar parâmetros</td><td>Não se aplica</td></tr>
+            <tr><th>PDF</th><td>Catálogo, folha de dados ou desenho dimensional</td><td>Qualquer leitor de PDF</td><td>Conferir medidas e especificar quando não há modelo</td><td>Navegador ou leitor de PDF</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="bim__sub" id="bimGuia">Como usar os arquivos no seu programa</h3>
+      <p class="bim__lead">Passo a passo curto para os casos mais comuns. Os nomes dos menus seguem as versões em português e podem mudar entre as versões dos programas.</p>
+      <div class="bimguia">
+        <details>
+          <summary>Família Revit (.rfa) de tubo, conexão ou válvula</summary>
+          <ol>
+            <li>Confira a versão: a família precisa ser da mesma versão do seu Revit ou de uma anterior.</li>
+            <li>No projeto, vá em <b>Inserir › Carregar família</b> e escolha o arquivo .rfa.</li>
+            <li>Conexões entram pelas <b>Preferências de roteamento</b>: selecione um tubo, clique em <b>Editar tipo</b> e inclua as conexões carregadas, para que o Revit as use ao desenhar.</li>
+            <li>Válvulas e acessórios são colocados pela ferramenta <b>Acessório de tubulação</b>, direto sobre o tubo.</li>
+            <li>Confira diâmetros, material e código do fabricante nas propriedades antes de gerar o quantitativo.</li>
+          </ol>
+        </details>
+        <details>
+          <summary>Plugin do fabricante no Revit ou no AutoCAD</summary>
+          <ol>
+            <li>Veja na página do fabricante quais versões do programa o plugin aceita.</li>
+            <li>Feche o Revit ou o AutoCAD e rode o instalador baixado do site oficial.</li>
+            <li>Ao abrir o programa, o plugin aparece numa aba própria da faixa de opções (em geral na aba <b>Suplementos</b> ou com o nome do fabricante).</li>
+            <li>Alguns pedem login no primeiro uso: use o cadastro feito no site do fabricante.</li>
+          </ol>
+        </details>
+        <details>
+          <summary>Bloco DWG ou DXF no AutoCAD</summary>
+          <ol>
+            <li>Para usar como bloco: comando <b>INSERIR</b> (INSERT), escolha o arquivo e defina ponto, escala e rotação.</li>
+            <li>Para usar como referência, sem pesar o desenho: comando <b>ANEXAR</b> (ATTACH ou XATTACH).</li>
+            <li>Confira a unidade do arquivo (milímetros ou polegadas) antes de inserir, para não errar a escala.</li>
+            <li>Blocos em 3D aparecem melhor com um estilo visual sombreado e a vista isométrica.</li>
+          </ol>
+        </details>
+        <details>
+          <summary>Modelo IFC no Revit ou no QiBuilder</summary>
+          <ol>
+            <li>No Revit, <b>Inserir › Vincular IFC</b> mantém o arquivo como referência, o melhor para compatibilizar com outras disciplinas.</li>
+            <li>Para editar os elementos, use <b>Arquivo › Abrir › IFC</b>: o Revit converte o arquivo num projeto novo.</li>
+            <li>No QiBuilder, use a importação de IFC do próprio programa para trazer arquitetura e estrutura de base.</li>
+            <li>Na entrega, exporte o seu modelo também em IFC: é o formato pedido em obras públicas.</li>
+          </ol>
+        </details>
+        <details>
+          <summary>Sólido STEP ou Parasolid (.x_t) de válvula ou equipamento</summary>
+          <ol>
+            <li>No AutoCAD, o comando <b>IMPORTAR</b> (IMPORT) abre STEP, IGES e Parasolid como sólidos 3D.</li>
+            <li>Sem AutoCAD: abra no eDrawings ou no Autodesk Viewer só para conferir medidas, ou no FreeCAD (STEP e IGES).</li>
+            <li>Para levar ao Revit, salve o sólido como DWG 3D ou SAT e importe dentro de uma família nova (<b>Inserir › Importar CAD</b>), acrescentando os conectores de tubulação.</li>
+            <li>Simplifique a geometria antes: parafusos e detalhes internos deixam o modelo pesado sem ganho no projeto.</li>
+          </ol>
+        </details>
+        <details>
+          <summary>Não tenho o programa: como só visualizar</summary>
+          <ol>
+            <li><b>Autodesk Viewer</b> (viewer.autodesk.com): abre no navegador RVT, DWG, IFC, STEP e outros formatos, com medição.</li>
+            <li><b>DWG TrueView</b>: programa gratuito da Autodesk para ver, medir e imprimir DWG e DXF.</li>
+            <li><b>eDrawings</b>: visualizador gratuito para STEP, IGES, Parasolid e arquivos do SolidWorks.</li>
+            <li><b>BIMvision</b> e <b>FreeCAD</b>: gratuitos para abrir IFC; o FreeCAD também abre STEP e DXF.</li>
+          </ol>
+        </details>
+      </div>
+
       <h3 class="bim__sub">Dicas para usar objetos BIM de fabricantes</h3>
       <div class="bim__tips">
         <p><b>Confira a versão do Revit.</b> Famílias salvas numa versão nova não abrem em versões anteriores. Alguns plugins de fabricantes só funcionam até certa versão: teste antes de começar o projeto.</p>

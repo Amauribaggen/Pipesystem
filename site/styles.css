@@ -1619,6 +1619,18 @@ html.pg-collapse .pg-top__nav .btn { margin-top: 8px; text-align: center; }
 .bim__cta h3 { color: #fff; margin: 0 0 4px; }
 .bim__cta p { color: #b3c4d8; margin: 0; max-width: 640px; }
 #bim .hint { color: #b3c4d8; }
+/* tabela "Qual formato serve para quê" e guia "Como usar os arquivos" (28/11/2026) */
+.bimfmt__wrap { overflow-x: auto; background: #fff; border-radius: 14px; border: 1.5px solid var(--box-line); }
+.bimfmt { width: 100%; min-width: 760px; border-collapse: collapse; font-size: .86rem; color: #33445a; }
+.bimfmt thead th { background: var(--navy); color: #fff; font-weight: 700; padding: 10px 8px; }
+.bimfmt tbody th { color: var(--navy); font-weight: 700; white-space: nowrap; }
+.bimfmt td, .bimfmt tbody th { padding: 9px 8px; border-top: 1px solid var(--box-line); vertical-align: middle; }
+.bimfmt tbody tr:nth-child(even) { background: #f6f9fc; }
+.bimguia { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; align-items: start; }
+.bimguia details { background: #fff; color: #33445a; border-left: 4px solid var(--teal); border-radius: 10px; padding: 12px 14px; font-size: .9rem; }
+.bimguia summary { cursor: pointer; color: var(--navy); font-weight: 700; }
+.bimguia ol { margin: 10px 0 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.bimguia b { color: var(--navy); }
 /* quadro "Arquivos BIM/CAD" na ficha do material */
 ul.bimbox { list-style: none; padding: 0; margin: 0 0 8px; display: grid; gap: 6px; }
 .bimbox li { border: 1.5px solid var(--box-line); border-radius: 10px; }
